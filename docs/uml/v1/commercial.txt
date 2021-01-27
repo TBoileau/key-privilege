@@ -1,0 +1,20 @@
+@startwbs
++ Commercial Adhérent - Page d'accueil
+++ Boutique
++++ Panier
+++++ Passer commande
+++- Détail d'un produit
+++ Historique de commandes
++++ Détail d'une commande
+++ Mes clés
++++ Détail d'une transaction de clés
+++ Liste des clients
++++ Détail d'un client
+++++ [C] Historique des transactions de clés
++++++ Détail d'une transaction de clés
++++- [C] Historique des commandes
+++++- Détail d'une commande
+++ Mon compte
++++ Mes informations
+++- Modifier mon mot de passe
+@endwbs

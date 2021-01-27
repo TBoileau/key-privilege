@@ -1,0 +1,35 @@
+Prérequis :
+-        Gestion et affichage d’une boutique de lots
+o  UX performant et responsive
+o  Critères de filtre et de recherche multiple
+-        Rôle et privilèges d’accès : Admin LADR, Admin Groupement, Admin Indépendant, Commercial Adhérent, Garagiste-Carrossier, Collaborateur Adhérent
+-        Accès Backoffice pour gestion CRUD des bénéficiaires ; pour les accès : Admin LADR, Admin Groupement, Admin Indépendant
+-        Accès Backoffice pour paramétrage d’affichage des boutiques selon typologie des adhérents ; uniquement pour l’accès Admin LADR
+-        Gestion des achats de clés et du suivi de facturation
+-        Gestion des mouvements de clés : crédit, débit, retrait
+-        Suivi logistique des commandes de lots
+-        Ajouter la possibilité pour chaque bénéficiaire d’un lot de déclencher une demande de SAV
+11:51
+A date, plusieurs des fonctionnalités ci-dessus ont été développées mais ne sont pas administrables et consultables facilement. C’est un casse-tête d’ajouter un adhérent par exemple. C’est également impossible de suivre facilement les mouvements de clés pour un admin.
+
+Gestion boutiques lots adhérents :
+- Pour la gestion des boutiques par adhérent, est-ce que cela veut dire que l'on peut filtrer les lots affichés en fonction de l'adhérent ? 
+- Quelle mécanique ? 
+- Et est-ce que la boutique de lot filtrée par adhérent se répercute chez le client de l'adhérent ?
+- Exemple de la boutique ultime 
+
+Typologie de société :
+- Groupement > Adhérent/Indépendant > Client (Garagiste/carrossier)
+
+Rôle utilisateur :
+- Administrateur
+- Commercial : Actuellement son rôle n'est que du monitoring, pas d'action, envisage-t-on de lui étendre son rôle ?
+- Collaborateur : Que veut dire collaborateur ? Rôle de visu ?
+Pas d'admin adhérent ?
+
+Au final, quelle est la réelle différence entre adhérent et indépendant, si ce n'est sa typologie ?
+
+Doit-on prévoir l'achat avec CB ? Si oui, Stripe ? Lemonway ? Paypal ? Ou la banque ? ... Ou reste-t-on sur le couple virement/chèque, et donc quelque chose de manuel ?
+Si manuel, prévoir dans le back office une gestion de la facturation avec crédit de clé ?
+
+Quelle est la mécanique du SAV ? Envoi d'email ou mode opératoire sur le site ?

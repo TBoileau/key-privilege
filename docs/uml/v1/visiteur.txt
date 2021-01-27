@@ -1,0 +1,5 @@
+@startwbs
++ Page d'authentification
+++ Oubli de mot de passe
+++ Réinitialisation du mot de passe
+@endwbs
