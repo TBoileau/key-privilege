@@ -1,0 +1,20 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+actor User
+actor Client
+actor Collaborateur
+database Database
+
+Client -> User
+Collaborateur -> User
+
+rectangle Boutique {
+    User -- (Boutique)
+    (Boutique) -- Database
+    (Fiche produit) .> (Boutique) : extends
+    (Ajouter au panier) .> (Fiche produit) : extends
+    User -- (Commander)
+    (Commander) .> (Ajouter au panier) : include
+}
+@enduml

@@ -1,0 +1,14 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+actor User
+database Database
+database Mailer
+rectangle Connexion {
+  User -- (Connexion)
+  (Connexion) .> (Mot de passe oublié) : include
+  (Connexion) -- Database
+  (Réinitialisation du mot de passe) .> (Mot de passe oublié) : extends
+  (Mot de passe oublié) -- Mailer
+}
+@enduml

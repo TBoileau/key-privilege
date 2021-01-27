@@ -1,0 +1,16 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+actor Administrateur
+database Database
+database Mailer
+
+rectangle "Gestion des accès" {
+    Administrateur -- (Liste des accès)
+    (Liste des accès) -- Database
+    (Créer un accès) .> (Liste des accès) : extends
+    (Modifier un accès) .> (Liste des accès) : extends
+    (Créer un accès) -- Mailer
+    (Suspendre un accès) .> (Liste des accès) : extends
+}
+@enduml
