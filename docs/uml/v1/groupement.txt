@@ -1,0 +1,38 @@
+@startwbs
++ Groupement - Page d'accueil
+++ Boutique
++++ Détail d'un produit
+++ Liste des adhérents
++++ Ajouter un adhérent
+++- Détails d'un adhérent
+++++ [C] Historique des transactions de clés
++++++ Détail d'une transaction de clés
++++- Céder des clés
+++++ Rétrocéder des clés
++++- [C] Liste des commerciaux
+++++- Détail d'un commercial
++++- [C] Liste des administrateurs
+++++- Détail d'un administrateur
+++++ [C] Liste des clients
++++++ Détail d'un client
++++- Supprimer un adhérent
+++++ Modifier un adhérent
+++ Liste des clients
+++- Ajouter un client
++++ Détail d'un client
+++++ [C] Historique des commandes
++++++ Détail d'une commande
++++- [C] Historique des transactions de clés
+++++- Détail d'une transaction de clés
+++++ Supprimer un client
++++- Modifier un client
+++ Clés
++++ Historique des transactions de clés
+++++ Détail d'une transaction de clés
+++- Céder des clés
++++ Rétrocéder des clés
+++- Acheter des clés
+++ Mon compte
++++ Mes informations
+++- Modifier mon mot de passe
+@endwbs
