@@ -12,6 +12,8 @@
     * [Gestion des commandes](#gestion-des-commandes)
     * [Mon compte](#mon-compte)
 
+* [Sitemap](#sitemap)
+
 ## Cas d'utilisation
 
 ### Connexion
@@ -186,3 +188,8 @@ l’information du référant Key Privilege. Par défaut, ce serait idéalement 
 commercial rattaché au client, sinon ce serait les coordonnées de l’admin Adhérent (sans
 afficher/partager le numéro de téléphone dans ce cas-là).
 ```
+
+## Sitemap
+
+### Visiteur
+[![Visiteur](images/sitemap_visiteur.png)](uml/v2/sitemap/visiteur.puml)
