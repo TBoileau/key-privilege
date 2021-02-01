@@ -193,3 +193,6 @@ afficher/partager le numéro de téléphone dans ce cas-là).
 
 ### Visiteur
 [![Visiteur](images/sitemap_visiteur.png)](uml/v2/sitemap/visiteur.puml)
+
+### Groupement
+[![Groupement](images/sitemap_groupement.png)](uml/v2/sitemap/groupement.puml)

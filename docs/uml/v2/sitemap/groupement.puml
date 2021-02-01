@@ -1,0 +1,50 @@
+@startwbs
++ Groupement - Page d'accueil
+++ Liste des adhérents
++++ Ajouter un adhérent
+++++ Création d'un accès "administrateur"\n(multi entrepôt ou indépendant)
++++ Modifier un adhérent
++++ Supprimer un adhérent
++++ Fiche d'un adhérent
+++++ Informations
+++++ Liste des accès
+++++ Liste des clients
+++++ Compte clés
++++ Suspendre tous les accès
+++ Liste des accès
++++ Suspendre un accès
++++ Supprimer un accès
+++++ Transférer les clés
+++++ Transférer les clients\n(si commercial ou administrateur)
++++ Créer un nouvel accès
++++ Détail d'un accès
+++++ Historique des connexions
+++++ Historique des commandes
+++++ Historique des transactions de clés
+++++ Échéances des clés
+++++ Donner de clés
+++++ Transférer des clés
+++++ Rétrocéder des clés
+++++ Liste des clients\n(si commercial ou administrateur)
++++++ Transférer un client
+++ Liste des clients
++++ Ajouter un client
++++ Modifier un client
++++ Supprimer un client
++++ Suspendre son accès
++++ Fiche client
+++++ Historique des connexions
+++++ Historique des commandes
+++++ Historique des transactions de clés
+++++ Échéances des clés
+++ Boutique
++++ Fiche produit
+++ Liste des commandes
++++ Détail d'une commande
+++ Mon compte
++++ Historique CGU
++++ Informations société
++++ Modifier mot de passe
++++ Modifier email
++++ Modifier informations personnelles
+@endwbs
