@@ -11,7 +11,6 @@ analyze:
 	php bin/console doctrine:schema:valid --skip-sync
 	php bin/phpcs
 	php vendor/bin/phpstan analyse -c phpstan.neon src --level 7 --no-progress
-	php vendor/bin/phpstan analyse -c phpstan-tests.neon tests --level 7 --no-progress
 
 .PHONY: vendor
 analyze-windows:
@@ -20,7 +19,6 @@ analyze-windows:
 	php bin/console doctrine:schema:valid --skip-sync
 	php bin/phpcs
 	vendor\bin\phpstan.bat analyse -c phpstan.neon src --level 7 --no-progress
-	vendor\bin\phpstan.bat analyse -c phpstan-tests.neon tests --level 7 --no-progress
 
 .PHONY: tests
 tests:

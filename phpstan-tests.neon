@@ -1,6 +1,0 @@
-parameters:
-    symfony:
-        container_xml_path: var/cache/test/App_KernelTestDebugContainer.xml
-        console_application_loader: build/console.php
-    bootstrapFiles:
-        - bin/.phpunit/phpunit-9.3-0/vendor/autoload.php
