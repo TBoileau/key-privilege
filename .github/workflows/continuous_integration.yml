@@ -1,8 +1,8 @@
 name: Continuous Integration
 on: [push]
 jobs:
-  build:
-    name: Build
+  ci:
+    name: Continuous Integration
     runs-on: ${{ matrix.operating-system }}
     strategy:
       fail-fast: false
@@ -41,18 +41,10 @@ jobs:
           restore-keys: ${{ runner.os }}-composer-
       - name: Install
         run: make install
-  analyze:
-    name: Analyze
-    needs: build
-    runs-on: ${{ matrix.operating-system }}
-    steps:
+      - name: Prepare env
+        run: make prepare-build
       - name: Analyze
         run: make analyze
-  tests:
-    name: Tests
-    needs: analyze
-    runs-on: ${{ matrix.operating-system }}
-    steps:
-      - name: Unit and functional tests
+      - name: Tests
         run: make tests
 

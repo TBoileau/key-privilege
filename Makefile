@@ -15,11 +15,9 @@ tests:
 	php bin/phpunit
 
 fixtures-test:
-	make database-test
 	php bin/console doctrine:fixtures:load -n --env=test
 
 fixtures-dev:
-	make database-dev
 	php bin/console doctrine:fixtures:load -n --env=dev
 
 database-test:
@@ -31,6 +29,11 @@ database-dev:
 	php bin/console doctrine:database:drop --if-exists --force --env=dev
 	php bin/console doctrine:database:create --env=dev
 	php bin/console doctrine:schema:update --force --env=dev
+
+prepare-build:
+	make database-test
+	make fixtures-test
+	npm run dev
 
 install:
 	composer install
