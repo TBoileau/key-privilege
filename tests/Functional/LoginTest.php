@@ -47,6 +47,8 @@ class LoginTest extends WebTestCase
         $client->followRedirect();
 
         $this->assertRouteSame("security_login");
+
+        $this->assertSelectorTextContains("form[name=login] > .alert-danger", "Identifiants invalides.");
     }
 
     public function testIfPasswordIsWrong(): void
@@ -67,6 +69,8 @@ class LoginTest extends WebTestCase
         $client->followRedirect();
 
         $this->assertRouteSame("security_login");
+
+        $this->assertSelectorTextContains("form[name=login] > .alert-danger", "Identifiants invalides.");
     }
 
     public function testIfCsrfIsWrong(): void
@@ -88,5 +92,7 @@ class LoginTest extends WebTestCase
         $client->followRedirect();
 
         $this->assertRouteSame("security_login");
+
+        $this->assertSelectorTextContains("form[name=login] > .alert-danger", "Jeton CSRF invalide.");
     }
 }
