@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class LoginTest extends WebTestCase
 {
-    public function testIfLoginIsSuccessful()
+    public function testIfLoginIsSuccessful(): void
     {
         $client = static::createClient();
 
@@ -29,7 +29,7 @@ class LoginTest extends WebTestCase
         $this->assertRouteSame("index");
     }
 
-    public function testIfEmailDoesNotExist()
+    public function testIfEmailDoesNotExist(): void
     {
         $client = static::createClient();
 
@@ -49,7 +49,7 @@ class LoginTest extends WebTestCase
         $this->assertRouteSame("security_login");
     }
 
-    public function testIfPasswordIsWrong()
+    public function testIfPasswordIsWrong(): void
     {
         $client = static::createClient();
 
@@ -69,7 +69,7 @@ class LoginTest extends WebTestCase
         $this->assertRouteSame("security_login");
     }
 
-    public function testIfCsrfIsWrong()
+    public function testIfCsrfIsWrong(): void
     {
         $client = static::createClient();
 

@@ -52,6 +52,9 @@ class WebAuthenticator extends AbstractFormLoginAuthenticator implements Passwor
             && $request->isMethod('POST');
     }
 
+    /**
+     * @return array<string, string>
+     */
     public function getCredentials(Request $request): array
     {
         $credentials = [
@@ -90,7 +93,7 @@ class WebAuthenticator extends AbstractFormLoginAuthenticator implements Passwor
 
     /**
      * Used to upgrade (rehash) the user's password automatically over time.
-     * @param $credentials
+     * @param array<string, string> $credentials
      * @return string|null
      */
     public function getPassword($credentials): ?string
