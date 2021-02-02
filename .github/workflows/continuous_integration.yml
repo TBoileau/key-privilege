@@ -1,14 +1,15 @@
-name: Build
+name: Continuous Integration
 on: [push]
 jobs:
-  tests:
-    name: Functional tests
+  build:
+    name: Build
     runs-on: ${{ matrix.operating-system }}
     strategy:
       fail-fast: false
       matrix:
         operating-system: [ubuntu-latest]
         php-versions: ['8.0']
+        node-version: [ '14.7' ]
     services:
       mysql:
         image: mysql:8.0
@@ -38,11 +39,20 @@ jobs:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: ${{ runner.os }}-composer-
-      - name: Install Composer dependencies
-        run: |
-          composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
-      - name: Prepare database in test env
-        run: |
-          make fixtures-test
-      - name: Run system tests
-        run: php bin/phpunit
+      - name: Install
+        run: make install
+  analyze:
+    name: Analyze
+    needs: build
+    runs-on: ${{ matrix.operating-system }}
+    steps:
+      - name: Analyze
+        run: make analyze
+  tests:
+    name: Tests
+    needs: analyze
+    runs-on: ${{ matrix.operating-system }}
+    steps:
+      - name: Unit and functional tests
+        run: make tests
+

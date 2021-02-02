@@ -67,7 +67,7 @@ class WebAuthenticator extends AbstractFormLoginAuthenticator implements Passwor
         return $credentials;
     }
 
-    public function getUser($credentials, UserProviderInterface $userProvider): UserInterface|null
+    public function getUser($credentials, UserProviderInterface $userProvider): UserInterface | null
     {
         $token = new CsrfToken('authenticate', $credentials['csrf_token']);
         if (!$this->csrfTokenManager->isTokenValid($token)) {
@@ -98,8 +98,11 @@ class WebAuthenticator extends AbstractFormLoginAuthenticator implements Passwor
         return $credentials['password'];
     }
 
-    public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $providerKey): RedirectResponse
-    {
+    public function onAuthenticationSuccess(
+        Request $request,
+        TokenInterface $token,
+        string $providerKey
+    ): RedirectResponse {
         return new RedirectResponse($this->urlGenerator->generate("index"));
     }
 

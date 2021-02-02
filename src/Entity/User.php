@@ -100,7 +100,7 @@ class User implements UserInterface
     /**
      * @see UserInterface
      */
-    public function getSalt(): string|null
+    public function getSalt(): string | null
     {
         return null;
     }

@@ -4,6 +4,12 @@ unit-tests:
 functional-tests:
 	php bin/phpunit --testsuite functional
 
+analyze:
+	npm audit
+	composer valid
+	php bin/console doctrine:schema:valid --skip-sync
+	php bin/phpcs
+
 .PHONY: tests
 tests:
 	php bin/phpunit
