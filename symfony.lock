@@ -123,6 +123,21 @@
     "phpdocumentor/type-resolver": {
         "version": "1.4.0"
     },
+    "phpstan/extension-installer": {
+        "version": "1.1.0"
+    },
+    "phpstan/phpstan": {
+        "version": "0.12.71"
+    },
+    "phpstan/phpstan-doctrine": {
+        "version": "0.12.30"
+    },
+    "phpstan/phpstan-phpunit": {
+        "version": "0.12.17"
+    },
+    "phpstan/phpstan-symfony": {
+        "version": "0.12.16"
+    },
     "psr/cache": {
         "version": "1.0.1"
     },
@@ -148,6 +163,18 @@
         },
         "files": [
             "./config/packages/sensio_framework_extra.yaml"
+        ]
+    },
+    "squizlabs/php_codesniffer": {
+        "version": "3.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "3.0",
+            "ref": "0dc9cceda799fd3a08b96987e176a261028a3709"
+        },
+        "files": [
+            "./phpcs.xml.dist"
         ]
     },
     "symfony/asset": {
@@ -515,6 +542,28 @@
             "./config/packages/dev/web_profiler.yaml",
             "./config/packages/test/web_profiler.yaml",
             "./config/routes/dev/web_profiler.yaml"
+        ]
+    },
+    "symfony/webpack-encore-bundle": {
+        "version": "1.9",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "1.9",
+            "ref": "579d8de06df2ceb34d39e84e84c0c051b9b5ac68"
+        },
+        "files": [
+            "./assets/app.js",
+            "./assets/bootstrap.js",
+            "./assets/controllers.json",
+            "./assets/controllers/hello_controller.js",
+            "./assets/styles/app.css",
+            "./config/packages/assets.yaml",
+            "./config/packages/prod/webpack_encore.yaml",
+            "./config/packages/test/webpack_encore.yaml",
+            "./config/packages/webpack_encore.yaml",
+            "./package.json",
+            "./webpack.config.js"
         ]
     },
     "symfony/yaml": {
