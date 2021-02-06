@@ -8,6 +8,7 @@ use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Uid\Uuid;
 
 class UserFixtures extends Fixture
 {
@@ -22,6 +23,20 @@ class UserFixtures extends Fixture
     {
         $user = (new User())->setEmail("user@email.com");
         $manager->persist($user->setPassword($this->userPasswordEncoder->encodePassword($user, "password")));
+
+        $forgottenPasswordUser = (new User())
+            ->setEmail("user+forgotten+password@email.com")
+            ->setForgottenPasswordToken((string) Uuid::v4());
+        $manager->persist(
+            $forgottenPasswordUser
+                ->setPassword(
+                    $this->userPasswordEncoder->encodePassword(
+                        $forgottenPasswordUser,
+                        "password"
+                    )
+                )
+        );
+
         $manager->flush();
     }
 }
