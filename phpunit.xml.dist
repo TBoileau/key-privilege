@@ -33,6 +33,9 @@
     <listeners>
         <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener"/>
     </listeners>
+    <extensions>
+        <extension class="DAMA\DoctrineTestBundle\PHPUnit\PHPUnitExtension" />
+    </extensions>
     <logging>
         <junit outputFile="var/coverage/junit.xml"/>
     </logging>

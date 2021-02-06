@@ -29,4 +29,6 @@ security:
                 path: /
     access_control:
         - { path: ^/login$, roles: PUBLIC_ACCESS }
+        - { path: ^/mot-de-passe-oublie$, roles: PUBLIC_ACCESS }
+        - { path: ^/reinitialisation-mot-de-passe, roles: PUBLIC_ACCESS }
         - { path: ^/, roles: ROLE_USER }
