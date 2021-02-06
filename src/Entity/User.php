@@ -5,6 +5,10 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use DateTimeImmutable;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -41,6 +45,17 @@ class User implements UserInterface
      * @ORM\Column(type="string", nullable=true)
      */
     private ?string $forgottenPasswordToken;
+
+    /**
+     * @ORM\OneToMany(targetEntity=RulesAgreement::class, mappedBy="user", fetch="EXTRA_LAZY", cascade={"persist"})
+     * @var Collection<int, RulesAgreement>
+     */
+    private Collection $rulesAgreements;
+
+    public function __construct()
+    {
+        $this->rulesAgreements = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -135,5 +150,46 @@ class User implements UserInterface
     public function getFullName(): string
     {
         return "";
+    }
+
+    public function acceptRules(Rules $rules): void
+    {
+        $this->agreeRules($rules, true);
+    }
+
+    public function refuseRules(Rules $rules): void
+    {
+        $this->agreeRules($rules, false);
+    }
+
+    private function getAgreementByRules(Rules $rules): ?RulesAgreement
+    {
+        $criteria = (new Criteria())
+            ->setMaxResults(1)
+            ->andWhere(Criteria::expr()->eq("rules", $rules));
+
+        $agreement = $this->rulesAgreements->matching($criteria)->first();
+        return !$agreement ? null : $agreement;
+    }
+
+    private function agreeRules(Rules $rules, bool $accepted): void
+    {
+        $agreement = $this->getAgreementByRules($rules);
+
+        if ($agreement === null) {
+            $agreement = (new RulesAgreement())
+                ->setUser($this)
+                ->setRules($rules);
+            $this->rulesAgreements->add($agreement);
+        }
+
+        $agreement->setAccepted($accepted)->setAgreedAt(new DateTimeImmutable());
+    }
+
+    public function hasAcceptedRules(Rules $rules): bool
+    {
+        $agreement = $this->getAgreementByRules($rules);
+
+        return $agreement === null ? false : $agreement->isAccepted();
     }
 }

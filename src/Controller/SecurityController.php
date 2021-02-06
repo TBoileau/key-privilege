@@ -2,12 +2,16 @@
 
 namespace App\Controller;
 
+use App\Entity\Rules;
 use App\Entity\User;
 use App\Form\ForgottenPasswordType;
 use App\Form\ResetPasswordType;
+use App\Form\RulesType;
+use App\Repository\RulesRepository;
 use App\Repository\UserRepository;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\SubmitButton;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
@@ -79,6 +83,44 @@ EOF
         }
 
         return $this->render('security/forgotten_password.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/reglement", name="security_rules")
+     * @param RulesRepository<Rules> $rulesRepository
+     */
+    public function rules(Request $request, RulesRepository $rulesRepository): Response
+    {
+        $rules = $rulesRepository->getLastPublishedRules();
+
+        $form = $this->createForm(RulesType::class)->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            /** @var User $user */
+            $user = $this->getUser();
+
+            /** @var SubmitButton $acceptButton */
+            $acceptButton = $form->get("accept");
+
+            if ($acceptButton->isClicked()) {
+                $user->acceptRules($rules);
+            } else {
+                $user->refuseRules($rules);
+            }
+            $this->getDoctrine()->getManager()->flush();
+
+            if (!$user->hasAcceptedRules($rules)) {
+                $this->addFlash("warning", "Vous avez refusé le nouveau règlement.");
+                return $this->redirectToRoute("security_logout");
+            }
+
+            $this->addFlash("success", "Bienvenue sur Key Privilege.");
+            return $this->redirectToRoute("index");
+        }
+        return $this->render('security/rules.html.twig', [
+            "rules" => $rules,
             'form' => $form->createView()
         ]);
     }

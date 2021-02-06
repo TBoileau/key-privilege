@@ -24,6 +24,16 @@ class UserFixtures extends Fixture
         $user = (new User())->setEmail("user@email.com");
         $manager->persist($user->setPassword($this->userPasswordEncoder->encodePassword($user, "password")));
 
+        $refusedRulesUser = (new User())->setEmail("user+refused+rules@email.com");
+        $manager->persist(
+            $refusedRulesUser->setPassword(
+                $this->userPasswordEncoder->encodePassword(
+                    $refusedRulesUser,
+                    "password"
+                )
+            )
+        );
+
         $forgottenPasswordUser = (new User())
             ->setEmail("user+forgotten+password@email.com")
             ->setForgottenPasswordToken((string) Uuid::v4());

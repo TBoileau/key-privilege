@@ -23,6 +23,7 @@ security:
                     - App\Security\Guard\WebAuthenticator
             logout:
                 path: security_logout
+                target: security_login
             remember_me:
                 secret: '%kernel.secret%'
                 lifetime: 604800
