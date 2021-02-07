@@ -1,0 +1,10 @@
+{
+    "lang": "fr-FR",
+    "name": "Key Privilege",
+    "short_name": "Key Privilege",
+    "description": "Key Privilege",
+    "orientation": "landscape",
+    "display": "fullscreen",
+    "background_color": "#ffffff",
+    "theme_color": "rgb(255, 255, 255)"
+}
