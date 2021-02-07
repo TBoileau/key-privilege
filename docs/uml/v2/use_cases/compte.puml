@@ -1,0 +1,14 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+actor User
+database Database
+
+rectangle "Mon compte" {
+    User -- (Mon compte)
+    (Modifier mon email) .> (Mon compte) : extends
+    (Modifier mon mot de passe) .> (Mon compte) : extends
+    (Modifier mes informations personnelles) .> (Mon compte) : extends
+    (Mon compte) -- Database
+}
+@enduml

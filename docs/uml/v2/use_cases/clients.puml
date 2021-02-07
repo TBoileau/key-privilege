@@ -1,0 +1,20 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+actor Groupement
+actor Adhérent
+database Database
+database Mailer
+
+Groupement -> Adhérent
+
+rectangle "Gestion des clients" {
+    Adhérent -- (Liste des clients)
+    (Liste des clients) -- Database
+    (Créer un client) .> (Liste des clients) : extends
+    (Modifier un client) .> (Liste des clients) : extends
+    (Créer un client) -- Mailer
+    (Fiche client) .> (Liste des clients) : extends
+    (Suspendre tous les accès) .> (Liste des clients) : extends
+}
+@enduml

@@ -1,0 +1,22 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+actor User
+actor Client
+actor Collaborateur
+actor Administrateur
+database Database
+database Mailer
+
+Client -> User
+Collaborateur -> User
+Administrateur -> User
+
+rectangle "Gestion des commandes" {
+    User -- (Historique des commandes)
+    (Historique des commandes) -- Database
+    (Détail d'une commande) .> (Historique des commandes) : extends
+    (Demande de SAV) .> (Détail d'une commande) : extends
+    (Demande de SAV) -- Mailer
+}
+@enduml

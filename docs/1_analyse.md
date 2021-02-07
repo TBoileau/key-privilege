@@ -30,16 +30,16 @@
     * Client
     
 ## Groupement
-[![Key Privilege](images/groupement.svg)](uml/v1/groupement.txt)
+[![Key Privilege](images/groupement.svg)](uml/v1/groupement.puml)
 
 ## Administrateur - Adhérent
-[![Key Privilege](images/administrateur.svg)](uml/v1/administrateur.txt)
+[![Key Privilege](images/administrateur.svg)](uml/v1/administrateur.puml)
 
 ## Commercial - Adhérent
-[![Key Privilege](images/commercial.svg)](uml/v1/commercial.txt)
+[![Key Privilege](images/commercial.svg)](uml/v1/commercial.puml)
 
 ## Client
-[![Key Privilege](images/client.svg)](uml/v1/client.txt)
+[![Key Privilege](images/client.svg)](uml/v1/client.puml)
 
 ## Visiteur
-[![Key Privilege](images/visiteur.svg)](uml/v1/visiteur.txt)
+[![Key Privilege](images/visiteur.svg)](uml/v1/visiteur.puml)
