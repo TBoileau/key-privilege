@@ -24,7 +24,9 @@ class RequestListener
     private UrlGeneratorInterface $urlGenerator;
 
     /**
+     * @param TokenStorageInterface $tokenStorage
      * @param RulesRepository<Rules> $rulesRepository
+     * @param UrlGeneratorInterface $urlGenerator
      */
     public function __construct(
         TokenStorageInterface $tokenStorage,
