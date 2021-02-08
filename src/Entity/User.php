@@ -231,4 +231,12 @@ class User implements UserInterface
         $this->lastName = $lastName;
         return $this;
     }
+
+    /**
+     * @return Collection<int, RulesAgreement>
+     */
+    public function getRulesAgreements(): Collection
+    {
+        return $this->rulesAgreements;
+    }
 }

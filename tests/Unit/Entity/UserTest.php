@@ -30,6 +30,7 @@ class UserTest extends TestCase
         $this->assertFalse($user->hasAcceptedRules($rules));
         $user->acceptRules($rules);
         $this->assertTrue($user->hasAcceptedRules($rules));
+        $this->assertCount(1, $user->getRulesAgreements());
         $user->setFirstName("Jean");
         $this->assertEquals("Jean", $user->getFirstName());
         $user->setLastName("Dupont");

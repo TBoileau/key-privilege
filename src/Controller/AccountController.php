@@ -16,6 +16,13 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
  */
 class AccountController extends AbstractController
 {
+    /**
+     * @Route("/", name="account_index")
+     */
+    public function index(): Response
+    {
+        return $this->render('account/index.html.twig');
+    }
 
     /**
      * @Route("/modifier-mot-de-passe", name="account_edit_password")
