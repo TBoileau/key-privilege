@@ -6,6 +6,7 @@ namespace App\Tests\Functional;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class LoginTest extends WebTestCase
 {
@@ -13,7 +14,10 @@ class LoginTest extends WebTestCase
     {
         $client = static::createClient();
 
-        $crawler = $client->request("GET", "/login");
+        /** @var UrlGeneratorInterface $urlGenerator */
+        $urlGenerator = $client->getContainer()->get("router");
+
+        $crawler = $client->request("GET", $urlGenerator->generate("security_login"));
 
         $form = $crawler->filter("form[name=login]")->form([
             "email" => "user@email.com",
@@ -33,7 +37,10 @@ class LoginTest extends WebTestCase
     {
         $client = static::createClient();
 
-        $crawler = $client->request("GET", "/login");
+        /** @var UrlGeneratorInterface $urlGenerator */
+        $urlGenerator = $client->getContainer()->get("router");
+
+        $crawler = $client->request("GET", $urlGenerator->generate("security_login"));
 
         $form = $crawler->filter("form[name=login]")->form([
             "email" => "fail@email.com",
@@ -55,7 +62,10 @@ class LoginTest extends WebTestCase
     {
         $client = static::createClient();
 
-        $crawler = $client->request("GET", "/login");
+        /** @var UrlGeneratorInterface $urlGenerator */
+        $urlGenerator = $client->getContainer()->get("router");
+
+        $crawler = $client->request("GET", $urlGenerator->generate("security_login"));
 
         $form = $crawler->filter("form[name=login]")->form([
             "email" => "user@email.com",
@@ -77,7 +87,10 @@ class LoginTest extends WebTestCase
     {
         $client = static::createClient();
 
-        $crawler = $client->request("GET", "/login");
+        /** @var UrlGeneratorInterface $urlGenerator */
+        $urlGenerator = $client->getContainer()->get("router");
+
+        $crawler = $client->request("GET", $urlGenerator->generate("security_login"));
 
         $form = $crawler->filter("form[name=login]")->form([
             "email" => "user@email.com",
