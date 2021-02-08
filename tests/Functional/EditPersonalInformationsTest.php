@@ -32,27 +32,29 @@ class EditPersonalInformationsTest extends WebTestCase
 
         $client->loginUser($user);
 
-        $crawler = $client->request(Request::METHOD_GET, $urlGenerator->generate("account_edit_personal_informations"));
+        $crawler = $client->request(
+            Request::METHOD_GET,
+            $urlGenerator->generate("account_edit_personal_informations")
+        );
 
         $this->assertResponseIsSuccessful();
 
         $client->submit($crawler->filter("form[name=edit_personal_informations]")->form([
-            "edit_personal_informations[firstName]" => "Jean",
-            "edit_personal_informations[lastName]" => "Dupont",
+            "edit_personal_informations[firstName]" => "Bernard",
+            "edit_personal_informations[lastName]" => "Duchemin",
             "edit_personal_informations[email]" => "new+user@email.com"
         ]));
 
         $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
 
         /** @var User $user */
-        $user = $userRepository->findOneBy(["email" => "user@email.com"]);
+        $user = $userRepository->findOneBy(["email" => "new+user@email.com"]);
 
-        /** @var UserPasswordEncoderInterface $userPasswordEncoder */
-        $userPasswordEncoder = $client->getContainer()->get("security.password_encoder");
-
-        $this->assertTrue($userPasswordEncoder->isPasswordValid($user, "new_password"));
-
-        $this->assertNull($user->getForgottenPasswordToken());
+        $this->assertNotNull($user);
+        $this->assertEquals("Bernard", $user->getFirstName());
+        $this->assertEquals("Duchemin", $user->getLastName());
+        $this->assertEquals("new+user@email.com", $user->getEmail());
+        $this->assertEquals("Bernard Duchemin", $user->getFullName());
 
         $client->followRedirect();
 
@@ -79,7 +81,10 @@ class EditPersonalInformationsTest extends WebTestCase
 
         $client->loginUser($user);
 
-        $crawler = $client->request(Request::METHOD_GET, $urlGenerator->generate("account_edit_personal_informations"));
+        $crawler = $client->request(
+            Request::METHOD_GET,
+            $urlGenerator->generate("account_edit_personal_informations")
+        );
 
         $this->assertResponseIsSuccessful();
 
@@ -101,7 +106,7 @@ class EditPersonalInformationsTest extends WebTestCase
                 "edit_personal_informations[lastName]" => "Dupont",
                 "edit_personal_informations[email]" => "user+refused+rules@email.com"
             ],
-            "Cette valeur doit être le mot de passe actuel de l'utilisateur."
+            "Cette valeur est déjà utilisée."
         ];
 
         yield [
@@ -110,14 +115,23 @@ class EditPersonalInformationsTest extends WebTestCase
                 "edit_personal_informations[lastName]" => "Dupont",
                 "edit_personal_informations[email]" => "fail"
             ],
-            "Veuillez saisir une adresse email valide."
+            "Cette valeur n'est pas une adresse email valide."
         ];
 
         yield [
             [
                 "edit_personal_informations[firstName]" => "Jean",
                 "edit_personal_informations[lastName]" => "Dupont",
-                "edit_personal_informations[email]" => "user+refused+rules@email.com"
+                "edit_personal_informations[email]" => ""
+            ],
+            "Cette valeur ne doit pas être vide."
+        ];
+
+        yield [
+            [
+                "edit_personal_informations[firstName]" => "",
+                "edit_personal_informations[lastName]" => "Dupont",
+                "edit_personal_informations[email]" => "new+user@email.com"
             ],
             "Cette valeur ne doit pas être vide."
         ];
@@ -125,17 +139,8 @@ class EditPersonalInformationsTest extends WebTestCase
         yield [
             [
                 "edit_personal_informations[firstName]" => "Jean",
-                "edit_personal_informations[lastName]" => "Dupont",
-                "edit_personal_informations[email]" => "user+refused+rules@email.com"
-            ],
-            "Cette valeur ne doit pas être vide."
-        ];
-
-        yield [
-            [
-                "edit_personal_informations[firstName]" => "Jean",
-                "edit_personal_informations[lastName]" => "Dupont",
-                "edit_personal_informations[email]" => "user+refused+rules@email.com"
+                "edit_personal_informations[lastName]" => "",
+                "edit_personal_informations[email]" => "new+user@email.com"
             ],
             "Cette valeur ne doit pas être vide."
         ];
