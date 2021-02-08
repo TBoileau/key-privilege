@@ -21,7 +21,10 @@ class UserFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-        $user = (new User())->setEmail("user@email.com");
+        $user = (new User())
+            ->setFirstName("Jean")
+            ->setLastName("Dupont")
+            ->setEmail("user@email.com");
         $manager->persist($user->setPassword($this->userPasswordEncoder->encodePassword($user, "password")));
 
         $refusedRulesUser = (new User())->setEmail("user+refused+rules@email.com");
@@ -35,6 +38,8 @@ class UserFixtures extends Fixture
         );
 
         $forgottenPasswordUser = (new User())
+            ->setFirstName("Jean")
+            ->setLastName("Dupont")
             ->setEmail("user+forgotten+password@email.com")
             ->setForgottenPasswordToken((string) Uuid::v4());
         $manager->persist(
