@@ -11,12 +11,16 @@ use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class RulesAgreementTest extends WebTestCase
 {
     public function testIfUserAcceptRules(): void
     {
         $client = static::createClient();
+
+        /** @var UrlGeneratorInterface $urlGenerator */
+        $urlGenerator = $client->getContainer()->get("router");
 
         /** @var UserRepository $userRepository */
         $userRepository = $client->getContainer()
@@ -28,7 +32,7 @@ class RulesAgreementTest extends WebTestCase
 
         $client->loginUser($user);
 
-        $client->request(Request::METHOD_GET, "/");
+        $client->request(Request::METHOD_GET, $urlGenerator->generate("index"));
 
         $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
 
@@ -62,6 +66,9 @@ class RulesAgreementTest extends WebTestCase
     {
         $client = static::createClient();
 
+        /** @var UrlGeneratorInterface $urlGenerator */
+        $urlGenerator = $client->getContainer()->get("router");
+
         /** @var UserRepository $userRepository */
         $userRepository = $client->getContainer()
             ->get("doctrine.orm.entity_manager")
@@ -72,7 +79,7 @@ class RulesAgreementTest extends WebTestCase
 
         $client->loginUser($user);
 
-        $client->request(Request::METHOD_GET, "/");
+        $client->request(Request::METHOD_GET, $urlGenerator->generate("index"));
 
         $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
 

@@ -10,6 +10,7 @@ use Generator;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Uid\Uuid;
 
@@ -19,7 +20,13 @@ class ForgottenPasswordTest extends WebTestCase
     {
         $client = static::createClient();
 
-        $crawler = $client->request(Request::METHOD_GET, "/mot-de-passe-oublie");
+        /** @var UrlGeneratorInterface $urlGenerator */
+        $urlGenerator = $client->getContainer()->get("router");
+
+        $crawler = $client->request(
+            Request::METHOD_GET,
+            $urlGenerator->generate("security_forgotten_password")
+        );
 
         $this->assertResponseIsSuccessful();
 
@@ -47,7 +54,9 @@ class ForgottenPasswordTest extends WebTestCase
 
         $crawler = $client->request(
             Request::METHOD_GET,
-            "/reinitialisation-mot-de-passe/" . $user->getForgottenPasswordToken()
+            $urlGenerator->generate("security_reset_password", [
+                "forgottenPasswordToken" => $user->getForgottenPasswordToken()
+            ])
         );
 
         $this->assertResponseIsSuccessful();
@@ -90,7 +99,13 @@ class ForgottenPasswordTest extends WebTestCase
     {
         $client = static::createClient();
 
-        $crawler = $client->request(Request::METHOD_GET, "/mot-de-passe-oublie");
+        /** @var UrlGeneratorInterface $urlGenerator */
+        $urlGenerator = $client->getContainer()->get("router");
+
+        $crawler = $client->request(
+            Request::METHOD_GET,
+            $urlGenerator->generate("security_forgotten_password")
+        );
 
         $this->assertResponseIsSuccessful();
 
@@ -112,7 +127,13 @@ class ForgottenPasswordTest extends WebTestCase
     {
         $client = static::createClient();
 
-        $crawler = $client->request(Request::METHOD_GET, "/mot-de-passe-oublie");
+        /** @var UrlGeneratorInterface $urlGenerator */
+        $urlGenerator = $client->getContainer()->get("router");
+
+        $crawler = $client->request(
+            Request::METHOD_GET,
+            $urlGenerator->generate("security_forgotten_password")
+        );
 
         $this->assertResponseIsSuccessful();
 
@@ -145,11 +166,15 @@ class ForgottenPasswordTest extends WebTestCase
         /** @var User $user */
         $user = $userRepository->findOneBy(["email" => "user+forgotten+password@email.com"]);
 
+        /** @var UrlGeneratorInterface $urlGenerator */
+        $urlGenerator = $client->getContainer()->get("router");
+
         $crawler = $client->request(
             Request::METHOD_GET,
-            "/reinitialisation-mot-de-passe/" . $user->getForgottenPasswordToken()
+            $urlGenerator->generate("security_reset_password", [
+                "forgottenPasswordToken" => $user->getForgottenPasswordToken()
+            ])
         );
-
 
         $this->assertResponseIsSuccessful();
 
@@ -183,9 +208,14 @@ class ForgottenPasswordTest extends WebTestCase
         /** @var User $user */
         $user = $userRepository->findOneBy(["email" => "user+forgotten+password@email.com"]);
 
+        /** @var UrlGeneratorInterface $urlGenerator */
+        $urlGenerator = $client->getContainer()->get("router");
+
         $crawler = $client->request(
             Request::METHOD_GET,
-            "/reinitialisation-mot-de-passe/" . $user->getForgottenPasswordToken()
+            $urlGenerator->generate("security_reset_password", [
+                "forgottenPasswordToken" => $user->getForgottenPasswordToken()
+            ])
         );
 
         $this->assertResponseIsSuccessful();

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\Entity;
 
+use App\Entity\Rules;
 use App\Entity\User;
 use PHPUnit\Framework\TestCase;
 
@@ -21,6 +22,14 @@ class UserTest extends TestCase
         $user->eraseCredentials();
         $user->setPassword("password");
         $this->assertEquals("password", $user->getPassword());
+        $user->setForgottenPasswordToken("token");
+        $this->assertEquals("token", $user->getForgottenPasswordToken());
         $this->assertNull($user->getSalt());
+        $rules = new Rules();
+        $user->refuseRules($rules);
+        $this->assertFalse($user->hasAcceptedRules($rules));
+        $user->acceptRules($rules);
+        $this->assertTrue($user->hasAcceptedRules($rules));
+        $this->assertEmpty($user->getFullName());
     }
 }
