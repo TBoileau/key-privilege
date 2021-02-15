@@ -69,9 +69,20 @@ class User implements UserInterface
      */
     private string $lastName = "";
 
+    /**
+     * @ORM\Column(type="datetime_immutable")
+     */
+    private DateTimeImmutable $registeredAt;
+
+    /**
+     * @ORM\Column(type="datetime_immutable",nullable=true)
+     */
+    private ?DateTimeImmutable $lastLogin;
+
     public function __construct()
     {
         $this->rulesAgreements = new ArrayCollection();
+        $this->registeredAt = new DateTimeImmutable();
     }
 
     public function getId(): ?int
@@ -238,5 +249,21 @@ class User implements UserInterface
     public function getRulesAgreements(): Collection
     {
         return $this->rulesAgreements;
+    }
+
+    public function getRegisteredAt(): DateTimeImmutable
+    {
+        return $this->registeredAt;
+    }
+
+    public function getLastLogin(): ?DateTimeImmutable
+    {
+        return $this->lastLogin;
+    }
+
+    public function setLastLogin(?DateTimeImmutable $lastLogin): self
+    {
+        $this->lastLogin = $lastLogin;
+        return $this;
     }
 }
