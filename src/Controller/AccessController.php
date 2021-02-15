@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Form\AccessFilterType;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,6 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class AccessController extends AbstractController
 {
     /**
+     * @param UserRepository<User> $userRepository
      * @Route("/", name="access_list")
      */
     public function list(UserRepository $userRepository, Request $request): Response
