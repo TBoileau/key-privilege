@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Security\Guard;
 
 use App\Entity\User;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use JetBrains\PhpStorm\ArrayShape;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -106,6 +107,13 @@ class WebAuthenticator extends AbstractFormLoginAuthenticator implements Passwor
         TokenInterface $token,
         string $providerKey
     ): RedirectResponse {
+        /** @var User $user */
+        $user = $token->getUser();
+
+        $user->setLastLogin(new DateTimeImmutable());
+
+        $this->entityManager->flush();
+
         return new RedirectResponse($this->urlGenerator->generate("index"));
     }
 
