@@ -22,7 +22,14 @@
                     <td>{{ user.registeredAt|date("d/m/Y H:i") }}</td>
                     <td>{{ user.lastLogin|date("d/m/Y H:i") }}</td>
                     <td>
-
+                        {% if is_granted("suspend", user) %}
+                            <a href="{{ path("access_suspend", { id: user.id }) }}">Suspendre</a>
+                        {% endif %}
+                        {% if is_granted("active", user) %}
+                            <a href="{{ path("access_active", { id: user.id }) }}">Activer</a>
+                        {% endif %}
+                        <a href="{{ path("access_delete", { id: user.id }) }}">Supprimer</a>
+                        <a href="{{ path("index", { _switch_user: user.email }) }}">Log as</a>
                     </td>
                 </tr>
             {% endfor %}

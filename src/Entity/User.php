@@ -277,7 +277,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function isSuspendeded(): bool
+    public function isSuspended(): bool
     {
         return $this->suspended;
     }

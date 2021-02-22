@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class SuspendAccessTest extends WebTestCase
 {
-    public function testIfAccessListIsSuccessful(): void
+    public function testIfSuspendAccessIsSuccessful(): void
     {
         $client = static::createClient();
 
@@ -33,7 +33,7 @@ class SuspendAccessTest extends WebTestCase
 
         $client->request(
             Request::METHOD_GET,
-            $urlGenerator->generate("access_suspend", ["id" => 2])
+            $urlGenerator->generate("access_suspend", ["id" => 10])
         );
 
         $client->submitForm("Suspendre", []);
@@ -41,9 +41,9 @@ class SuspendAccessTest extends WebTestCase
         $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
 
         /** @var User $user */
-        $user = $userRepository->find(2);
+        $user = $userRepository->find(10);
 
-        $this->assertTrue($user->isSuspendeded());
+        $this->assertTrue($user->isSuspended());
 
         $client->followRedirect();
 
@@ -51,7 +51,7 @@ class SuspendAccessTest extends WebTestCase
 
         $client->request(
             Request::METHOD_GET,
-            $urlGenerator->generate("access_active", ["id" => 2])
+            $urlGenerator->generate("access_active", ["id" => 10])
         );
 
         $client->submitForm("Activer", []);
@@ -64,9 +64,9 @@ class SuspendAccessTest extends WebTestCase
             ->getRepository(User::class);
 
         /** @var User $user */
-        $user = $userRepository->find(2);
+        $user = $userRepository->find(10);
 
-        $this->assertFalse($user->isSuspendeded());
+        $this->assertFalse($user->isSuspended());
 
         $client->followRedirect();
 
