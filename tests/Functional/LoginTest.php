@@ -53,8 +53,6 @@ class LoginTest extends WebTestCase
 
         $client->followRedirect();
 
-        echo $client->getResponse()->getContent();
-
         $this->assertRouteSame("security_login");
 
         $this->assertSelectorTextContains("form[name=login] > .alert-danger", "Identifiants invalides.");
