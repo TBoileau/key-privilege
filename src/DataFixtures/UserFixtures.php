@@ -37,6 +37,22 @@ class UserFixtures extends Fixture
             )
         );
 
+        $suspendUser = (new User())
+            ->setFirstName("Jean")
+            ->setLastName("Dupont")
+            ->setEmail("user+suspend@email.com")
+            ->setSuspended(true);
+        $manager->persist(
+            $suspendUser
+                ->setPassword(
+                    $this->userPasswordEncoder->encodePassword(
+                        $suspendUser,
+                        "password"
+                    )
+                )
+        );
+
+
         $forgottenPasswordUser = (new User())
             ->setFirstName("Jean")
             ->setLastName("Dupont")
