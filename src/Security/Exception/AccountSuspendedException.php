@@ -10,7 +10,7 @@ use Throwable;
 
 class AccountSuspendedException extends AccountStatusException
 {
-    public function __construct(UserInterface $user, $message = "", $code = 0, Throwable $previous = null)
+    public function __construct(UserInterface $user, string $message = "", int $code = 0, Throwable $previous = null)
     {
         parent::__construct($message, $code, $previous);
         $this->setUser($user);
