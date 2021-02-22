@@ -7,6 +7,7 @@ namespace App\EventListener;
 use App\Entity\Rules;
 use App\Entity\User;
 use App\Repository\RulesRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -23,23 +24,27 @@ class RequestListener
 
     private UrlGeneratorInterface $urlGenerator;
 
+    private EntityManagerInterface $entityManager;
+
     /**
-     * @param TokenStorageInterface $tokenStorage
      * @param RulesRepository<Rules> $rulesRepository
-     * @param UrlGeneratorInterface $urlGenerator
      */
     public function __construct(
         TokenStorageInterface $tokenStorage,
         RulesRepository $rulesRepository,
-        UrlGeneratorInterface $urlGenerator
+        UrlGeneratorInterface $urlGenerator,
+        EntityManagerInterface $entityManager
     ) {
         $this->tokenStorage = $tokenStorage;
         $this->rulesRepository = $rulesRepository;
         $this->urlGenerator = $urlGenerator;
+        $this->entityManager = $entityManager;
     }
 
     public function onRequest(RequestEvent $event): void
     {
+        $this->entityManager->getFilters()->enable("softdeleteable");
+
         if (!$this->tokenStorage->getToken()?->getUser() instanceof User) {
             return;
         }

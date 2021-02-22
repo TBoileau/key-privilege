@@ -78,6 +78,8 @@ class WebAuthenticator extends AbstractFormLoginAuthenticator implements Passwor
             throw new InvalidCsrfTokenException();
         }
 
+        $this->entityManager->getFilters()->enable("softdeleteable");
+
         $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $credentials['email']]);
 
         if (!$user) {

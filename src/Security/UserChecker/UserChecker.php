@@ -6,7 +6,6 @@ namespace App\Security\UserChecker;
 
 use App\Entity\User;
 use App\Security\Exception\AccountSuspendedException;
-use Symfony\Component\Security\Core\Exception\AccountStatusException;
 use Symfony\Component\Security\Core\User\UserCheckerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 

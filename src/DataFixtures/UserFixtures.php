@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\DataFixtures;
 
 use App\Entity\User;
+use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -52,6 +53,20 @@ class UserFixtures extends Fixture
                 )
         );
 
+        $deletedUser = (new User())
+            ->setFirstName("Jean")
+            ->setLastName("Dupont")
+            ->setEmail("user+deleted@email.com")
+            ->setDeletedAt(new DateTime());
+        $manager->persist(
+            $deletedUser
+                ->setPassword(
+                    $this->userPasswordEncoder->encodePassword(
+                        $deletedUser,
+                        "password"
+                    )
+                )
+        );
 
         $forgottenPasswordUser = (new User())
             ->setFirstName("Jean")

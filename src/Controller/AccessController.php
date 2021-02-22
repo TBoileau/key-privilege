@@ -7,6 +7,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\AccessFilterType;
 use App\Repository\UserRepository;
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -84,6 +85,31 @@ class AccessController extends AbstractController
         }
 
         return $this->render("access/suspend.html.twig", [
+            "form" => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/{id}/delete", name="access_delete")
+     */
+    public function delete(User $user, Request $request): Response
+    {
+        $form = $this->createFormBuilder()->getForm()->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user->setDeletedAt(new DateTime());
+            $this->getDoctrine()->getManager()->flush();
+            $this->addFlash(
+                "success",
+                sprintf(
+                    "L'accès de %s a été supprimé avec succès.",
+                    $user->getFullName()
+                )
+            );
+            return $this->redirectToRoute("access_list");
+        }
+
+        return $this->render("access/delete.html.twig", [
             "form" => $form->createView()
         ]);
     }
