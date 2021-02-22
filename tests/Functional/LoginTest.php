@@ -33,6 +33,33 @@ class LoginTest extends WebTestCase
         $this->assertRouteSame("index");
     }
 
+    public function testIfUserIsDeleted(): void
+    {
+        $client = static::createClient();
+
+        /** @var UrlGeneratorInterface $urlGenerator */
+        $urlGenerator = $client->getContainer()->get("router");
+
+        $crawler = $client->request("GET", $urlGenerator->generate("security_login"));
+
+        $form = $crawler->filter("form[name=login]")->form([
+            "email" => "user+deleted@email.com",
+            "password" => "password"
+        ]);
+
+        $client->submit($form);
+
+        $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
+
+        $client->followRedirect();
+
+        echo $client->getResponse()->getContent();
+
+        $this->assertRouteSame("security_login");
+
+        $this->assertSelectorTextContains("form[name=login] > .alert-danger", "Identifiants invalides.");
+    }
+
     public function testIfUserIsSuspended(): void
     {
         $client = static::createClient();
