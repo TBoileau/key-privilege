@@ -37,4 +37,54 @@ class AccessController extends AbstractController
             "form" => $form->createView()
         ]);
     }
+
+    /**
+     * @Route("/{id}/active", name="access_active")
+     */
+    public function active(User $user, Request $request): Response
+    {
+        $form = $this->createFormBuilder()->getForm()->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user->setSuspended(false);
+            $this->getDoctrine()->getManager()->flush();
+            $this->addFlash(
+                "success",
+                sprintf(
+                    "L'accès de %s a été réactivé avec succès.",
+                    $user->getFullName()
+                )
+            );
+            return $this->redirectToRoute("access_list");
+        }
+
+        return $this->render("access/active.html.twig", [
+            "form" => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/{id}/suspend", name="access_suspend")
+     */
+    public function suspend(User $user, Request $request): Response
+    {
+        $form = $this->createFormBuilder()->getForm()->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user->setSuspended(true);
+            $this->getDoctrine()->getManager()->flush();
+            $this->addFlash(
+                "success",
+                sprintf(
+                    "L'accès de %s a été suspendu avec succès.",
+                    $user->getFullName()
+                )
+            );
+            return $this->redirectToRoute("access_list");
+        }
+
+        return $this->render("access/suspend.html.twig", [
+            "form" => $form->createView()
+        ]);
+    }
 }

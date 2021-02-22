@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {{ form_start(form) }}
+        {{ form_errors(form) }}
+        <button>
+            Activer
+        </button>
+    {{ form_end(form) }}
+{% endblock %}

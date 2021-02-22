@@ -79,6 +79,11 @@ class User implements UserInterface
      */
     private ?DateTimeImmutable $lastLogin;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private bool $suspended = false;
+
     public function __construct()
     {
         $this->rulesAgreements = new ArrayCollection();
@@ -264,6 +269,17 @@ class User implements UserInterface
     public function setLastLogin(?DateTimeImmutable $lastLogin): self
     {
         $this->lastLogin = $lastLogin;
+        return $this;
+    }
+
+    public function isSuspendeded(): bool
+    {
+        return $this->suspended;
+    }
+
+    public function setSuspended(bool $suspended): self
+    {
+        $this->suspended = $suspended;
         return $this;
     }
 }

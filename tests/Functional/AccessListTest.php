@@ -37,7 +37,7 @@ class AccessListTest extends WebTestCase
         $this->assertPage($crawler, 10, true, 2, true, true);
 
         $crawler = $client->clickLink("Suivant");
-        $this->assertPage($crawler, 3, true, 3, true, false);
+        $this->assertPage($crawler, 4, true, 3, true, false);
 
         $crawler = $client->clickLink("Précédent");
         $this->assertPage($crawler, 10, true, 2, true, true);
@@ -46,7 +46,7 @@ class AccessListTest extends WebTestCase
         $this->assertPage($crawler, 10, true, 1, false, true);
 
         $crawler = $client->clickLink("3");
-        $this->assertPage($crawler, 3, true, 3, true, false);
+        $this->assertPage($crawler, 4, true, 3, true, false);
 
         $crawler = $client->submitForm("Filtrer", [
             "access_filter[keywords]" => "Arthur"
