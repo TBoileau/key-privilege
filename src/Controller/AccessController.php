@@ -12,6 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * @Route("/access")
@@ -41,6 +42,7 @@ class AccessController extends AbstractController
 
     /**
      * @Route("/{id}/active", name="access_active")
+     * @IsGranted("active", subject="user")
      */
     public function active(User $user, Request $request): Response
     {
@@ -66,6 +68,7 @@ class AccessController extends AbstractController
 
     /**
      * @Route("/{id}/suspend", name="access_suspend")
+     * @IsGranted("suspend", subject="user")
      */
     public function suspend(User $user, Request $request): Response
     {
