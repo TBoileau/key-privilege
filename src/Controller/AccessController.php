@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
- * @Route("/access")
+ * @Route("/acces")
  */
 class AccessController extends AbstractController
 {
@@ -33,7 +33,7 @@ class AccessController extends AbstractController
             $form->get("keywords")->getData()
         );
 
-        return $this->render("access/list.html.twig", [
+        return $this->render("ui/access/list.html.twig", [
             "users" => $users,
             "pages" => ceil(count($users) / 10),
             "form" => $form->createView()
@@ -61,8 +61,9 @@ class AccessController extends AbstractController
             return $this->redirectToRoute("access_list");
         }
 
-        return $this->render("access/active.html.twig", [
-            "form" => $form->createView()
+        return $this->render("ui/access/active.html.twig", [
+            "form" => $form->createView(),
+            "user" => $user
         ]);
     }
 
@@ -87,8 +88,9 @@ class AccessController extends AbstractController
             return $this->redirectToRoute("access_list");
         }
 
-        return $this->render("access/suspend.html.twig", [
-            "form" => $form->createView()
+        return $this->render("ui/access/suspend.html.twig", [
+            "form" => $form->createView(),
+            "user" => $user
         ]);
     }
 
@@ -112,8 +114,9 @@ class AccessController extends AbstractController
             return $this->redirectToRoute("access_list");
         }
 
-        return $this->render("access/delete.html.twig", [
-            "form" => $form->createView()
+        return $this->render("ui/access/delete.html.twig", [
+            "form" => $form->createView(),
+            "user" => $user
         ]);
     }
 }

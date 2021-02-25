@@ -1,0 +1,11 @@
+body {
+  background-image: url(../../images/background.jpeg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  min-height: 100vh;
+
+  a {
+    color: $dark;
+  }
+}

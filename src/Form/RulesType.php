@@ -13,11 +13,17 @@ class RulesType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add("accept", SubmitType::class, [
-                "label" => "Accepter"
-            ])
             ->add("refuse", SubmitType::class, [
-                "label" => "Refuser"
+                "label" => "Refuser",
+                "attr" => [
+                    "class" => 'btn btn-danger'
+                ]
+            ])
+            ->add("accept", SubmitType::class, [
+                "label" => "Accepter",
+                "attr" => [
+                    "class" => 'btn btn-success'
+                ]
             ]);
     }
 }

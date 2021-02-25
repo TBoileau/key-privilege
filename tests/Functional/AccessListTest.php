@@ -73,12 +73,21 @@ class AccessListTest extends WebTestCase
         bool $next
     ): void {
         $this->assertResponseIsSuccessful();
-        $this->assertEquals($pagination, $crawler->filter("nav.pagination")->count() > 0);
+        $this->assertEquals($pagination, $crawler->filter("ul.pagination")->count() > 0);
 
         if ($pagination) {
-            $this->assertEquals($currentPage, (int) $crawler->filter("nav.pagination a.active")->text());
-            $this->assertEquals($previous, $crawler->filter("nav.pagination a[data-role=previous]")->count() > 0);
-            $this->assertEquals($next, $crawler->filter("nav.pagination a[data-role=next]")->count() > 0);
+            $this->assertEquals(
+                $currentPage,
+                (int) $crawler->filter("ul.pagination li.active > a.page-link")->text()
+            );
+            $this->assertEquals(
+                $previous,
+                $crawler->filter("ul.pagination a.page-link[data-role=previous]")->count() > 0
+            );
+            $this->assertEquals(
+                $next,
+                $crawler->filter("ul.pagination a.page-link[data-role=next]")->count() > 0
+            );
         }
 
         $this->assertCount($rows, $crawler->filter("table[data-role=accessList] > tbody > tr"));

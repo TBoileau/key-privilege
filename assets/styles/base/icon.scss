@@ -1,0 +1,24 @@
+.icon {
+  display: inline-block;
+
+  &-sm {
+    width: .875rem;
+    height: .875rem;
+  }
+
+  &-md {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  &-lg {
+    width: 1.125rem;
+    height: 1.125rem;
+  }
+
+  &-key {
+    background-image: url(../../images/icon_key.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+}

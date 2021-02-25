@@ -43,7 +43,7 @@ class SecurityController extends AbstractController
             return $this->redirectToRoute("security_login");
         }
 
-        return $this->render('security/reset_password.html.twig', [
+        return $this->render('ui/security/reset_password.html.twig', [
             'form' => $form->createView()
         ]);
     }
@@ -82,7 +82,7 @@ EOF
             return $this->redirectToRoute("security_login");
         }
 
-        return $this->render('security/forgotten_password.html.twig', [
+        return $this->render('ui/security/forgotten_password.html.twig', [
             'form' => $form->createView()
         ]);
     }
@@ -119,7 +119,7 @@ EOF
             $this->addFlash("success", "Bienvenue sur Key Privilege.");
             return $this->redirectToRoute("index");
         }
-        return $this->render('security/rules.html.twig', [
+        return $this->render('ui/security/rules.html.twig', [
             "rules" => $rules,
             'form' => $form->createView()
         ]);
@@ -130,7 +130,7 @@ EOF
      */
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
-        return $this->render('security/login.html.twig', [
+        return $this->render('ui/security/login.html.twig', [
             'last_username' => $authenticationUtils->getLastUsername(),
             'error' => $authenticationUtils->getLastAuthenticationError()
         ]);

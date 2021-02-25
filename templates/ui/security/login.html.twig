@@ -1,0 +1,27 @@
+{% extends 'layouts/anonymous.html.twig' %}
+
+{% block content %}
+    <form method="post" name="login">
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+        {% if error %}
+            {{ include("components/alert.html.twig", { state: "danger", content: error.messageKey|trans(error.messageData, 'security') }) }}
+        {% endif %}
+        <div class="row mb-3 align-content-center">
+            <label class="col-12 col-md-5 text-end col-form-label" for="email">Adresse email :</label>
+            <div class="col-12 col-md-7">
+                <input type="email" value="{{ last_username }}" name="email" id="email" class="form-control" required autofocus>
+            </div>
+        </div>
+        <div class="row mb-4 align-content-center">
+            <label class="col-12 col-md-5 text-end col-form-label" for="password">Mot de passe :</label>
+            <div class="col-12 col-md-7">
+                <input type="password" name="password" id="password" class="form-control" required>
+            </div>
+        </div>
+        <div class="text-center">
+            <button class="btn btn-danger d-block mx-auto mb-3" type="submit">Se connecter</button>
+            <a href="{{ path("security_forgotten_password") }}" class="d-inline-block mx-auto mb-1">Mot de passe oublié ?</a>
+            <a href="{{ path("security_forgotten_password") }}" class="d-inline-block mx-auto">Un problème ? Contactez-nous !</a>
+        </div>
+    </form>
+{% endblock %}
