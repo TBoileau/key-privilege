@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
  * @Route("/acces")
@@ -62,6 +63,32 @@ class AccessController extends AbstractController
         }
 
         return $this->render("ui/access/active.html.twig", [
+            "form" => $form->createView(),
+            "user" => $user
+        ]);
+    }
+
+    /**
+     * @Route("/{id}/reset", name="access_reset")
+     */
+    public function reset(User $user, Request $request, UserPasswordEncoderInterface $userPasswordEncoder): Response
+    {
+        $form = $this->createFormBuilder()->getForm()->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user->setPassword($userPasswordEncoder->encodePassword($user, md5(random_bytes(8))));
+            $this->getDoctrine()->getManager()->flush();
+            $this->addFlash(
+                "success",
+                sprintf(
+                    "Un nouveau mot de passe a été généré et envoyé à de %s.",
+                    $user->getFullName()
+                )
+            );
+            return $this->redirectToRoute("access_list");
+        }
+
+        return $this->render("ui/access/reset.html.twig", [
             "form" => $form->createView(),
             "user" => $user
         ]);
