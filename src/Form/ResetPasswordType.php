@@ -15,10 +15,13 @@ class ResetPasswordType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add("plainPassword", PasswordType::class, [
-            "label" => "Votre mot de passe",
+            "label" => "Mot de passe",
             "constraints" => [
                 new Length(["min" => 8]),
                 new NotBlank()
+            ],
+            "label_attr" => [
+                "class" => "col-12 col-md-5 text-end col-form-label"
             ]
         ]);
     }

@@ -1,0 +1,4 @@
+framework:
+  mailer:
+    envelope:
+      recipients: ['t-boileau@email.com']

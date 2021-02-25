@@ -1,30 +1,27 @@
-{% extends 'base.html.twig' %}
-
-{% block title %}Log in!{% endblock %}
+{% extends 'layouts/anonymous.html.twig' %}
 
 {% block body %}
-<form method="post" name="login">
-    {% if error %}
-        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-    {% endif %}
-
-    {% if app.user %}
-        <div class="mb-3">
-            You are logged in as {{ app.user.username }}, <a href="{{ path('security_logout') }}">Logout</a>
+    <form method="post" name="login">
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+        {% if error %}
+            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        {% endif %}
+        <div class="row mb-3 align-content-center">
+            <label class="col-12 col-md-5 text-end col-form-label" for="email">Adresse email :</label>
+            <div class="col-12 col-md-7">
+                <input type="email" value="{{ last_username }}" name="email" id="email" class="form-control" required autofocus>
+            </div>
         </div>
-    {% endif %}
-
-    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-    <label for="inputEmail">Email</label>
-    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" required autofocus>
-    <label for="inputPassword">Password</label>
-    <input type="password" name="password" id="inputPassword" class="form-control" required>
-
-    <input type="hidden" name="_csrf_token"
-           value="{{ csrf_token('authenticate') }}"
-    >
-    <button class="btn btn-lg btn-primary" type="submit">
-        Sign in
-    </button>
-</form>
+        <div class="row mb-4 align-content-center">
+            <label class="col-12 col-md-5 text-end col-form-label" for="password">Mot de passe :</label>
+            <div class="col-12 col-md-7">
+                <input type="password" name="password" id="password" class="form-control" required>
+            </div>
+        </div>
+        <div class="text-center">
+            <button class="btn btn-danger d-block mx-auto mb-3" type="submit">Se connecter</button>
+            <a href="{{ path("security_forgotten_password") }}" class="d-inline-block mx-auto mb-1">Mot de passe oublié ?</a>
+            <a href="{{ path("security_forgotten_password") }}" class="d-inline-block mx-auto">Un problème ? Contactez-nous !</a>
+        </div>
+    </form>
 {% endblock %}

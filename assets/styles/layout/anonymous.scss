@@ -1,0 +1,39 @@
+body {
+  color: $white;
+
+  a {
+    text-decoration: none;
+    color: $danger;
+    font-weight: 500;
+  }
+
+  > .container-anonymous {
+    width: 700px;
+    max-width: 100%;
+    background-image: url(../../images/anonymous.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: top center;
+
+    &:before {
+      content: "";
+      padding-top: 730px / 700px * 100%;
+      width: 1px;
+      margin-left: -1px;
+      float: left;
+      height: 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    &:after {
+      content: "";
+      display: table;
+      clear: both;
+    }
+
+    > * {
+      padding: calc(191px + 2rem) calc(150px + 2rem) 0;
+    }
+  }
+}
