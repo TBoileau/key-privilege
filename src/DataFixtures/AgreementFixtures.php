@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\DataFixtures;
 
 use App\Entity\Rules;
-use App\Entity\RulesAgreement;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -20,19 +19,19 @@ class AgreementFixtures extends Fixture implements DependentFixtureInterface
 
     public function load(ObjectManager $manager): void
     {
-        /** @var User $user */
-        $user = $manager->getRepository(User::class)->findOneBy(["email" => "user@email.com"]);
-
         /** @var Rules $rules */
-        $rules = $manager->getRepository(Rules::class)->findOneBy([]);
+        $rules = $this->getReference("rules");
 
-        $user->acceptRules($rules);
+        /** @var User[] $users */
+        $users = $manager->getRepository(User::class)->findAll();
 
-        /** @var User $user */
-        $refusedRulesUser = $manager->getRepository(User::class)
-            ->findOneBy(["email" => "user+refused+rules@email.com"]);
-
-        $refusedRulesUser->refuseRules($rules);
+        foreach ($users as $user) {
+            if ($user->getId() % 3 === 0) {
+                $user->refuseRules($rules);
+            } else {
+                $user->acceptRules($rules);
+            }
+        }
 
         $manager->flush();
     }

@@ -6,6 +6,7 @@ namespace App\Tests\Functional;
 
 use App\Entity\User;
 use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,34 +19,33 @@ class ResetAccessTest extends WebTestCase
     {
         $client = static::createClient();
 
-        /** @var UserRepository $userRepository */
-        $userRepository = $client->getContainer()
-            ->get("doctrine.orm.entity_manager")
-            ->getRepository(User::class);
+        /** @var EntityManagerInterface $entityManager */
+        $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
 
         /** @var User $user */
-        $user = $userRepository->findOneBy(["email" => "user@email.com"]);
+        $user = $entityManager->find(User::class, 1);
 
-        $oldPassword = $user->getPassword();
+        /** @var User $user */
+        $user2 = $entityManager->find(User::class, 2);
+
+        $oldPassword = $user2->getPassword();
 
         $client->loginUser($user);
 
         /** @var UrlGeneratorInterface $urlGenerator */
         $urlGenerator = $client->getContainer()->get("router");
 
-        $client->request(Request::METHOD_GET, $urlGenerator->generate("access_reset", ["id" => 10]));
+        $client->request(Request::METHOD_GET, $urlGenerator->generate("access_reset", ["id" => 2]));
 
         $client->submitForm("Réinitialiser", []);
 
         $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
 
-        /** @var UserRepository $userRepository */
-        $userRepository = $client->getContainer()
-            ->get("doctrine.orm.entity_manager")
-            ->getRepository(User::class);
+        /** @var EntityManagerInterface $entityManager */
+        $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
 
         /** @var User $user */
-        $user = $userRepository->find(10);
+        $user = $entityManager->find(User::class, 2);
 
         $this->assertNotEquals($oldPassword, $user->getPassword());
     }

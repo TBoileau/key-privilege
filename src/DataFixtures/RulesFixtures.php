@@ -13,9 +13,11 @@ class RulesFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        $manager->persist((new Rules())
+        $rules = (new Rules())
             ->setPublishedAt(new DateTimeImmutable())
-            ->setContent("<h1>Hello world!</h1>"));
+            ->setContent("<h1>Hello world!</h1>");
+        $manager->persist($rules);
+        $this->addReference("rules", $rules);
         $manager->flush();
     }
 }

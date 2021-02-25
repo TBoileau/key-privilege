@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace App\Tests\Functional;
 
 use App\Entity\User;
-use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Generator;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class EditPersonalInformationsTest extends WebTestCase
 {
@@ -22,13 +21,11 @@ class EditPersonalInformationsTest extends WebTestCase
         /** @var UrlGeneratorInterface $urlGenerator */
         $urlGenerator = $client->getContainer()->get("router");
 
-        /** @var UserRepository $userRepository */
-        $userRepository = $client->getContainer()
-            ->get("doctrine.orm.entity_manager")
-            ->getRepository(User::class);
+        /** @var EntityManagerInterface $entityManager */
+        $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
 
         /** @var User $user */
-        $user = $userRepository->findOneBy(["email" => "user@email.com"]);
+        $user = $entityManager->find(User::class, 1);
 
         $client->loginUser($user);
 
@@ -42,18 +39,21 @@ class EditPersonalInformationsTest extends WebTestCase
         $client->submit($crawler->filter("form[name=edit_personal_informations]")->form([
             "edit_personal_informations[firstName]" => "Bernard",
             "edit_personal_informations[lastName]" => "Duchemin",
-            "edit_personal_informations[email]" => "new+user@email.com"
+            "edit_personal_informations[email]" => "edit@email.com"
         ]));
 
         $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
 
+        /** @var EntityManagerInterface $entityManager */
+        $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
+
         /** @var User $user */
-        $user = $userRepository->findOneBy(["email" => "new+user@email.com"]);
+        $user = $entityManager->find(User::class, 1);
 
         $this->assertNotNull($user);
         $this->assertEquals("Bernard", $user->getFirstName());
         $this->assertEquals("Duchemin", $user->getLastName());
-        $this->assertEquals("new+user@email.com", $user->getEmail());
+        $this->assertEquals("edit@email.com", $user->getEmail());
         $this->assertEquals("Bernard Duchemin", $user->getFullName());
 
         $client->followRedirect();
@@ -71,13 +71,11 @@ class EditPersonalInformationsTest extends WebTestCase
         /** @var UrlGeneratorInterface $urlGenerator */
         $urlGenerator = $client->getContainer()->get("router");
 
-        /** @var UserRepository $userRepository */
-        $userRepository = $client->getContainer()
-            ->get("doctrine.orm.entity_manager")
-            ->getRepository(User::class);
+        /** @var EntityManagerInterface $entityManager */
+        $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
 
         /** @var User $user */
-        $user = $userRepository->findOneBy(["email" => "user@email.com"]);
+        $user = $entityManager->find(User::class, 1);
 
         $client->loginUser($user);
 
@@ -104,7 +102,7 @@ class EditPersonalInformationsTest extends WebTestCase
             [
                 "edit_personal_informations[firstName]" => "Jean",
                 "edit_personal_informations[lastName]" => "Dupont",
-                "edit_personal_informations[email]" => "user+refused+rules@email.com"
+                "edit_personal_informations[email]" => "user+2@email.com"
             ],
             "Cette valeur est déjà utilisée."
         ];
@@ -131,7 +129,7 @@ class EditPersonalInformationsTest extends WebTestCase
             [
                 "edit_personal_informations[firstName]" => "",
                 "edit_personal_informations[lastName]" => "Dupont",
-                "edit_personal_informations[email]" => "new+user@email.com"
+                "edit_personal_informations[email]" => "edit@email.com"
             ],
             "Cette valeur ne doit pas être vide."
         ];
@@ -140,7 +138,7 @@ class EditPersonalInformationsTest extends WebTestCase
             [
                 "edit_personal_informations[firstName]" => "Jean",
                 "edit_personal_informations[lastName]" => "",
-                "edit_personal_informations[email]" => "new+user@email.com"
+                "edit_personal_informations[email]" => "edit@email.com"
             ],
             "Cette valeur ne doit pas être vide."
         ];

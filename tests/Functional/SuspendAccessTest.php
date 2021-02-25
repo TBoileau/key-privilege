@@ -6,6 +6,7 @@ namespace App\Tests\Functional;
 
 use App\Entity\User;
 use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,13 +19,11 @@ class SuspendAccessTest extends WebTestCase
     {
         $client = static::createClient();
 
-        /** @var UserRepository $userRepository */
-        $userRepository = $client->getContainer()
-            ->get("doctrine.orm.entity_manager")
-            ->getRepository(User::class);
+        /** @var EntityManagerInterface $entityManager */
+        $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
 
         /** @var User $user */
-        $user = $userRepository->findOneBy(["email" => "user@email.com"]);
+        $user = $entityManager->find(User::class, 1);
 
         $client->loginUser($user);
 
@@ -33,15 +32,18 @@ class SuspendAccessTest extends WebTestCase
 
         $client->request(
             Request::METHOD_GET,
-            $urlGenerator->generate("access_suspend", ["id" => 10])
+            $urlGenerator->generate("access_suspend", ["id" => 2])
         );
 
         $client->submitForm("Suspendre", []);
 
         $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
 
+        /** @var EntityManagerInterface $entityManager */
+        $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
+
         /** @var User $user */
-        $user = $userRepository->find(10);
+        $user = $entityManager->find(User::class, 2);
 
         $this->assertTrue($user->isSuspended());
 
@@ -51,20 +53,18 @@ class SuspendAccessTest extends WebTestCase
 
         $client->request(
             Request::METHOD_GET,
-            $urlGenerator->generate("access_active", ["id" => 10])
+            $urlGenerator->generate("access_active", ["id" => 2])
         );
 
         $client->submitForm("Activer", []);
 
         $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
 
-        /** @var UserRepository $userRepository */
-        $userRepository = $client->getContainer()
-            ->get("doctrine.orm.entity_manager")
-            ->getRepository(User::class);
+        /** @var EntityManagerInterface $entityManager */
+        $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
 
         /** @var User $user */
-        $user = $userRepository->find(10);
+        $user = $entityManager->find(User::class, 2);
 
         $this->assertFalse($user->isSuspended());
 

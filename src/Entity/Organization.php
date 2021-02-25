@@ -1,0 +1,35 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Entity;
+
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * @ORM\Entity
+ */
+class Organization extends Company
+{
+    /**
+     * @var Collection<int, Member>
+     * @ORM\OneToMany(targetEntity=Member::class, mappedBy="organization")
+     */
+    private Collection $members;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->members = new ArrayCollection();
+    }
+
+    /**
+     * @return Collection<int, Member>
+     */
+    public function getMembers(): Collection
+    {
+        return $this->members;
+    }
+}

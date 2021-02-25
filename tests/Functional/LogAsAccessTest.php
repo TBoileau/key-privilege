@@ -6,6 +6,7 @@ namespace App\Tests\Functional;
 
 use App\Entity\User;
 use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,13 +20,11 @@ class LogAsAccessTest extends WebTestCase
     {
         $client = static::createClient();
 
-        /** @var UserRepository $userRepository */
-        $userRepository = $client->getContainer()
-            ->get("doctrine.orm.entity_manager")
-            ->getRepository(User::class);
+        /** @var EntityManagerInterface $entityManager */
+        $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
 
         /** @var User $user */
-        $user = $userRepository->findOneBy(["email" => "user@email.com"]);
+        $user = $entityManager->find(User::class, 1);
 
         $client->loginUser($user);
 
@@ -34,7 +33,7 @@ class LogAsAccessTest extends WebTestCase
 
         $client->request(
             Request::METHOD_GET,
-            $urlGenerator->generate("index", ["_switch_user" => "user+1@email.com"])
+            $urlGenerator->generate("index", ["_switch_user" => "user+2@email.com"])
         );
 
         $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
@@ -46,7 +45,7 @@ class LogAsAccessTest extends WebTestCase
         /** @var TokenStorageInterface $tokenStorage */
         $tokenStorage = $client->getContainer()->get("security.token_storage");
 
-        $this->assertEquals("user+1@email.com", $tokenStorage->getToken()->getUser()->getUsername());
+        $this->assertEquals("user+2@email.com", $tokenStorage->getToken()->getUser()->getUsername());
 
         /** @var AuthorizationCheckerInterface $authorizationChecker */
         $authorizationChecker = $client->getContainer()->get("security.authorization_checker");
@@ -67,6 +66,6 @@ class LogAsAccessTest extends WebTestCase
         /** @var TokenStorageInterface $tokenStorage */
         $tokenStorage = $client->getContainer()->get("security.token_storage");
 
-        $this->assertEquals("user@email.com", $tokenStorage->getToken()->getUser()->getUsername());
+        $this->assertEquals("user+1@email.com", $tokenStorage->getToken()->getUser()->getUsername());
     }
 }

@@ -6,6 +6,7 @@ namespace App\Tests\Functional;
 
 use App\Entity\User;
 use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Generator;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,19 +33,17 @@ class ForgottenPasswordTest extends WebTestCase
 
         $client->submit(
             $crawler->filter("form[name=forgotten_password]")->form([
-                "forgotten_password[email]" => "user@email.com"
+                "forgotten_password[email]" => "user+1@email.com"
             ])
         );
 
         $this->assertEmailCount(1);
 
-        /** @var UserRepository $userRepository */
-        $userRepository = $client->getContainer()
-            ->get("doctrine.orm.entity_manager")
-            ->getRepository(User::class);
+        /** @var EntityManagerInterface $entityManager */
+        $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
 
         /** @var User $user */
-        $user = $userRepository->findOneBy(["email" => "user@email.com"]);
+        $user = $entityManager->find(User::class, 1);
 
         $this->assertTrue(Uuid::isValid($user->getForgottenPasswordToken()));
 
@@ -67,8 +66,11 @@ class ForgottenPasswordTest extends WebTestCase
             ])
         );
 
+        /** @var EntityManagerInterface $entityManager */
+        $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
+
         /** @var User $user */
-        $user = $userRepository->findOneBy(["email" => "user@email.com"]);
+        $user = $entityManager->find(User::class, 1);
 
         /** @var UserPasswordEncoderInterface $userPasswordEncoder */
         $userPasswordEncoder = $client->getContainer()->get("security.password_encoder");
@@ -89,10 +91,6 @@ class ForgottenPasswordTest extends WebTestCase
         $client->submit($form);
 
         $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
-
-        $client->followRedirect();
-
-        $this->assertRouteSame("index");
     }
 
     public function testIfForgottenPasswordFormIsInvalid(): void
@@ -139,7 +137,7 @@ class ForgottenPasswordTest extends WebTestCase
 
         $client->submit(
             $crawler->filter("form[name=forgotten_password]")->form([
-                "forgotten_password[email]" => "user@email.com",
+                "forgotten_password[email]" => "user+1@email.com",
                 "forgotten_password[_token]" => "fail"
             ])
         );
@@ -152,19 +150,19 @@ class ForgottenPasswordTest extends WebTestCase
         );
     }
 
-
-
     public function testIfResetPasswordCsrfTokenIsInvalid(): void
     {
         $client = static::createClient();
 
-        /** @var UserRepository $userRepository */
-        $userRepository = $client->getContainer()
-            ->get("doctrine.orm.entity_manager")
-            ->getRepository(User::class);
+        /** @var EntityManagerInterface $entityManager */
+        $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
 
         /** @var User $user */
-        $user = $userRepository->findOneBy(["email" => "user+forgotten+password@email.com"]);
+        $user = $entityManager->find(User::class, 1);
+
+        $user->setForgottenPasswordToken("token");
+
+        $entityManager->flush();
 
         /** @var UrlGeneratorInterface $urlGenerator */
         $urlGenerator = $client->getContainer()->get("router");
@@ -200,13 +198,15 @@ class ForgottenPasswordTest extends WebTestCase
     {
         $client = static::createClient();
 
-        /** @var UserRepository $userRepository */
-        $userRepository = $client->getContainer()
-            ->get("doctrine.orm.entity_manager")
-            ->getRepository(User::class);
+        /** @var EntityManagerInterface $entityManager */
+        $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
 
         /** @var User $user */
-        $user = $userRepository->findOneBy(["email" => "user+forgotten+password@email.com"]);
+        $user = $entityManager->find(User::class, 1);
+
+        $user->setForgottenPasswordToken("token");
+
+        $entityManager->flush();
 
         /** @var UrlGeneratorInterface $urlGenerator */
         $urlGenerator = $client->getContainer()->get("router");
