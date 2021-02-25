@@ -61,7 +61,6 @@ install:
 .PHONY: install
 
 deploy:
-	git pull origin develop
 	composer install
 	npm install
 	make database-dev
