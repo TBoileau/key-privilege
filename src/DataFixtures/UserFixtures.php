@@ -62,13 +62,16 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
                 $administrator->getCompanies()->add($member);
             }
 
+
             $manager->persist($this->createUser($administratorMono, $member));
-            $manager->persist($this->createUser($salesPerson, $member));
+            $salesPersonUser = $this->createUser($salesPerson, $member);
+            $manager->persist($salesPersonUser);
             $manager->persist($this->createUser($collaborator, $member));
 
             for ($j = 1; $j <= 20; $j++) {
                 /** @var Client $client */
                 $client = $this->getReference(sprintf("client_%d_%d", $i, $j));
+                $client->setUser($salesPersonUser);
                 $manager->persist($this->createUser($customer, $client));
             }
 
