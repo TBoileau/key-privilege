@@ -59,3 +59,10 @@ install:
 	cp .env.dist .env.dev.local
 	cp .env.dist .env.test.local
 .PHONY: install
+
+deploy:
+	composer install
+	npm install
+	make database-dev
+	make fixtures-dev
+	npm run build
