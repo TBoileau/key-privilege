@@ -6,6 +6,7 @@ namespace App\Tests\Functional;
 
 use App\Entity\User;
 use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,13 +18,11 @@ class AccessListTest extends WebTestCase
     {
         $client = static::createClient();
 
-        /** @var UserRepository $userRepository */
-        $userRepository = $client->getContainer()
-            ->get("doctrine.orm.entity_manager")
-            ->getRepository(User::class);
+        /** @var EntityManagerInterface $entityManager */
+        $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
 
         /** @var User $user */
-        $user = $userRepository->findOneBy(["email" => "user@email.com"]);
+        $user = $entityManager->find(User::class, 1);
 
         $client->loginUser($user);
 
@@ -36,32 +35,17 @@ class AccessListTest extends WebTestCase
         $crawler = $client->clickLink("Suivant");
         $this->assertPage($crawler, 10, true, 2, true, true);
 
-        $crawler = $client->clickLink("Suivant");
-        $this->assertPage($crawler, 4, true, 3, true, false);
-
         $crawler = $client->clickLink("Précédent");
-        $this->assertPage($crawler, 10, true, 2, true, true);
-
-        $crawler = $client->clickLink("1");
         $this->assertPage($crawler, 10, true, 1, false, true);
 
-        $crawler = $client->clickLink("3");
-        $this->assertPage($crawler, 4, true, 3, true, false);
+        $crawler = $client->clickLink("2");
+        $this->assertPage($crawler, 10, true, 2, true, true);
 
         $crawler = $client->submitForm("Filtrer", [
-            "access_filter[keywords]" => "Arthur"
+            "access_filter[keywords]" => "Prénom"
         ]);
 
         $this->assertPage($crawler, 1, false, 1, false, false);
-
-        $crawler = $client->submitForm("Filtrer", [
-            "access_filter[keywords]" => "Dupont"
-        ]);
-
-        $this->assertPage($crawler, 10, true, 1, false, true);
-
-        $crawler = $client->clickLink("Suivant");
-        $this->assertPage($crawler, 10, true, 2, true, true);
     }
 
     private function assertPage(

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Tests\Functional;
 
+use App\Entity\User;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -20,7 +22,7 @@ class LoginTest extends WebTestCase
         $crawler = $client->request("GET", $urlGenerator->generate("security_login"));
 
         $form = $crawler->filter("form[name=login]")->form([
-            "email" => "user@email.com",
+            "email" => "user+1@email.com",
             "password" => "password"
         ]);
 
@@ -40,10 +42,20 @@ class LoginTest extends WebTestCase
         /** @var UrlGeneratorInterface $urlGenerator */
         $urlGenerator = $client->getContainer()->get("router");
 
+        /** @var EntityManagerInterface $entityManager */
+        $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
+
+        /** @var User $user */
+        $user = $entityManager->find(User::class, 1);
+
+        $user->setDeletedAt(new \DateTime());
+
+        $entityManager->flush();
+
         $crawler = $client->request("GET", $urlGenerator->generate("security_login"));
 
         $form = $crawler->filter("form[name=login]")->form([
-            "email" => "user+deleted@email.com",
+            "email" => "user+1@email.com",
             "password" => "password"
         ]);
 
@@ -65,10 +77,20 @@ class LoginTest extends WebTestCase
         /** @var UrlGeneratorInterface $urlGenerator */
         $urlGenerator = $client->getContainer()->get("router");
 
+        /** @var EntityManagerInterface $entityManager */
+        $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
+
+        /** @var User $user */
+        $user = $entityManager->find(User::class, 1);
+
+        $user->setSuspended(true);
+
+        $entityManager->flush();
+
         $crawler = $client->request("GET", $urlGenerator->generate("security_login"));
 
         $form = $crawler->filter("form[name=login]")->form([
-            "email" => "user+suspend@email.com",
+            "email" => "user+1@email.com",
             "password" => "password"
         ]);
 

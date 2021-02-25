@@ -6,6 +6,7 @@ namespace App\Tests\Functional;
 
 use App\Entity\User;
 use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,13 +18,11 @@ class DeleteAccessTest extends WebTestCase
     {
         $client = static::createClient();
 
-        /** @var UserRepository $userRepository */
-        $userRepository = $client->getContainer()
-            ->get("doctrine.orm.entity_manager")
-            ->getRepository(User::class);
+        /** @var EntityManagerInterface $entityManager */
+        $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
 
         /** @var User $user */
-        $user = $userRepository->findOneBy(["email" => "user@email.com"]);
+        $user = $entityManager->find(User::class, 1);
 
         $client->loginUser($user);
 
@@ -44,13 +43,11 @@ class DeleteAccessTest extends WebTestCase
             ->getFilters()
             ->disable("softdeleteable");
 
-        /** @var UserRepository $userRepository */
-        $userRepository = $client->getContainer()
-            ->get("doctrine.orm.entity_manager")
-            ->getRepository(User::class);
+        /** @var EntityManagerInterface $entityManager */
+        $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
 
         /** @var User $user */
-        $user = $userRepository->find(2);
+        $user = $entityManager->find(User::class, 2);
 
         $this->assertTrue($user->isDeleted());
 

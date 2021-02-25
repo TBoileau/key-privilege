@@ -6,6 +6,7 @@ namespace App\Tests\Functional;
 
 use App\Entity\User;
 use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -19,13 +20,11 @@ class AccountTest extends WebTestCase
         /** @var UrlGeneratorInterface $urlGenerator */
         $urlGenerator = $client->getContainer()->get("router");
 
-        /** @var UserRepository $userRepository */
-        $userRepository = $client->getContainer()
-            ->get("doctrine.orm.entity_manager")
-            ->getRepository(User::class);
+        /** @var EntityManagerInterface $entityManager */
+        $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
 
         /** @var User $user */
-        $user = $userRepository->findOneBy(["email" => "user@email.com"]);
+        $user = $entityManager->find(User::class, 1);
 
         $client->loginUser($user);
 

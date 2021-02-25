@@ -8,6 +8,7 @@ use App\Entity\Rules;
 use App\Entity\User;
 use App\Repository\RulesRepository;
 use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,13 +23,11 @@ class RulesAgreementTest extends WebTestCase
         /** @var UrlGeneratorInterface $urlGenerator */
         $urlGenerator = $client->getContainer()->get("router");
 
-        /** @var UserRepository $userRepository */
-        $userRepository = $client->getContainer()
-            ->get("doctrine.orm.entity_manager")
-            ->getRepository(User::class);
+        /** @var EntityManagerInterface $entityManager */
+        $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
 
         /** @var User $user */
-        $user = $userRepository->findOneBy(["email" => "user+refused+rules@email.com"]);
+        $user = $entityManager->find(User::class, 3);
 
         $client->loginUser($user);
 
@@ -44,8 +43,11 @@ class RulesAgreementTest extends WebTestCase
 
         $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
 
+        /** @var EntityManagerInterface $entityManager */
+        $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
+
         /** @var User $user */
-        $user = $userRepository->findOneBy(["email" => "user+refused+rules@email.com"]);
+        $user = $entityManager->find(User::class, 3);
 
         /** @var RulesRepository $rulesRepository */
         $rulesRepository = $client->getContainer()
@@ -69,13 +71,11 @@ class RulesAgreementTest extends WebTestCase
         /** @var UrlGeneratorInterface $urlGenerator */
         $urlGenerator = $client->getContainer()->get("router");
 
-        /** @var UserRepository $userRepository */
-        $userRepository = $client->getContainer()
-            ->get("doctrine.orm.entity_manager")
-            ->getRepository(User::class);
+        /** @var EntityManagerInterface $entityManager */
+        $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
 
         /** @var User $user */
-        $user = $userRepository->findOneBy(["email" => "user+refused+rules@email.com"]);
+        $user = $entityManager->find(User::class, 3);
 
         $client->loginUser($user);
 
@@ -91,8 +91,11 @@ class RulesAgreementTest extends WebTestCase
 
         $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
 
+        /** @var EntityManagerInterface $entityManager */
+        $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
+
         /** @var User $user */
-        $user = $userRepository->findOneBy(["email" => "user+refused+rules@email.com"]);
+        $user = $entityManager->find(User::class, 3);
 
         /** @var RulesRepository $rulesRepository */
         $rulesRepository = $client->getContainer()

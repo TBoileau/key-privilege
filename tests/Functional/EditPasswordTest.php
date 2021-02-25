@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Functional;
 
 use App\Entity\User;
-use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Generator;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,13 +22,11 @@ class EditPasswordTest extends WebTestCase
         /** @var UrlGeneratorInterface $urlGenerator */
         $urlGenerator = $client->getContainer()->get("router");
 
-        /** @var UserRepository $userRepository */
-        $userRepository = $client->getContainer()
-            ->get("doctrine.orm.entity_manager")
-            ->getRepository(User::class);
+        /** @var EntityManagerInterface $entityManager */
+        $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
 
         /** @var User $user */
-        $user = $userRepository->findOneBy(["email" => "user@email.com"]);
+        $user = $entityManager->find(User::class, 1);
 
         $client->loginUser($user);
 
@@ -43,8 +41,11 @@ class EditPasswordTest extends WebTestCase
 
         $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
 
+        /** @var EntityManagerInterface $entityManager */
+        $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
+
         /** @var User $user */
-        $user = $userRepository->findOneBy(["email" => "user@email.com"]);
+        $user = $entityManager->find(User::class, 1);
 
         /** @var UserPasswordEncoderInterface $userPasswordEncoder */
         $userPasswordEncoder = $client->getContainer()->get("security.password_encoder");
@@ -68,13 +69,11 @@ class EditPasswordTest extends WebTestCase
         /** @var UrlGeneratorInterface $urlGenerator */
         $urlGenerator = $client->getContainer()->get("router");
 
-        /** @var UserRepository $userRepository */
-        $userRepository = $client->getContainer()
-            ->get("doctrine.orm.entity_manager")
-            ->getRepository(User::class);
+        /** @var EntityManagerInterface $entityManager */
+        $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
 
         /** @var User $user */
-        $user = $userRepository->findOneBy(["email" => "user@email.com"]);
+        $user = $entityManager->find(User::class, 1);
 
         $client->loginUser($user);
 
