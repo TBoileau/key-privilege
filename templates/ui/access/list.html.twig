@@ -55,6 +55,7 @@
                                                             <li><a class="dropdown-item" href="{{ path("access_active", { id: user.id }) }}">Activer</a></li>
                                                         {% endif %}
                                                         <li><a class="dropdown-item" href="{{ path("access_delete", { id: user.id }) }}">Supprimer</a></li>
+                                                        <li><a class="dropdown-item" href="{{ path("access_reset", { id: user.id }) }}">Réinitialiser</a></li>
                                                         <li><a class="dropdown-item" href="{{ path("index", { _switch_user: user.email }) }}">Log as</a></li>
 
                                                     </ul>
