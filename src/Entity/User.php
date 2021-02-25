@@ -87,12 +87,14 @@ class User implements UserInterface
     /**
      * @ORM\ManyToOne(targetEntity=Company::class, inversedBy="users")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotNull
      */
     private Company $company;
 
     /**
      * @ORM\ManyToOne(targetEntity=Role::class, fetch="EAGER")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotNull
      */
     private Role $role;
 
