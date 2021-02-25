@@ -17,6 +17,6 @@ jobs:
           password: ${{ secrets.SSH_PASSWORD }}
           port: 22
           script: |
-            cd ~/mediplace
+            cd ~/key-privilege
             git pull origin develop
             make deploy
