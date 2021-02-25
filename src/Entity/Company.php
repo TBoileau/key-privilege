@@ -44,6 +44,8 @@ abstract class Company
      */
     protected Collection $users;
 
+    abstract public static function getType(): string;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();

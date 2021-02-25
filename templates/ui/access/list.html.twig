@@ -30,6 +30,8 @@
                                     <tr>
                                         <th class="text-center">Prénom</th>
                                         <th class="text-center">Nom</th>
+                                        <th class="text-center">Société</th>
+                                        <th class="text-center">Typologie</th>
                                         <th class="text-center">Date d'inscription</th>
                                         <th class="text-center">Dernière connexion</th>
                                         <th class="text-center">Actions</th>
@@ -40,6 +42,8 @@
                                         <tr>
                                             <td class="text-center">{{ user.firstName }}</td>
                                             <td class="text-center">{{ user.lastName }}</td>
+                                            <td class="text-center">{{ user.company.name }}</td>
+                                            <td class="text-center">{{ user.company.type }}</td>
                                             <td class="text-center">{{ user.registeredAt|date("d/m/Y H:i") }}</td>
                                             <td class="text-center">{{ user.lastLogin|date("d/m/Y H:i") }}</td>
                                             <td class="text-center">

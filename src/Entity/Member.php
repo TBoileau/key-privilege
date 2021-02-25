@@ -24,6 +24,11 @@ class Member extends Company
      */
     private Collection $clients;
 
+    public static function getType(): string
+    {
+        return "Adhérent";
+    }
+
     public function __construct()
     {
         parent::__construct();

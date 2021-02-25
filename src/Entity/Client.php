@@ -21,6 +21,11 @@ class Client extends Company
      */
     private ?User $user = null;
 
+    public static function getType(): string
+    {
+        return "Client";
+    }
+
     public function getMember(): Member
     {
         return $this->member;

@@ -19,6 +19,11 @@ class Organization extends Company
      */
     private Collection $members;
 
+    public static function getType(): string
+    {
+        return "Groupement";
+    }
+
     public function __construct()
     {
         parent::__construct();

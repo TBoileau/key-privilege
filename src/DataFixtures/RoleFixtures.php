@@ -17,11 +17,7 @@ class RoleFixtures extends Fixture
             ->setName("Administrateur mono-adhérent")
             ->setRoles([
                 RoleStore::ROLE_SHOP,
-                RoleStore::ROLE_ORDER,
-                RoleStore::ROLE_CLIENTS_COMPANIES,
-                RoleStore::ROLE_CLIENT_ACCESS,
-                RoleStore::ROLE_MEMBER_ACCESS,
-                RoleStore::ROLE_MEMBERS_COMPANIES
+                RoleStore::ROLE_ORDER
             ]);
         $manager->persist($administratorMono);
         $this->addReference("administrator_mono", $administratorMono);
@@ -30,12 +26,7 @@ class RoleFixtures extends Fixture
             ->setName("Administrateur multi-adhérents")
             ->setRoles([
                 RoleStore::ROLE_SHOP,
-                RoleStore::ROLE_ORDER,
-                RoleStore::ROLE_CLIENTS_COMPANIES,
-                RoleStore::ROLE_CLIENT_ACCESS,
-                RoleStore::ROLE_MEMBER_ACCESS,
-                RoleStore::ROLE_MEMBERS_COMPANIES,
-                RoleStore::ROLE_MULTI_MEMBERS
+                RoleStore::ROLE_ORDER
             ]);
         $manager->persist($administratorMulti);
         $this->addReference("administrator_multi", $administratorMulti);
@@ -44,8 +35,6 @@ class RoleFixtures extends Fixture
             ->setName("Commercial")
             ->setRoles([
                 RoleStore::ROLE_SHOP,
-                RoleStore::ROLE_CLIENT_ACCESS,
-                RoleStore::ROLE_CLIENTS_COMPANIES,
                 RoleStore::ROLE_ORDER
             ]);
         $manager->persist($salesPerson);
