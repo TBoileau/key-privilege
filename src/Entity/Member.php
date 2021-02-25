@@ -16,7 +16,7 @@ class Member extends Company
     /**
      * @ORM\ManyToOne(targetEntity=Organization::class, inversedBy="members")
      */
-    private Organization $organization;
+    private ?Organization $organization = null;
 
     /**
      * @var Collection<int, Client>

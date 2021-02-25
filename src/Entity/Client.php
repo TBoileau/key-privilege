@@ -14,7 +14,7 @@ class Client extends Company
     /**
      * @ORM\ManyToOne(targetEntity=Member::class, inversedBy="clients")
      */
-    private Member $member;
+    private ?Member $member = null;
 
     public function getMember(): Member
     {
