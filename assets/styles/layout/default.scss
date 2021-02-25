@@ -1,0 +1,13 @@
+body.default {
+  color: $dark;
+
+  > main {
+    min-height: calc(100vh - 100px - 168px - 2rem);
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  > footer {
+    background: rgba($dark, .8);
+  }
+}

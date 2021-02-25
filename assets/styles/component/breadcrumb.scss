@@ -1,0 +1,15 @@
+.breadcrumb {
+  margin-top: 1rem;
+  > .breadcrumb-item {
+    &:first-child {
+      > a {
+        font-weight: 500;
+      }
+    }
+
+    > a {
+      color: $white;
+      text-decoration: none;
+    }
+  }
+}

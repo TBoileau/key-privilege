@@ -58,6 +58,7 @@ class User implements UserInterface
 
     /**
      * @ORM\OneToMany(targetEntity=RulesAgreement::class, mappedBy="user", fetch="EXTRA_LAZY", cascade={"persist"})
+     * @ORM\OrderBy({"agreedAt"="desc"})
      * @var Collection<int, RulesAgreement>
      */
     private Collection $rulesAgreements;
@@ -286,5 +287,17 @@ class User implements UserInterface
     {
         $this->suspended = $suspended;
         return $this;
+    }
+
+    public function getLastRulesAgreement(): ?RulesAgreement
+    {
+        if ($this->rulesAgreements->count() === 0) {
+            return null;
+        }
+
+        /** @var RulesAgreement $rulesAgreement */
+        $rulesAgreement = $this->rulesAgreements->first();
+
+        return $rulesAgreement;
     }
 }

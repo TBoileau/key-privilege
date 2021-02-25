@@ -36,6 +36,6 @@ class AccountTest extends WebTestCase
         $this->assertSelectorTextContains("[data-role=firstName]", $user->getFirstName());
         $this->assertSelectorTextContains("[data-role=lastName]", $user->getLastName());
         $this->assertSelectorTextContains("[data-role=email]", $user->getEmail());
-        $this->assertEquals(1, $crawler->filter("table[data-role=rules] tbody tr")->count());
+        $this->assertEquals(1, $crawler->filter("div.list-group[data-role=rules] > div.list-group-item")->count());
     }
 }

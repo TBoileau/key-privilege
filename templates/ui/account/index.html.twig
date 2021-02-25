@@ -1,0 +1,78 @@
+{% extends "layouts/page.html.twig" %}
+
+{% set breadcrumbItems = [{ route: "account_index", label: "Mon compte"}] %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-12">
+            <section class="section">
+                <h1 class="section-header">Mon compte</h1>
+                <div class="section-body">
+                    <div class="row align-items-stretch">
+                        <div class="col-12 col-lg-4">
+                            <div class="card h-100">
+                                <h2 class="card-header">Informations personnelles</h2>
+                                <div class="card-body flex-grow-1">
+                                    <div class="row mb-3">
+                                        <div class="col-5 text-end">Prénom :</div>
+                                        <div class="col-7 fw-bold" data-role="firstName">{{ app.user.firstName }}</div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-5 text-end">Nom :</div>
+                                        <div class="col-7 fw-bold" data-role="lastName">{{ app.user.lastName }}</div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-5 text-end">Email :</div>
+                                        <div class="col-7 fw-bold" data-role="email">{{ app.user.email }}</div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-5 text-end">Inscription :</div>
+                                        <div class="col-7 fw-bold">{{ app.user.registeredAt|format_date(pattern="dd MMMM Y", locale='fr') }}</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-5 text-end">Mot de passe :</div>
+                                        <div class="col-7 fw-bold d-flex justify-content-between">
+                                            *********
+                                            <a href="{{ path("account_edit_password") }}" class="ml-2">
+                                                <span class="fas fa-edit"></span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer text-end p-0">
+                                    <a href="{{ path("account_edit_personal_informations") }}" class="btn d-block btn-outline-primary rounded-0 border-0">
+                                        Modifier mes informations personnelles
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-4">
+                            <div class="card h-100">
+                                <h2 class="card-header">Ma société</h2>
+                                <div class="card-body flex-grow-1">
+                                    <div class="row mb-3">
+                                        <div class="col-5 text-end">Société :</div>
+                                        <div class="col-7 fw-bold">Mon entreprise</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-4">
+                            <div class="card h-100">
+                                <h2 class="card-header">Règlement</h2>
+                                <div class="list-group list-group-flush flex-grow-1" data-role="rules">
+                                    {% for rulesAgreement in app.user.rulesAgreements %}
+                                        <div class="list-group-item d-flex flex-column">
+                                            <span class="fw-bold">Règlement publié le {{ rulesAgreement.rules.publishedAt|format_date(pattern="dd MMMM Y", locale='fr') }}</span>
+                                            <span class="text-muted">{{ rulesAgreement.accepted ? "Accepté" : "Refusé" }} le {{ rulesAgreement.agreedAt|format_date(pattern="dd MMMM Y", locale='fr') }}</span>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+{% endblock %}
