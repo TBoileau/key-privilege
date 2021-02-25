@@ -1,0 +1,37 @@
+footer {
+  .container {
+    > div {
+      padding: 1rem 0;
+
+      nav {
+        > ul {
+          margin: 0;
+          display: flex;
+          list-style: none;
+          justify-content: center;
+
+          > li {
+            text-transform: uppercase;
+            color: $white;
+            font-size: .75rem;
+
+            > a {
+              color: inherit;
+              text-decoration: none;
+            }
+
+            &:after {
+              content: "|";
+              margin: 0 .5rem;
+            }
+
+            &:last-child:after {
+              content: "";
+              margin: 0;
+            }
+          }
+        }
+      }
+    }
+  }
+}

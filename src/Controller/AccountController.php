@@ -21,7 +21,7 @@ class AccountController extends AbstractController
      */
     public function index(): Response
     {
-        return $this->render('account/index.html.twig');
+        return $this->render('ui/account/index.html.twig');
     }
 
     /**
@@ -44,7 +44,7 @@ class AccountController extends AbstractController
             return $this->redirectToRoute("account_edit_password");
         }
 
-        return $this->render('account/edit_password.html.twig', [
+        return $this->render('ui/account/edit_password.html.twig', [
             'form' => $form->createView()
         ]);
     }
@@ -66,7 +66,7 @@ class AccountController extends AbstractController
             return $this->redirectToRoute("account_edit_personal_informations");
         }
 
-        return $this->render('account/edit_personal_informations.html.twig', [
+        return $this->render('ui/account/edit_personal_informations.html.twig', [
             'form' => $form->createView()
         ]);
     }

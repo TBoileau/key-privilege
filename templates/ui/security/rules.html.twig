@@ -1,0 +1,22 @@
+{% extends 'layouts/empty.html.twig' %}
+
+{% block content %}
+    <div class="row">
+        <div class="col py-5">
+            <div class="bg-light p-5">
+                {{ form_start(form) }}
+                    <h1>Règlement</h1>
+                    <span class="text-muted">Dernière mise à jour le {{ rules.publishedAt|date("d/m/Y") }}</span>
+                    {{ form_errors(form) }}
+                    <div class="my-4">
+                        {{ rules.content|raw }}
+                    </div>
+                    <div class="text-center">
+                        {{ form_widget(form.refuse) }}
+                        {{ form_widget(form.accept) }}
+                    </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

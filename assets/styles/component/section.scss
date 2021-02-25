@@ -1,0 +1,15 @@
+.section {
+  > .section-header {
+    font-weight: 400;
+    background: $black;
+    color: $white;
+    text-transform: uppercase;
+    padding: .5rem 1rem;
+    margin: 0;
+  }
+
+  > .section-body {
+    background: $gray-200;
+    padding: 2rem;
+  }
+}

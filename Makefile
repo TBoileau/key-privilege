@@ -40,6 +40,10 @@ database-dev:
 	php bin/console doctrine:database:create --env=dev
 	php bin/console doctrine:schema:update --force --env=dev
 
+prepare-test:
+	make database-test
+	make fixtures-test
+
 prepare-dev:
 	make database-dev
 	make fixtures-dev

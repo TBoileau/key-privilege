@@ -4,4 +4,8 @@ body {
   background-repeat: no-repeat;
   background-position: center center;
   min-height: 100vh;
+
+  a {
+    color: $dark;
+  }
 }

@@ -13,7 +13,11 @@ class AccessFilterType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add("keywords", TextType::class, [
-            "required" => false
+            "label" => "Recherche",
+            "required" => false,
+            "attr" => [
+                "placeholder" => "Recherche"
+            ]
         ]);
     }
 }

@@ -1,10 +1,10 @@
 {% extends 'layouts/anonymous.html.twig' %}
 
-{% block body %}
+{% block content %}
     <form method="post" name="login">
         <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
         {% if error %}
-            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+            {{ include("components/alert.html.twig", { state: "danger", content: error.messageKey|trans(error.messageData, 'security') }) }}
         {% endif %}
         <div class="row mb-3 align-content-center">
             <label class="col-12 col-md-5 text-end col-form-label" for="email">Adresse email :</label>

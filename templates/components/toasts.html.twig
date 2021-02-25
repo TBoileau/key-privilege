@@ -1,0 +1,32 @@
+<div class="toast-container" aria-live="polite" aria-atomic="true">
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header">
+                    {% if label == "success" %}
+                        <i class="fas fa-check-circle text-success"></i>
+                        <strong class="me-auto">Succès !</strong>
+                    {% elseif label == "info" %}
+                        <i class="fas fa-info-circle text-info"></i>
+                        <strong class="me-auto">Info !</strong>
+                    {% elseif label == "warning" %}
+                        <i class="fas fa-exclamation-circle text-warning"></i>
+                        <strong class="me-auto">Attention !</strong>
+                    {% elseif label == "danger" %}
+                        <i class="fas fa-times-circle text-danger"></i>
+                        <strong class="me-auto">Erreur !</strong>
+                    {% endif %}
+                    <small class="text-muted">à l'instant</small>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body">
+                    {% if message is iterable %}
+                        {{ message.message }}
+                    {% else %}
+                        {{ message }}
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    {% endfor %}
+</div>

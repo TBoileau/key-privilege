@@ -1,5 +1,6 @@
 import './styles/app.scss';
 import './bootstrap';
+import { Toast } from 'bootstrap';
 
 Array.from(document.querySelectorAll(".input-group-password")).forEach(e => {
     let button = e.querySelector("button");
@@ -13,3 +14,4 @@ Array.from(document.querySelectorAll(".input-group-password")).forEach(e => {
     });
 });
 
+Array.from(document.querySelectorAll(".toast")).map(toast => (new Toast(toast)).show());

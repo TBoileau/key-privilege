@@ -11,7 +11,8 @@
             {{ encore_entry_script_tags('app') }}
         {% endblock %}
     </head>
-    <body class="{% block page %}{% endblock %}">
+    <body class="{% block page %}{% endblock %} {% block layout %}default{% endblock %}">
         {% block body %}{% endblock %}
+        {{ include("components/toasts.html.twig") }}
     </body>
 </html>

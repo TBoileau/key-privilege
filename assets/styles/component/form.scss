@@ -5,4 +5,11 @@
   input[type=text] + button > span.far:before {
     content: "\f070";
   }
+  button {
+    border: 1px solid $input-border-color;
+
+    &:hover, &:active, &:focus {
+      border: 1px solid $input-border-color;
+    }
+  }
 }
