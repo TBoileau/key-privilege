@@ -1,0 +1,19 @@
+name: Continuous Deployment
+on:
+  push:
+    branches:
+      - 'develop'
+      - 'feature/continuous-deployment'
+jobs:
+  ci:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: executing remote ssh commands using password
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: 22
+          script: make deploy
