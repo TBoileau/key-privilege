@@ -40,12 +40,6 @@ class User implements UserInterface
     private string $email;
 
     /**
-     * @var array<string>
-     * @ORM\Column(type="json")
-     */
-    private array $roles = [];
-
-    /**
      * @var string The hashed password
      * @ORM\Column(type="string")
      */
@@ -90,9 +84,29 @@ class User implements UserInterface
      */
     private bool $suspended = false;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Company::class, inversedBy="users")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private Company $company;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Role::class, fetch="EAGER")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private Role $role;
+
+    /**
+     * @var Collection<int, Company>
+     * @ORM\ManyToMany(targetEntity=Company::class)
+     * @ORM\JoinTable(name="user_companies")
+     */
+    private Collection $companies;
+
     public function __construct()
     {
         $this->rulesAgreements = new ArrayCollection();
+        $this->companies = new ArrayCollection();
         $this->registeredAt = new DateTimeImmutable();
     }
 
@@ -129,19 +143,20 @@ class User implements UserInterface
      */
     public function getRoles(): array
     {
-        $roles = $this->roles;
+        $roles = $this->role->getRoles();
         $roles[] = 'ROLE_USER';
 
         return array_unique($roles);
     }
 
-    /**
-     * @param array<string> $roles
-     */
-    public function setRoles(array $roles): self
+    public function getRole(): Role
     {
-        $this->roles = $roles;
+        return $this->role;
+    }
 
+    public function setRole(Role $role): self
+    {
+        $this->role = $role;
         return $this;
     }
 
@@ -299,5 +314,29 @@ class User implements UserInterface
         $rulesAgreement = $this->rulesAgreements->first();
 
         return $rulesAgreement;
+    }
+
+    public function getCompany(): Company
+    {
+        return $this->company;
+    }
+
+    public function setCompany(Company $company): self
+    {
+        $this->company = $company;
+
+        if (!$this->companies->contains($company)) {
+            $this->companies->add($company);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Company>
+     */
+    public function getCompanies(): Collection
+    {
+        return $this->companies;
     }
 }

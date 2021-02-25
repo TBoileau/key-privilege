@@ -4,102 +4,99 @@ declare(strict_types=1);
 
 namespace App\DataFixtures;
 
+use App\Entity\Client;
+use App\Entity\Company;
+use App\Entity\Member;
+use App\Entity\Role;
 use App\Entity\User;
-use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use Faker\Factory;
+use Faker\Generator;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use Symfony\Component\Uid\Uuid;
 
-class UserFixtures extends Fixture
+class UserFixtures extends Fixture implements DependentFixtureInterface
 {
     private UserPasswordEncoderInterface $userPasswordEncoder;
+
+    private Generator $faker;
+
+    private int $autoIncrement;
 
     public function __construct(UserPasswordEncoderInterface $userPasswordEncoder)
     {
         $this->userPasswordEncoder = $userPasswordEncoder;
+        $this->faker = Factory::create("fr_FR");
+        $this->autoIncrement = 1;
     }
 
     public function load(ObjectManager $manager): void
     {
-        $user = (new User())
-            ->setFirstName("Arthur")
-            ->setLastName("Dupont")
-            ->setEmail("user@email.com");
-        $manager->persist($user->setPassword($this->userPasswordEncoder->encodePassword($user, "password")));
+        /** @var Role $administratorMono */
+        $administratorMono = $this->getReference("administrator_mono");
 
-        $refusedRulesUser = (new User())->setEmail("user+refused+rules@email.com");
-        $manager->persist(
-            $refusedRulesUser->setPassword(
-                $this->userPasswordEncoder->encodePassword(
-                    $refusedRulesUser,
-                    "password"
-                )
-            )
-        );
+        /** @var Role $administratorMulti */
+        $administratorMulti = $this->getReference("administrator_mono");
 
-        $suspendUser = (new User())
-            ->setFirstName("Jean")
-            ->setLastName("Dupont")
-            ->setEmail("user+suspend@email.com")
-            ->setSuspended(true);
-        $manager->persist(
-            $suspendUser
-                ->setPassword(
-                    $this->userPasswordEncoder->encodePassword(
-                        $suspendUser,
-                        "password"
-                    )
-                )
-        );
+        /** @var Role $salesPerson */
+        $salesPerson = $this->getReference("sales_person");
 
-        $deletedUser = (new User())
-            ->setFirstName("Jean")
-            ->setLastName("Dupont")
-            ->setEmail("user+deleted@email.com")
-            ->setDeletedAt(new DateTime());
-        $manager->persist(
-            $deletedUser
-                ->setPassword(
-                    $this->userPasswordEncoder->encodePassword(
-                        $deletedUser,
-                        "password"
-                    )
-                )
-        );
+        /** @var Role $collaborator */
+        $collaborator = $this->getReference("collaborator");
 
-        $forgottenPasswordUser = (new User())
-            ->setFirstName("Jean")
-            ->setLastName("Dupont")
-            ->setEmail("user+forgotten+password@email.com")
-            ->setForgottenPasswordToken((string) Uuid::v4());
-        $manager->persist(
-            $forgottenPasswordUser
-                ->setPassword(
-                    $this->userPasswordEncoder->encodePassword(
-                        $forgottenPasswordUser,
-                        "password"
-                    )
-                )
-        );
+        /** @var Role $customer */
+        $customer = $this->getReference("customer");
 
-        for ($i = 1; $i <= 20; $i++) {
-            $user = (new User())
-                ->setFirstName("Jean")
-                ->setLastName("Dupont")
-                ->setEmail(sprintf("user+%d@email.com", $i))
-                ->setForgottenPasswordToken((string) Uuid::v4());
-            $manager->persist(
-                $user
-                    ->setPassword(
-                        $this->userPasswordEncoder->encodePassword(
-                            $user,
-                            "password"
-                        )
-                    )
-            );
+        /** @var Member $member */
+        $member = $this->getReference("member_1");
+
+        $administrator = $this->createUser($administratorMulti, $member, "Prénom", "Nom");
+        $manager->persist($administrator);
+
+        for ($i = 1; $i <= 5; $i++) {
+            /** @var Member $member */
+            $member = $this->getReference(sprintf("member_%d", $i));
+
+            if ($i > 1) {
+                $administrator->getCompanies()->add($member);
+            }
+
+            $manager->persist($this->createUser($administratorMono, $member));
+            $manager->persist($this->createUser($salesPerson, $member));
+            $manager->persist($this->createUser($collaborator, $member));
+
+            for ($j = 1; $j <= 20; $j++) {
+                /** @var Client $client */
+                $client = $this->getReference(sprintf("client_%d_%d", $i, $j));
+                $manager->persist($this->createUser($customer, $client));
+            }
+
+            $manager->flush();
         }
+    }
 
-        $manager->flush();
+    private function createUser(Role $role, Company $company, ?string $firstName = null, ?string $lastName = null): User
+    {
+        $user = (new User())
+            ->setRole($role)
+            ->setCompany($company)
+            ->setFirstName($firstName ?? $this->faker->firstName)
+            ->setLastName($lastName ?? $this->faker->lastName)
+            ->setEmail(sprintf("user+%d@email.com", $this->autoIncrement));
+
+        $user->setPassword($this->userPasswordEncoder->encodePassword($user, "password"));
+
+        $this->autoIncrement++;
+
+        return $user;
+    }
+
+    public function getDependencies(): array
+    {
+        return [
+            ClientFixtures::class,
+            RoleFixtures::class
+        ];
     }
 }
