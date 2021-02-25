@@ -3,13 +3,12 @@ on:
   push:
     branches:
       - 'develop'
-      - 'feature/continuous-deployment'
 jobs:
   ci:
     name: Deploy
     runs-on: ubuntu-latest
     steps:
-      - name: executing remote ssh commands using password
+      - name: Deploy from develop
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SSH_HOST }}
