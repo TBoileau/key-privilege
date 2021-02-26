@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Entity;
+namespace App\Entity\User;
 
-use App\Repository\AbstractUserRepository;
+use App\Entity\Rules;
+use App\Entity\RulesAgreement;
+use App\Repository\UserRepository;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -17,20 +19,20 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * @ORM\Entity(repositoryClass=AbstractUserRepository::class)
+ * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\Table(name="`user`")
  * @UniqueEntity("email")
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=true)
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="discr", type="string")
  * @ORM\DiscriminatorMap({
- *      "user"=User::class,
+ *      "customer"=Customer::class,
  *      "collaborator"=Collaborator::class,
  *      "sales_person"=SalesPerson::class,
  *      "manager"=Manager::class
  * })
  */
-abstract class AbstractUser implements UserInterface
+abstract class User implements UserInterface
 {
     use SoftDeleteableEntity;
 

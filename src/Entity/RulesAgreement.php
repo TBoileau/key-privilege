@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\User\User;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -18,10 +19,10 @@ class RulesAgreement
     private ?int $id = null;
 
     /**
-     * @ORM\ManyToOne(targetEntity=AbstractUser::class, inversedBy="rulesAgreements")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="rulesAgreements")
      * @ORM\JoinColumn(nullable=false)
      */
-    private AbstractUser $user;
+    private User $user;
 
     /**
      * @ORM\ManyToOne(targetEntity=Rules::class)
@@ -44,12 +45,12 @@ class RulesAgreement
         return $this->id;
     }
 
-    public function getUser(): AbstractUser
+    public function getUser(): User
     {
         return $this->user;
     }
 
-    public function setUser(AbstractUser $user): self
+    public function setUser(User $user): self
     {
         $this->user = $user;
         return $this;

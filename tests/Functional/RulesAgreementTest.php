@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Functional;
 
-use App\Entity\AbstractUser;
+use App\Entity\User\User;
 use App\Entity\Rules;
 use App\Repository\RulesRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -25,8 +25,8 @@ class RulesAgreementTest extends WebTestCase
         /** @var EntityManagerInterface $entityManager */
         $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
 
-        /** @var AbstractUser $user */
-        $user = $entityManager->find(AbstractUser::class, 3);
+        /** @var User $user */
+        $user = $entityManager->find(User::class, 3);
 
         $client->loginUser($user);
 
@@ -45,8 +45,8 @@ class RulesAgreementTest extends WebTestCase
         /** @var EntityManagerInterface $entityManager */
         $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
 
-        /** @var AbstractUser $user */
-        $user = $entityManager->find(AbstractUser::class, $user->getId());
+        /** @var User $user */
+        $user = $entityManager->find(User::class, $user->getId());
 
         /** @var RulesRepository $rulesRepository */
         $rulesRepository = $client->getContainer()
@@ -73,8 +73,8 @@ class RulesAgreementTest extends WebTestCase
         /** @var EntityManagerInterface $entityManager */
         $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
 
-        /** @var AbstractUser $user */
-        $user = $entityManager->find(AbstractUser::class, 3);
+        /** @var User $user */
+        $user = $entityManager->find(User::class, 3);
 
         $client->loginUser($user);
 
@@ -93,8 +93,8 @@ class RulesAgreementTest extends WebTestCase
         /** @var EntityManagerInterface $entityManager */
         $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
 
-        /** @var AbstractUser $user */
-        $user = $entityManager->find(AbstractUser::class, $user->getId());
+        /** @var User $user */
+        $user = $entityManager->find(User::class, $user->getId());
 
         /** @var RulesRepository $rulesRepository */
         $rulesRepository = $client->getContainer()

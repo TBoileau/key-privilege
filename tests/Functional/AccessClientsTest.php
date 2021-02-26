@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace App\Tests\Functional;
 
-use App\Entity\Manager;
-use App\Entity\SalesPerson;
-use App\Entity\User;
+use App\Entity\User\Manager;
+use App\Entity\User\SalesPerson;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DomCrawler\Crawler;

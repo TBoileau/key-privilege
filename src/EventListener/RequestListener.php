@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\EventListener;
 
-use App\Entity\AbstractUser;
+use App\Entity\User\User;
 use App\Entity\Rules;
 use App\Repository\RulesRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -45,7 +45,7 @@ class RequestListener
     {
         $this->entityManager->getFilters()->enable("softdeleteable");
 
-        if (!$this->tokenStorage->getToken()?->getUser() instanceof AbstractUser) {
+        if (!$this->tokenStorage->getToken()?->getUser() instanceof User) {
             return;
         }
 
@@ -53,7 +53,7 @@ class RequestListener
             return;
         }
 
-        /** @var AbstractUser $user */
+        /** @var User $user */
         $user = $this->tokenStorage->getToken()->getUser();
 
         $rules = $this->rulesRepository->getLastPublishedRules();

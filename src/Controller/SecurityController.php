@@ -2,13 +2,13 @@
 
 namespace App\Controller;
 
-use App\Entity\AbstractUser;
+use App\Entity\User\User;
 use App\Entity\Rules;
 use App\Form\ForgottenPasswordType;
 use App\Form\ResetPasswordType;
 use App\Form\RulesType;
 use App\Repository\RulesRepository;
-use App\Repository\AbstractUserRepository;
+use App\Repository\UserRepository;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\SubmitButton;
@@ -27,7 +27,7 @@ class SecurityController extends AbstractController
      * @Route("/reinitialisation-mot-de-passe/{forgottenPasswordToken}", name="security_reset_password")
      */
     public function resetPassword(
-        AbstractUser $user,
+        User $user,
         Request $request,
         UserPasswordEncoderInterface $userPasswordEncoder
     ): Response {
@@ -49,12 +49,12 @@ class SecurityController extends AbstractController
 
     /**
      * @Route("/mot-de-passe-oublie", name="security_forgotten_password")
-     * @param AbstractUserRepository<AbstractUser> $userRepository
+     * @param UserRepository<User> $userRepository
      */
     public function forgottenPassword(
         Request $request,
         MailerInterface $mailer,
-        AbstractUserRepository $userRepository
+        UserRepository $userRepository
     ): Response {
         $form = $this->createForm(ForgottenPasswordType::class)->handleRequest($request);
 
@@ -73,9 +73,9 @@ class SecurityController extends AbstractController
                 );
             }
 
-            $this->addFlash("success", <<<EOF
-Un email a été envoyé avec la procédure à suivre pour réinitialiser votre mot de passe
-EOF
+            $this->addFlash(
+                "success",
+                "Un email a été envoyé avec la procédure à suivre pour réinitialiser votre mot de passe"
             );
 
             return $this->redirectToRoute("security_login");
@@ -97,7 +97,7 @@ EOF
         $form = $this->createForm(RulesType::class)->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var AbstractUser $user */
+            /** @var User $user */
             $user = $this->getUser();
 
             /** @var SubmitButton $acceptButton */

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\DataFixtures;
 
-use App\Entity\Client;
-use App\Entity\User;
+use App\Entity\Company\Client;
+use App\Entity\User\Customer;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -40,10 +40,10 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
         $manager->flush();
     }
 
-    private function createUser(): User
+    private function createUser(): Customer
     {
-        /** @var User $user */
-        $user = (new User())
+        /** @var Customer $user */
+        $user = (new Customer())
             ->setFirstName($this->faker->firstName)
             ->setLastName($this->faker->lastName)
             ->setEmail(sprintf("user+%d@email.com", $this->autoIncrement));

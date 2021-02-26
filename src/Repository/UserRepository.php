@@ -2,14 +2,12 @@
 
 namespace App\Repository;
 
-use App\Entity\Employee;
-use App\Entity\Manager;
-use App\Entity\Member;
-use App\Entity\SalesPerson;
-use App\Entity\User;
+use App\Entity\User\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
+use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @method User|null find($id, $lockMode = null, $lockVersion = null)
@@ -19,7 +17,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @template T
  * @extends ServiceEntityRepository<T>
  */
-class UserRepository extends ServiceEntityRepository
+class UserRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
 {
     public function __construct(ManagerRegistry $registry)
     {
@@ -27,37 +25,17 @@ class UserRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return Paginator<User>
+     * Used to upgrade (rehash) the user's password automatically over time.
+     * @codeCoverageIgnore
      */
-    public function getPaginatedUsers(
-        Manager | SalesPerson $employee,
-        int $currentPage,
-        int $limit,
-        ?string $keywords
-    ): Paginator {
-        $queryBuilder = $this->createQueryBuilder("u")
-            ->join("u.client", "c")
-            ->join("c.member", "m")
-            ->andWhere("CONCAT(u.firstName, ' ', u.lastName, ' ', c.name) LIKE :keywords")
-            ->setParameter("keywords", "%" . ($keywords ?? "") . "%")
-            ->setFirstResult(($currentPage - 1) * $limit)
-            ->setMaxResults($limit)
-            ->orderBy("u.firstName", "asc")
-            ->addOrderBy("u.lastName", "asc");
-
-        if ($employee instanceof SalesPerson) {
-            $queryBuilder
-                ->andWhere("m = :member")
-                ->setParameter("member", $employee->getMember());
-        } else {
-            $queryBuilder->andWhere(
-                $queryBuilder->expr()->in(
-                    "m.id",
-                    $employee->getMembers()->map(fn (Member $member) => $member->getId())->toArray()
-                )
-            );
+    public function upgradePassword(UserInterface $user, string $newEncodedPassword): void
+    {
+        if (!$user instanceof User) {
+            throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', \get_class($user)));
         }
 
-        return new Paginator($queryBuilder);
+        $user->setPassword($newEncodedPassword);
+        $this->_em->persist($user);
+        $this->_em->flush();
     }
 }

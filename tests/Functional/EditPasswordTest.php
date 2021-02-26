@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Functional;
 
-use App\Entity\AbstractUser;
+use App\Entity\User\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Generator;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -25,8 +25,8 @@ class EditPasswordTest extends WebTestCase
         /** @var EntityManagerInterface $entityManager */
         $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
 
-        /** @var AbstractUser $user */
-        $user = $entityManager->find(AbstractUser::class, 1);
+        /** @var User $user */
+        $user = $entityManager->find(User::class, 1);
 
         $client->loginUser($user);
 
@@ -44,8 +44,8 @@ class EditPasswordTest extends WebTestCase
         /** @var EntityManagerInterface $entityManager */
         $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
 
-        /** @var AbstractUser $user */
-        $user = $entityManager->find(AbstractUser::class, 1);
+        /** @var User $user */
+        $user = $entityManager->find(User::class, 1);
 
         /** @var UserPasswordEncoderInterface $userPasswordEncoder */
         $userPasswordEncoder = $client->getContainer()->get("security.password_encoder");
@@ -72,8 +72,8 @@ class EditPasswordTest extends WebTestCase
         /** @var EntityManagerInterface $entityManager */
         $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
 
-        /** @var AbstractUser $user */
-        $user = $entityManager->find(AbstractUser::class, 1);
+        /** @var User $user */
+        $user = $entityManager->find(User::class, 1);
 
         $client->loginUser($user);
 

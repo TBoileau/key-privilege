@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Tests\Functional;
 
-use App\Entity\Manager;
-use App\Entity\User;
+use App\Entity\User\Manager;
+use App\Entity\User\Customer;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,8 +24,8 @@ class SuspendAccessTest extends WebTestCase
         /** @var Manager $manager */
         $manager = $entityManager->find(Manager::class, 1);
 
-        /** @var User $user */
-        $user = $entityManager->find(User::class, 16);
+        /** @var Customer $user */
+        $user = $entityManager->find(Customer::class, 16);
 
         $client->loginUser($manager);
 
@@ -44,8 +44,8 @@ class SuspendAccessTest extends WebTestCase
         /** @var EntityManagerInterface $entityManager */
         $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
 
-        /** @var User $user */
-        $user = $entityManager->find(User::class, $user->getId());
+        /** @var Customer $user */
+        $user = $entityManager->find(Customer::class, $user->getId());
 
         $this->assertTrue($user->isSuspended());
 
@@ -65,8 +65,8 @@ class SuspendAccessTest extends WebTestCase
         /** @var EntityManagerInterface $entityManager */
         $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
 
-        /** @var User $user */
-        $user = $entityManager->find(User::class, $user->getId());
+        /** @var Customer $user */
+        $user = $entityManager->find(Customer::class, $user->getId());
 
         $this->assertFalse($user->isSuspended());
 

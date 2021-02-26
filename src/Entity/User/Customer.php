@@ -2,14 +2,16 @@
 
 declare(strict_types=1);
 
-namespace App\Entity;
+namespace App\Entity\User;
 
+use App\Entity\Company\Client;
+use App\Repository\CustomerRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass=CustomerRepository::class)
  */
-class User extends AbstractUser
+class Customer extends User
 {
     /**
      * @ORM\ManyToOne(targetEntity=Client::class)

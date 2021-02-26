@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\DataFixtures;
 
-use App\Entity\AbstractUser;
+use App\Entity\User\User;
 use App\Entity\Rules;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -22,8 +22,8 @@ class AgreementFixtures extends Fixture implements DependentFixtureInterface
         /** @var Rules $rules */
         $rules = $this->getReference("rules");
 
-        /** @var AbstractUser[] $users */
-        $users = $manager->getRepository(AbstractUser::class)->findAll();
+        /** @var User[] $users */
+        $users = $manager->getRepository(User::class)->findAll();
 
         foreach ($users as $user) {
             if ($user->getId() % 3 === 0) {

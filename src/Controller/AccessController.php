@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Entity\AbstractUser;
-use App\Entity\Manager;
-use App\Entity\SalesPerson;
-use App\Entity\User;
+use App\Entity\User\User;
+use App\Entity\User\Manager;
+use App\Entity\User\SalesPerson;
+use App\Entity\User\Customer;
 use App\Form\AccessFilterType;
-use App\Repository\UserRepository;
+use App\Repository\CustomerRepository;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,10 +24,10 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 class AccessController extends AbstractController
 {
     /**
-     * @param UserRepository<User> $userRepository
+     * @param CustomerRepository<User> $userRepository
      * @Route("/clients", name="access_clients")
      */
-    public function clients(UserRepository $userRepository, Request $request): Response
+    public function clients(CustomerRepository $userRepository, Request $request): Response
     {
         $form = $this->createForm(AccessFilterType::class)->handleRequest($request);
 
@@ -52,7 +52,7 @@ class AccessController extends AbstractController
      * @Route("/{id}/active", name="access_active")
      * @IsGranted("active", subject="user")
      */
-    public function active(AbstractUser $user, Request $request): Response
+    public function active(User $user, Request $request): Response
     {
         $form = $this->createFormBuilder()->getForm()->handleRequest($request);
 
@@ -79,7 +79,7 @@ class AccessController extends AbstractController
      * @Route("/{id}/reset", name="access_reset")
      */
     public function reset(
-        AbstractUser $user,
+        User $user,
         Request $request,
         UserPasswordEncoderInterface $userPasswordEncoder
     ): Response {
@@ -108,7 +108,7 @@ class AccessController extends AbstractController
      * @Route("/{id}/suspend", name="access_suspend")
      * @IsGranted("suspend", subject="user")
      */
-    public function suspend(AbstractUser $user, Request $request): Response
+    public function suspend(User $user, Request $request): Response
     {
         $form = $this->createFormBuilder()->getForm()->handleRequest($request);
 
@@ -134,7 +134,7 @@ class AccessController extends AbstractController
     /**
      * @Route("/{id}/delete", name="access_delete")
      */
-    public function delete(AbstractUser $user, Request $request): Response
+    public function delete(User $user, Request $request): Response
     {
         $form = $this->createFormBuilder()->getForm()->handleRequest($request);
 
