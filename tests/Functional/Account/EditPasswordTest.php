@@ -85,10 +85,7 @@ class EditPasswordTest extends WebTestCase
 
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
 
-        $this->assertSelectorTextContains(
-            ".form-error-message",
-            $errorMessage
-        );
+        $this->assertSelectorTextContains(".form-error-message", $errorMessage);
     }
 
     public function provideBadDataForEditPassword(): Generator

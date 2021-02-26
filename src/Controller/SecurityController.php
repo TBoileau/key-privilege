@@ -4,11 +4,11 @@ namespace App\Controller;
 
 use App\Entity\User\User;
 use App\Entity\Rules;
-use App\Form\ForgottenPasswordType;
-use App\Form\ResetPasswordType;
-use App\Form\RulesType;
+use App\Form\Security\ForgottenPasswordType;
+use App\Form\Security\ResetPasswordType;
+use App\Form\Security\RulesType;
 use App\Repository\RulesRepository;
-use App\Repository\UserRepository;
+use App\Repository\User\UserRepository;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\SubmitButton;
