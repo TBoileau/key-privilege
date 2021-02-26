@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\EventListener;
 
+use App\Entity\AbstractUser;
 use App\Entity\Rules;
-use App\Entity\User;
 use App\Repository\RulesRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -45,7 +45,7 @@ class RequestListener
     {
         $this->entityManager->getFilters()->enable("softdeleteable");
 
-        if (!$this->tokenStorage->getToken()?->getUser() instanceof User) {
+        if (!$this->tokenStorage->getToken()?->getUser() instanceof AbstractUser) {
             return;
         }
 
@@ -53,7 +53,7 @@ class RequestListener
             return;
         }
 
-        /** @var User $user */
+        /** @var AbstractUser $user */
         $user = $this->tokenStorage->getToken()->getUser();
 
         $rules = $this->rulesRepository->getLastPublishedRules();

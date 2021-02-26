@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace App\Security\Guard;
 
-use App\Entity\User;
+use App\Entity\AbstractUser;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
-use JetBrains\PhpStorm\ArrayShape;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -80,7 +79,8 @@ class WebAuthenticator extends AbstractFormLoginAuthenticator implements Passwor
 
         $this->entityManager->getFilters()->enable("softdeleteable");
 
-        $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $credentials['email']]);
+        /** @var ?AbstractUser $user */
+        $user = $this->entityManager->getRepository(AbstractUser::class)->findOneBy(['email' => $credentials['email']]);
 
         if (!$user) {
             throw new CustomUserMessageAuthenticationException('Identifiants invalides.');
@@ -109,7 +109,7 @@ class WebAuthenticator extends AbstractFormLoginAuthenticator implements Passwor
         TokenInterface $token,
         string $providerKey
     ): RedirectResponse {
-        /** @var User $user */
+        /** @var AbstractUser $user */
         $user = $token->getUser();
 
         $user->setLastLogin(new DateTimeImmutable());

@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
+use App\Entity\AbstractUser;
 use App\Form\EditPasswordType;
 use App\Form\EditPersonalInformationsType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -34,7 +34,7 @@ class AccountController extends AbstractController
         $form = $this->createForm(EditPasswordType::class)->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var User $user */
+            /** @var AbstractUser $user */
             $user = $this->getUser();
             $user->setPassword($userPasswordEncoder->encodePassword($user, $form->get("plainPassword")->getData()));
             $user->setForgottenPasswordToken(null);
@@ -54,7 +54,7 @@ class AccountController extends AbstractController
      */
     public function editPersonalInformations(Request $request): Response
     {
-        /** @var User $user */
+        /** @var AbstractUser $user */
         $user = $this->getUser();
 
         $form = $this->createForm(EditPersonalInformationsType::class, $user)->handleRequest($request);

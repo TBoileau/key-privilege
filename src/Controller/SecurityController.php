@@ -2,13 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\AbstractUser;
 use App\Entity\Rules;
-use App\Entity\User;
 use App\Form\ForgottenPasswordType;
 use App\Form\ResetPasswordType;
 use App\Form\RulesType;
 use App\Repository\RulesRepository;
-use App\Repository\UserRepository;
+use App\Repository\AbstractUserRepository;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\SubmitButton;
@@ -23,12 +23,11 @@ use Symfony\Component\Uid\Uuid;
 
 class SecurityController extends AbstractController
 {
-
     /**
      * @Route("/reinitialisation-mot-de-passe/{forgottenPasswordToken}", name="security_reset_password")
      */
     public function resetPassword(
-        User $user,
+        AbstractUser $user,
         Request $request,
         UserPasswordEncoderInterface $userPasswordEncoder
     ): Response {
@@ -50,12 +49,12 @@ class SecurityController extends AbstractController
 
     /**
      * @Route("/mot-de-passe-oublie", name="security_forgotten_password")
-     * @param UserRepository<User> $userRepository
+     * @param AbstractUserRepository<AbstractUser> $userRepository
      */
     public function forgottenPassword(
         Request $request,
         MailerInterface $mailer,
-        UserRepository $userRepository
+        AbstractUserRepository $userRepository
     ): Response {
         $form = $this->createForm(ForgottenPasswordType::class)->handleRequest($request);
 
@@ -98,7 +97,7 @@ EOF
         $form = $this->createForm(RulesType::class)->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var User $user */
+            /** @var AbstractUser $user */
             $user = $this->getUser();
 
             /** @var SubmitButton $acceptButton */

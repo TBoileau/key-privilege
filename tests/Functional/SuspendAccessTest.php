@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace App\Tests\Functional;
 
+use App\Entity\Manager;
 use App\Entity\User;
-use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -22,17 +21,20 @@ class SuspendAccessTest extends WebTestCase
         /** @var EntityManagerInterface $entityManager */
         $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
 
-        /** @var User $user */
-        $user = $entityManager->find(User::class, 1);
+        /** @var Manager $manager */
+        $manager = $entityManager->find(Manager::class, 1);
 
-        $client->loginUser($user);
+        /** @var User $user */
+        $user = $entityManager->find(User::class, 16);
+
+        $client->loginUser($manager);
 
         /** @var UrlGeneratorInterface $urlGenerator */
         $urlGenerator = $client->getContainer()->get("router");
 
         $client->request(
             Request::METHOD_GET,
-            $urlGenerator->generate("access_suspend", ["id" => 2])
+            $urlGenerator->generate("access_suspend", ["id" => $user->getId()])
         );
 
         $client->submitForm("Suspendre", []);
@@ -43,17 +45,17 @@ class SuspendAccessTest extends WebTestCase
         $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
 
         /** @var User $user */
-        $user = $entityManager->find(User::class, 2);
+        $user = $entityManager->find(User::class, $user->getId());
 
         $this->assertTrue($user->isSuspended());
 
         $client->followRedirect();
 
-        $this->assertRouteSame("access_list");
+        $this->assertRouteSame("access_clients");
 
         $client->request(
             Request::METHOD_GET,
-            $urlGenerator->generate("access_active", ["id" => 2])
+            $urlGenerator->generate("access_active", ["id" => $user->getId()])
         );
 
         $client->submitForm("Activer", []);
@@ -64,12 +66,12 @@ class SuspendAccessTest extends WebTestCase
         $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
 
         /** @var User $user */
-        $user = $entityManager->find(User::class, 2);
+        $user = $entityManager->find(User::class, $user->getId());
 
         $this->assertFalse($user->isSuspended());
 
         $client->followRedirect();
 
-        $this->assertRouteSame("access_list");
+        $this->assertRouteSame("access_clients");
     }
 }

@@ -6,6 +6,7 @@ namespace App\DataFixtures;
 
 use App\Entity\Client;
 use App\Entity\Member;
+use App\Entity\SalesPerson;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -17,18 +18,18 @@ class ClientFixtures extends Fixture implements DependentFixtureInterface
     {
         $faker = Factory::create("fr_FR");
 
-        for ($i = 1; $i <= 5; $i++) {
-            /** @var Member $member */
-            $member = $this->getReference(sprintf("member_%d", $i));
+        /** @var array<SalesPerson> $salesPersons */
+        $salesPersons = $manager->getRepository(SalesPerson::class)->findAll();
 
+        foreach ($salesPersons as $salesPerson) {
             for ($j = 1; $j <= 20; $j++) {
                 $client = (new Client())
-                    ->setMember($member)
+                    ->setMember($salesPerson->getMember())
+                    ->setSalesPerson($salesPerson)
                     ->setName($faker->company)
                     ->setCompanyNumber("443 061 841 00047")
                     ->setVatNumber("FR 64 443061841");
                 $manager->persist($client);
-                $this->addReference(sprintf("client_%d_%d", $i, $j), $client);
             }
         }
 
@@ -37,6 +38,6 @@ class ClientFixtures extends Fixture implements DependentFixtureInterface
 
     public function getDependencies(): array
     {
-        return [MemberFixtures::class];
+        return [SalesPersonFixtures::class];
     }
 }

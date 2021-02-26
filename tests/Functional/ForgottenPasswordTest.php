@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Functional;
 
-use App\Entity\User;
-use App\Repository\UserRepository;
+use App\Entity\AbstractUser;
 use Doctrine\ORM\EntityManagerInterface;
 use Generator;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -42,8 +41,8 @@ class ForgottenPasswordTest extends WebTestCase
         /** @var EntityManagerInterface $entityManager */
         $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
 
-        /** @var User $user */
-        $user = $entityManager->find(User::class, 1);
+        /** @var AbstractUser $user */
+        $user = $entityManager->find(AbstractUser::class, 1);
 
         $this->assertTrue(Uuid::isValid($user->getForgottenPasswordToken()));
 
@@ -69,8 +68,8 @@ class ForgottenPasswordTest extends WebTestCase
         /** @var EntityManagerInterface $entityManager */
         $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
 
-        /** @var User $user */
-        $user = $entityManager->find(User::class, 1);
+        /** @var AbstractUser $user */
+        $user = $entityManager->find(AbstractUser::class, 1);
 
         /** @var UserPasswordEncoderInterface $userPasswordEncoder */
         $userPasswordEncoder = $client->getContainer()->get("security.password_encoder");
@@ -157,8 +156,8 @@ class ForgottenPasswordTest extends WebTestCase
         /** @var EntityManagerInterface $entityManager */
         $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
 
-        /** @var User $user */
-        $user = $entityManager->find(User::class, 1);
+        /** @var AbstractUser $user */
+        $user = $entityManager->find(AbstractUser::class, 1);
 
         $user->setForgottenPasswordToken("token");
 
@@ -201,8 +200,8 @@ class ForgottenPasswordTest extends WebTestCase
         /** @var EntityManagerInterface $entityManager */
         $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
 
-        /** @var User $user */
-        $user = $entityManager->find(User::class, 1);
+        /** @var AbstractUser $user */
+        $user = $entityManager->find(AbstractUser::class, 1);
 
         $user->setForgottenPasswordToken("token");
 

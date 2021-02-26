@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Functional;
 
-use App\Entity\User;
+use App\Entity\AbstractUser;
 use Doctrine\ORM\EntityManagerInterface;
 use Generator;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -24,8 +24,8 @@ class EditPersonalInformationsTest extends WebTestCase
         /** @var EntityManagerInterface $entityManager */
         $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
 
-        /** @var User $user */
-        $user = $entityManager->find(User::class, 1);
+        /** @var AbstractUser $user */
+        $user = $entityManager->find(AbstractUser::class, 1);
 
         $client->loginUser($user);
 
@@ -47,8 +47,8 @@ class EditPersonalInformationsTest extends WebTestCase
         /** @var EntityManagerInterface $entityManager */
         $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
 
-        /** @var User $user */
-        $user = $entityManager->find(User::class, 1);
+        /** @var AbstractUser $user */
+        $user = $entityManager->find(AbstractUser::class, 1);
 
         $this->assertNotNull($user);
         $this->assertEquals("Bernard", $user->getFirstName());
@@ -74,8 +74,8 @@ class EditPersonalInformationsTest extends WebTestCase
         /** @var EntityManagerInterface $entityManager */
         $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
 
-        /** @var User $user */
-        $user = $entityManager->find(User::class, 1);
+        /** @var AbstractUser $user */
+        $user = $entityManager->find(AbstractUser::class, 1);
 
         $client->loginUser($user);
 

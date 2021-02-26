@@ -1,14 +1,14 @@
 {% extends "layouts/page.html.twig" %}
 
-{% set breadcrumbItems = [{ route: "access_list", label: "Gestion des accès"}] %}
+{% set breadcrumbItems = [{ route: "access_clients", label: "Gestion des accès"}, ] %}
 
 {% block content %}
     <div class="row">
         <div class="col-12">
             <section class="section">
-                <h1 class="section-header">Gestion des accès</h1>
+                <h1 class="section-header">Gestion des clients</h1>
                 <div class="section-body">
-                    {{ form_start(form, { attr: { method: "GET", action: path("access_list", { page: 1 }) }}) }}
+                    {{ form_start(form, { attr: { method: "GET", action: path("access_clients", { page: 1 }) }}) }}
                         <div class="card mb-3">
                             <h2 class="card-header">Filtrer</h2>
                             <div class="card-body">
@@ -27,9 +27,11 @@
                                     <tr>
                                         <th class="text-center">Prénom</th>
                                         <th class="text-center">Nom</th>
-                                        <th class="text-center">Rôle</th>
+                                        <th class="text-center">Commercial</th>
+                                        {% if is_granted("ROLE_MANAGER") and app.user.members|length > 1 %}
+                                            <th class="text-center">Adhérent</th>
+                                        {% endif %}
                                         <th class="text-center">Société</th>
-                                        <th class="text-center">Typologie</th>
                                         <th class="text-center">Date d'inscription</th>
                                         <th class="text-center">Dernière connexion</th>
                                         <th class="text-center">Actions</th>
@@ -40,9 +42,11 @@
                                         <tr>
                                             <td class="text-center">{{ user.firstName }}</td>
                                             <td class="text-center">{{ user.lastName }}</td>
-                                            <td class="text-center">{{ user.role.name }}</td>
-                                            <td class="text-center">{{ user.company.name }}</td>
-                                            <td class="text-center">{{ user.company.type }}</td>
+                                            <td class="text-center">{{ user.client.salesPerson.fullName }}</td>
+                                            <td class="text-center">{{ user.client.member.name }}</td>
+                                            {% if is_granted("ROLE_MANAGER") and app.user.members|length > 1 %}
+                                                <td class="text-center">{{ user.client.name }}</td>
+                                            {% endif %}
                                             <td class="text-center">{{ user.registeredAt|date("d/m/Y H:i") }}</td>
                                             <td class="text-center">{{ user.lastLogin|date("d/m/Y H:i") }}</td>
                                             <td class="text-center">
@@ -60,7 +64,6 @@
                                                         <li><a class="dropdown-item" href="{{ path("access_delete", { id: user.id }) }}">Supprimer</a></li>
                                                         <li><a class="dropdown-item" href="{{ path("access_reset", { id: user.id }) }}">Réinitialiser</a></li>
                                                         <li><a class="dropdown-item" href="{{ path("index", { _switch_user: user.email }) }}">Log as</a></li>
-
                                                     </ul>
                                                 </div>
                                             </td>
@@ -77,6 +80,7 @@
                             <div class="card-footer p-0">
                                 {{ include("components/pagination.html.twig", {
                                     class: "my-0",
+                                    route: "access_clients",
                                     currentPage: app.request.get("page", 1),
                                     pages: pages
                                 }) }}

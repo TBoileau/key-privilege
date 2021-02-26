@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Form;
 
-use App\Entity\User;
+use App\Entity\AbstractUser;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -32,6 +32,6 @@ class EditPersonalInformationsType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefault("data_class", User::class);
+        $resolver->setDefault("data_class", AbstractUser::class);
     }
 }

@@ -4,45 +4,80 @@ declare(strict_types=1);
 
 namespace App\Tests\Functional;
 
+use App\Entity\Manager;
+use App\Entity\SalesPerson;
 use App\Entity\User;
-use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class AccessListTest extends WebTestCase
+class AccessClientsTest extends WebTestCase
 {
-    public function testIfAccessListIsSuccessful(): void
+    public function testAsSalesPersonIfAccessClientsIsSuccessful(): void
     {
         $client = static::createClient();
 
         /** @var EntityManagerInterface $entityManager */
         $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
 
-        /** @var User $user */
-        $user = $entityManager->find(User::class, 1);
+        /** @var SalesPerson $salesPerson */
+        $salesPerson = $entityManager->find(SalesPerson::class, 7);
 
-        $client->loginUser($user);
+        $client->loginUser($salesPerson);
 
         /** @var UrlGeneratorInterface $urlGenerator */
         $urlGenerator = $client->getContainer()->get("router");
 
-        $crawler = $client->request(Request::METHOD_GET, $urlGenerator->generate("access_list"));
+        $crawler = $client->request(Request::METHOD_GET, $urlGenerator->generate("access_clients"));
         $this->assertPage($crawler, 10, true, 1, false, true);
 
         $crawler = $client->clickLink("Suivant");
-        $this->assertPage($crawler, 10, true, 2, true, true);
+        $this->assertPage($crawler, 10, true, 2, true, false);
 
         $crawler = $client->clickLink("Précédent");
         $this->assertPage($crawler, 10, true, 1, false, true);
 
         $crawler = $client->clickLink("2");
-        $this->assertPage($crawler, 10, true, 2, true, true);
+        $this->assertPage($crawler, 10, true, 2, true, false);
 
         $crawler = $client->submitForm("Filtrer", [
-            "access_filter[keywords]" => "Prénom"
+            "access_filter[keywords]" => "Fail"
+        ]);
+
+        $this->assertPage($crawler, 1, false, 1, false, false);
+    }
+
+    public function testAsManagerIfAccessClientsIsSuccessful(): void
+    {
+        $client = static::createClient();
+
+        /** @var EntityManagerInterface $entityManager */
+        $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
+
+        /** @var Manager $manager */
+        $manager = $entityManager->find(Manager::class, 1);
+
+        $client->loginUser($manager);
+
+        /** @var UrlGeneratorInterface $urlGenerator */
+        $urlGenerator = $client->getContainer()->get("router");
+
+        $crawler = $client->request(Request::METHOD_GET, $urlGenerator->generate("access_clients"));
+        $this->assertPage($crawler, 10, true, 1, false, true);
+
+        $crawler = $client->clickLink("Suivant");
+        $this->assertPage($crawler, 10, true, 2, true, false);
+
+        $crawler = $client->clickLink("Précédent");
+        $this->assertPage($crawler, 10, true, 1, false, true);
+
+        $crawler = $client->clickLink("2");
+        $this->assertPage($crawler, 10, true, 2, true, false);
+
+        $crawler = $client->submitForm("Filtrer", [
+            "access_filter[keywords]" => "Fail"
         ]);
 
         $this->assertPage($crawler, 1, false, 1, false, false);

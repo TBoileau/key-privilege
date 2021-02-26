@@ -18,10 +18,10 @@ class RulesAgreement
     private ?int $id = null;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="rulesAgreements")
+     * @ORM\ManyToOne(targetEntity=AbstractUser::class, inversedBy="rulesAgreements")
      * @ORM\JoinColumn(nullable=false)
      */
-    private User $user;
+    private AbstractUser $user;
 
     /**
      * @ORM\ManyToOne(targetEntity=Rules::class)
@@ -44,12 +44,12 @@ class RulesAgreement
         return $this->id;
     }
 
-    public function getUser(): User
+    public function getUser(): AbstractUser
     {
         return $this->user;
     }
 
-    public function setUser(User $user): self
+    public function setUser(AbstractUser $user): self
     {
         $this->user = $user;
         return $this;

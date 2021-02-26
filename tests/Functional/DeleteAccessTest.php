@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Tests\Functional;
 
+use App\Entity\Manager;
 use App\Entity\User;
-use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,17 +21,20 @@ class DeleteAccessTest extends WebTestCase
         /** @var EntityManagerInterface $entityManager */
         $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
 
-        /** @var User $user */
-        $user = $entityManager->find(User::class, 1);
+        /** @var Manager $manager */
+        $manager = $entityManager->find(Manager::class, 1);
 
-        $client->loginUser($user);
+        /** @var User $user */
+        $user = $entityManager->find(User::class, 16);
+
+        $client->loginUser($manager);
 
         /** @var UrlGeneratorInterface $urlGenerator */
         $urlGenerator = $client->getContainer()->get("router");
 
         $client->request(
             Request::METHOD_GET,
-            $urlGenerator->generate("access_delete", ["id" => 2])
+            $urlGenerator->generate("access_delete", ["id" => $user->getId()])
         );
 
         $client->submitForm("Supprimer", []);
@@ -47,12 +50,12 @@ class DeleteAccessTest extends WebTestCase
         $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
 
         /** @var User $user */
-        $user = $entityManager->find(User::class, 2);
+        $user = $entityManager->find(User::class, $user->getId());
 
         $this->assertTrue($user->isDeleted());
 
         $client->followRedirect();
 
-        $this->assertRouteSame("access_list");
+        $this->assertRouteSame("access_clients");
     }
 }
