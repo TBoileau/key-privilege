@@ -1,6 +1,10 @@
 {% extends "layouts/page.html.twig" %}
 
-{% set breadcrumbItems = [{ route: "client_access_list", label: "Gestion des accès"}, {route: "client_access_reset", routeParams: { id: user.id }, label: "Réinitialiser un accès"}] %}
+{% set breadcrumbItems = [
+    { label: "Gestion des clients"},
+    { route: "client_access_list", label: "Gestion des accès"},
+    {route: "client_access_reset", routeParams: { id: user.id }, label: "Réinitialiser un accès"}
+] %}
 
 {% block content %}
     <div class="row">

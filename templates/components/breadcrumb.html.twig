@@ -6,7 +6,11 @@
         </li>
         {% for item in breadcrumbItems %}
             <li class="breadcrumb-item" aria-current="page">
-                <a href="{{ path(item.route, item.routeParams|default({})) }}">{{ item.label }}</a>
+                {% if item.route is defined %}
+                    <a href="{{ path(item.route, item.routeParams|default({})) }}">{{ item.label }}</a>
+                {% else %}
+                    {{ item.label }}
+                {% endif %}
             </li>
         {% endfor %}
     </ol>

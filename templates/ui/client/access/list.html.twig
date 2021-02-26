@@ -1,6 +1,9 @@
 {% extends "layouts/page.html.twig" %}
 
-{% set breadcrumbItems = [{ route: "client_access_list", label: "Gestion des accès"}, ] %}
+{% set breadcrumbItems = [
+    { label: "Gestion des clients"},
+    { route: "client_access_list", label: "Gestion des accès"}
+] %}
 
 {% block content %}
     <div class="row">
