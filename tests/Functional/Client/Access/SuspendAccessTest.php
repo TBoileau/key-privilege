@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Functional;
+namespace App\Tests\Functional\Client\Access;
 
 use App\Entity\User\Manager;
 use App\Entity\User\Customer;
@@ -12,9 +12,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class DeleteAccessTest extends WebTestCase
+class SuspendAccessTest extends WebTestCase
 {
-    public function testIfAccessListIsSuccessful(): void
+    public function testIfSuspendAccessIsSuccessful(): void
     {
         $client = static::createClient();
 
@@ -34,17 +34,12 @@ class DeleteAccessTest extends WebTestCase
 
         $client->request(
             Request::METHOD_GET,
-            $urlGenerator->generate("access_delete", ["id" => $user->getId()])
+            $urlGenerator->generate("client_access_suspend", ["id" => $user->getId()])
         );
 
-        $client->submitForm("Supprimer", []);
+        $client->submitForm("Suspendre", []);
 
         $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
-
-        $client->getContainer()
-            ->get("doctrine.orm.entity_manager")
-            ->getFilters()
-            ->disable("softdeleteable");
 
         /** @var EntityManagerInterface $entityManager */
         $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
@@ -52,10 +47,31 @@ class DeleteAccessTest extends WebTestCase
         /** @var Customer $user */
         $user = $entityManager->find(Customer::class, $user->getId());
 
-        $this->assertTrue($user->isDeleted());
+        $this->assertTrue($user->isSuspended());
 
         $client->followRedirect();
 
-        $this->assertRouteSame("access_clients");
+        $this->assertRouteSame("client_access_list");
+
+        $client->request(
+            Request::METHOD_GET,
+            $urlGenerator->generate("client_access_active", ["id" => $user->getId()])
+        );
+
+        $client->submitForm("Activer", []);
+
+        $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
+
+        /** @var EntityManagerInterface $entityManager */
+        $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
+
+        /** @var Customer $user */
+        $user = $entityManager->find(Customer::class, $user->getId());
+
+        $this->assertFalse($user->isSuspended());
+
+        $client->followRedirect();
+
+        $this->assertRouteSame("client_access_list");
     }
 }

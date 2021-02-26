@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Functional;
+namespace App\Tests\Functional\Client\Access;
 
 use App\Entity\User\Manager;
 use App\Entity\User\Customer;
@@ -34,7 +34,7 @@ class ResetAccessTest extends WebTestCase
         /** @var UrlGeneratorInterface $urlGenerator */
         $urlGenerator = $client->getContainer()->get("router");
 
-        $client->request(Request::METHOD_GET, $urlGenerator->generate("access_reset", ["id" => $user->getId()]));
+        $client->request(Request::METHOD_GET, $urlGenerator->generate("client_access_reset", ["id" => $user->getId()]));
 
         $client->submitForm("Réinitialiser", []);
 

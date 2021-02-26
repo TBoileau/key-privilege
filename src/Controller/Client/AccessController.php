@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controller;
+namespace App\Controller\Client;
 
 use App\Entity\User\User;
 use App\Entity\User\Manager;
@@ -19,13 +19,13 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
- * @Route("/acces")
+ * @Route("/clients/acces")
  */
 class AccessController extends AbstractController
 {
     /**
      * @param CustomerRepository<User> $userRepository
-     * @Route("/clients", name="access_clients")
+     * @Route("/", name="client_access_list")
      */
     public function clients(CustomerRepository $userRepository, Request $request): Response
     {
@@ -49,7 +49,7 @@ class AccessController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/active", name="access_active")
+     * @Route("/{id}/active", name="client_access_active")
      * @IsGranted("active", subject="user")
      */
     public function active(User $user, Request $request): Response
@@ -66,7 +66,7 @@ class AccessController extends AbstractController
                     $user->getFullName()
                 )
             );
-            return $this->redirectToRoute("access_clients");
+            return $this->redirectToRoute("client_access_list");
         }
 
         return $this->render("ui/access/active.html.twig", [
@@ -76,7 +76,7 @@ class AccessController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/reset", name="access_reset")
+     * @Route("/{id}/reset", name="client_access_reset")
      */
     public function reset(
         User $user,
@@ -95,7 +95,7 @@ class AccessController extends AbstractController
                     $user->getFullName()
                 )
             );
-            return $this->redirectToRoute("access_clients");
+            return $this->redirectToRoute("client_access_list");
         }
 
         return $this->render("ui/access/reset.html.twig", [
@@ -105,7 +105,7 @@ class AccessController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/suspend", name="access_suspend")
+     * @Route("/{id}/suspend", name="client_access_suspend")
      * @IsGranted("suspend", subject="user")
      */
     public function suspend(User $user, Request $request): Response
@@ -122,7 +122,7 @@ class AccessController extends AbstractController
                     $user->getFullName()
                 )
             );
-            return $this->redirectToRoute("access_clients");
+            return $this->redirectToRoute("client_access_list");
         }
 
         return $this->render("ui/access/suspend.html.twig", [
@@ -132,7 +132,7 @@ class AccessController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/delete", name="access_delete")
+     * @Route("/{id}/delete", name="client_access_delete")
      */
     public function delete(User $user, Request $request): Response
     {
@@ -148,7 +148,7 @@ class AccessController extends AbstractController
                     $user->getFullName()
                 )
             );
-            return $this->redirectToRoute("access_clients");
+            return $this->redirectToRoute("client_access_list");
         }
 
         return $this->render("ui/access/delete.html.twig", [

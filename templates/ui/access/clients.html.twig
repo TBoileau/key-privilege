@@ -1,6 +1,6 @@
 {% extends "layouts/page.html.twig" %}
 
-{% set breadcrumbItems = [{ route: "access_clients", label: "Gestion des accès"}, ] %}
+{% set breadcrumbItems = [{ route: "client_access_list", label: "Gestion des accès"}, ] %}
 
 {% block content %}
     <div class="row">
@@ -8,7 +8,7 @@
             <section class="section">
                 <h1 class="section-header">Gestion des clients</h1>
                 <div class="section-body">
-                    {{ form_start(form, { attr: { method: "GET", action: path("access_clients", { page: 1 }) }}) }}
+                    {{ form_start(form, { attr: { method: "GET", action: path("client_access_list", { page: 1 }) }}) }}
                         <div class="card mb-3">
                             <h2 class="card-header">Filtrer</h2>
                             <div class="card-body">
@@ -56,13 +56,13 @@
                                                     </button>
                                                     <ul class="dropdown-menu" aria-labelledby="dropdown-{{ user.id }}">
                                                         {% if is_granted("suspend", user) %}
-                                                            <li><a class="dropdown-item" href="{{ path("access_suspend", { id: user.id }) }}">Suspendre</a></li>
+                                                            <li><a class="dropdown-item" href="{{ path("client_access_suspend", { id: user.id }) }}">Suspendre</a></li>
                                                         {% endif %}
                                                         {% if is_granted("active", user) %}
-                                                            <li><a class="dropdown-item" href="{{ path("access_active", { id: user.id }) }}">Activer</a></li>
+                                                            <li><a class="dropdown-item" href="{{ path("client_access_active", { id: user.id }) }}">Activer</a></li>
                                                         {% endif %}
-                                                        <li><a class="dropdown-item" href="{{ path("access_delete", { id: user.id }) }}">Supprimer</a></li>
-                                                        <li><a class="dropdown-item" href="{{ path("access_reset", { id: user.id }) }}">Réinitialiser</a></li>
+                                                        <li><a class="dropdown-item" href="{{ path("client_access_delete", { id: user.id }) }}">Supprimer</a></li>
+                                                        <li><a class="dropdown-item" href="{{ path("client_access_reset", { id: user.id }) }}">Réinitialiser</a></li>
                                                         <li><a class="dropdown-item" href="{{ path("index", { _switch_user: user.email }) }}">Log as</a></li>
                                                     </ul>
                                                 </div>
@@ -80,7 +80,7 @@
                             <div class="card-footer p-0">
                                 {{ include("components/pagination.html.twig", {
                                     class: "my-0",
-                                    route: "access_clients",
+                                    route: "client_access_list",
                                     currentPage: app.request.get("page", 1),
                                     pages: pages
                                 }) }}

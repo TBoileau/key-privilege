@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Functional;
+namespace App\Tests\Functional\Account;
 
 use App\Entity\User\User;
 use Doctrine\ORM\EntityManagerInterface;

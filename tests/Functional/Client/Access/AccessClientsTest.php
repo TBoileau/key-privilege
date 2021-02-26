@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Functional;
+namespace App\Tests\Functional\Client\Access;
 
 use App\Entity\User\Manager;
 use App\Entity\User\SalesPerson;
@@ -29,7 +29,7 @@ class AccessClientsTest extends WebTestCase
         /** @var UrlGeneratorInterface $urlGenerator */
         $urlGenerator = $client->getContainer()->get("router");
 
-        $crawler = $client->request(Request::METHOD_GET, $urlGenerator->generate("access_clients"));
+        $crawler = $client->request(Request::METHOD_GET, $urlGenerator->generate("client_access_list"));
         $this->assertPage($crawler, 10, true, 1, false, true);
 
         $crawler = $client->clickLink("Suivant");
@@ -63,7 +63,7 @@ class AccessClientsTest extends WebTestCase
         /** @var UrlGeneratorInterface $urlGenerator */
         $urlGenerator = $client->getContainer()->get("router");
 
-        $crawler = $client->request(Request::METHOD_GET, $urlGenerator->generate("access_clients"));
+        $crawler = $client->request(Request::METHOD_GET, $urlGenerator->generate("client_access_list"));
         $this->assertPage($crawler, 10, true, 1, false, true);
 
         $crawler = $client->clickLink("Suivant");
