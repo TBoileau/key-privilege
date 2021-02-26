@@ -4,10 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Client;
 
-use App\Entity\Company\Member;
 use App\Entity\User\Customer;
-use App\Entity\User\Employee;
-use App\Entity\User\User;
 use App\Entity\User\Manager;
 use App\Entity\User\SalesPerson;
 use App\Form\Client\Access\AccessFilterType;
@@ -31,12 +28,38 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 class AccessController extends AbstractController
 {
     /**
-     * @Route("/create", name="client_access_create")
+     * @Route("/{id}/modifier", name="client_access_update")
+     * @IsGranted("update", subject="customer")
+     */
+    public function update(Customer $customer, Request $request): Response
+    {
+        /** @var SalesPerson|Manager $employee */
+        $employee = $this->getUser();
+        $form = $this->createForm(AccessType::class, $customer, ["employee" => $employee])->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->persist($customer);
+            $this->getDoctrine()->getManager()->flush();
+            $this->addFlash(
+                "success",
+                sprintf(
+                    "L'accès de %s a été modifié avec succès.",
+                    $customer->getFullName()
+                )
+            );
+            return $this->redirectToRoute("client_access_list");
+        }
+
+        return $this->render("ui/client/access/update.html.twig", ["form" => $form->createView()]);
+    }
+
+    /**
+     * @Route("/creer", name="client_access_create")
      */
     public function create(
         Request $request,
         MailerInterface $mailer,
-        UserPasswordEncoderInterface $userPasswordEncoder
+        UserPasswordEncoderInterface $customerPasswordEncoder
     ): Response {
         $customer = new Customer();
         /** @var SalesPerson|Manager $employee */
@@ -45,7 +68,7 @@ class AccessController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $password = md5(random_bytes(8));
-            $customer->setPassword($userPasswordEncoder->encodePassword($customer, $password));
+            $customer->setPassword($customerPasswordEncoder->encodePassword($customer, $password));
             $this->getDoctrine()->getManager()->persist($customer);
             $this->getDoctrine()->getManager()->flush();
             $mailer->send(
@@ -69,46 +92,46 @@ class AccessController extends AbstractController
     }
 
     /**
-     * @param CustomerRepository<User> $userRepository
+     * @param CustomerRepository<Customer> $customerRepository
      * @Route("/", name="client_access_list")
      */
-    public function list(CustomerRepository $userRepository, Request $request): Response
+    public function list(CustomerRepository $customerRepository, Request $request): Response
     {
         $form = $this->createForm(AccessFilterType::class)->handleRequest($request);
 
-        /** @var Manager|SalesPerson $user */
-        $user = $this->getUser();
+        /** @var Manager|SalesPerson $customer */
+        $customer = $this->getUser();
 
-        $users = $userRepository->getPaginatedUsers(
-            $user,
+        $customers = $customerRepository->getPaginatedCustomers(
+            $customer,
             $request->query->getInt("page", 1),
             10,
             $form->get("keywords")->getData()
         );
 
         return $this->render("ui/client/access/list.html.twig", [
-            "users" => $users,
-            "pages" => ceil(count($users) / 10),
+            "customers" => $customers,
+            "pages" => ceil(count($customers) / 10),
             "form" => $form->createView()
         ]);
     }
 
     /**
      * @Route("/{id}/active", name="client_access_active")
-     * @IsGranted("active", subject="user")
+     * @IsGranted("active", subject="customer")
      */
-    public function active(User $user, Request $request): Response
+    public function active(Customer $customer, Request $request): Response
     {
         $form = $this->createFormBuilder()->getForm()->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $user->setSuspended(false);
+            $customer->setSuspended(false);
             $this->getDoctrine()->getManager()->flush();
             $this->addFlash(
                 "success",
                 sprintf(
                     "L'accès de %s a été réactivé avec succès.",
-                    $user->getFullName()
+                    $customer->getFullName()
                 )
             );
             return $this->redirectToRoute("client_access_list");
@@ -116,28 +139,29 @@ class AccessController extends AbstractController
 
         return $this->render("ui/client/access/active.html.twig", [
             "form" => $form->createView(),
-            "user" => $user
+            "customer" => $customer
         ]);
     }
 
     /**
      * @Route("/{id}/reset", name="client_access_reset")
+     * @IsGranted("reset", subject="customer")
      */
     public function reset(
-        User $user,
+        Customer $customer,
         Request $request,
-        UserPasswordEncoderInterface $userPasswordEncoder
+        UserPasswordEncoderInterface $customerPasswordEncoder
     ): Response {
         $form = $this->createFormBuilder()->getForm()->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $user->setPassword($userPasswordEncoder->encodePassword($user, md5(random_bytes(8))));
+            $customer->setPassword($customerPasswordEncoder->encodePassword($customer, md5(random_bytes(8))));
             $this->getDoctrine()->getManager()->flush();
             $this->addFlash(
                 "success",
                 sprintf(
                     "Un nouveau mot de passe a été généré et envoyé à de %s.",
-                    $user->getFullName()
+                    $customer->getFullName()
                 )
             );
             return $this->redirectToRoute("client_access_list");
@@ -145,26 +169,26 @@ class AccessController extends AbstractController
 
         return $this->render("ui/client/access/reset.html.twig", [
             "form" => $form->createView(),
-            "user" => $user
+            "customer" => $customer
         ]);
     }
 
     /**
      * @Route("/{id}/suspend", name="client_access_suspend")
-     * @IsGranted("suspend", subject="user")
+     * @IsGranted("suspend", subject="customer")
      */
-    public function suspend(User $user, Request $request): Response
+    public function suspend(Customer $customer, Request $request): Response
     {
         $form = $this->createFormBuilder()->getForm()->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $user->setSuspended(true);
+            $customer->setSuspended(true);
             $this->getDoctrine()->getManager()->flush();
             $this->addFlash(
                 "success",
                 sprintf(
                     "L'accès de %s a été suspendu avec succès.",
-                    $user->getFullName()
+                    $customer->getFullName()
                 )
             );
             return $this->redirectToRoute("client_access_list");
@@ -172,25 +196,26 @@ class AccessController extends AbstractController
 
         return $this->render("ui/client/access/suspend.html.twig", [
             "form" => $form->createView(),
-            "user" => $user
+            "customer" => $customer
         ]);
     }
 
     /**
      * @Route("/{id}/delete", name="client_access_delete")
+     * @IsGranted("delete", subject="customer")
      */
-    public function delete(User $user, Request $request): Response
+    public function delete(Customer $customer, Request $request): Response
     {
         $form = $this->createFormBuilder()->getForm()->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $user->setDeletedAt(new DateTime());
+            $customer->setDeletedAt(new DateTime());
             $this->getDoctrine()->getManager()->flush();
             $this->addFlash(
                 "success",
                 sprintf(
                     "L'accès de %s a été supprimé avec succès.",
-                    $user->getFullName()
+                    $customer->getFullName()
                 )
             );
             return $this->redirectToRoute("client_access_list");
@@ -198,7 +223,7 @@ class AccessController extends AbstractController
 
         return $this->render("ui/client/access/delete.html.twig", [
             "form" => $form->createView(),
-            "user" => $user
+            "customer" => $customer
         ]);
     }
 }

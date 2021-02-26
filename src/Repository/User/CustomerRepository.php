@@ -30,7 +30,7 @@ class CustomerRepository extends ServiceEntityRepository
     /**
      * @return Paginator<Customer>
      */
-    public function getPaginatedUsers(
+    public function getPaginatedCustomers(
         Manager | SalesPerson $employee,
         int $currentPage,
         int $limit,

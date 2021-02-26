@@ -44,32 +44,41 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% for user in users %}
+                                    {% for customer in customers %}
                                         <tr>
-                                            <td class="text-center">{{ user.firstName }}</td>
-                                            <td class="text-center">{{ user.lastName }}</td>
-                                            <td class="text-center">{{ user.client.salesPerson.fullName }}</td>
-                                            <td class="text-center">{{ user.client.member.name }}</td>
+                                            <td class="text-center">{{ customer.firstName }}</td>
+                                            <td class="text-center">{{ customer.lastName }}</td>
+                                            <td class="text-center">{{ customer.client.salesPerson.fullName }}</td>
                                             {% if is_granted("ROLE_MANAGER") and app.user.members|length > 1 %}
-                                                <td class="text-center">{{ user.client.name }}</td>
+                                                <td class="text-center">{{ customer.client.member.name }}</td>
                                             {% endif %}
-                                            <td class="text-center">{{ user.registeredAt|date("d/m/Y H:i") }}</td>
-                                            <td class="text-center">{{ user.lastLogin|date("d/m/Y H:i") }}</td>
+                                            <td class="text-center">{{ customer.client.name }}</td>
+                                            <td class="text-center">{{ customer.registeredAt|date("d/m/Y H:i") }}</td>
+                                            <td class="text-center">{{ customer.lastLogin|date("d/m/Y H:i") }}</td>
                                             <td class="text-center">
                                                 <div class="dropdown">
-                                                    <button class="btn btn-sm btn-primary dropdown-toggle" type="button" id="dropdown-{{ user.id }}" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <button class="btn btn-sm btn-primary dropdown-toggle" type="button" id="dropdown-{{ customer.id }}" data-bs-toggle="dropdown" aria-expanded="false">
                                                         Actions
                                                     </button>
-                                                    <ul class="dropdown-menu" aria-labelledby="dropdown-{{ user.id }}">
-                                                        {% if is_granted("suspend", user) %}
-                                                            <li><a class="dropdown-item" href="{{ path("client_access_suspend", { id: user.id }) }}">Suspendre</a></li>
+                                                    <ul class="dropdown-menu" aria-labelledby="dropdown-{{ customer.id }}">
+                                                        {% if is_granted("suspend", customer) %}
+                                                            <li><a class="dropdown-item" href="{{ path("client_access_suspend", { id: customer.id }) }}">Suspendre</a></li>
                                                         {% endif %}
-                                                        {% if is_granted("active", user) %}
-                                                            <li><a class="dropdown-item" href="{{ path("client_access_active", { id: user.id }) }}">Activer</a></li>
+                                                        {% if is_granted("active", customer) %}
+                                                            <li><a class="dropdown-item" href="{{ path("client_access_active", { id: customer.id }) }}">Activer</a></li>
                                                         {% endif %}
-                                                        <li><a class="dropdown-item" href="{{ path("client_access_delete", { id: user.id }) }}">Supprimer</a></li>
-                                                        <li><a class="dropdown-item" href="{{ path("client_access_reset", { id: user.id }) }}">Réinitialiser</a></li>
-                                                        <li><a class="dropdown-item" href="{{ path("index", { _switch_user: user.email }) }}">Log as</a></li>
+                                                        {% if is_granted("update", customer) %}
+                                                            <li><a class="dropdown-item" href="{{ path("client_access_update", { id: customer.id }) }}">Modifier</a></li>
+                                                        {% endif %}
+                                                        {% if is_granted("delete", customer) %}
+                                                            <li><a class="dropdown-item" href="{{ path("client_access_delete", { id: customer.id }) }}">Supprimer</a></li>
+                                                        {% endif %}
+                                                        {% if is_granted("reset", customer) %}
+                                                            <li><a class="dropdown-item" href="{{ path("client_access_reset", { id: customer.id }) }}">Réinitialiser</a></li>
+                                                        {% endif %}
+                                                        {% if is_granted("log_as", customer) %}
+                                                            <li><a class="dropdown-item" href="{{ path("index", { _switch_customer: customer.email }) }}">Log as</a></li>
+                                                        {% endif %}
                                                     </ul>
                                                 </div>
                                             </td>

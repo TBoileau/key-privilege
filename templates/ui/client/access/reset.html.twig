@@ -3,7 +3,7 @@
 {% set breadcrumbItems = [
     { label: "Gestion des clients"},
     { route: "client_access_list", label: "Gestion des accès"},
-    {route: "client_access_reset", routeParams: { id: user.id }, label: "Réinitialiser un accès"}
+    {route: "client_access_reset", routeParams: { id: customer.id }, label: "Réinitialiser un accès"}
 ] %}
 
 {% block content %}
@@ -21,7 +21,7 @@
                                     {{ form_errors(form) }}
                                     {{ include("components/alert.html.twig", {
                                         state: "info",
-                                        content: "Êtes-vous de vouloir réinitialiser l'accès de <strong>%s</strong> en générant un nouveau mot de passe aléatoire ?"|format(user.fullName),
+                                        content: "Êtes-vous de vouloir réinitialiser l'accès de <strong>%s</strong> en générant un nouveau mot de passe aléatoire ?"|format(customer.fullName),
                                         class: "mb-0"
                                     }) }}
                                 </div>
