@@ -7,7 +7,6 @@ namespace App\Controller\Client;
 use App\Entity\User\User;
 use App\Entity\User\Manager;
 use App\Entity\User\SalesPerson;
-use App\Entity\User\Customer;
 use App\Form\AccessFilterType;
 use App\Repository\CustomerRepository;
 use DateTime;
@@ -20,6 +19,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
  * @Route("/clients/acces")
+ * @IsGranted("ROLE_CLIENT_ACCESS")
  */
 class AccessController extends AbstractController
 {

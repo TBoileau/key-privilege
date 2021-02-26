@@ -4,16 +4,59 @@ declare(strict_types=1);
 
 namespace App\Tests\Functional\Client\Access;
 
+use App\Entity\User\Collaborator;
+use App\Entity\User\Customer;
 use App\Entity\User\Manager;
 use App\Entity\User\SalesPerson;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class AccessClientsTest extends WebTestCase
 {
+    public function testAsCollaboratorIfAccessClientsIsSuccessful(): void
+    {
+        $client = static::createClient();
+
+        /** @var EntityManagerInterface $entityManager */
+        $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
+
+        /** @var Collaborator $collaborator */
+        $collaborator = $entityManager->find(Collaborator::class, 11);
+
+        $client->loginUser($collaborator);
+
+        /** @var UrlGeneratorInterface $urlGenerator */
+        $urlGenerator = $client->getContainer()->get("router");
+
+        $client->request(Request::METHOD_GET, $urlGenerator->generate("client_access_list"));
+
+        $this->assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
+    }
+
+    public function testAsCustomerIfAccessClientsIsSuccessful(): void
+    {
+        $client = static::createClient();
+
+        /** @var EntityManagerInterface $entityManager */
+        $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
+
+        /** @var Customer $customer */
+        $customer = $entityManager->find(Customer::class, 16);
+
+        $client->loginUser($customer);
+
+        /** @var UrlGeneratorInterface $urlGenerator */
+        $urlGenerator = $client->getContainer()->get("router");
+
+        $client->request(Request::METHOD_GET, $urlGenerator->generate("client_access_list"));
+
+        $this->assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
+    }
+
     public function testAsSalesPersonIfAccessClientsIsSuccessful(): void
     {
         $client = static::createClient();
