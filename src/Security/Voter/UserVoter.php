@@ -29,6 +29,6 @@ class UserVoter extends Voter
                 return !$user->isSuspended();
         }
 
-        return false;
+        return false; // @codeCoverageIgnore
     }
 }

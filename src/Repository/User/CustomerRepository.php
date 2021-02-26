@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repository;
+namespace App\Repository\User;
 
 use App\Entity\User\Manager;
 use App\Entity\Company\Member;
@@ -20,6 +20,8 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class CustomerRepository extends ServiceEntityRepository
 {
+    use UniqueEmailTrait;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Customer::class);
@@ -35,6 +37,8 @@ class CustomerRepository extends ServiceEntityRepository
         ?string $keywords
     ): Paginator {
         $queryBuilder = $this->createQueryBuilder("u")
+            ->addSelect("c")
+            ->addSelect("m")
             ->join("u.client", "c")
             ->join("c.member", "m")
             ->andWhere("CONCAT(u.firstName, ' ', u.lastName, ' ', c.name) LIKE :keywords")
@@ -46,8 +50,8 @@ class CustomerRepository extends ServiceEntityRepository
 
         if ($employee instanceof SalesPerson) {
             $queryBuilder
-                ->andWhere("m = :member")
-                ->setParameter("member", $employee->getMember());
+                ->andWhere("c.salesPerson = :salesPerson")
+                ->setParameter("salesPerson", $employee);
         } else {
             $queryBuilder->andWhere(
                 $queryBuilder->expr()->in(
@@ -56,6 +60,7 @@ class CustomerRepository extends ServiceEntityRepository
                 )
             );
         }
+
 
         return new Paginator($queryBuilder);
     }

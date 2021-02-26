@@ -1,6 +1,7 @@
 .breadcrumb {
   margin-top: 1rem;
   > .breadcrumb-item {
+    color: $white;
     &:first-child {
       > a {
         font-weight: 500;

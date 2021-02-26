@@ -9,7 +9,10 @@
     <div class="row">
         <div class="col-12">
             <section class="section">
-                <h1 class="section-header">Gestion des clients</h1>
+                <h1 class="section-header">
+                    Gestion des accès
+                    <a href="{{ path("client_access_create") }}" class="btn btn-primary">Créer un nouvelle accès</a>
+                </h1>
                 <div class="section-body">
                     {{ form_start(form, { attr: { method: "GET", action: path("client_access_list", { page: 1 }) }}) }}
                         <div class="card mb-3">
@@ -34,7 +37,7 @@
                                         {% if is_granted("ROLE_MANAGER") and app.user.members|length > 1 %}
                                             <th class="text-center">Adhérent</th>
                                         {% endif %}
-                                        <th class="text-center">Société</th>
+                                        <th class="text-center">Client</th>
                                         <th class="text-center">Date d'inscription</th>
                                         <th class="text-center">Dernière connexion</th>
                                         <th class="text-center">Actions</th>
