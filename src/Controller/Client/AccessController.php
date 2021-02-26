@@ -24,6 +24,14 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 class AccessController extends AbstractController
 {
     /**
+     * @Route("/create", name="client_access_create")
+     */
+    public function create(Request $request): Response
+    {
+
+    }
+
+    /**
      * @param CustomerRepository<User> $userRepository
      * @Route("/", name="client_access_list")
      */
