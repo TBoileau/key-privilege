@@ -20,7 +20,7 @@ class Customer extends User
 
     public function getRole(): string
     {
-        return "ROLE_CLIENT";
+        return "ROLE_CUSTOMER";
     }
 
     public function getClient(): ?Client

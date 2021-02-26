@@ -48,13 +48,72 @@
                         </div>
                         <div class="col-12 col-lg-4">
                             <div class="card h-100">
-                                <h2 class="card-header">Ma société</h2>
+                                <h2 class="card-header">Mon profil Key Privilege</h2>
                                 <div class="card-body flex-grow-1">
-                                    <div class="row mb-3">
-                                        <div class="col-5 text-end">Société :</div>
-                                        <div class="col-7 fw-bold">Mon entreprise</div>
-                                    </div>
+                                    {% if is_granted("ROLE_CUSTOMER") %}
+                                        <div class="row mb-3">
+                                            <div class="col-5 text-end">Société :</div>
+                                            <div class="col-7 fw-bold">{{ app.user.client.name }}</div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-5 text-end">Adhérent :</div>
+                                            <div class="col-7 fw-bold">{{ app.user.client.member.name }}</div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-5 text-end">Commercial :</div>
+                                            <div class="col-7 fw-bold">{{ app.user.client.salesPerson.fullName }}</div>
+                                        </div>
+                                    {% endif %}
+                                    {% if is_granted("ROLE_COLLABORATOR") %}
+                                        <div class="row mb-3">
+                                            <div class="col-5 text-end">Adhérent :</div>
+                                            <div class="col-7 fw-bold">{{ app.user.member.name }}</div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-5 text-end">Rôle :</div>
+                                            <div class="col-7 fw-bold">Collaborateur</div>
+                                        </div>
+                                    {% endif %}
+                                    {% if is_granted("ROLE_SALES_PERSON") %}
+                                        <div class="row mb-3">
+                                            <div class="col-5 text-end">Adhérent :</div>
+                                            <div class="col-7 fw-bold">{{ app.user.member.name }}</div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-5 text-end">Rôle :</div>
+                                            <div class="col-7 fw-bold">Commercial</div>
+                                        </div>
+                                    {% endif %}
+                                    {% if is_granted("ROLE_MANAGER") and app.user.members|length == 1 %}
+                                        <div class="row mb-3">
+                                            <div class="col-5 text-end">Adhérent :</div>
+                                            <div class="col-7 fw-bold">{{ app.user.member.name }}</div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-5 text-end">Rôle :</div>
+                                            <div class="col-7 fw-bold">Administrateur mono-adhérent</div>
+                                        </div>
+                                    {% endif %}
+                                    {% if is_granted("ROLE_MANAGER") and app.user.members|length > 1 %}
+                                        <div class="row mb-3">
+                                            <div class="col-5 text-end">Adhérent principal :</div>
+                                            <div class="col-7 fw-bold">{{ app.user.member.name }}</div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-5 text-end">Rôle :</div>
+                                            <div class="col-7 fw-bold">Administrateur multi-adhérents</div>
+                                        </div>
+                                    {% endif %}
                                 </div>
+
+                                {% if is_granted("ROLE_MANAGER") and app.user.members|length > 1 %}
+                                    <h2 class="card-header">Adhérents</h2>
+                                    <ul class="list-group list-group-flush flex-grow-1" data-role="members">
+                                        {% for member in app.user.members %}
+                                            <li class="list-group-item">{{ member.name }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
                             </div>
                         </div>
                         <div class="col-12 col-lg-4">
