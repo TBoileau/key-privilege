@@ -2,8 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Entity;
+namespace App\Entity\User;
 
+use App\Entity\Rules;
+use App\Entity\RulesAgreement;
 use App\Repository\UserRepository;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -18,10 +20,19 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @ORM\Table(name="`user`")
  * @UniqueEntity("email")
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=true)
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="discr", type="string")
+ * @ORM\DiscriminatorMap({
+ *      "customer"=Customer::class,
+ *      "collaborator"=Collaborator::class,
+ *      "sales_person"=SalesPerson::class,
+ *      "manager"=Manager::class
+ * })
  */
-class User implements UserInterface
+abstract class User implements UserInterface
 {
     use SoftDeleteableEntity;
 
@@ -30,83 +41,63 @@ class User implements UserInterface
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private ?int $id = null;
+    protected ?int $id = null;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      * @Assert\NotBlank
      * @Assert\Email
      */
-    private string $email;
+    protected string $email;
 
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
      */
-    private string $password;
+    protected string $password;
 
     /**
      * @ORM\Column(type="string", nullable=true)
      */
-    private ?string $forgottenPasswordToken;
+    protected ?string $forgottenPasswordToken;
 
     /**
      * @ORM\OneToMany(targetEntity=RulesAgreement::class, mappedBy="user", fetch="EXTRA_LAZY", cascade={"persist"})
      * @ORM\OrderBy({"agreedAt"="desc"})
      * @var Collection<int, RulesAgreement>
      */
-    private Collection $rulesAgreements;
+    protected Collection $rulesAgreements;
 
     /**
      * @Assert\NotBlank
      * @ORM\Column
      */
-    private string $firstName = "";
+    protected string $firstName = "";
 
     /**
      * @Assert\NotBlank
      * @ORM\Column
      */
-    private string $lastName = "";
+    protected string $lastName = "";
 
     /**
      * @ORM\Column(type="datetime_immutable")
      */
-    private DateTimeImmutable $registeredAt;
+    protected DateTimeImmutable $registeredAt;
 
     /**
      * @ORM\Column(type="datetime_immutable",nullable=true)
      */
-    private ?DateTimeImmutable $lastLogin;
+    protected ?DateTimeImmutable $lastLogin;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private bool $suspended = false;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Company::class, inversedBy="users")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private Company $company;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Role::class, fetch="EAGER")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private Role $role;
-
-    /**
-     * @var Collection<int, Company>
-     * @ORM\ManyToMany(targetEntity=Company::class)
-     * @ORM\JoinTable(name="user_companies")
-     */
-    private Collection $companies;
+    protected bool $suspended = false;
 
     public function __construct()
     {
         $this->rulesAgreements = new ArrayCollection();
-        $this->companies = new ArrayCollection();
         $this->registeredAt = new DateTimeImmutable();
     }
 
@@ -143,22 +134,13 @@ class User implements UserInterface
      */
     public function getRoles(): array
     {
-        $roles = $this->role->getRoles();
         $roles[] = 'ROLE_USER';
+        $roles[] = $this->getRole();
 
         return array_unique($roles);
     }
 
-    public function getRole(): Role
-    {
-        return $this->role;
-    }
-
-    public function setRole(Role $role): self
-    {
-        $this->role = $role;
-        return $this;
-    }
+    abstract public function getRole(): string;
 
     /**
      * @see UserInterface
@@ -216,7 +198,7 @@ class User implements UserInterface
         $this->agreeRules($rules, false);
     }
 
-    private function getAgreementByRules(Rules $rules): ?RulesAgreement
+    protected function getAgreementByRules(Rules $rules): ?RulesAgreement
     {
         $criteria = (new Criteria())
             ->setMaxResults(1)
@@ -226,7 +208,7 @@ class User implements UserInterface
         return !$agreement ? null : $agreement;
     }
 
-    private function agreeRules(Rules $rules, bool $accepted): void
+    protected function agreeRules(Rules $rules, bool $accepted): void
     {
         $agreement = $this->getAgreementByRules($rules);
 
@@ -314,29 +296,5 @@ class User implements UserInterface
         $rulesAgreement = $this->rulesAgreements->first();
 
         return $rulesAgreement;
-    }
-
-    public function getCompany(): Company
-    {
-        return $this->company;
-    }
-
-    public function setCompany(Company $company): self
-    {
-        $this->company = $company;
-
-        if (!$this->companies->contains($company)) {
-            $this->companies->add($company);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Company>
-     */
-    public function getCompanies(): Collection
-    {
-        return $this->companies;
     }
 }

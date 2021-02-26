@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\DataFixtures;
 
-use App\Entity\Company\Client;
-use App\Entity\User\Customer;
+use App\Entity\User\Manager;
+use App\Entity\Company\Member;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -13,7 +13,7 @@ use Faker\Factory;
 use Faker\Generator;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
-class UserFixtures extends Fixture implements DependentFixtureInterface
+class ManagerFixtures extends Fixture implements DependentFixtureInterface
 {
     private UserPasswordEncoderInterface $userPasswordEncoder;
 
@@ -25,25 +25,25 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
     {
         $this->userPasswordEncoder = $userPasswordEncoder;
         $this->faker = Factory::create("fr_FR");
-        $this->autoIncrement = 16;
+        $this->autoIncrement = 1;
     }
 
     public function load(ObjectManager $manager): void
     {
-        /** @var array<Client> $clients */
-        $clients = $manager->getRepository(Client::class)->findAll();
+        /** @var array<Member> $members */
+        $members = $manager->getRepository(Member::class)->findAll();
 
-        foreach ($clients as $client) {
-            $manager->persist($this->createUser()->setClient($client));
+        foreach ($members as $member) {
+            $manager->persist($this->createUser()->setMember($member));
         }
 
         $manager->flush();
     }
 
-    private function createUser(): Customer
+    private function createUser(): Manager
     {
-        /** @var Customer $user */
-        $user = (new Customer())
+        /** @var Manager $user */
+        $user = (new Manager())
             ->setFirstName($this->faker->firstName)
             ->setLastName($this->faker->lastName)
             ->setEmail(sprintf("user+%d@email.com", $this->autoIncrement));
@@ -57,6 +57,6 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
 
     public function getDependencies(): array
     {
-        return [ClientFixtures::class];
+        return [MemberFixtures::class];
     }
 }

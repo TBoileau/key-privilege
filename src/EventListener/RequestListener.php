@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\EventListener;
 
+use App\Entity\User\User;
 use App\Entity\Rules;
-use App\Entity\User;
 use App\Repository\RulesRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;

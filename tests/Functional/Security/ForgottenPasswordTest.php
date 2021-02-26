@@ -2,10 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Functional;
+namespace App\Tests\Functional\Security;
 
-use App\Entity\User;
-use App\Repository\UserRepository;
+use App\Entity\User\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Generator;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -36,6 +35,8 @@ class ForgottenPasswordTest extends WebTestCase
                 "forgotten_password[email]" => "user+1@email.com"
             ])
         );
+
+        $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
 
         $this->assertEmailCount(1);
 

@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace App\Security\Guard;
 
-use App\Entity\User;
+use App\Entity\User\User;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
-use JetBrains\PhpStorm\ArrayShape;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -80,6 +79,7 @@ class WebAuthenticator extends AbstractFormLoginAuthenticator implements Passwor
 
         $this->entityManager->getFilters()->enable("softdeleteable");
 
+        /** @var ?User $user */
         $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $credentials['email']]);
 
         if (!$user) {

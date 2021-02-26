@@ -1,6 +1,6 @@
 {% extends "layouts/page.html.twig" %}
 
-{% set breadcrumbItems = [{ route: "access_list", label: "Gestion des accès"}, {route: "access_active", routeParams: { id: user.id }, label: "Activer un accès"}] %}
+{% set breadcrumbItems = [{ route: "client_access_list", label: "Gestion des accès"}, {route: "client_access_active", routeParams: { id: user.id }, label: "Activer un accès"}] %}
 
 {% block content %}
     <div class="row">
@@ -22,7 +22,7 @@
                                     }) }}
                                 </div>
                                 <div class="card-footer p-0 d-flex">
-                                    <a href="{{ path("access_list") }}" class="btn d-block flex-grow-1 btn-outline-secondary rounded-0 border-0">
+                                    <a href="{{ path("client_access_list") }}" class="btn d-block flex-grow-1 btn-outline-secondary rounded-0 border-0">
                                         Retour
                                     </a>
                                     <button type="submit" class="btn d-block flex-grow-1 btn-outline-success rounded-0 border-0">

@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Entity;
+namespace App\Entity\Company;
 
+use App\Entity\User\SalesPerson;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -17,9 +18,14 @@ class Client extends Company
     private ?Member $member = null;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class)
+     * @ORM\ManyToOne(targetEntity=SalesPerson::class, inversedBy="clients")
      */
-    private ?User $user = null;
+    private ?SalesPerson $salesPerson = null;
+
+    public static function getType(): string
+    {
+        return "Client";
+    }
 
     public function getMember(): Member
     {
@@ -32,14 +38,14 @@ class Client extends Company
         return $this;
     }
 
-    public function getUser(): ?User
+    public function getSalesPerson(): SalesPerson
     {
-        return $this->user;
+        return $this->salesPerson;
     }
 
-    public function setUser(?User $user): self
+    public function setSalesPerson(SalesPerson $salesPerson): Client
     {
-        $this->user = $user;
+        $this->salesPerson = $salesPerson;
         return $this;
     }
 }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Entity;
+namespace App\Entity\Company;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -38,16 +38,7 @@ abstract class Company
      */
     protected string $companyNumber;
 
-    /**
-     * @var Collection<int, User>
-     * @ORM\OneToMany(targetEntity=User::class, mappedBy="company")
-     */
-    protected Collection $users;
-
-    public function __construct()
-    {
-        $this->users = new ArrayCollection();
-    }
+    abstract public static function getType(): string;
 
     public function getId(): ?int
     {
@@ -85,13 +76,5 @@ abstract class Company
     {
         $this->companyNumber = $companyNumber;
         return $this;
-    }
-
-    /**
-     * @return Collection<int, User>
-     */
-    public function getUsers(): Collection
-    {
-        return $this->users;
     }
 }

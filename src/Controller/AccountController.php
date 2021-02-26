@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
+use App\Entity\User\User;
 use App\Form\EditPasswordType;
 use App\Form\EditPersonalInformationsType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

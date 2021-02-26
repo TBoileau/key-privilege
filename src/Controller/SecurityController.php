@@ -2,8 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\User\User;
 use App\Entity\Rules;
-use App\Entity\User;
 use App\Form\ForgottenPasswordType;
 use App\Form\ResetPasswordType;
 use App\Form\RulesType;
@@ -23,7 +23,6 @@ use Symfony\Component\Uid\Uuid;
 
 class SecurityController extends AbstractController
 {
-
     /**
      * @Route("/reinitialisation-mot-de-passe/{forgottenPasswordToken}", name="security_reset_password")
      */
@@ -74,9 +73,9 @@ class SecurityController extends AbstractController
                 );
             }
 
-            $this->addFlash("success", <<<EOF
-Un email a été envoyé avec la procédure à suivre pour réinitialiser votre mot de passe
-EOF
+            $this->addFlash(
+                "success",
+                "Un email a été envoyé avec la procédure à suivre pour réinitialiser votre mot de passe"
             );
 
             return $this->redirectToRoute("security_login");

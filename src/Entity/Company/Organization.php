@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Entity;
+namespace App\Entity\Company;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -19,9 +19,13 @@ class Organization extends Company
      */
     private Collection $members;
 
+    public static function getType(): string
+    {
+        return "Groupement";
+    }
+
     public function __construct()
     {
-        parent::__construct();
         $this->members = new ArrayCollection();
     }
 

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Entity;
+namespace App\Entity\Company;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -24,9 +24,13 @@ class Member extends Company
      */
     private Collection $clients;
 
+    public static function getType(): string
+    {
+        return "Adhérent";
+    }
+
     public function __construct()
     {
-        parent::__construct();
         $this->clients = new ArrayCollection();
     }
 

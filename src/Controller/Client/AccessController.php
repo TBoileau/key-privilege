@@ -2,11 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Controller;
+namespace App\Controller\Client;
 
-use App\Entity\User;
+use App\Entity\User\User;
+use App\Entity\User\Manager;
+use App\Entity\User\SalesPerson;
 use App\Form\AccessFilterType;
-use App\Repository\UserRepository;
+use App\Repository\CustomerRepository;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,25 +18,30 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
- * @Route("/acces")
+ * @Route("/clients/acces")
+ * @IsGranted("ROLE_CLIENT_ACCESS")
  */
 class AccessController extends AbstractController
 {
     /**
-     * @param UserRepository<User> $userRepository
-     * @Route("/", name="access_list")
+     * @param CustomerRepository<User> $userRepository
+     * @Route("/", name="client_access_list")
      */
-    public function list(UserRepository $userRepository, Request $request): Response
+    public function clients(CustomerRepository $userRepository, Request $request): Response
     {
         $form = $this->createForm(AccessFilterType::class)->handleRequest($request);
 
+        /** @var Manager|SalesPerson $user */
+        $user = $this->getUser();
+
         $users = $userRepository->getPaginatedUsers(
+            $user,
             $request->query->getInt("page", 1),
             10,
             $form->get("keywords")->getData()
         );
 
-        return $this->render("ui/access/list.html.twig", [
+        return $this->render("ui/access/clients.html.twig", [
             "users" => $users,
             "pages" => ceil(count($users) / 10),
             "form" => $form->createView()
@@ -42,7 +49,7 @@ class AccessController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/active", name="access_active")
+     * @Route("/{id}/active", name="client_access_active")
      * @IsGranted("active", subject="user")
      */
     public function active(User $user, Request $request): Response
@@ -59,7 +66,7 @@ class AccessController extends AbstractController
                     $user->getFullName()
                 )
             );
-            return $this->redirectToRoute("access_list");
+            return $this->redirectToRoute("client_access_list");
         }
 
         return $this->render("ui/access/active.html.twig", [
@@ -69,10 +76,13 @@ class AccessController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/reset", name="access_reset")
+     * @Route("/{id}/reset", name="client_access_reset")
      */
-    public function reset(User $user, Request $request, UserPasswordEncoderInterface $userPasswordEncoder): Response
-    {
+    public function reset(
+        User $user,
+        Request $request,
+        UserPasswordEncoderInterface $userPasswordEncoder
+    ): Response {
         $form = $this->createFormBuilder()->getForm()->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -85,7 +95,7 @@ class AccessController extends AbstractController
                     $user->getFullName()
                 )
             );
-            return $this->redirectToRoute("access_list");
+            return $this->redirectToRoute("client_access_list");
         }
 
         return $this->render("ui/access/reset.html.twig", [
@@ -95,7 +105,7 @@ class AccessController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/suspend", name="access_suspend")
+     * @Route("/{id}/suspend", name="client_access_suspend")
      * @IsGranted("suspend", subject="user")
      */
     public function suspend(User $user, Request $request): Response
@@ -112,7 +122,7 @@ class AccessController extends AbstractController
                     $user->getFullName()
                 )
             );
-            return $this->redirectToRoute("access_list");
+            return $this->redirectToRoute("client_access_list");
         }
 
         return $this->render("ui/access/suspend.html.twig", [
@@ -122,7 +132,7 @@ class AccessController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/delete", name="access_delete")
+     * @Route("/{id}/delete", name="client_access_delete")
      */
     public function delete(User $user, Request $request): Response
     {
@@ -138,7 +148,7 @@ class AccessController extends AbstractController
                     $user->getFullName()
                 )
             );
-            return $this->redirectToRoute("access_list");
+            return $this->redirectToRoute("client_access_list");
         }
 
         return $this->render("ui/access/delete.html.twig", [

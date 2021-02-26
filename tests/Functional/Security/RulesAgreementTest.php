@@ -2,12 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Functional;
+namespace App\Tests\Functional\Security;
 
+use App\Entity\User\User;
 use App\Entity\Rules;
-use App\Entity\User;
 use App\Repository\RulesRepository;
-use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
@@ -47,7 +46,7 @@ class RulesAgreementTest extends WebTestCase
         $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
 
         /** @var User $user */
-        $user = $entityManager->find(User::class, 3);
+        $user = $entityManager->find(User::class, $user->getId());
 
         /** @var RulesRepository $rulesRepository */
         $rulesRepository = $client->getContainer()
@@ -95,7 +94,7 @@ class RulesAgreementTest extends WebTestCase
         $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
 
         /** @var User $user */
-        $user = $entityManager->find(User::class, 3);
+        $user = $entityManager->find(User::class, $user->getId());
 
         /** @var RulesRepository $rulesRepository */
         $rulesRepository = $client->getContainer()

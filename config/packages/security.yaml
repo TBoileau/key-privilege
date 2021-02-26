@@ -1,6 +1,6 @@
 security:
     encoders:
-        App\Entity\User:
+        App\Entity\User\User:
             algorithm: auto
 
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
@@ -8,7 +8,7 @@ security:
         # used to reload user from session & other features (e.g. switch_user)
         app_user_provider:
             entity:
-                class: App\Entity\User
+                class: App\Entity\User\User
                 property: email
     firewalls:
         dev:
@@ -30,6 +30,9 @@ security:
                 secret: '%kernel.secret%'
                 lifetime: 604800
                 path: /
+    role_hierarchy:
+        ROLE_MANAGER: [ROLE_SALES_PERSON]
+        ROLE_SALES_PERSON: [ROLE_CLIENT_ACCESS]
     access_control:
         - { path: ^/login$, roles: PUBLIC_ACCESS }
         - { path: ^/mot-de-passe-oublie$, roles: PUBLIC_ACCESS }
