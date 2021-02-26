@@ -42,6 +42,7 @@ class SalesPersonFixtures extends Fixture implements DependentFixtureInterface
 
     private function createUser(): SalesPerson
     {
+        /** @var SalesPerson $user */
         $user = (new SalesPerson())
             ->setFirstName($this->faker->firstName)
             ->setLastName($this->faker->lastName)

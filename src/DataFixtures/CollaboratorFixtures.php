@@ -42,6 +42,7 @@ class CollaboratorFixtures extends Fixture implements DependentFixtureInterface
 
     private function createUser(): Collaborator
     {
+        /** @var Collaborator $user */
         $user = (new Collaborator())
             ->setFirstName($this->faker->firstName)
             ->setLastName($this->faker->lastName)

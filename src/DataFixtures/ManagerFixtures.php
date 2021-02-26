@@ -42,6 +42,7 @@ class ManagerFixtures extends Fixture implements DependentFixtureInterface
 
     private function createUser(): Manager
     {
+        /** @var Manager $user */
         $user = (new Manager())
             ->setFirstName($this->faker->firstName)
             ->setLastName($this->faker->lastName)

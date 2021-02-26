@@ -38,18 +38,7 @@ abstract class Company
      */
     protected string $companyNumber;
 
-    /**
-     * @var Collection<int, User>
-     * @ORM\OneToMany(targetEntity=User::class, mappedBy="company")
-     */
-    protected Collection $users;
-
     abstract public static function getType(): string;
-
-    public function __construct()
-    {
-        $this->users = new ArrayCollection();
-    }
 
     public function getId(): ?int
     {
@@ -87,13 +76,5 @@ abstract class Company
     {
         $this->companyNumber = $companyNumber;
         return $this;
-    }
-
-    /**
-     * @return Collection<int, User>
-     */
-    public function getUsers(): Collection
-    {
-        return $this->users;
     }
 }

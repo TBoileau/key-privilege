@@ -31,7 +31,6 @@ class Member extends Company
 
     public function __construct()
     {
-        parent::__construct();
         $this->clients = new ArrayCollection();
     }
 

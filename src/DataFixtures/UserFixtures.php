@@ -5,14 +5,9 @@ declare(strict_types=1);
 namespace App\DataFixtures;
 
 use App\Entity\Client;
-use App\Entity\Company;
-use App\Entity\Manager;
-use App\Entity\Member;
-use App\Entity\Role;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 use Faker\Generator;
@@ -47,6 +42,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
 
     private function createUser(): User
     {
+        /** @var User $user */
         $user = (new User())
             ->setFirstName($this->faker->firstName)
             ->setLastName($this->faker->lastName)

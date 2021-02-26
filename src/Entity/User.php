@@ -14,7 +14,7 @@ class User extends AbstractUser
     /**
      * @ORM\ManyToOne(targetEntity=Client::class)
      */
-    private Client $client;
+    private ?Client $client = null;
 
     public function getRole(): string
     {
