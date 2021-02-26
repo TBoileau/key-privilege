@@ -1,6 +1,6 @@
 {% extends "layouts/page.html.twig" %}
 
-{% set breadcrumbItems = [{ route: "client_access_list", label: "Gestion des accès"}, {route: "client_access_delete", routeParams: { id: user.id }, label: "Supprimer un accès"}] %}
+{% set breadcrumbItems = [{ route: "client_access_list", label: "Gestion des accès"}, {route: "client_access_delete", routeParams: { id: customer.id }, label: "Supprimer un accès"}] %}
 
 {% block content %}
     <div class="row">
@@ -17,7 +17,7 @@
                                     {{ form_errors(form) }}
                                     {{ include("components/alert.html.twig", {
                                         state: "info",
-                                        content: "Êtes-vous de vouloir supprimer l'accès de <strong>%s</strong> ?"|format(user.fullName),
+                                        content: "Êtes-vous de vouloir supprimer l'accès de <strong>%s</strong> ?"|format(customer.fullName),
                                         class: "mb-0"
                                     }) }}
                                 </div>
