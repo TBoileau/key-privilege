@@ -31,8 +31,8 @@ security:
                 lifetime: 604800
                 path: /
     role_hierarchy:
-        ROLE_MANAGER: [ROLE_CLIENT_ACCESS]
-        ROLE_SALES_PERSON: [ROLE_CLIENT_ACCESS]
+        ROLE_MANAGER: [ROLE_CLIENT_ACCESS, ROLE_CLIENT_COMPANY]
+        ROLE_SALES_PERSON: [ROLE_CLIENT_ACCESS, ROLE_CLIENT_COMPANY]
     access_control:
         - { path: ^/login$, roles: PUBLIC_ACCESS }
         - { path: ^/mot-de-passe-oublie$, roles: PUBLIC_ACCESS }
