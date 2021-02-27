@@ -1,0 +1,8 @@
+<div class="card-body">
+    {{ form_errors(form) }}
+    {% if form.member is defined %}
+        {{ form_row(form.member) }}
+    {% endif %}
+    {{ form_row(form.name) }}
+    {{ form_row(form.companyNumber) }}
+</div>

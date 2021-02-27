@@ -17,8 +17,7 @@ class OrganizationFixtures extends Fixture
 
         $organization = (new Organization())
             ->setName($faker->company)
-            ->setCompanyNumber("443 061 841 00047")
-            ->setVatNumber("FR 64 443061841");
+            ->setCompanyNumber("44306184100047");
         $manager->persist($organization);
         $this->addReference("organization", $organization);
         $manager->flush();

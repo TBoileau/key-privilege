@@ -26,8 +26,7 @@ class ClientFixtures extends Fixture implements DependentFixtureInterface
                     ->setMember($salesPerson->getMember())
                     ->setSalesPerson($salesPerson)
                     ->setName($faker->company)
-                    ->setCompanyNumber("443 061 841 00047")
-                    ->setVatNumber("FR 64 443061841");
+                    ->setCompanyNumber("44306184100047");
                 $manager->persist($client);
             }
         }

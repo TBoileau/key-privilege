@@ -5,15 +5,22 @@ declare(strict_types=1);
 namespace App\Controller\Client;
 
 use App\Entity\Company\Client;
+use App\Entity\User\Customer;
 use App\Entity\User\Manager;
 use App\Entity\User\SalesPerson;
+use App\Form\Client\Access\AccessType;
+use App\Form\Client\Company\CompanyType;
 use App\Form\Client\Company\FilterType;
 use App\Repository\Company\ClientRepository;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
  * @Route("/clients/societes")
@@ -45,5 +52,36 @@ class CompanyController extends AbstractController
             "pages" => ceil(count($clients) / 10),
             "form" => $form->createView()
         ]);
+    }
+
+    /**
+     * @Route("/creer", name="client_company_create")
+     */
+    public function create(Request $request): Response
+    {
+        $client = new Client();
+
+        /** @var SalesPerson|Manager $employee */
+        $employee = $this->getUser();
+        $client->setMember($employee->getMember());
+
+        $form = $this->createForm(CompanyType::class, $client, ["employee" => $employee])->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->persist($client);
+            $this->getDoctrine()->getManager()->flush();
+            $this->addFlash(
+                "success",
+                sprintf(
+                    "Le client %s a été créé avec succès.",
+                    $client->getName()
+                )
+            );
+            return $this->redirectToRoute("client_access_create", [
+                "id" => $client->getId()
+            ]);
+        }
+
+        return $this->render("ui/client/company/create.html.twig", ["form" => $form->createView()]);
     }
 }
