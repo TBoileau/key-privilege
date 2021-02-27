@@ -56,6 +56,7 @@ class CompanyController extends AbstractController
 
     /**
      * @Route("/{id}/modifier", name="client_company_update")
+     * @IsGranted("update", subject="client")
      */
     public function update(Client $client, Request $request): Response
     {

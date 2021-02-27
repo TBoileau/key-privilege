@@ -11,7 +11,7 @@
             <section class="section">
                 <h1 class="section-header">
                     Gestion des sociétés
-{#                    <a href="{{ path("client_access_create") }}" class="btn btn-primary">Créer un nouvelle accès</a>#}
+                    <a href="{{ path("client_company_create") }}" class="btn btn-primary">Créer une nouvelle société</a>
                 </h1>
                 <div class="section-body">
                     {{ form_start(form, { attr: { method: "GET", action: path("client_company_list", { page: 1 }) }}) }}
@@ -53,7 +53,9 @@
                                                         Actions
                                                     </button>
                                                     <ul class="dropdown-menu" aria-labelledby="dropdown-{{ client.id }}">
-
+                                                        {% if is_granted("update", client) %}
+                                                            <li><a class="dropdown-item" href="{{ path("client_company_update", { id: client.id }) }}">Modifier</a></li>
+                                                        {% endif %}
                                                     </ul>
                                                 </div>
                                             </td>

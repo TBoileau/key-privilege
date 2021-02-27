@@ -17,6 +17,47 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class UpdateCompanyTest extends WebTestCase
 {
+
+    public function testAsManagerIfAccessDenied(): void
+    {
+        $client = static::createClient();
+
+        /** @var EntityManagerInterface $entityManager */
+        $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
+
+        /** @var Manager $manager */
+        $manager = $entityManager->find(Manager::class, 1);
+
+        $client->loginUser($manager);
+
+        /** @var UrlGeneratorInterface $urlGenerator */
+        $urlGenerator = $client->getContainer()->get("router");
+
+        $client->request(Request::METHOD_GET, $urlGenerator->generate("client_company_update", ["id" => 27]));
+
+        $this->assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
+    }
+
+    public function testAsSalesPersonIfAccessDenied(): void
+    {
+        $client = static::createClient();
+
+        /** @var EntityManagerInterface $entityManager */
+        $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
+
+        /** @var SalesPerson $salesPerson */
+        $salesPerson = $entityManager->find(SalesPerson::class, 7);
+
+        $client->loginUser($salesPerson);
+
+        /** @var UrlGeneratorInterface $urlGenerator */
+        $urlGenerator = $client->getContainer()->get("router");
+
+        $client->request(Request::METHOD_GET, $urlGenerator->generate("client_company_update", ["id" => 16]));
+
+        $this->assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
+    }
+
     public function testAsSalesPersonIfCompanyUpdateIsSuccessful(): void
     {
         $client = static::createClient();
