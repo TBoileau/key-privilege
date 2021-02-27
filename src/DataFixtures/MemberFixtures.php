@@ -23,8 +23,7 @@ class MemberFixtures extends Fixture implements DependentFixtureInterface
             $member = (new Member())
                 ->setOrganization($organization)
                 ->setName($faker->company)
-                ->setCompanyNumber("443 061 841 00047")
-                ->setVatNumber("FR 64 443061841");
+                ->setCompanyNumber("44306184100047");
             $manager->persist($member);
             $this->addReference(sprintf("member_%d", $i), $member);
         }

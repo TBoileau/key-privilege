@@ -4,12 +4,16 @@ declare(strict_types=1);
 
 namespace App\Entity\Company;
 
+use App\EntityListener\CompanyListener;
+use App\Validator\CompanyNumber;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
+ * @ORM\EntityListeners({CompanyListener::class}))
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="discr", type="string")
  * @ORM\DiscriminatorMap({"client"=Client::class, "member"=Member::class, "organization"=Organization::class})
@@ -25,6 +29,7 @@ abstract class Company
 
     /**
      * @ORM\Column
+     * @Assert\NotBlank
      */
     protected string $name;
 
@@ -35,6 +40,8 @@ abstract class Company
 
     /**
      * @ORM\Column
+     * @Assert\NotBlank
+     * @CompanyNumber
      */
     protected string $companyNumber;
 

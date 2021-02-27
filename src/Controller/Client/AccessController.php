@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Client;
 
+use App\Entity\Company\Client;
 use App\Entity\User\Customer;
 use App\Entity\User\Manager;
 use App\Entity\User\SalesPerson;
@@ -54,14 +55,20 @@ class AccessController extends AbstractController
     }
 
     /**
-     * @Route("/creer", name="client_access_create")
+     * @Route("/creer/{id}", name="client_access_create", defaults={"id"=null})
      */
     public function create(
+        ?Client $client,
         Request $request,
         MailerInterface $mailer,
         UserPasswordEncoderInterface $customerPasswordEncoder
     ): Response {
         $customer = new Customer();
+
+        if ($client !== null) {
+            $customer->setClient($client);
+        }
+
         /** @var SalesPerson|Manager $employee */
         $employee = $this->getUser();
         $form = $this->createForm(AccessType::class, $customer, ["employee" => $employee])->handleRequest($request);

@@ -20,3 +20,7 @@ services:
     App\EventListener\RequestListener:
         tags:
             - { name: kernel.event_listener, event: kernel.request, method: onRequest }
+
+    App\EntityListener\:
+        resource: '../src/EntityListener/'
+        tags: ['doctrine.orm.entity_listener']

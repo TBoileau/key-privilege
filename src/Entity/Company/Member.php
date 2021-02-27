@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace App\Entity\Company;
 
+use App\Repository\Company\MemberRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass=MemberRepository::class)
  */
 class Member extends Company
 {
