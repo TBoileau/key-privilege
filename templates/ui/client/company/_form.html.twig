@@ -1,8 +1,25 @@
 <div class="card-body">
     {{ form_errors(form) }}
-    {% if form.member is defined %}
-        {{ form_row(form.member) }}
+    {% if form.member is defined or form.salesPerson is defined %}
+        <div class="row mb-3">
+            {% if form.member is defined %}
+                <div class="col-6">
+                    {{ form_row(form.member) }}
+                </div>
+            {% endif %}
+            {% if form.salesPerson is defined %}
+                <div class="col-6">
+                    {{ form_row(form.salesPerson) }}
+                </div>
+            {% endif %}
+        </div>
     {% endif %}
-    {{ form_row(form.name) }}
-    {{ form_row(form.companyNumber) }}
+    <div class="row">
+        <div class="col-6">
+            {{ form_row(form.name) }}
+        </div>
+        <div class="col-6">
+            {{ form_row(form.companyNumber) }}
+        </div>
+    </div>
 </div>

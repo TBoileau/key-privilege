@@ -53,6 +53,7 @@ class AddCompanyTest extends WebTestCase
         $this->assertEquals("FR64443061841", $clientCompany->getVatNumber());
         $this->assertEquals("44306184100047", $clientCompany->getCompanyNumber());
         $this->assertEquals(3, $clientCompany->getMember()->getId());
+        $this->assertEquals(7, $clientCompany->getSalesPerson()->getId());
 
         $crawler = $client->followRedirect();
 
@@ -93,7 +94,8 @@ class AddCompanyTest extends WebTestCase
         $client->submitForm("Créer", [
             "company[name]" => "Raison sociale",
             "company[companyNumber]" => "44306184100047",
-            "company[member]" => 3
+            "company[member]" => 3,
+            "company[salesPerson]" => 7
         ]);
 
         $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
@@ -108,6 +110,7 @@ class AddCompanyTest extends WebTestCase
         $this->assertEquals("FR64443061841", $clientCompany->getVatNumber());
         $this->assertEquals("44306184100047", $clientCompany->getCompanyNumber());
         $this->assertEquals(3, $clientCompany->getMember()->getId());
+        $this->assertEquals(7, $clientCompany->getSalesPerson()->getId());
 
         $crawler = $client->followRedirect();
 
@@ -131,6 +134,13 @@ class AddCompanyTest extends WebTestCase
 
         /** @var Manager $manager */
         $manager = $entityManager->find(Manager::class, 1);
+
+        /** @var Member $menber */
+        $member = $entityManager->find(Member::class, 3);
+
+        $manager->getMembers()->add($member);
+
+        $entityManager->flush();
 
         $client->loginUser($manager);
 
@@ -156,7 +166,9 @@ class AddCompanyTest extends WebTestCase
         yield [
             [
                 "company[name]" => "",
-                "company[companyNumber]" => "44306184100047"
+                "company[companyNumber]" => "44306184100047",
+                "company[member]" => 3,
+                "company[salesPerson]" => 7
             ],
             "Cette valeur ne doit pas être vide."
         ];
@@ -164,7 +176,9 @@ class AddCompanyTest extends WebTestCase
         yield [
             [
                 "company[name]" => "Raison sociale",
-                "company[companyNumber]" => ""
+                "company[companyNumber]" => "",
+                "company[member]" => 3,
+                "company[salesPerson]" => 7
             ],
             "Cette valeur ne doit pas être vide."
         ];
@@ -172,7 +186,9 @@ class AddCompanyTest extends WebTestCase
         yield [
             [
                 "company[name]" => "Raison sociale",
-                "company[companyNumber]" => "fail"
+                "company[companyNumber]" => "fail",
+                "company[member]" => 3,
+                "company[salesPerson]" => 7
             ],
             'Le N° de SIRET "fail" n\'est pas valide.'
         ];
@@ -180,9 +196,21 @@ class AddCompanyTest extends WebTestCase
         yield [
             [
                 "company[name]" => "Raison sociale",
-                "company[companyNumber]" => "12345678901234"
+                "company[companyNumber]" => "12345678901234",
+                "company[member]" => 3,
+                "company[salesPerson]" => 7
             ],
             'Le N° de SIRET "12345678901234" n\'est pas valide.'
+        ];
+
+        yield [
+            [
+                "company[name]" => "Raison sociale",
+                "company[companyNumber]" => "12345678901234",
+                "company[member]" => 3,
+                "company[salesPerson]" => 6
+            ],
+            'Le/la commercial(e) rattaché(e) n\'appartient à l\'adhérent sélectionné.'
         ];
     }
 }
