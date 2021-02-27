@@ -43,8 +43,8 @@
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 {% if is_granted("ROLE_CLIENT_COMPANY") %}
-                                    <li><a class="dropdown-item" href="{{ path("client_access_list") }}">Gestion des sociétés</a></li>
-                                    <li><a class="dropdown-item" href="{{ path("client_access_create") }}">Créer une société</a></li>
+                                    <li><a class="dropdown-item" href="{{ path("client_company_list") }}">Gestion des sociétés</a></li>
+                                    <li><a class="dropdown-item" href="{{ path("client_company_create") }}">Créer une société</a></li>
                                 {% endif %}
                                 {% if is_granted("ROLE_CLIENT_ACCESS") and is_granted("ROLE_CLIENT_COMPANY") %}
                                     <li><hr class="dropdown-divider"></li>
