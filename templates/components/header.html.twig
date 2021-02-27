@@ -36,14 +36,23 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ path("account_index") }}">Mon compte</a>
                     </li>
-                    {% if is_granted("ROLE_CLIENT_ACCESS") %}
+                    {% if is_granted("ROLE_CLIENT_ACCESS") or is_granted("ROLE_CLIENT_COMPANY") %}
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Clients
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="{{ path("client_access_list") }}">Gestion des accès</a></li>
-                                <li><a class="dropdown-item" href="{{ path("client_access_create") }}">Créer un accès</a></li>
+                                {% if is_granted("ROLE_CLIENT_COMPANY") %}
+                                    <li><a class="dropdown-item" href="{{ path("client_access_list") }}">Gestion des sociétés</a></li>
+                                    <li><a class="dropdown-item" href="{{ path("client_access_create") }}">Créer une société</a></li>
+                                {% endif %}
+                                {% if is_granted("ROLE_CLIENT_ACCESS") and is_granted("ROLE_CLIENT_COMPANY") %}
+                                    <li><hr class="dropdown-divider"></li>
+                                {% endif %}
+                                {% if is_granted("ROLE_CLIENT_ACCESS") %}
+                                    <li><a class="dropdown-item" href="{{ path("client_access_list") }}">Gestion des accès</a></li>
+                                    <li><a class="dropdown-item" href="{{ path("client_access_create") }}">Créer un accès</a></li>
+                                {% endif %}
                             </ul>
                         </li>
                     {% endif %}

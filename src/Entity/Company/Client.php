@@ -7,9 +7,14 @@ namespace App\Entity\Company;
 use App\Entity\User\SalesPerson;
 use App\Repository\Company\ClientRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=ClientRepository::class)
+ * @Assert\Expression(
+ *      expression="this.getSalesPerson() !== null and this.getSalesPerson().getMember() === this.getMember()",
+ *      message="Le/la commercial(e) rattaché(e) n'appartient à l'adhérent sélectionné."
+ * )
  */
 class Client extends Company
 {
@@ -39,12 +44,12 @@ class Client extends Company
         return $this;
     }
 
-    public function getSalesPerson(): SalesPerson
+    public function getSalesPerson(): ?SalesPerson
     {
         return $this->salesPerson;
     }
 
-    public function setSalesPerson(SalesPerson $salesPerson): Client
+    public function setSalesPerson(?SalesPerson $salesPerson): Client
     {
         $this->salesPerson = $salesPerson;
         return $this;
