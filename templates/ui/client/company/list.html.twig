@@ -1,0 +1,85 @@
+{% extends "layouts/page.html.twig" %}
+
+{% set breadcrumbItems = [
+    { label: "Gestion des clients"},
+    { route: "client_company_list", label: "Gestion des sociétés"}
+] %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-12">
+            <section class="section">
+                <h1 class="section-header">
+                    Gestion des sociétés
+{#                    <a href="{{ path("client_access_create") }}" class="btn btn-primary">Créer un nouvelle accès</a>#}
+                </h1>
+                <div class="section-body">
+                    {{ form_start(form, { attr: { method: "GET", action: path("client_company_list", { page: 1 }) }}) }}
+                        <div class="card mb-3">
+                            <h2 class="card-header">Filtrer</h2>
+                            <div class="card-body">
+                                {{ form_row(form.keywords) }}
+                                <div class="text-end mt-3">
+                                    <button type="submit" class="btn btn-primary">Filtrer</button>
+                                </div>
+                            </div>
+                        </div>
+                    {{ form_end(form) }}
+                    <div class="card">
+                        <h2 class="card-header">Liste des sociétés</h2>
+                        <div class="card-body p-0">
+                            <table class="table table-hover mb-0" data-role="accessList">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">Raison sociale</th>
+                                        <th class="text-center">Commercial</th>
+                                        {% if is_granted("ROLE_MANAGER") and app.user.members|length > 1 %}
+                                            <th class="text-center">Adhérent</th>
+                                        {% endif %}
+                                        <th class="text-center">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for client in clients %}
+                                        <tr>
+                                            <td class="text-center">{{ client.name }}</td>
+                                            <td class="text-center">{{ client.salesPerson.fullName }}</td>
+                                            {% if is_granted("ROLE_MANAGER") and app.user.members|length > 1 %}
+                                                <td class="text-center">{{ client.member.name }}</td>
+                                            {% endif %}
+                                            <td class="text-center">
+                                                <div class="dropdown">
+                                                    <button class="btn btn-sm btn-primary dropdown-toggle" type="button" id="dropdown-{{ client.id }}" data-bs-toggle="dropdown" aria-expanded="false">
+                                                        Actions
+                                                    </button>
+                                                    <ul class="dropdown-menu" aria-labelledby="dropdown-{{ client.id }}">
+
+                                                    </ul>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {% else %}
+                                        <tr>
+                                            <td class="text-center" colspan="5">Aucun résultat</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        {% if pages > 1 %}
+                            <div class="card-footer p-0">
+                                {{ include("components/pagination.html.twig", {
+                                    class: "my-0",
+                                    route: "client_company_list",
+                                    currentPage: app.request.get("page", 1),
+                                    pages: pages
+                                }) }}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+{% endblock %}
+

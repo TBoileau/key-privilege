@@ -8,6 +8,7 @@ use App\Entity\User\Manager;
 use App\Entity\User\SalesPerson;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -47,5 +48,41 @@ class ClientRepository extends ServiceEntityRepository
         }
 
         return $queryBuilder;
+    }
+
+    /**
+     * @return Paginator<Client>
+     */
+    public function getPaginatedClients(
+        SalesPerson | Manager $employee,
+        int $currentPage,
+        int $limit,
+        ?string $keywords
+    ): Paginator {
+        $queryBuilder = $this->createQueryBuilder("c")
+            ->addSelect("s")
+            ->addSelect("m")
+            ->join("c.salesPerson", "s")
+            ->join("c.member", "m")
+            ->andWhere("c.name LIKE :keywords")
+            ->setParameter("keywords", "%" . ($keywords ?? "") . "%")
+            ->setFirstResult(($currentPage - 1) * $limit)
+            ->setMaxResults($limit)
+            ->orderBy("c.name", "asc");
+
+        if ($employee instanceof SalesPerson) {
+            $queryBuilder
+                ->andWhere("c.salesPerson = :salesPerson")
+                ->setParameter("salesPerson", $employee);
+        } else {
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->in(
+                    "m.id",
+                    $employee->getMembers()->map(fn (Member $member) => $member->getId())->toArray()
+                )
+            );
+        }
+
+        return new Paginator($queryBuilder);
     }
 }

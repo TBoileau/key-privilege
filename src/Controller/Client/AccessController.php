@@ -7,7 +7,7 @@ namespace App\Controller\Client;
 use App\Entity\User\Customer;
 use App\Entity\User\Manager;
 use App\Entity\User\SalesPerson;
-use App\Form\Client\Access\AccessFilterType;
+use App\Form\Client\Access\FilterType;
 use App\Form\Client\Access\AccessType;
 use App\Repository\User\CustomerRepository;
 use DateTime;
@@ -97,13 +97,13 @@ class AccessController extends AbstractController
      */
     public function list(CustomerRepository $customerRepository, Request $request): Response
     {
-        $form = $this->createForm(AccessFilterType::class)->handleRequest($request);
+        $form = $this->createForm(FilterType::class)->handleRequest($request);
 
-        /** @var Manager|SalesPerson $customer */
-        $customer = $this->getUser();
+        /** @var Manager|SalesPerson $employee */
+        $employee = $this->getUser();
 
         $customers = $customerRepository->getPaginatedCustomers(
-            $customer,
+            $employee,
             $request->query->getInt("page", 1),
             10,
             $form->get("keywords")->getData()

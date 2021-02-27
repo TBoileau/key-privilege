@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Functional\Client\Access;
+namespace App\Tests\Functional\Client\Company;
 
 use App\Entity\User\Collaborator;
 use App\Entity\User\Customer;
@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class AccessListTest extends WebTestCase
+class CompanyListTest extends WebTestCase
 {
     public function testAsCollaboratorIfAccessListIsSuccessful(): void
     {
@@ -32,7 +32,7 @@ class AccessListTest extends WebTestCase
         /** @var UrlGeneratorInterface $urlGenerator */
         $urlGenerator = $client->getContainer()->get("router");
 
-        $client->request(Request::METHOD_GET, $urlGenerator->generate("client_access_list"));
+        $client->request(Request::METHOD_GET, $urlGenerator->generate("client_company_list"));
 
         $this->assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
     }
@@ -52,7 +52,7 @@ class AccessListTest extends WebTestCase
         /** @var UrlGeneratorInterface $urlGenerator */
         $urlGenerator = $client->getContainer()->get("router");
 
-        $client->request(Request::METHOD_GET, $urlGenerator->generate("client_access_list"));
+        $client->request(Request::METHOD_GET, $urlGenerator->generate("client_company_list"));
 
         $this->assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
     }
@@ -72,7 +72,7 @@ class AccessListTest extends WebTestCase
         /** @var UrlGeneratorInterface $urlGenerator */
         $urlGenerator = $client->getContainer()->get("router");
 
-        $crawler = $client->request(Request::METHOD_GET, $urlGenerator->generate("client_access_list"));
+        $crawler = $client->request(Request::METHOD_GET, $urlGenerator->generate("client_company_list"));
         $this->assertPage($crawler, 10, true, 1, false, true);
 
         $crawler = $client->clickLink("Suivant");
@@ -106,7 +106,7 @@ class AccessListTest extends WebTestCase
         /** @var UrlGeneratorInterface $urlGenerator */
         $urlGenerator = $client->getContainer()->get("router");
 
-        $crawler = $client->request(Request::METHOD_GET, $urlGenerator->generate("client_access_list"));
+        $crawler = $client->request(Request::METHOD_GET, $urlGenerator->generate("client_company_list"));
         $this->assertPage($crawler, 10, true, 1, false, true);
 
         $crawler = $client->clickLink("Suivant");
