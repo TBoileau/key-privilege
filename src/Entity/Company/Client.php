@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace App\Entity\Company;
 
+use App\Entity\User\Customer;
 use App\Entity\User\SalesPerson;
 use App\Repository\Company\ClientRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -27,6 +30,17 @@ class Client extends Company
      * @ORM\ManyToOne(targetEntity=SalesPerson::class, inversedBy="clients")
      */
     private ?SalesPerson $salesPerson = null;
+
+    /**
+     * @var Collection<int, Customer>
+     * @ORM\OneToMany(targetEntity=Customer::class, mappedBy="client")
+     */
+    private Collection $customers;
+
+    public function __construct()
+    {
+        $this->customers = new ArrayCollection();
+    }
 
     public static function getType(): string
     {
@@ -53,5 +67,13 @@ class Client extends Company
     {
         $this->salesPerson = $salesPerson;
         return $this;
+    }
+
+    /**
+     * @return Collection<int, Customer>
+     */
+    public function getCustomers(): Collection
+    {
+        return $this->customers;
     }
 }

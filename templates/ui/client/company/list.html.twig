@@ -56,6 +56,9 @@
                                                         {% if is_granted("update", client) %}
                                                             <li><a class="dropdown-item" href="{{ path("client_company_update", { id: client.id }) }}">Modifier</a></li>
                                                         {% endif %}
+                                                        {% if is_granted("delete", client) %}
+                                                            <li><a class="dropdown-item" href="{{ path("client_company_delete", { id: client.id }) }}">Supprimer</a></li>
+                                                        {% endif %}
                                                     </ul>
                                                 </div>
                                             </td>

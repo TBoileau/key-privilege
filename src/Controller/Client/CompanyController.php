@@ -12,6 +12,7 @@ use App\Form\Client\Access\AccessType;
 use App\Form\Client\Company\CompanyType;
 use App\Form\Client\Company\FilterType;
 use App\Repository\Company\ClientRepository;
+use DateTime;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
@@ -114,5 +115,35 @@ class CompanyController extends AbstractController
         }
 
         return $this->render("ui/client/company/create.html.twig", ["form" => $form->createView()]);
+    }
+
+    /**
+     * @Route("/{id}/delete", name="client_company_delete")
+     * @IsGranted("delete", subject="client")
+     */
+    public function delete(Client $client, Request $request): Response
+    {
+        $form = $this->createFormBuilder()->getForm()->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->remove($client);
+            foreach ($client->getCustomers() as $customer) {
+                $this->getDoctrine()->getManager()->remove($customer);
+            }
+            $this->getDoctrine()->getManager()->flush();
+            $this->addFlash(
+                "success",
+                sprintf(
+                    "Le client %s a été supprimé avec succès, ainsi que tous les accès associés.",
+                    $client->getName()
+                )
+            );
+            return $this->redirectToRoute("client_company_list");
+        }
+
+        return $this->render("ui/client/company/delete.html.twig", [
+            "form" => $form->createView(),
+            "client" => $client
+        ]);
     }
 }

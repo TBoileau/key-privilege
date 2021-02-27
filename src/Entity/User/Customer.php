@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Customer extends User
 {
     /**
-     * @ORM\ManyToOne(targetEntity=Client::class)
+     * @ORM\ManyToOne(targetEntity=Client::class, inversedBy="customers")
      */
     private ?Client $client = null;
 

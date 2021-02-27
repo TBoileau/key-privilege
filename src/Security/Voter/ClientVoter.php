@@ -15,9 +15,11 @@ class ClientVoter extends Voter
 {
     public const UPDATE = "update";
 
+    public const DELETE = "delete";
+
     protected function supports($attribute, $subject): bool
     {
-        return in_array($attribute, [self::UPDATE]) && $subject instanceof Client;
+        return in_array($attribute, [self::UPDATE, self::DELETE]) && $subject instanceof Client;
     }
 
     /**
