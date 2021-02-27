@@ -216,7 +216,7 @@ class AccessController extends AbstractController
         $form = $this->createFormBuilder()->getForm()->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $customer->setDeletedAt(new DateTime());
+            $this->getDoctrine()->getManager()->remove($customer);
             $this->getDoctrine()->getManager()->flush();
             $this->addFlash(
                 "success",

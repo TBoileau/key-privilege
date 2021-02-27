@@ -17,7 +17,6 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class UpdateCompanyTest extends WebTestCase
 {
-
     public function testAsManagerIfAccessDenied(): void
     {
         $client = static::createClient();
@@ -79,7 +78,7 @@ class UpdateCompanyTest extends WebTestCase
 
         $client->submitForm("Modifier", [
             "company[name]" => "Raison sociale",
-            "company[companyNumber]" => "44306184100047"
+            "company[companyNumber]" => "42878504200105"
         ]);
 
         $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
@@ -91,8 +90,8 @@ class UpdateCompanyTest extends WebTestCase
         $clientCompany = $entityManager->getRepository(Client::class)->findOneByName("Raison sociale");
 
         $this->assertEquals("Raison sociale", $clientCompany->getName());
-        $this->assertEquals("FR64443061841", $clientCompany->getVatNumber());
-        $this->assertEquals("44306184100047", $clientCompany->getCompanyNumber());
+        $this->assertEquals("FR17428785042", $clientCompany->getVatNumber());
+        $this->assertEquals("42878504200105", $clientCompany->getCompanyNumber());
         $this->assertEquals(3, $clientCompany->getMember()->getId());
         $this->assertEquals(7, $clientCompany->getSalesPerson()->getId());
 
