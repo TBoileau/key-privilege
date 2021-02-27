@@ -54,9 +54,14 @@ class AddCompanyTest extends WebTestCase
         $this->assertEquals("44306184100047", $clientCompany->getCompanyNumber());
         $this->assertEquals(3, $clientCompany->getMember()->getId());
 
-        $client->followRedirect();
+        $crawler = $client->followRedirect();
 
         $this->assertRouteSame("client_access_create");
+
+        $this->assertEquals(
+            $clientCompany->getId(),
+            $crawler->filter('form[name=access]')->form()->getPhpValues()["access"]["client"]
+        );
     }
 
     public function testAsManagerIfCompanyAddIsSuccessful(): void
@@ -104,9 +109,14 @@ class AddCompanyTest extends WebTestCase
         $this->assertEquals("44306184100047", $clientCompany->getCompanyNumber());
         $this->assertEquals(3, $clientCompany->getMember()->getId());
 
-        $client->followRedirect();
+        $crawler = $client->followRedirect();
 
         $this->assertRouteSame("client_access_create");
+
+        $this->assertEquals(
+            $clientCompany->getId(),
+            $crawler->filter('form[name=access]')->form()->getPhpValues()["access"]["client"]
+        );
     }
 
     /**
