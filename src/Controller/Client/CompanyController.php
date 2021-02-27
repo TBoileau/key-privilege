@@ -55,6 +55,32 @@ class CompanyController extends AbstractController
     }
 
     /**
+     * @Route("/{id}/modifier", name="client_company_update")
+     */
+    public function update(Client $client, Request $request): Response
+    {
+        /** @var SalesPerson|Manager $employee */
+        $employee = $this->getUser();
+        $client->setMember($employee->getMember());
+
+        $form = $this->createForm(CompanyType::class, $client, ["employee" => $employee])->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+            $this->addFlash(
+                "success",
+                sprintf(
+                    "Le client %s a été modifié avec succès.",
+                    $client->getName()
+                )
+            );
+            return $this->redirectToRoute("client_company_list");
+        }
+
+        return $this->render("ui/client/company/update.html.twig", ["form" => $form->createView()]);
+    }
+
+    /**
      * @Route("/creer", name="client_company_create")
      */
     public function create(Request $request): Response
@@ -64,6 +90,10 @@ class CompanyController extends AbstractController
         /** @var SalesPerson|Manager $employee */
         $employee = $this->getUser();
         $client->setMember($employee->getMember());
+
+        if ($employee instanceof SalesPerson) {
+            $client->setSalesPerson($employee);
+        }
 
         $form = $this->createForm(CompanyType::class, $client, ["employee" => $employee])->handleRequest($request);
 
