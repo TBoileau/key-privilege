@@ -33,4 +33,75 @@ class LoginTest extends WebTestCase
 
         $this->assertRouteSame("admin");
     }
+
+
+    public function testIfEmailDoesNotExist(): void
+    {
+        $client = static::createClient();
+
+        /** @var UrlGeneratorInterface $urlGenerator */
+        $urlGenerator = $client->getContainer()->get("router");
+
+        $crawler = $client->request("GET", $urlGenerator->generate("admin_security_login"));
+
+        $form = $crawler->filter("form")->form([
+            "email" => "fail@email.com",
+            "password" => "password"
+        ]);
+
+        $client->submit($form);
+
+        $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
+
+        $client->followRedirect();
+
+        $this->assertRouteSame("admin_security_login");
+    }
+
+    public function testIfPasswordIsWrong(): void
+    {
+        $client = static::createClient();
+
+        /** @var UrlGeneratorInterface $urlGenerator */
+        $urlGenerator = $client->getContainer()->get("router");
+
+        $crawler = $client->request("GET", $urlGenerator->generate("admin_security_login"));
+
+        $form = $crawler->filter("form")->form([
+            "email" => "admin@email.com",
+            "password" => "fail"
+        ]);
+
+        $client->submit($form);
+
+        $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
+
+        $client->followRedirect();
+
+        $this->assertRouteSame("admin_security_login");
+    }
+
+    public function testIfCsrfIsWrong(): void
+    {
+        $client = static::createClient();
+
+        /** @var UrlGeneratorInterface $urlGenerator */
+        $urlGenerator = $client->getContainer()->get("router");
+
+        $crawler = $client->request("GET", $urlGenerator->generate("admin_security_login"));
+
+        $form = $crawler->filter("form")->form([
+            "email" => "admin@email.com",
+            "password" => "password",
+            "_csrf_token" => "fail"
+        ]);
+
+        $client->submit($form);
+
+        $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
+
+        $client->followRedirect();
+
+        $this->assertRouteSame("admin_security_login");
+    }
 }
