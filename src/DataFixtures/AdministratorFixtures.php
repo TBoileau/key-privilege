@@ -10,7 +10,7 @@ use Doctrine\Persistence\ObjectManager;
 
 class AdministratorFixtures extends Fixture
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $admin = new Administrator();
         $admin->setPlainPassword("password");

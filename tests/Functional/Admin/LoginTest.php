@@ -21,7 +21,7 @@ class LoginTest extends WebTestCase
         $crawler = $client->request("GET", $urlGenerator->generate("admin_security_login"));
 
         $form = $crawler->filter("form")->form([
-            "email" => "user+1@email.com",
+            "email" => "admin@email.com",
             "password" => "password"
         ]);
 
