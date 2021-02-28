@@ -2,22 +2,39 @@ security:
     encoders:
         App\Entity\User\User:
             algorithm: auto
-
-    # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
+        App\Entity\Administrator:
+            algorithm: auto
     providers:
-        # used to reload user from session & other features (e.g. switch_user)
-        app_user_provider:
+        user_provider:
             entity:
                 class: App\Entity\User\User
+                property: email
+        admin_provider:
+            entity:
+                class: App\Entity\Administrator
                 property: email
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+        admin:
+            anonymous: true
+            lazy: true
+            pattern: ^/admin
+            provider: admin_provider
+            remember_me:
+                secret: '%kernel.secret%'
+                lifetime: 31536000
+                path: /
+            guard:
+                authenticators:
+                    - App\Security\Guard\AdminAuthenticator
+            logout:
+                path: admin_security_logout
         main:
             anonymous: true
             lazy: true
-            provider: app_user_provider
+            provider: user_provider
             switch_user: { role: ROLE_USER }
             user_checker: App\Security\UserChecker\UserChecker
             guard:
@@ -28,13 +45,15 @@ security:
                 target: security_login
             remember_me:
                 secret: '%kernel.secret%'
-                lifetime: 604800
+                lifetime: 31536000
                 path: /
     role_hierarchy:
         ROLE_MANAGER: [ROLE_CLIENT_ACCESS, ROLE_CLIENT_COMPANY]
         ROLE_SALES_PERSON: [ROLE_CLIENT_ACCESS, ROLE_CLIENT_COMPANY]
     access_control:
+        - { path: ^/admin/login, roles: PUBLIC_ACCESS }
         - { path: ^/login$, roles: PUBLIC_ACCESS }
         - { path: ^/mot-de-passe-oublie$, roles: PUBLIC_ACCESS }
         - { path: ^/reinitialisation-mot-de-passe, roles: PUBLIC_ACCESS }
         - { path: ^/, roles: ROLE_USER }
+        - { path: ^/admin, roles: ROLE_ADMIN }
