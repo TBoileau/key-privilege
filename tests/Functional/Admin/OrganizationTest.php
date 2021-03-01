@@ -5,16 +5,18 @@ declare(strict_types=1);
 namespace App\Tests\Functional\Admin;
 
 use App\Controller\Admin\AdministratorCrudController;
+use App\Controller\Admin\OrganizationCrudController;
 use App\Entity\Administrator;
+use App\Entity\Company\Organization;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
-class AdministratorTest extends WebTestCase
+class OrganizationTest extends WebTestCase
 {
-    public function testIfAdministratorsManageIsSuccessful(): void
+    public function testIfOrganizationManageIsSuccessful(): void
     {
         $client = static::createClient();
 
@@ -31,7 +33,7 @@ class AdministratorTest extends WebTestCase
         $client->request(
             "GET",
             $adminUrlGenerator
-                ->setController(AdministratorCrudController::class)
+                ->setController(OrganizationCrudController::class)
                 ->setAction(Action::INDEX)
                 ->generateUrl()
         );
@@ -41,7 +43,7 @@ class AdministratorTest extends WebTestCase
         $client->request(
             "GET",
             $adminUrlGenerator
-                ->setController(AdministratorCrudController::class)
+                ->setController(OrganizationCrudController::class)
                 ->setAction(Action::NEW)
                 ->generateUrl()
         );
@@ -49,10 +51,8 @@ class AdministratorTest extends WebTestCase
         $this->assertResponseIsSuccessful();
 
         $client->submitForm("Créer", [
-            "Administrator[firstName]" => "Prénom",
-            "Administrator[lastName]" => "Nom",
-            "Administrator[email]" => "new@email.com",
-            "Administrator[plainPassword]" => "password"
+            "Organization[name]" => "Raison sociale",
+            "Organization[companyNumber]" => "44306184100047"
         ]);
 
         $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
@@ -60,7 +60,7 @@ class AdministratorTest extends WebTestCase
         $client->request(
             "GET",
             $adminUrlGenerator
-                ->setController(AdministratorCrudController::class)
+                ->setController(OrganizationCrudController::class)
                 ->setAction(Action::EDIT)
                 ->setEntityId(1)
                 ->generateUrl()
@@ -69,20 +69,35 @@ class AdministratorTest extends WebTestCase
         $this->assertResponseIsSuccessful();
 
         $client->submitForm("Sauvegarder les modifications", [
-            "Administrator[firstName]" => "Prénom",
-            "Administrator[lastName]" => "Nom",
-            "Administrator[email]" => "new+1@email.com"
+            "Organization[name]" => "Raison sociale",
+            "Organization[companyNumber]" => "42878504200105"
         ]);
+
+        $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
+
+        /** @var Organization $organization */
+        $organization = $entityManager->getRepository(Organization::class)->findOneByName("Raison sociale");
+
+        $client->request(
+            "GET",
+            $adminUrlGenerator
+                ->setController(OrganizationCrudController::class)
+                ->setAction(Action::DELETE)
+                ->setEntityId($organization->getId())
+                ->generateUrl()
+        );
 
         $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
 
         $client->request(
             "GET",
             $adminUrlGenerator
-                ->setController(AdministratorCrudController::class)
-                ->setAction(Action::DELETE)
-                ->setEntityId(2)
+                ->setController(OrganizationCrudController::class)
+                ->setAction(Action::DETAIL)
+                ->setEntityId(1)
                 ->generateUrl()
         );
+
+        $this->assertResponseIsSuccessful();
     }
 }
