@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Admin\Field\RoleField;
 use App\Admin\Field\RulesAgreementField;
 use App\Entity\User\Collaborator;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
@@ -40,7 +41,7 @@ class CollaboratorCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         yield FormField::addPanel('Collaborateur');
-        yield TextField::new('role', 'Rôle')
+        yield RoleField::new('role', 'Rôle')
             ->hideOnForm();
         yield TextField::new('firstName', 'Prénom')
             ->setFormTypeOption("constraints", [
