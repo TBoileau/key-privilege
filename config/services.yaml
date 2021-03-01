@@ -24,3 +24,5 @@ services:
     App\EntityListener\:
         resource: '../src/EntityListener/'
         tags: ['doctrine.orm.entity_listener']
+
+    App\Zendesk\Wrapper\ZendeskWrapperInterface: '@App\Zendesk\Wrapper\ZendeskWrapper'

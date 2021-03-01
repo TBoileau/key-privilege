@@ -2,3 +2,9 @@ services:
   EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator:
     public: true
     autowire: true
+
+  App\Tests\Functional\Fixtures\ZendeskWrapper:
+    autowire: true
+    public: true
+
+  App\Zendesk\Wrapper\ZendeskWrapperInterface: '@App\Tests\Functional\Fixtures\ZendeskWrapper'
