@@ -1,0 +1,4 @@
+services:
+  EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator:
+    public: true
+    autowire: true
