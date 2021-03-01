@@ -8,9 +8,16 @@
     </div>
     <div id="collapse-sales-persons" class="collapse" aria-labelledby="header-sales-persons">
         <ul class="list-group list-group-flush">
-            {% for client in field.value %}
+            {% for salesPerson in field.value %}
+                {% set url = ea_url()
+                    .setDashboard('App\\Controller\\Admin\\DashboardController')
+                    .setController('App\\Controller\\Admin\\SalesPersonCrudController')
+                    .setAction('detail')
+                    .setEntityId(salesPerson.id) %}
                 <li class="list-group-item">
-                    {{ client.fullName }}
+                    <a href="{{ url }}">
+                        {{ salesPerson.fullName }}
+                    </a>
                 </li>
             {% else %}
             <li class="list-group-item">

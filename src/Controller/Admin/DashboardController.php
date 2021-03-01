@@ -8,6 +8,7 @@ use App\Entity\Administrator;
 use App\Entity\Company\Client;
 use App\Entity\Company\Member;
 use App\Entity\Company\Organization;
+use App\Entity\User\SalesPerson;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -34,8 +35,11 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linktoDashboard('Dashboard', 'fas fa-home');
         yield MenuItem::linkToLogout('Se déconnecter', 'fa fa-sign-out');
         yield MenuItem::linkToCrud('Administrateurs', 'fa fa-user-shield', Administrator::class);
+        yield MenuItem::section('Sociétés');
         yield MenuItem::linkToCrud('Groupements', 'fa fa-building', Organization::class);
         yield MenuItem::linkToCrud('Adhérents', 'fa fa-building', Member::class);
         yield MenuItem::linkToCrud('Clients', 'fa fa-building', Client::class);
+        yield MenuItem::section('Utilisateurs');
+        yield MenuItem::linkToCrud('Commerciaux', 'fa fa-users', SalesPerson::class);
     }
 }

@@ -20,6 +20,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @ORM\EntityListeners({"App\EntityListener\UserListener"})
  * @ORM\Table(name="`user`")
  * @UniqueEntity("email", repositoryMethod="findByUniqueEmail")
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=true)
@@ -55,6 +56,8 @@ abstract class User implements UserInterface, \Stringable
      * @ORM\Column(type="string")
      */
     protected string $password;
+
+    private ?string $plainPassword = null;
 
     /**
      * @ORM\Column(type="string", nullable=true)
@@ -296,6 +299,16 @@ abstract class User implements UserInterface, \Stringable
         $rulesAgreement = $this->rulesAgreements->first();
 
         return $rulesAgreement;
+    }
+
+    public function getPlainPassword(): ?string
+    {
+        return $this->plainPassword;
+    }
+
+    public function setPlainPassword(?string $plainPassword): void
+    {
+        $this->plainPassword = $plainPassword;
     }
 
     public function __toString(): string

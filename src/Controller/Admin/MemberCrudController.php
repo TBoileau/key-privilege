@@ -55,12 +55,14 @@ class MemberCrudController extends AbstractCrudController
             ->setCrudController(OrganizationCrudController::class);
         yield AssociationField::new("clients", "Clients")
             ->setTemplatePath("admin/field/member_clients.html.twig")
+            ->setCrudController(ClientCrudController::class)
             ->onlyOnDetail();
         yield AssociationField::new("managers", "Administrateurs")
             ->setTemplatePath("admin/field/member_managers.html.twig")
             ->onlyOnDetail();
         yield AssociationField::new("salesPersons", "Commerciaux")
             ->setTemplatePath("admin/field/member_sales_persons.html.twig")
+            ->setCrudController(SalesPersonCrudController::class)
             ->onlyOnDetail();
         yield AssociationField::new("collaborators", "Collaborateurs")
             ->setTemplatePath("admin/field/member_collaborators.html.twig")
