@@ -39,12 +39,16 @@ class RulesCrudController extends AbstractCrudController
             ->update(
                 Crud::PAGE_INDEX,
                 Action::EDIT,
-                fn (Action $action) => $action->displayIf(fn (Rules $rules) => $rules->getPublishedAt() > new \DateTimeImmutable())
+                fn (Action $action) => $action->displayIf(
+                    fn (Rules $rules) => $rules->getPublishedAt() > new \DateTimeImmutable()
+                )
             )
             ->update(
                 Crud::PAGE_INDEX,
                 Action::DELETE,
-                fn (Action $action) => $action->displayIf(fn (Rules $rules) => $rules->getPublishedAt() > new \DateTimeImmutable())
+                fn (Action $action) => $action->displayIf(
+                    fn (Rules $rules) => $rules->getPublishedAt() > new \DateTimeImmutable()
+                )
             )
             ->add(Crud::PAGE_INDEX, Action::DETAIL);
     }
