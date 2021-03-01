@@ -40,6 +40,8 @@ class ResetAccessTest extends WebTestCase
 
         $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
 
+        $this->assertEmailCount(1);
+
         /** @var EntityManagerInterface $entityManager */
         $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
 
