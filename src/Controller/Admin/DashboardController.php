@@ -9,6 +9,7 @@ use App\Entity\Company\Client;
 use App\Entity\Company\Member;
 use App\Entity\Company\Organization;
 use App\Entity\User\Collaborator;
+use App\Entity\User\Customer;
 use App\Entity\User\Manager;
 use App\Entity\User\SalesPerson;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
@@ -45,5 +46,6 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Administrateur', 'fa fa-users', Manager::class);
         yield MenuItem::linkToCrud('Commerciaux', 'fa fa-users', SalesPerson::class);
         yield MenuItem::linkToCrud('Collaborateurs', 'fa fa-users', Collaborator::class);
+        yield MenuItem::linkToCrud('Utilisateurs (client)', 'fa fa-users', Customer::class);
     }
 }
