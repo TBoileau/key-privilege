@@ -13,6 +13,12 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity
  * @ORM\Entity(repositoryClass=SalesPersonRepository::class)
+ * @ORM\AssociationOverrides({
+ *      @ORM\AssociationOverride(
+ *          name="member",
+ *          inversedBy="salesPersons"
+ *      )
+ * })
  */
 class SalesPerson extends User
 {
