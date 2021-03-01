@@ -39,7 +39,7 @@ class CollaboratorCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
-        yield FormField::addPanel('Commercial');
+        yield FormField::addPanel('Collaborateur');
         yield TextField::new('role', 'Rôle')
             ->hideOnForm();
         yield TextField::new('firstName', 'Prénom')
