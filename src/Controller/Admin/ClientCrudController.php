@@ -54,7 +54,8 @@ class ClientCrudController extends AbstractCrudController
             ->hideOnForm();
         yield AssociationField::new('member', 'Adhérent')
             ->setCrudController(MemberCrudController::class);
-        yield AssociationField::new('salesPerson', 'Commercial');
+        yield AssociationField::new('salesPerson', 'Commercial')
+            ->setCrudController(SalesPersonCrudController::class);
         yield AssociationField::new("customers", "Utilisateurs")
             ->setTemplatePath("admin/field/client_customers.html.twig")
             ->onlyOnDetail();
