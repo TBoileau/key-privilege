@@ -26,9 +26,7 @@ class AgreementFixtures extends Fixture implements DependentFixtureInterface
         $users = $manager->getRepository(User::class)->findAll();
 
         foreach ($users as $user) {
-            if ($user->getId() % 3 === 0) {
-                $user->refuseRules($rules);
-            } else {
+            if ($user->getId() % 3 > 0) {
                 $user->acceptRules($rules);
             }
         }
