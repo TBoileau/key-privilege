@@ -2,30 +2,29 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Company\Organization;
+use App\Entity\Company\Member;
 use App\Validator\CompanyNumber;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-class OrganizationCrudController extends AbstractCrudController
+class MemberCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
-        return Organization::class;
+        return Member::class;
     }
 
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
-            ->setEntityLabelInSingular('Groupement')
-            ->setEntityLabelInPlural('Groupements')
+            ->setEntityLabelInSingular('Adhérent')
+            ->setEntityLabelInPlural('Adhérents')
             ->setDefaultSort(['name' => 'ASC']);
     }
 
@@ -36,7 +35,7 @@ class OrganizationCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
-        yield FormField::addPanel('Groupement');
+        yield FormField::addPanel('Adhérent');
         yield TextField::new('type', 'Typologie')
             ->hideOnForm();
         yield TextField::new('name', 'Raison sociale')
@@ -50,9 +49,19 @@ class OrganizationCrudController extends AbstractCrudController
             ]);
         yield TextField::new('vatNumber', 'N° TVA intra.')
             ->hideOnForm();
-        yield AssociationField::new("members", "Adhérents")
-            ->setCrudController(MemberCrudController::class)
-            ->setTemplatePath("admin/field/organization_members.html.twig")
+        yield AssociationField::new('organization', 'Groupement')
+            ->setCrudController(OrganizationCrudController::class);
+        yield AssociationField::new("clients", "Clients")
+            ->setTemplatePath("admin/field/member_clients.html.twig")
+            ->onlyOnDetail();
+        yield AssociationField::new("managers", "Administrateurs")
+            ->setTemplatePath("admin/field/member_managers.html.twig")
+            ->onlyOnDetail();
+        yield AssociationField::new("salesPersons", "Commerciaux")
+            ->setTemplatePath("admin/field/member_sales_persons.html.twig")
+            ->onlyOnDetail();
+        yield AssociationField::new("collaborators", "Collaborateurs")
+            ->setTemplatePath("admin/field/member_collaborators.html.twig")
             ->onlyOnDetail();
     }
 }

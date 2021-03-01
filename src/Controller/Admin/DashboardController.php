@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Admin;
 
 use App\Entity\Administrator;
+use App\Entity\Company\Member;
 use App\Entity\Company\Organization;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -33,5 +34,6 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToLogout('Se déconnecter', 'fa fa-sign-out');
         yield MenuItem::linkToCrud('Administrateurs', 'fa fa-user-shield', Administrator::class);
         yield MenuItem::linkToCrud('Groupements', 'fa fa-building', Organization::class);
+        yield MenuItem::linkToCrud('Adhérent', 'fa fa-building', Member::class);
     }
 }

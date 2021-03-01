@@ -21,7 +21,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\DiscriminatorColumn(name="discr", type="string")
  * @ORM\DiscriminatorMap({"client"=Client::class, "member"=Member::class, "organization"=Organization::class})
  */
-abstract class Company
+abstract class Company implements \Stringable
 {
     use SoftDeleteableEntity;
 
@@ -88,5 +88,10 @@ abstract class Company
     {
         $this->companyNumber = $companyNumber;
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->name;
     }
 }

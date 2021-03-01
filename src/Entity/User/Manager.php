@@ -19,7 +19,7 @@ class Manager extends User
 
     /**
      * @var Collection<int, Member>
-     * @ORM\ManyToMany(targetEntity=Member::class)
+     * @ORM\ManyToMany(targetEntity=Member::class, inversedBy="managers")
      * @ORM\JoinTable(name="manager_members")
      */
     private Collection $members;

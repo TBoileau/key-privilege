@@ -10,6 +10,12 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity
  * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @ORM\AssociationOverrides({
+ *      @ORM\AssociationOverride(
+ *          name="member",
+ *          inversedBy="collaborators"
+ *      )
+ * })
  */
 class Collaborator extends User
 {
