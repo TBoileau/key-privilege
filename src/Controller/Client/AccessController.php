@@ -157,17 +157,26 @@ class AccessController extends AbstractController
     public function reset(
         Customer $customer,
         Request $request,
-        UserPasswordEncoderInterface $customerPasswordEncoder
+        UserPasswordEncoderInterface $customerPasswordEncoder,
+        MailerInterface $mailer
     ): Response {
         $form = $this->createFormBuilder()->getForm()->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $customer->setPassword($customerPasswordEncoder->encodePassword($customer, md5(random_bytes(8))));
+            $password = md5(random_bytes(8));
+            $customer->setPassword($customerPasswordEncoder->encodePassword($customer, $password));
             $this->getDoctrine()->getManager()->flush();
+            $mailer->send(
+                (new TemplatedEmail())
+                    ->from(new Address("contact@key-privilege.fr", "Key Privilege"))
+                    ->to(new Address($customer->getEmail(), $customer->getFullName()))
+                    ->htmlTemplate("emails/reset.html.twig")
+                    ->context(["customer" => $customer, "password" => $password])
+            );
             $this->addFlash(
                 "success",
                 sprintf(
-                    "Un nouveau mot de passe a été généré et envoyé à de %s.",
+                    "Un nouveau mot de passe a été généré et envoyé à %s.",
                     $customer->getFullName()
                 )
             );

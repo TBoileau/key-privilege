@@ -13,6 +13,7 @@ use App\Entity\User\Collaborator;
 use App\Entity\User\Customer;
 use App\Entity\User\Manager;
 use App\Entity\User\SalesPerson;
+use App\Entity\User\User;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -39,15 +40,16 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linktoDashboard('Dashboard', 'fas fa-home');
         yield MenuItem::linkToLogout('Se déconnecter', 'fa fa-sign-out');
         yield MenuItem::linkToCrud('Administrateurs', 'fa fa-user-shield', Administrator::class);
+        yield MenuItem::linkToCrud('Utilisateurs', 'fa fa-users', User::class);
         yield MenuItem::linkToCrud('Règlements', 'fa fa-file', Rules::class);
-        yield MenuItem::section('Sociétés');
+        yield MenuItem::section('Adhérents');
         yield MenuItem::linkToCrud('Groupements', 'fa fa-building', Organization::class);
         yield MenuItem::linkToCrud('Adhérents', 'fa fa-building', Member::class);
-        yield MenuItem::linkToCrud('Clients', 'fa fa-building', Client::class);
-        yield MenuItem::section('Utilisateurs');
         yield MenuItem::linkToCrud('Administrateur', 'fa fa-users', Manager::class);
         yield MenuItem::linkToCrud('Commerciaux', 'fa fa-users', SalesPerson::class);
         yield MenuItem::linkToCrud('Collaborateurs', 'fa fa-users', Collaborator::class);
-        yield MenuItem::linkToCrud('Utilisateurs (client)', 'fa fa-users', Customer::class);
+        yield MenuItem::section('Clients');
+        yield MenuItem::linkToCrud('Sociétés', 'fa fa-building', Client::class);
+        yield MenuItem::linkToCrud('Utilisateurs', 'fa fa-users', Customer::class);
     }
 }
