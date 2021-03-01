@@ -1,0 +1,7 @@
+{% if field.value is null %}
+    <span class="badge badge-warning">En attente</span>
+{% elseif not field.value.accepted %}
+    <span class="badge badge-danger">Refusé</span>
+{% else %}
+    <span class="badge badge-success">Accepté</span>
+{% endif %}

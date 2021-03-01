@@ -3,8 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Admin\Field\RulesAgreementField;
-use App\Entity\User\SalesPerson;
-use App\Validator\CompanyNumber;
+use App\Entity\User\Collaborator;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -18,18 +17,18 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-class SalesPersonCrudController extends AbstractCrudController
+class CollaboratorCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
-        return SalesPerson::class;
+        return Collaborator::class;
     }
 
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
-            ->setEntityLabelInSingular('Commercial(e)')
-            ->setEntityLabelInPlural('Commerciaux')
+            ->setEntityLabelInSingular('Collaborateur')
+            ->setEntityLabelInPlural('Collaborateurs')
             ->setDefaultSort(['firstName' => 'ASC', 'lastName' => 'ASC']);
     }
 
@@ -73,9 +72,5 @@ class SalesPersonCrudController extends AbstractCrudController
             ->onlyOnDetail();
         yield AssociationField::new('member', 'Adhérent')
             ->setCrudController(MemberCrudController::class);
-        yield AssociationField::new("clients", "Clients")
-            ->setCrudController(ClientCrudController::class)
-            ->setTemplatePath("admin/field/sales_person_clients.html.twig")
-            ->onlyOnDetail();
     }
 }
