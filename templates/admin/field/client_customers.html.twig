@@ -1,12 +1,12 @@
 <div class="card">
-    <div class="card-header" id="header-managers">
+    <div class="card-header" id="header-customers">
         <h2 class="mb-0">
-            <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapse-managers" aria-expanded="false" aria-controls="collapse-managers">
-                Liste des administrateurs ({{ field.value|length }})
+            <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapse-customers" aria-expanded="false" aria-controls="collapse-customers">
+                Liste des utilisateurs ({{ field.value|length }})
             </button>
         </h2>
     </div>
-    <div id="collapse-managers" class="collapse" aria-labelledby="header-managers">
+    <div id="collapse-customers" class="collapse" aria-labelledby="header-customers">
         <ul class="list-group list-group-flush">
             {% for client in field.value %}
                 <li class="list-group-item">
@@ -14,7 +14,7 @@
                 </li>
             {% else %}
             <li class="list-group-item">
-                Aucun administrateur
+                Aucun utilisateur
             </li>
             {% endfor %}
         </ul>

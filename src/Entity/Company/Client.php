@@ -47,7 +47,7 @@ class Client extends Company
         return "Client";
     }
 
-    public function getMember(): Member
+    public function getMember(): ?Member
     {
         return $this->member;
     }
