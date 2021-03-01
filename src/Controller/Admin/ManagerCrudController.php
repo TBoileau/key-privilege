@@ -4,7 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Admin\Field\RoleField;
 use App\Admin\Field\RulesAgreementField;
-use App\Entity\User\SalesPerson;
+use App\Entity\User\Manager;
 use App\Validator\CompanyNumber;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
@@ -19,18 +19,18 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-class SalesPersonCrudController extends AbstractCrudController
+class ManagerCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
-        return SalesPerson::class;
+        return Manager::class;
     }
 
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
-            ->setEntityLabelInSingular('Commercial(e)')
-            ->setEntityLabelInPlural('Commerciaux')
+            ->setEntityLabelInSingular('Administrateur')
+            ->setEntityLabelInPlural('Administrateurs')
             ->setDefaultSort(['firstName' => 'ASC', 'lastName' => 'ASC']);
     }
 
@@ -41,7 +41,7 @@ class SalesPersonCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
-        yield FormField::addPanel('Commercial');
+        yield FormField::addPanel('Administrateur');
         yield RoleField::new('role', 'Rôle')
             ->hideOnForm();
         yield TextField::new('firstName', 'Prénom')
@@ -72,11 +72,11 @@ class SalesPersonCrudController extends AbstractCrudController
         yield AssociationField::new("rulesAgreements", "Règlement")
             ->setTemplatePath("admin/field/user_rules_agreements.html.twig")
             ->onlyOnDetail();
-        yield AssociationField::new('member', 'Adhérent')
+        yield AssociationField::new('member', 'Adhérent (principal)')
             ->setCrudController(MemberCrudController::class);
-        yield AssociationField::new("clients", "Clients")
-            ->setCrudController(ClientCrudController::class)
-            ->setTemplatePath("admin/field/sales_person_clients.html.twig")
-            ->onlyOnDetail();
+        yield AssociationField::new("members", "Adhérents")
+            ->setCrudController(MemberCrudController::class)
+            ->setTemplatePath("admin/field/manager_members.html.twig")
+            ->hideOnIndex();
     }
 }
