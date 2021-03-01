@@ -132,6 +132,15 @@
     "gedmo/doctrine-extensions": {
         "version": "v3.0.3"
     },
+    "guzzlehttp/guzzle": {
+        "version": "7.2.0"
+    },
+    "guzzlehttp/promises": {
+        "version": "1.4.0"
+    },
+    "guzzlehttp/psr7": {
+        "version": "1.7.0"
+    },
     "laminas/laminas-code": {
         "version": "4.0.0"
     },
@@ -140,6 +149,9 @@
     },
     "laminas/laminas-zendframework-bridge": {
         "version": "1.1.1"
+    },
+    "mmucklo/inflect": {
+        "version": "v0.3.0"
     },
     "monolog/monolog": {
         "version": "2.2.0"
@@ -180,11 +192,20 @@
     "psr/event-dispatcher": {
         "version": "1.0.0"
     },
+    "psr/http-client": {
+        "version": "1.0.1"
+    },
+    "psr/http-message": {
+        "version": "1.0.1"
+    },
     "psr/link": {
         "version": "1.0.0"
     },
     "psr/log": {
         "version": "1.1.3"
+    },
+    "ralouphie/getallheaders": {
+        "version": "3.0.3"
     },
     "sensio/framework-extra-bundle": {
         "version": "5.2",
@@ -640,5 +661,17 @@
     },
     "webmozart/assert": {
         "version": "1.9.1"
+    },
+    "zendesk/zendesk_api_client_php": {
+        "version": "2.2",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "2.2",
+            "ref": "2aeb1762b9485109074b2ac1e759d37fed5439c5"
+        },
+        "files": [
+            "config/packages/zendesk_api_client.yaml"
+        ]
     }
 }
