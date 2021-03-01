@@ -15,6 +15,7 @@ jobs:
         image: mysql:8.0
         env:
           MYSQL_ROOT_PASSWORD: 'Password123!'
+
         ports:
           - 3306:3306
     steps:
