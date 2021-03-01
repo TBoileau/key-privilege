@@ -32,7 +32,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *      "manager"=Manager::class
  * })
  */
-abstract class User implements UserInterface
+abstract class User implements UserInterface, \Stringable
 {
     use SoftDeleteableEntity;
 
@@ -296,5 +296,10 @@ abstract class User implements UserInterface
         $rulesAgreement = $this->rulesAgreements->first();
 
         return $rulesAgreement;
+    }
+
+    public function __toString(): string
+    {
+        return $this->getFullName();
     }
 }
