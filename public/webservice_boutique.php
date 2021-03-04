@@ -329,12 +329,12 @@ function loadProduits($file){
     return ["ADD"=>$numberOfProductsAdded,"UPDATE"=>$numberOfProductsUpdated];
 }
 
-function loadProprietes($file = null)
+function loadProprietes($file)
 {
     return 0;
 }
 
-function loadValeurs($file = null)
+function loadValeurs($file)
 {
     return 0;
 }
