@@ -10,6 +10,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity(repositoryClass=CategoryRepository::class)
+ * @Gedmo\Tree(type="nested")
  */
 class Category
 {
@@ -170,5 +171,11 @@ class Category
     public function getLastProduct(): ?Product
     {
         return $this->lastProduct;
+    }
+
+    public function setLastProduct(?Product $lastProduct): Category
+    {
+        $this->lastProduct = $lastProduct;
+        return $this;
     }
 }
