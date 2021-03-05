@@ -20,4 +20,19 @@ class UniverseRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Universe::class);
     }
+
+    /**
+     * @return array<Universe>
+     */
+    public function getUniverses(): array
+    {
+        return $this->createQueryBuilder("u")
+            ->addSelect("c")
+            ->addSelect("ch")
+            ->join("u.categories", "c")
+            ->leftJoin("c.children", "ch")
+            ->orderBy("u.name", "asc")
+            ->getQuery()
+            ->getResult();
+    }
 }

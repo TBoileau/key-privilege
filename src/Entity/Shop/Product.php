@@ -5,6 +5,7 @@ namespace App\Entity\Shop;
 use App\Repository\Shop\ProductRepository;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity(repositoryClass=ProductRepository::class)
@@ -61,6 +62,12 @@ class Product
      * @ORM\ManyToOne(targetEntity=Category::class)
      */
     private Category $category;
+
+    /**
+     * @ORM\Column(unique=true)
+     * @Gedmo\Slug(fields={"name"}, unique=true)
+     */
+    private string $slug;
 
     public function getId(): int
     {
@@ -169,6 +176,17 @@ class Product
     public function setCategory(Category $category): self
     {
         $this->category = $category;
+        return $this;
+    }
+
+    public function getSlug(): string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
         return $this;
     }
 }

@@ -22,7 +22,6 @@ class ClientCrudController extends AbstractCrudController
         return Client::class;
     }
 
-
     public function configureCrud(Crud $crud): Crud
     {
         return $crud

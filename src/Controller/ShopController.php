@@ -1,0 +1,77 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Controller;
+
+use App\Entity\Shop\Category;
+use App\Entity\Shop\Filter;
+use App\Entity\Shop\Universe;
+use App\Form\Shop\FilterType;
+use App\Repository\Shop\ProductRepository;
+use App\Repository\Shop\UniverseRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+
+/**
+ * @IsGranted("ROLE_SHOP")
+ * @Route("/boutique")
+ */
+class ShopController extends AbstractController
+{
+    /**
+     * @Route("/{universe}/{category}", name="shop_index", defaults={"category"=null, "universe"=null})
+     * @Entity("universe", expr="repository.findOneBySlug(universe)")
+     * @Entity("category", expr="repository.findOneBySlug(category)")
+     */
+    public function index(
+        ?Universe $universe,
+        ?Category $category,
+        UniverseRepository $universeRepository,
+        ProductRepository $productRepository,
+        Request $request
+    ): Response {
+        $min = $productRepository->getMinAmount();
+        $max = $productRepository->getMaxAmount();
+
+        $filter = new Filter();
+        $filter->min = $min;
+        $filter->max = $max;
+
+        $form = $this->createForm(FilterType::class, $filter)->handleRequest($request);
+
+        $products = $productRepository->getPaginatedProduct(
+            $request->query->getInt("page", 1),
+            $request->query->getInt("limit", 9),
+            $request->query->get("sort", "new-products"),
+            $category,
+            $filter
+        );
+
+        $pages = ceil(count($products) / $request->query->getInt("limit", 9));
+
+        return $this->render("ui/shop/index.html.twig", [
+            "universes" => $universeRepository->getUniverses(),
+            "products" => $products,
+            "category" => $category,
+            "universe" => $universe,
+            "params" => [
+                "page" =>  $request->query->getInt("page", 1),
+                "limit" => $request->query->getInt("limit", 9),
+                "sort" => $request->query->get("sort", "new-products")
+            ],
+            "form" => $form->createView(),
+            "min" => $min,
+            "max" => $max,
+            "pages" => $pages,
+            "pageRange" => range(
+                max(1, $request->query->getInt("page", 1) - 3),
+                min($pages, $request->query->getInt("page", 1) + 3)
+            )
+        ]);
+    }
+}

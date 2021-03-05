@@ -3,6 +3,7 @@
 @import "vendor/roboto";
 @import "vendor/bootstrap";
 @import "vendor/fontawesome";
+@import "vendor/nouislider";
 
 @import "theme/default";
 
@@ -17,6 +18,7 @@
 @import "component/identity";
 @import "component/button";
 @import "component/pagination";
+@import "component/slider";
 @import "component/toasts";
 @import "component/table";
 @import "component/navbar";
@@ -24,3 +26,5 @@
 @import "component/footer";
 @import "component/section";
 @import "component/card";
+
+@import "page/shop";

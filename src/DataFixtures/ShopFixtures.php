@@ -35,34 +35,34 @@ class ShopFixtures extends Fixture
         $categoryId++;
 
         for ($j = 1; $j <= 20; $j++) {
-            $manager->persist($category = (new Category())
+            $manager->persist($categoryLevel1 = (new Category())
                 ->setId($categoryId)
                 ->setParent($category)
                 ->setName(sprintf("Catégorie %d", $categoryId)));
-            $categories[$categoryId] = $category;
+            $categories[$categoryId] = $categoryLevel1;
             $categoryId++;
 
             shuffle($universes);
 
             /** @var Universe $universe */
             foreach (array_slice($universes, 0, 5) as $universe) {
-                $universe->getCategories()->add($category);
+                $universe->getCategories()->add($categoryLevel1);
             }
 
             for ($k = 1; $k <= 5; $k++) {
-                $manager->persist($category = (new Category())
+                $manager->persist($categoryLevel2 = (new Category())
                     ->setId($categoryId)
-                    ->setParent($category)
+                    ->setParent($categoryLevel1)
                     ->setName(sprintf("Catégorie %d", $categoryId)));
-                $categories[$categoryId] = $category;
+                $categories[$categoryId] = $categoryLevel2;
                 $categoryId++;
 
                 for ($l = 1; $l <= 5; $l++) {
-                    $manager->persist($category = (new Category())
+                    $manager->persist($categoryLevel3 = (new Category())
                         ->setId($categoryId)
-                        ->setParent($category)
+                        ->setParent($categoryLevel2)
                         ->setName(sprintf("Catégorie %d", $categoryId)));
-                    $categories[$categoryId] = $category;
+                    $categories[$categoryId] = $categoryLevel3;
                     $categoryId++;
                 }
             }
@@ -93,7 +93,7 @@ class ShopFixtures extends Fixture
                     ->setBrand($brands[($i % count($brands)) + 1])
                     ->setReference(sprintf("REF_%d", $i))
                     ->setAmount(intval(ceil(rand(10, 2000) / 5) * 5))
-                    ->setImage("uploads/shop/products/image.png")
+                    ->setImage("shop/products/image.png")
                     ->setUpdatedAt(new DateTimeImmutable())
             );
 

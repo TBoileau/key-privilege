@@ -26,6 +26,12 @@ class Category
     private string $name;
 
     /**
+     * @ORM\Column(unique=true)
+     * @Gedmo\Slug(fields={"name"}, unique=true)
+     */
+    private string $slug;
+
+    /**
      * @var Collection<int, Universe>
      * @ORM\ManyToMany(targetEntity=Universe::class, mappedBy="categories")
      */
@@ -100,6 +106,17 @@ class Category
         return $this;
     }
 
+    public function getSlug(): string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
+        return $this;
+    }
+
     public function getUniverses(): Collection
     {
         return $this->universes;
@@ -110,7 +127,7 @@ class Category
         return $this->left;
     }
 
-    public function setLeft(int $left): Category
+    public function setLeft(int $left): self
     {
         $this->left = $left;
         return $this;
@@ -121,7 +138,7 @@ class Category
         return $this->right;
     }
 
-    public function setRight(int $right): Category
+    public function setRight(int $right): self
     {
         $this->right = $right;
         return $this;
@@ -132,7 +149,7 @@ class Category
         return $this->level;
     }
 
-    public function setLevel(int $level): Category
+    public function setLevel(int $level): self
     {
         $this->level = $level;
         return $this;
@@ -143,7 +160,7 @@ class Category
         return $this->root;
     }
 
-    public function setRoot(?Category $root): Category
+    public function setRoot(?Category $root): self
     {
         $this->root = $root;
         return $this;
@@ -154,7 +171,7 @@ class Category
         return $this->parent;
     }
 
-    public function setParent(?Category $parent): Category
+    public function setParent(?Category $parent): self
     {
         $this->parent = $parent;
         return $this;
@@ -173,7 +190,7 @@ class Category
         return $this->lastProduct;
     }
 
-    public function setLastProduct(?Product $lastProduct): Category
+    public function setLastProduct(?Product $lastProduct): self
     {
         $this->lastProduct = $lastProduct;
         return $this;
