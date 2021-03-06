@@ -29,33 +29,6 @@ use Symfony\Component\Routing\Annotation\Route;
 class ShopController extends AbstractController
 {
     /**
-     * @Route("/products/{slug}/ajouter-au-panier", name="shop_add_to_cart")
-     */
-    public function addToCart(Product $product, OrderRepository $orderRepository): RedirectResponse
-    {
-        /** @var User $user */
-        $user = $this->getUser();
-
-        /** @var ?Order $order */
-        $order = $orderRepository->findOneBy([
-            "state" => "cart",
-            "user" => $user
-        ]);
-
-        if ($order === null) {
-            $order = (new Order())->setUser($user);
-            $this->getDoctrine()->getManager()->persist($order);
-        }
-
-        $order->addProduct($product);
-
-        $this->getDoctrine()->getManager()->flush();
-
-        $this->addFlash("success", "Produit ajouté au panier avec succès.");
-        return $this->redirectToRoute("shop_product", ["slug" => $product->getSlug()]);
-    }
-
-    /**
      * @Route("/products/{slug}", name="shop_product")
      */
     public function product(Product $product): Response

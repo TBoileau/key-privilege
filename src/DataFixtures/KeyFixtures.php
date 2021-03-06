@@ -31,7 +31,6 @@ class KeyFixtures extends Fixture implements DependentFixtureInterface
                 ->prepare();
             $purchase->getWallet()->addTransaction($purchase);
             $manager->persist($purchase);
-
         }
 
         $manager->flush();

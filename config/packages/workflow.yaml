@@ -25,3 +25,20 @@ framework:
                 accept:
                     from: pending
                     to: accepted
+        order:
+            type: 'state_machine'
+            audit_trail:
+                enabled: true
+            marking_store:
+                type: 'method'
+                property: 'state'
+            supports:
+                - App\Entity\Order\Order
+            initial_marking: cart
+            places:
+                - cart
+                - pending
+            transitions:
+                valid_cart:
+                    from: cart
+                    to: pending

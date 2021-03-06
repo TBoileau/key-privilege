@@ -91,4 +91,9 @@ class Line
         $this->quantity++;
         return $this;
     }
+
+    public function getTotal(): int
+    {
+        return $this->quantity * $this->amount;
+    }
 }

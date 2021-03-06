@@ -1,7 +1,9 @@
 import './styles/app.scss';
 import './bootstrap';
-import bootstrap from 'bootstrap';
+import { Tooltip, Toast } from 'bootstrap';
 import noUiSlider from 'nouislider';
+
+Array.from(document.querySelectorAll("[data-bs-toggle=tooltip]")).map(e => new Tooltip(e));
 
 Array.from(document.querySelectorAll(".input-group-password")).forEach(e => {
     let button = e.querySelector("button");
@@ -15,7 +17,7 @@ Array.from(document.querySelectorAll(".input-group-password")).forEach(e => {
     });
 });
 
-Array.from(document.querySelectorAll(".toast")).map(toast => (new bootstrap.Toast(toast)).show());
+Array.from(document.querySelectorAll(".toast")).map(toast => (new Toast(toast)).show());
 
 Array.from(document.querySelectorAll(".slider")).map(slider => {
     let min = parseInt(slider.dataset.min);

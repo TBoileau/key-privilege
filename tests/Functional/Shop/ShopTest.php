@@ -67,6 +67,10 @@ class ShopTest extends WebTestCase
         $client->clickLink("Valeur les plus cher");
 
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
+
+        $client->clickLink("Panier");
+
+        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
     }
 
     public function testIfProductShowIsSuccessful(): void
@@ -123,5 +127,70 @@ class ShopTest extends WebTestCase
 
         $this->assertCount(1, $order->getLines());
         $this->assertEquals(2, $order->getLines()->first()->getQuantity());
+
+        $client->clickLink("Panier");
+
+        $client->clickLink("Plus");
+
+        $client->followRedirect();
+
+        /** @var EntityManagerInterface $entityManager */
+        $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
+
+        /** @var Order $order */
+        $order = $entityManager->getRepository(Order::class)->findOneBy([
+            "state" => "cart",
+            "user" => $manager
+        ]);
+
+        $this->assertCount(1, $order->getLines());
+        $this->assertEquals(3, $order->getLines()->first()->getQuantity());
+
+        $client->clickLink("Moins");
+
+        $client->followRedirect();
+
+        /** @var EntityManagerInterface $entityManager */
+        $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
+
+        /** @var Order $order */
+        $order = $entityManager->getRepository(Order::class)->findOneBy([
+            "state" => "cart",
+            "user" => $manager
+        ]);
+
+        $this->assertCount(1, $order->getLines());
+        $this->assertEquals(2, $order->getLines()->first()->getQuantity());
+
+        $client->clickLink("Moins");
+
+        $client->followRedirect();
+
+        /** @var EntityManagerInterface $entityManager */
+        $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
+
+        /** @var Order $order */
+        $order = $entityManager->getRepository(Order::class)->findOneBy([
+            "state" => "cart",
+            "user" => $manager
+        ]);
+
+        $this->assertCount(1, $order->getLines());
+        $this->assertEquals(1, $order->getLines()->first()->getQuantity());
+
+        $client->clickLink("Moins");
+
+        $client->followRedirect();
+
+        /** @var EntityManagerInterface $entityManager */
+        $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
+
+        /** @var Order $order */
+        $order = $entityManager->getRepository(Order::class)->findOneBy([
+            "state" => "cart",
+            "user" => $manager
+        ]);
+
+        $this->assertCount(0, $order->getLines());
     }
 }

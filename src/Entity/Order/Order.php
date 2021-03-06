@@ -109,4 +109,13 @@ class Order
 
         return $this;
     }
+
+    public function getTotal(): int
+    {
+        return intval(
+            array_sum(
+                $this->lines->map(fn (Line $line) => $line->getTotal())->toArray()
+            )
+        );
+    }
 }
