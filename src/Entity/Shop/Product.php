@@ -55,11 +55,13 @@ class Product
 
     /**
      * @ORM\ManyToOne(targetEntity=Brand::class)
+     * @ORM\JoinColumn(nullable=false)
      */
     private Brand $brand;
 
     /**
      * @ORM\ManyToOne(targetEntity=Category::class)
+     * @ORM\JoinColumn(nullable=false)
      */
     private Category $category;
 

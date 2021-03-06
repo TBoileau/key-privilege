@@ -52,16 +52,24 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="row align-items-stretch">
             {% for product in products %}
-                <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
-                    <div class="card product">
+                <div class="col-12 col-sm-6 col-lg-4 col-xl-3 product">
+                    <a href="{{ path("shop_product", { slug: product.slug }) }}" class="card h-100">
                         <img src="{{ asset(product.image) }}" class="card-img-top" alt="{{ product.brand.name }} - {{ product.name }}">
-                        <div class="card-body">
+                        <div class="card-body flex-grow-1">
                             <span class="fw-bold">{{ product.brand.name }} - {{ product.name }}</span>
+                            <p class="text-muted">{{ product.description|u.truncate(100, "...", false) }}</p>
                         </div>
-                    </div>
+                        <div class="card-footer bg-danger d-flex justify-content-center align-items-center text-white fs-4 fw-bold big">
+                            {{ product.amount }} <span class="ms-1 icon icon-lg icon-key"></span>
+                        </div>
+                    </a>
                 </div>
             {% endfor %}
+        </div>
+        <div class="row">
             {% if pages > 1 %}
                 <nav class="mb-3 mx-auto">
                     <ul class="pagination justify-content-center mb-0">

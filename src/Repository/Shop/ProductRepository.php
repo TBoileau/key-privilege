@@ -49,11 +49,19 @@ class ProductRepository extends ServiceEntityRepository
     /**
      * @return Paginator<Product>
      */
-    public function getPaginatedProduct(int $page, int $limit, string $sort, ?Category $category, Filter $filter): Paginator
-    {
+    public function getPaginatedProducts(
+        int $page,
+        int $limit,
+        string $sort,
+        ?Category $category,
+        Filter $filter
+    ): Paginator {
         $queryBuilder = $this->createQueryBuilder("p")
             ->addSelect("b")
+            ->addSelect("c")
             ->join("p.brand", "b")
+            ->join("p.category", "c")
+            ->leftJoin("c.lastProduct", "lp")
             ->andWhere("p.amount >= :min")
             ->setParameter("min", $filter->min)
             ->andWhere("p.amount <= :max")
@@ -93,7 +101,7 @@ class ProductRepository extends ServiceEntityRepository
                 $queryBuilder->orderBy("p.name", "desc");
                 break;
             default:
-                $queryBuilder->orderBy("p.id", "desc");
+                $queryBuilder->orderBy("lp.id", "desc")->orderBy("p.id", "desc");
                 break;
         }
 

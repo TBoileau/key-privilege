@@ -117,6 +117,9 @@ class Category
         return $this;
     }
 
+    /**
+     * @return Collection<int, Universe>
+     */
     public function getUniverses(): Collection
     {
         return $this->universes;

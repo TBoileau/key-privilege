@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\Entity\Shop\Category;
 use App\Entity\Shop\Filter;
+use App\Entity\Shop\Product;
 use App\Entity\Shop\Universe;
 use App\Form\Shop\FilterType;
 use App\Repository\Shop\ProductRepository;
@@ -24,6 +25,16 @@ use Symfony\Component\Routing\Annotation\Route;
 class ShopController extends AbstractController
 {
     /**
+     * @Route("/products/{slug}", name="shop_product")
+     */
+    public function product(Product $product): Response
+    {
+        return $this->render("ui/shop/product.html.twig", ["product" => $product]);
+    }
+
+    /**
+     * @param UniverseRepository<Universe> $universeRepository
+     * @param ProductRepository<Product> $productRepository
      * @Route("/{universe}/{category}", name="shop_index", defaults={"category"=null, "universe"=null})
      * @Entity("universe", expr="repository.findOneBySlug(universe)")
      * @Entity("category", expr="repository.findOneBySlug(category)")
@@ -44,7 +55,7 @@ class ShopController extends AbstractController
 
         $form = $this->createForm(FilterType::class, $filter)->handleRequest($request);
 
-        $products = $productRepository->getPaginatedProduct(
+        $products = $productRepository->getPaginatedProducts(
             $request->query->getInt("page", 1),
             $request->query->getInt("limit", 9),
             $request->query->get("sort", "new-products"),

@@ -39,7 +39,6 @@ class ShopFixtures extends Fixture
                 ->setId($categoryId)
                 ->setParent($category)
                 ->setName(sprintf("Catégorie %d", $categoryId)));
-            $categories[$categoryId] = $categoryLevel1;
             $categoryId++;
 
             shuffle($universes);
@@ -54,7 +53,6 @@ class ShopFixtures extends Fixture
                     ->setId($categoryId)
                     ->setParent($categoryLevel1)
                     ->setName(sprintf("Catégorie %d", $categoryId)));
-                $categories[$categoryId] = $categoryLevel2;
                 $categoryId++;
 
                 for ($l = 1; $l <= 5; $l++) {
@@ -62,7 +60,7 @@ class ShopFixtures extends Fixture
                         ->setId($categoryId)
                         ->setParent($categoryLevel2)
                         ->setName(sprintf("Catégorie %d", $categoryId)));
-                    $categories[$categoryId] = $categoryLevel3;
+                    $categories[] = $categoryLevel3;
                     $categoryId++;
                 }
             }
@@ -84,12 +82,15 @@ class ShopFixtures extends Fixture
         $faker = Factory::create("fr_FR");
 
         for ($i = 1; $i <= 2000; $i++) {
+            /** @var string $description */
+            $description = $faker->sentences(5, true);
+
             $manager->persist(
                 $product = (new Product())
                     ->setId($i)
                     ->setName(sprintf("Produit %d", $i))
-                    ->setDescription($faker->sentences(5, true))
-                    ->setCategory($categories[($i % count($categories)) + 1])
+                    ->setDescription($description)
+                    ->setCategory($categories[$i % count($categories)])
                     ->setBrand($brands[($i % count($brands)) + 1])
                     ->setReference(sprintf("REF_%d", $i))
                     ->setAmount(intval(ceil(rand(10, 2000) / 5) * 5))
@@ -98,7 +99,7 @@ class ShopFixtures extends Fixture
             );
 
             if ($i > 2000 - count($categories)) {
-                $categories[($i % count($categories)) + 1]->setLastProduct($product);
+                $categories[$i % count($categories)]->setLastProduct($product);
             }
 
             if ($i % 400 === 0) {
