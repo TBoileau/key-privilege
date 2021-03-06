@@ -50,6 +50,8 @@ security:
     role_hierarchy:
         ROLE_MANAGER: [ROLE_CLIENT_ACCESS, ROLE_CLIENT_COMPANY, ROLE_SHOP]
         ROLE_SALES_PERSON: [ROLE_CLIENT_ACCESS, ROLE_CLIENT_COMPANY, ROLE_SHOP]
+        ROLE_COLLABORATOR: [ROLE_SHOP]
+        ROLE_CUSTOMER: [ROLE_SHOP]
     access_control:
         - { path: ^/admin/login, roles: PUBLIC_ACCESS }
         - { path: ^/login$, roles: PUBLIC_ACCESS }
