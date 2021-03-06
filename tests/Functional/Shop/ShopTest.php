@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Functional\Shop;
 
+use App\Entity\Order\Order;
 use App\Entity\Shop\Product;
 use App\Entity\User\Manager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -91,5 +92,36 @@ class ShopTest extends WebTestCase
         ]));
 
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
+
+        $client->clickLink("Ajouter au panier");
+
+        $client->followRedirect();
+
+        /** @var EntityManagerInterface $entityManager */
+        $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
+
+        /** @var Order $order */
+        $order = $entityManager->getRepository(Order::class)->findOneBy([
+            "state" => "cart",
+            "user" => $manager
+        ]);
+
+        $this->assertCount(1, $order->getLines());
+
+        $client->clickLink("Ajouter au panier");
+
+        $client->followRedirect();
+
+        /** @var EntityManagerInterface $entityManager */
+        $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
+
+        /** @var Order $order */
+        $order = $entityManager->getRepository(Order::class)->findOneBy([
+            "state" => "cart",
+            "user" => $manager
+        ]);
+
+        $this->assertCount(1, $order->getLines());
+        $this->assertEquals(2, $order->getLines()->first()->getQuantity());
     }
 }

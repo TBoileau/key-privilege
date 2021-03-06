@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity\Key;
 
+use App\Entity\User\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use DateTimeImmutable;

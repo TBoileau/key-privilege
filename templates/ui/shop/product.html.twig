@@ -23,7 +23,7 @@
                                 <div class="bg-danger rounded py-2 px-3 fs-4 d-flex align-items-center text-white">
                                     {{ product.amount }} <span class="ms-1 icon icon-lg icon-key"></span>
                                 </div>
-                                <a href="#" class="btn btn-danger btn-lg">
+                                <a href="{{ path("shop_add_to_cart", { slug: product.slug }) }}" class="btn btn-danger btn-lg">
                                     <span class="fas fa-cart-arrow-down"></span> Ajouter au panier
                                 </a>
                             </div>
