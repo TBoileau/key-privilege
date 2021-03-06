@@ -9,7 +9,7 @@
                     </div>
                     <div class="identity-balance">
                         <span class="icon icon-key icon-sm"></span>
-                        Votre compte :&nbsp;<span>0 clés</span>
+                        Votre compte :&nbsp;<span>{{ app.user.account.balance }} clés</span>
                     </div>
                 </div>
                 <div class="identity-right">
@@ -36,6 +36,9 @@
                     {% if is_granted("ROLE_SHOP") %}
                         <li class="nav-item">
                             <a class="nav-link" href="{{ path("shop_index") }}">Boutique</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path("cart_index") }}">Panier</a>
                         </li>
                     {% endif %}
                     <li class="nav-item">

@@ -1,0 +1,79 @@
+{% extends "layouts/page.html.twig" %}
+
+{% set breadcrumbItems = [
+    { route: "cart_index", label: "Panier"}
+] %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-12">
+            <section class="section">
+                <h1 class="section-header">Panier</h1>
+                <div class="section-body">
+                    <div class="card">
+                        <h2 class="card-header">Liste des produits</h2>
+                        <div class="card-body p-0">
+                            <table class="table table-hover mb-0">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">Produit</th>
+                                        <th class="text-center">Valeur</th>
+                                        <th class="text-center">Quantité</th>
+                                        <th class="text-center">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {% for line in order.lines %}
+                                    <tr>
+                                        <td class="text-center">{{ line.product.name }} - {{ line.product.brand.name }}</td>
+                                        <td class="text-center">{{ line.amount }}</td>
+                                        <td class="text-center">
+                                            <div class="input-group input-group-sm justify-content-center">
+                                                <a href="{{ path("cart_decrease_quantity", { id: line.id }) }}" class="btn btn-sm btn-outline-primary">
+                                                    <span class="fas fa-minus"></span>
+                                                    <span class="sr-only">Moins</span>
+                                                </a>
+                                                <span class="input-group-text bg-white border-top border-bottom">{{ line.quantity }}</span>
+                                                <a href="{{ path("cart_increase_quantity", { id: line.id }) }}" class="btn btn-sm btn-outline-primary">
+                                                    <span class="fas fa-plus"></span>
+                                                    <span class="sr-only">Plus</span>
+                                                </a>
+                                            </div>
+                                        </td>
+                                        <td class="text-center">{{ line.total }}</td>
+                                    </tr>
+                                {% else %}
+                                    <tr>
+                                        <td class="text-center" colspan="4">Aucun résultat</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                                <tfoot>
+                                    <tr class="fw-bold">
+                                        <td class="text-end border-top" colspan="3">Total</td>
+                                        <td class="text-center border-top">{{ order.total }}</td>
+                                    </tr>
+                                    <tr class="fw-bold">
+                                        <td class="text-end border-top" colspan="3">Solde avant commande</td>
+                                        <td class="text-center border-top">{{ app.user.account.balance }}</td>
+                                    </tr>
+                                    <tr class="fw-bold">
+                                        <td class="text-end border-top" colspan="3">Solde après commande</td>
+                                        <td class="text-center border-top">
+                                            {% if not workflow_can(order, 'valid_cart') %}
+                                                <span class="fas fa-exclamation-triangle text-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Votre solde de clé n'est pas suffisant pour passer commande"></span>
+                                            {% endif %}
+
+                                            {{ app.user.account.balance - order.total }}
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+{% endblock %}
+

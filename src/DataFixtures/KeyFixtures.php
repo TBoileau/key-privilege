@@ -23,12 +23,14 @@ class KeyFixtures extends Fixture implements DependentFixtureInterface
         $users = $manager->getRepository(User::class)->findAll();
 
         foreach ($users as $user) {
-            $manager->persist((new Purchase())
+            $purchase = (new Purchase())
                 ->setMode(Purchase::MODE_BANK_WIRE)
                 ->setAccount($user->getAccount())
                 ->setPoints(5000)
                 ->setState("accepted")
-                ->prepare());
+                ->prepare();
+            $purchase->getWallet()->addTransaction($purchase);
+            $manager->persist($purchase);
         }
 
         $manager->flush();
