@@ -1,0 +1,27 @@
+framework:
+    workflows:
+        purchase:
+            type: 'state_machine'
+            audit_trail:
+                enabled: true
+            marking_store:
+                type: 'method'
+                property: 'state'
+            supports:
+                - App\Entity\Key\Purchase
+            initial_marking: pending
+            places:
+                - pending
+                - refused
+                - canceled
+                - accepted
+            transitions:
+                cancel:
+                    from: pending
+                    to: canceled
+                refuse:
+                    from: pending
+                    to: refused
+                accept:
+                    from: pending
+                    to: accepted

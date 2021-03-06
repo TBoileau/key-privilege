@@ -6,6 +6,7 @@ namespace App\Entity\User;
 
 use App\Entity\Rules;
 use App\Entity\RulesAgreement;
+use App\Entity\Key\Account;
 use App\Repository\User\UserRepository;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -98,10 +99,17 @@ abstract class User implements UserInterface, \Stringable
      */
     protected bool $suspended = false;
 
+    /**
+     * @ORM\OneToOne(targetEntity=Account::class, cascade={"persist"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    protected Account $account;
+
     public function __construct()
     {
         $this->rulesAgreements = new ArrayCollection();
         $this->registeredAt = new DateTimeImmutable();
+        $this->account = new Account();
     }
 
     public function getId(): ?int
@@ -314,5 +322,10 @@ abstract class User implements UserInterface, \Stringable
     public function __toString(): string
     {
         return $this->getFullName();
+    }
+
+    public function getAccount(): Account
+    {
+        return $this->account;
     }
 }
