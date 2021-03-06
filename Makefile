@@ -6,6 +6,7 @@ functional-tests:
 
 .PHONY: vendor
 analyze:
+	npm audit
 	composer valid
 	php bin/console doctrine:schema:valid --skip-sync
 	php bin/phpcs
