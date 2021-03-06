@@ -1,0 +1,58 @@
+<aside>
+    <nav class="section-nav">
+        <h1 class="text-center my-0 py-3 text-uppercase border-bottom">Boutique</h1>
+        <ul class="nav flex-column" id="universes">
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="collapse" href="#filter" role="button" aria-expanded="{{ form.vars.submitted ? "true" : "false" }}" aria-controls="filter">Recherche</a>
+                {{ form_start(form, { attr: { class: form.vars.attr.class ~ (form.vars.submitted ? " show") }}) }}
+                    {{ form_widget(form._token) }}
+                    {{ form_widget(form.min) }}
+                    {{ form_widget(form.max) }}
+                    <input type="hidden" name="page" value="1">
+                    <div class="nav-item">
+                        <div class="nav-link">
+                            <span class="fw-bold">Rechercher un produit</span>
+                            {{ form_row(form.keywords) }}
+                        </div>
+                    </div>
+                    <div class="nav-item">
+                        <div class="nav-link">
+                            <span class="fw-bold">Prix</span>
+                            <div class="slider" data-min="{{ min }}" data-max="{{ max }}" data-min-target="#filter_min" data-max-target="#filter_max"></div>
+                        </div>
+                    </div>
+                    <div class="nav-item">
+                        <div class="nav-link">
+                            <span class="fw-bold">Marque</span>
+                            {{ form_row(form.brand) }}
+                        </div>
+                    </div>
+                    <div class="nav-item">
+                        <div class="nav-link text-center">
+                            <button type="submit" class="btn btn-primary">Rechercher</button>
+                        </div>
+                    </div>
+                {{ form_end(form) }}
+            </li>
+            {% for u in universes %}
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="collapse" href="#universe-{{ u.id }}" role="button" aria-expanded="{{ not form.vars.submitted and universe is not null and universe == u ? "true" : "false" }}" aria-controls="universe-{{ u.id }}">{{ u.name }}</a>
+                    <ul class="nav flex-column collapse {{ not form.vars.submitted and universe is not null and universe == u ? "show" }}" id="universe-{{ u.id }}" data-bs-parent="#universes">
+                        {% for c in u.categories %}
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="collapse" href="#category-{{ c.id }}" role="button" aria-expanded="{{ not form.vars.submitted and category is not null and category.parent == c and universe is not null and universe == u ? "true" : "false" }}" aria-controls="category-{{ c.id }}">{{ c.name }}</a>
+                                <ul class="nav flex-column collapse {{ not form.vars.submitted and category is not null and category.parent == c and universe is not null and universe == u ? "show" }}" id="category-{{ c.id }}" data-bs-parent="#universe-{{ u.id }}">
+                                    {% for child in c.children %}
+                                        <li class="nav-item">
+                                            <a href="{{ path("shop_index", { page: 1, category: child.slug, universe: u.slug }) }}" class="nav-link {{ category == child ? "active" }}">{{ child.name }}</a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            {% endfor %}
+        </ul>
+    </nav>
+</aside>

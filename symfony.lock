@@ -159,6 +159,9 @@
     "nikic/php-parser": {
         "version": "v4.10.4"
     },
+    "nusphere/nusoap": {
+        "version": "0.9.6"
+    },
     "phpdocumentor/reflection-common": {
         "version": "2.2.0"
     },
@@ -654,6 +657,9 @@
         "version": "v3.2.1"
     },
     "twig/intl-extra": {
+        "version": "v3.3.0"
+    },
+    "twig/string-extra": {
         "version": "v3.3.0"
     },
     "twig/twig": {

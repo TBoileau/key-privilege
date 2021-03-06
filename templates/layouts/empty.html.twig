@@ -1,7 +1,7 @@
 {% extends 'layouts/base.html.twig' %}
 
 {% block body %}
-    <div class="container">
+    <main class="{{ containerClass|default('container') }}">
         {% block content %}{% endblock %}
-    </div>
+    </main>
 {% endblock %}

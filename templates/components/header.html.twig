@@ -33,6 +33,11 @@
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="{{ path("index") }}">Accueil</a>
                     </li>
+                    {% if is_granted("ROLE_SHOP") %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path("shop_index") }}">Boutique</a>
+                        </li>
+                    {% endif %}
                     <li class="nav-item">
                         <a class="nav-link" href="{{ path("account_index") }}">Mon compte</a>
                     </li>

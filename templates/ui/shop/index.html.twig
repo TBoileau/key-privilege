@@ -1,0 +1,91 @@
+{% extends "layouts/base.html.twig" %}
+
+{% block page %}shop{% endblock %}
+
+{% block body %}
+    {{ include("components/header.html.twig") }}
+    {{ include("ui/shop/_sidebar.html.twig") }}
+    <main class="container-fluid">
+        <div class="row">
+            <div class="col-12 mb-4 d-flex flex-column flex-md-row justify-content-md-between">
+                <h1 class="text-white">
+                    {% if category is not null %}
+                        {{ category.name }}
+                    {% else %}
+                        Tous les produits
+                    {% endif %}
+                </h1>
+                <div class="d-flex">
+                    <div class="dropdown me-3">
+                        <button class="btn btn-light dropdown-toggle" type="button" id="dropdown-sort" data-bs-toggle="dropdown" aria-expanded="false">
+                             {{ params.limit }} produits par page
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-sort">
+                            <li><a class="dropdown-item" href="{{ path("shop_index", params|merge({ page: 1, limit: 9 })) }}">9 produits par page</a></li>
+                            <li><a class="dropdown-item" href="{{ path("shop_index", params|merge({ page: 1, limit: 27 })) }}">27 produits par page</a></li>
+                            <li><a class="dropdown-item" href="{{ path("shop_index", params|merge({ page: 1, limit: 45 })) }}">45 produits par page</a></li>
+                            <li><a class="dropdown-item" href="{{ path("shop_index", params|merge({ page: 1, limit: 90 })) }}">90 produits par page</a></li>
+                            <li><a class="dropdown-item" href="{{ path("shop_index", params|merge({ page: 1, limit: 180 })) }}">180 produits par page</a></li>
+                        </ul>
+                    </div>
+                    <div class="dropdown">
+                        <button class="btn btn-light dropdown-toggle" type="button" id="dropdown-sort" data-bs-toggle="dropdown" aria-expanded="false">
+                            {% if params.sort == "new-products" %}
+                                Nouveautés
+                            {% elseif params.sort == "amount-asc" %}
+                                Valeur les moins cher
+                            {% elseif params.sort == "amount-desc" %}
+                                Valeur les plus cher
+                            {% elseif params.sort == "name-asc" %}
+                                Tri A -> Z
+                            {% elseif params.sort == "name-desc" %}
+                                Tri Z -> A
+                            {% endif %}
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-sort">
+                            <li><a class="dropdown-item" href="{{ path("shop_index", params|merge({ page: 1, sort: "new-products" })) }}">Nouveautés</a></li>
+                            <li><a class="dropdown-item" href="{{ path("shop_index", params|merge({ page: 1, sort: "amount-asc" })) }}">Valeur les moins cher</a></li>
+                            <li><a class="dropdown-item" href="{{ path("shop_index", params|merge({ page: 1, sort: "amount-desc" })) }}">Valeur les plus cher</a></li>
+                            <li><a class="dropdown-item" href="{{ path("shop_index", params|merge({ page: 1, sort: "name-asc" })) }}">Tri A -> Z</a></li>
+                            <li><a class="dropdown-item" href="{{ path("shop_index", params|merge({ page: 1, sort: "name-desc" })) }}">Tri Z -> A</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row align-items-stretch">
+            {% for product in products %}
+                <div class="col-12 col-sm-6 col-lg-4 col-xl-3 product">
+                    <a href="{{ path("shop_product", { slug: product.slug }) }}" class="card h-100">
+                        <img src="{{ asset(product.image) }}" class="card-img-top" alt="{{ product.brand.name }} - {{ product.name }}">
+                        <div class="card-body flex-grow-1">
+                            <span class="fw-bold">{{ product.brand.name }} - {{ product.name }}</span>
+                            <p class="text-muted">{{ product.description|u.truncate(100, "...", false) }}</p>
+                        </div>
+                        <div class="card-footer bg-danger d-flex justify-content-center align-items-center text-white fs-4 fw-bold big">
+                            {{ product.amount }} <span class="ms-1 icon icon-lg icon-key"></span>
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="row">
+            {% if pages > 1 %}
+                <nav class="mb-3 mx-auto">
+                    <ul class="pagination justify-content-center mb-0">
+                        {% if params.page > 1 %}
+                            <li class="page-item"><a class="page-link" href="{{ path("shop_index", params|merge({ page: params.page - 1 })) }}">Précedent</a></li>
+                        {% endif %}
+                        {% for p in pageRange %}
+                            <li class="page-item {{ p == params.page ? "active" }}"><a class="page-link" href="{{ path("shop_index", params|merge({ page: p })) }}">{{ p }}</a></li>
+                        {% endfor %}
+                        {% if params.page < pages %}
+                            <li class="page-item"><a class="page-link" href="{{ path("shop_index", params|merge({ page: params.page + 1 })) }}">Suivant</a></li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            {% endif %}
+        </div>
+    </main>
+    {{ include("components/footer.html.twig") }}
+{% endblock %}
