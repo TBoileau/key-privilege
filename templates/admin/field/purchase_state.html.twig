@@ -1,0 +1,9 @@
+{% if field.value == "pending" %}
+    <span class="badge badge-warning">En attente de traitement</span>
+{% elseif field.value == "canceled" %}
+    <span class="badge badge-danger">Annulé</span>
+{% elseif field.value == "refused" %}
+    <span class="badge badge-danger">Refusé</span>
+{% else %}
+    <span class="badge badge-success">Accepté</span>
+{% endif %}

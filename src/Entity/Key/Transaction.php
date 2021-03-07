@@ -90,4 +90,14 @@ abstract class Transaction
     {
         return $this->wallet;
     }
+
+    public function getReference(): string
+    {
+        return sprintf("%s - %08d", $this->getType(), $this->id);
+    }
+
+    public function __toString(): string
+    {
+        return $this->getReference();
+    }
 }
