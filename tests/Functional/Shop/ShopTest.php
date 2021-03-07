@@ -49,7 +49,7 @@ class ShopTest extends WebTestCase
 
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
 
-        $client->clickLink("45 produits par page");
+        $client->clickLink("72 produits par page");
 
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
 

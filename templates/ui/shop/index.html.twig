@@ -26,11 +26,11 @@
                              {{ params.limit }} produits par page
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-sort">
-                            <li><a class="dropdown-item" href="{{ path("shop_index", params|merge({ page: 1, limit: 9 })) }}">9 produits par page</a></li>
-                            <li><a class="dropdown-item" href="{{ path("shop_index", params|merge({ page: 1, limit: 27 })) }}">27 produits par page</a></li>
-                            <li><a class="dropdown-item" href="{{ path("shop_index", params|merge({ page: 1, limit: 45 })) }}">45 produits par page</a></li>
-                            <li><a class="dropdown-item" href="{{ path("shop_index", params|merge({ page: 1, limit: 90 })) }}">90 produits par page</a></li>
-                            <li><a class="dropdown-item" href="{{ path("shop_index", params|merge({ page: 1, limit: 180 })) }}">180 produits par page</a></li>
+                            <li><a class="dropdown-item" href="{{ path("shop_index", params|merge({ page: 1, limit: 18 })) }}">18 produits par page</a></li>
+                            <li><a class="dropdown-item" href="{{ path("shop_index", params|merge({ page: 1, limit: 36 })) }}">36 produits par page</a></li>
+                            <li><a class="dropdown-item" href="{{ path("shop_index", params|merge({ page: 1, limit: 72 })) }}">72 produits par page</a></li>
+                            <li><a class="dropdown-item" href="{{ path("shop_index", params|merge({ page: 1, limit: 98 })) }}">98 produits par page</a></li>
+                            <li><a class="dropdown-item" href="{{ path("shop_index", params|merge({ page: 1, limit: 196 })) }}">196 produits par page</a></li>
                         </ul>
                     </div>
                     <div class="dropdown">
@@ -60,7 +60,7 @@
         </div>
         <div class="row align-items-stretch">
             {% for product in products %}
-                <div class="col-12 col-sm-6 col-lg-4 col-xl-3 product">
+                <div class="col-12 col-sm-6 col-lg-4 col-xl-3 col-xxl-2 product">
                     <a href="{{ path("shop_product", { slug: product.slug }) }}" class="card h-100">
                         <img src="{{ asset(product.image) }}" class="card-img-top" alt="{{ product.brand.name }} - {{ product.name }}">
                         <div class="card-body flex-grow-1">

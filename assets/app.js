@@ -47,7 +47,9 @@ Array.from(document.querySelectorAll(".slider")).map(slider => {
     });
 });
 
-Array.from(document.querySelectorAll(".sidebar-toggler")).map(toggler => toggler.addEventListener("click", () => {
+let sidebarTogglers = Array.from(document.querySelectorAll(".sidebar-toggler"));
+
+sidebarTogglers.map(toggler => toggler.addEventListener("click", () => {
     document.querySelector("body").classList.toggle("sidebar-open");
-    Array.from(document.querySelectorAll(".sidebar-toggler")).map(e = e.setAttribute("aria-expanded", document.querySelector("body").classList.contains("sidebar-open")));
+    sidebarTogglers.map(e => e.setAttribute("aria-expanded", document.querySelector("body").classList.contains("sidebar-open")));
 }));

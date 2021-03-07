@@ -61,7 +61,7 @@ class ShopController extends AbstractController
 
         $products = $productRepository->getPaginatedProducts(
             $request->query->getInt("page", 1),
-            $request->query->getInt("limit", 9),
+            $request->query->getInt("limit", 18),
             $request->query->get("sort", "new-products"),
             $category,
             $filter
@@ -76,7 +76,7 @@ class ShopController extends AbstractController
             "universe" => $universe,
             "params" => [
                 "page" =>  $request->query->getInt("page", 1),
-                "limit" => $request->query->getInt("limit", 9),
+                "limit" => $request->query->getInt("limit", 18),
                 "sort" => $request->query->get("sort", "new-products")
             ],
             "form" => $form->createView(),
