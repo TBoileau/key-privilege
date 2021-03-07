@@ -12,8 +12,14 @@ use App\Repository\Key\WalletRepository;
 
 class TransferPoints implements TransferPointsInterface
 {
+    /**
+     * @var WalletRepository<Wallet> $walletRepository
+     */
     private WalletRepository $walletRepository;
 
+    /**
+     * @param WalletRepository<Wallet> $walletRepository
+     */
     public function __construct(WalletRepository $walletRepository)
     {
         $this->walletRepository = $walletRepository;
