@@ -23,6 +23,11 @@ class Customer extends User
         return "ROLE_CUSTOMER";
     }
 
+    public function getRoleName(): string
+    {
+        return "Utilisateur";
+    }
+
     public function getClient(): ?Client
     {
         return $this->client;

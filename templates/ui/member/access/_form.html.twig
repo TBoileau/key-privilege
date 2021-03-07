@@ -1,0 +1,21 @@
+<div class="card-body">
+    {{ form_errors(form) }}
+    <div class="row mb-3">
+        <div class="col-6">
+            {{ form_row(form.email) }}
+        </div>
+        {% if form.member is defined %}
+            <div class="col-6">
+                {{ form_row(form.member) }}
+            </div>
+        {% endif %}
+    </div>
+    <div class="row">
+        <div class="col-6">
+            {{ form_row(form.firstName) }}
+        </div>
+        <div class="col-6">
+            {{ form_row(form.lastName) }}
+        </div>
+    </div>
+</div>

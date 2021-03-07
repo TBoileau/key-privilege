@@ -25,4 +25,9 @@ class Collaborator extends User
     {
         return "ROLE_COLLABORATOR";
     }
+
+    public function getRoleName(): string
+    {
+        return "Collaborateur";
+    }
 }

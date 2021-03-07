@@ -114,6 +114,13 @@
                                         {% endfor %}
                                     </ul>
                                 {% endif %}
+                                {% if is_granted("ROLE_MANAGER") %}
+                                    <div class="card-footer text-end p-0">
+                                        <a href="{{ path("member_access_list") }}" class="btn d-block btn-outline-primary rounded-0 border-0">
+                                            Gestion des accès adhérent
+                                        </a>
+                                    </div>
+                                {% endif %}
                             </div>
                         </div>
                         <div class="col-12 col-lg-4">
