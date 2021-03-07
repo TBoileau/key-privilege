@@ -1,6 +1,9 @@
 unit-tests:
 	php bin/phpunit --testsuite unit
 
+acceptance-tests:
+	vendor\bin\behat
+
 functional-tests:
 	php bin/phpunit --testsuite functional
 
@@ -22,6 +25,7 @@ analyze-windows:
 
 .PHONY: tests
 tests:
+	vendor\bin\behat
 	php bin/phpunit
 
 fixtures-test:
