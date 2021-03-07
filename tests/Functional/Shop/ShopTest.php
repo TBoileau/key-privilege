@@ -8,6 +8,7 @@ use App\Entity\Order\Order;
 use App\Entity\Shop\Product;
 use App\Entity\User\Manager;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -89,7 +90,7 @@ class ShopTest extends WebTestCase
         $urlGenerator = $client->getContainer()->get("router");
 
         /** @var Product $product */
-        $product = $entityManager->find(Product::class, 1);
+        $product = $entityManager->find(Product::class, 2000);
 
         $client->request(Request::METHOD_GET, $urlGenerator->generate("shop_product", [
             "slug" => $product->getSlug()
@@ -130,6 +131,17 @@ class ShopTest extends WebTestCase
 
         $client->clickLink("Panier");
 
+        $this->plus($client, $manager, 1, 3);
+
+        $this->minus($client, $manager, 1, 2);
+
+        $this->minus($client, $manager, 1, 1);
+
+        $this->minus($client, $manager, 0);
+    }
+
+    private function plus(KernelBrowser $client, Manager $manager, int $lines, ?int $quantity = null): void
+    {
         $client->clickLink("Plus");
 
         $client->followRedirect();
@@ -143,9 +155,14 @@ class ShopTest extends WebTestCase
             "user" => $manager
         ]);
 
-        $this->assertCount(1, $order->getLines());
-        $this->assertEquals(3, $order->getLines()->first()->getQuantity());
+        $this->assertCount($lines, $order->getLines());
+        if ($lines > 0) {
+            $this->assertEquals($quantity, $order->getLines()->first()->getQuantity());
+        }
+    }
 
+    private function minus(KernelBrowser $client, Manager $manager, int $lines, ?int $quantity = null): void
+    {
         $client->clickLink("Moins");
 
         $client->followRedirect();
@@ -159,38 +176,9 @@ class ShopTest extends WebTestCase
             "user" => $manager
         ]);
 
-        $this->assertCount(1, $order->getLines());
-        $this->assertEquals(2, $order->getLines()->first()->getQuantity());
-
-        $client->clickLink("Moins");
-
-        $client->followRedirect();
-
-        /** @var EntityManagerInterface $entityManager */
-        $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
-
-        /** @var Order $order */
-        $order = $entityManager->getRepository(Order::class)->findOneBy([
-            "state" => "cart",
-            "user" => $manager
-        ]);
-
-        $this->assertCount(1, $order->getLines());
-        $this->assertEquals(1, $order->getLines()->first()->getQuantity());
-
-        $client->clickLink("Moins");
-
-        $client->followRedirect();
-
-        /** @var EntityManagerInterface $entityManager */
-        $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
-
-        /** @var Order $order */
-        $order = $entityManager->getRepository(Order::class)->findOneBy([
-            "state" => "cart",
-            "user" => $manager
-        ]);
-
-        $this->assertCount(0, $order->getLines());
+        $this->assertCount($lines, $order->getLines());
+        if ($lines > 0) {
+            $this->assertEquals($quantity, $order->getLines()->first()->getQuantity());
+        }
     }
 }

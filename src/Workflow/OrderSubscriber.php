@@ -20,6 +20,9 @@ class OrderSubscriber implements EventSubscriberInterface
         $this->tokenStorage = $tokenStorage;
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     public static function getSubscribedEvents(): array
     {
         return ["workflow.order.guard.valid_cart" => "onGuardValidCart"];

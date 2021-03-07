@@ -1,6 +1,12 @@
 <aside>
     <nav class="section-nav">
-        <h1 class="text-center my-0 py-3 text-uppercase border-bottom">Boutique</h1>
+        <h1 class="text-center my-0 py-3 px-3 px-lg-0 text-uppercase border-bottom d-flex d-lg-block justify-content-between">
+            Boutique
+
+            <a href="#" class="sidebar-toggler d-lg-none" aria-expanded="false">
+                <span class="fas fa-times fa-md text-dark"></span>
+            </a>
+        </h1>
         <ul class="nav flex-column" id="universes">
             <li class="nav-item">
                 <a class="nav-link" data-bs-toggle="collapse" href="#filter" role="button" aria-expanded="{{ form.vars.submitted ? "true" : "false" }}" aria-controls="filter">Recherche</a>

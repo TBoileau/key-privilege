@@ -85,18 +85,22 @@ class ShopFixtures extends Fixture
             /** @var string $description */
             $description = $faker->sentences(5, true);
 
-            $manager->persist(
-                $product = (new Product())
-                    ->setId($i)
-                    ->setName(sprintf("Produit %d", $i))
-                    ->setDescription($description)
-                    ->setCategory($categories[$i % count($categories)])
-                    ->setBrand($brands[($i % count($brands)) + 1])
-                    ->setReference(sprintf("REF_%d", $i))
-                    ->setAmount(intval(ceil(rand(10, 2000) / 5) * 5))
-                    ->setImage("shop/products/image.png")
-                    ->setUpdatedAt(new DateTimeImmutable())
-            );
+            $product = (new Product())
+                ->setId($i)
+                ->setName(sprintf("Produit %d", $i))
+                ->setDescription($description)
+                ->setCategory($categories[$i % count($categories)])
+                ->setBrand($brands[($i % count($brands)) + 1])
+                ->setReference(sprintf("REF_%d", $i))
+                ->setAmount(intval(ceil(rand(10, 2000) / 5) * 5))
+                ->setImage("shop/products/image.png")
+                ->setUpdatedAt(new DateTimeImmutable());
+
+            if ($i === 2000) {
+                $product->setAmount(2000);
+            }
+
+            $manager->persist($product);
 
             if ($i > 2000 - count($categories)) {
                 $categories[$i % count($categories)]->setLastProduct($product);

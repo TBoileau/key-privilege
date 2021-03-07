@@ -1,9 +1,32 @@
 body.shop {
-    display: grid;
-    grid-template-columns: 250px auto;
+    overflow-y: hidden;
     grid-template-rows: 168px calc(100vh - 268px) 100px;
+    grid-template-columns: 0 auto;
+    display: grid;
     grid-column-gap: 0;
     grid-row-gap: 0;
+
+    @include media-breakpoint-down(lg) {
+        display: flex;
+        height: 100vh;
+        flex-direction: column;
+    }
+
+    &.sidebar-open {
+        grid-template-columns: 250px auto;
+
+        > aside {
+            @include media-breakpoint-down(lg) {
+                display: block;
+            }
+        }
+
+        > main {
+            @include media-breakpoint-down(lg) {
+                display: none;
+            }
+        }
+    }
 
     > header {
         grid-area: 1 / 1 / 2 / 3;
@@ -14,6 +37,16 @@ body.shop {
         background: $white;
         overflow-y: auto;
         max-height: 100%;
+
+        @include media-breakpoint-down(lg) {
+            position: fixed;
+            height: calc(100vh - 100px);
+            top: 50px;
+            left: 0;
+            width: 100%;
+            z-index: 999;
+            display: none;
+        }
 
         &::-webkit-scrollbar {
             width: 5px;
@@ -108,12 +141,26 @@ body.shop {
     }
 
     > main {
+        .sidebar-toggler {
+            &[aria-expanded=true] > .fas:before {
+                content: "\f00d";
+            }
+            &[aria-expanded=false] > .fas:before {
+                content: "\f0c9";
+            }
+        }
+
         grid-area: 2 / 2 / 3 / 3;
         background: $black;
         margin: 0;
         padding: 24px 24px 0;
         overflow-y: auto;
         max-height: 100%;
+
+
+        @include media-breakpoint-down(lg) {
+            height: calc(100vh - 100px);
+        }
 
         &::-webkit-scrollbar {
             width: 5px;
@@ -151,5 +198,13 @@ body.shop {
 
     > footer {
         grid-area: 3 / 1 / 4 / 3;
+
+        @include media-breakpoint-down(lg) {
+            position: fixed;
+            height: 50px;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+        }
     }
 }

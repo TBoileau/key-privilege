@@ -77,7 +77,7 @@
                                                             <li><a class="dropdown-item" href="{{ path("client_access_reset", { id: customer.id }) }}">Réinitialiser</a></li>
                                                         {% endif %}
                                                         {% if is_granted("log_as", customer) %}
-                                                            <li><a class="dropdown-item" href="{{ path("index", { _switch_customer: customer.email }) }}">Log as</a></li>
+                                                            <li><a class="dropdown-item" href="{{ path("home", { _switch_customer: customer.email }) }}">Log as</a></li>
                                                         {% endif %}
                                                     </ul>
                                                 </div>

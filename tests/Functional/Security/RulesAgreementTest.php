@@ -30,7 +30,7 @@ class RulesAgreementTest extends WebTestCase
 
         $client->loginUser($user);
 
-        $client->request(Request::METHOD_GET, $urlGenerator->generate("index"));
+        $client->request(Request::METHOD_GET, $urlGenerator->generate("home"));
 
         $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
 
@@ -60,7 +60,7 @@ class RulesAgreementTest extends WebTestCase
 
         $client->followRedirect();
 
-        $this->assertRouteSame("index");
+        $this->assertRouteSame("home");
     }
 
     public function testIfUserRefuseRules(): void
@@ -78,7 +78,7 @@ class RulesAgreementTest extends WebTestCase
 
         $client->loginUser($user);
 
-        $client->request(Request::METHOD_GET, $urlGenerator->generate("index"));
+        $client->request(Request::METHOD_GET, $urlGenerator->generate("home"));
 
         $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
 

@@ -1,7 +1,20 @@
 footer {
+  @include media-breakpoint-down(lg) {
+    height: 50px;
+  }
+
   .container {
+    @include media-breakpoint-down(lg) {
+      max-width: 100%;
+    }
     > div {
       padding: 1rem 0;
+
+      @include media-breakpoint-down(lg) {
+        img {
+          display: none;
+        }
+      }
 
       nav {
         > ul {
@@ -23,6 +36,17 @@ footer {
             &:after {
               content: "|";
               margin: 0 .5rem;
+            }
+
+
+            @include media-breakpoint-down(lg) {
+              &:nth-child(2):after {
+                content: "";
+                margin: 0;
+              }
+              &:last-child {
+                display: none;
+              }
             }
 
             &:last-child:after {

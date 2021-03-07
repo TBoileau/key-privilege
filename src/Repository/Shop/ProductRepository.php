@@ -24,6 +24,23 @@ class ProductRepository extends ServiceEntityRepository
         parent::__construct($registry, Product::class);
     }
 
+    /**
+     * @return array<Product>
+     */
+    public function getLastProducts(): array
+    {
+        return $this->createQueryBuilder("p")
+            ->addSelect("b")
+            ->addSelect("c")
+            ->join("p.brand", "b")
+            ->join("p.category", "c")
+            ->leftJoin("c.lastProduct", "lp")
+            ->setMaxResults(4)
+            ->orderBy("lp.id", "desc")
+            ->getQuery()
+            ->getResult();
+    }
+
     public function getMinAmount(): int
     {
         return $this->createQueryBuilder("p")
