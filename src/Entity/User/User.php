@@ -153,6 +153,8 @@ abstract class User implements UserInterface, \Stringable
 
     abstract public function getRole(): string;
 
+    abstract public function getRoleName(): string;
+
     /**
      * @see UserInterface
      */

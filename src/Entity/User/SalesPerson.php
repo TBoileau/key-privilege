@@ -36,6 +36,11 @@ class SalesPerson extends User
         $this->clients = new ArrayCollection();
     }
 
+    public function getRoleName(): string
+    {
+        return "Commercial";
+    }
+
     public function getRole(): string
     {
         return "ROLE_SALES_PERSON";

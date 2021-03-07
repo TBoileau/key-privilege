@@ -30,6 +30,11 @@ class Manager extends User
         $this->members = new ArrayCollection();
     }
 
+    public function getRoleName(): string
+    {
+        return "Administrateur";
+    }
+
     public function getRole(): string
     {
         return "ROLE_MANAGER";
