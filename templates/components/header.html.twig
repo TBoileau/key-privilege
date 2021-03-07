@@ -1,5 +1,5 @@
 <header>
-    <div class="container">
+    <div class="container d-none d-lg-block">
         <div class="d-flex justify-content-between py-3">
             <img src="{{ asset("build/images/logo.png") }}" alt="Key Privilege" class="logo flex-shrink-0">
             <div class="identity">
@@ -23,15 +23,21 @@
             </div>
         </div>
     </div>
-    <nav class="navbar navbar-expand-lg navbar-light mt-3">
+    <nav class="navbar navbar-expand-lg navbar-light mt-0 mt-lg-3">
         <div class="container">
+            <a class="navbar-brand d-lg-none" href="{{ path("home") }}">
+                <img src="{{ asset("build/images/logo_small.png") }}" alt="Key Privilege" class="h-100">
+            </a>
+            <div class="d-flex d-lg-none align-items-center fw-bold">
+                <span class="d-none d-sm-inline">Votre compte :</span>&nbsp;<span>{{ app.user.account.balance }} clés</span>
+            </div>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#header-navbar" aria-controls="header-navbar" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="header-navbar">
                 <ul class="navbar-nav mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{{ path("home") }}">Accueil</a>
+                        <a class="nav-link" aria-current="page" href="{{ path("home") }}">Accueil</a>
                     </li>
                     {% if is_granted("ROLE_SHOP") %}
                         <li class="nav-item">
@@ -66,6 +72,9 @@
                     {% endif %}
                     <li class="nav-item">
                         <a class="nav-link" href="{{ path("contact") }}">Contact</a>
+                    </li>
+                    <li class="nav-item d-lg-none">
+                        <a class="nav-link" href="{{ path("security_logout") }}">Se déconnecter</a>
                     </li>
                 </ul>
             </div>

@@ -6,7 +6,7 @@
   > .carousel-inner {
     width: percentage(3/4);
 
-    @include media-breakpoint-down(md) {
+    @include media-breakpoint-down(lg) {
       width: 100%;
     }
 
@@ -25,7 +25,7 @@
     margin: 0;
     width: percentage(1/4);
 
-    @include media-breakpoint-down(md) {
+    @include media-breakpoint-down(lg) {
       display: none;
     }
 

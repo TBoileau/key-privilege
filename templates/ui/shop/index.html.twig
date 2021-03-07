@@ -8,15 +8,20 @@
     <main class="container-fluid">
         <div class="row">
             <div class="col-12 mb-4 d-flex flex-column flex-md-row justify-content-md-between">
-                <h1 class="text-white">
-                    {% if category is not null %}
-                        {{ category.name }}
-                    {% else %}
-                        Tous les produits
-                    {% endif %}
-                </h1>
-                <div class="d-flex">
-                    <div class="dropdown me-3">
+                <div class="d-flex flex-grow-1 align-items-center mb-3 mb-md-0">
+                    <a href="#" class="me-3 sidebar-toggler" aria-expanded="false">
+                        <span class="fas fa-lg text-white"></span>
+                    </a>
+                    <h1 class="text-white mb-0">
+                        {% if category is not null %}
+                            {{ category.name }}
+                        {% else %}
+                            Tous les produits
+                        {% endif %}
+                    </h1>
+                </div>
+                <div class="d-flex flex-column flex-sm-row">
+                    <div class="dropdown me-0 me-sm-3 mb-3 mb-sm-0">
                         <button class="btn btn-light dropdown-toggle" type="button" id="dropdown-sort" data-bs-toggle="dropdown" aria-expanded="false">
                              {{ params.limit }} produits par page
                         </button>
