@@ -32,7 +32,7 @@ class LoginTest extends WebTestCase
 
         $client->followRedirect();
 
-        $this->assertRouteSame("index");
+        $this->assertRouteSame("home");
     }
 
     public function testIfUserIsDeleted(): void

@@ -8,6 +8,9 @@ use App\Entity\Contact;
 use App\Zendesk\Store\TicketStore;
 use Zendesk\API\HttpClient;
 
+/**
+ * @codeCoverageIgnore
+ */
 class ZendeskWrapper implements ZendeskWrapperInterface
 {
     private HttpClient $client;

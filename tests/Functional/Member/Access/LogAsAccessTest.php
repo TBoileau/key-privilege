@@ -32,14 +32,14 @@ class LogAsAccessTest extends WebTestCase
 
         $client->request(
             Request::METHOD_GET,
-            $urlGenerator->generate("index", ["_switch_user" => "user+11@email.com"])
+            $urlGenerator->generate("home", ["_switch_user" => "user+11@email.com"])
         );
 
         $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
 
         $client->followRedirect();
 
-        $this->assertRouteSame("index");
+        $this->assertRouteSame("home");
 
         /** @var TokenStorageInterface $tokenStorage */
         $tokenStorage = $client->getContainer()->get("security.token_storage");
@@ -53,14 +53,14 @@ class LogAsAccessTest extends WebTestCase
 
         $client->request(
             Request::METHOD_GET,
-            $urlGenerator->generate("index", ["_switch_user" => "_exit"])
+            $urlGenerator->generate("home", ["_switch_user" => "_exit"])
         );
 
         $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
 
         $client->followRedirect();
 
-        $this->assertRouteSame("index");
+        $this->assertRouteSame("home");
 
         /** @var TokenStorageInterface $tokenStorage */
         $tokenStorage = $client->getContainer()->get("security.token_storage");

@@ -116,7 +116,7 @@ class SecurityController extends AbstractController
             }
 
             $this->addFlash("success", "Bienvenue sur Key Privilege.");
-            return $this->redirectToRoute("index");
+            return $this->redirectToRoute("home");
         }
         return $this->render('ui/security/rules.html.twig', [
             "rules" => $rules,
