@@ -1,0 +1,7 @@
+default:
+  suites:
+    points:
+      contexts:
+        - 'App\Features\PointContext'
+      paths:
+        - '%paths.base%/features'

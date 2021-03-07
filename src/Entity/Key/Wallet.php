@@ -10,12 +10,13 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
+use Stringable;
 
 /**
  * @ORM\Entity
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=true)
  */
-class Wallet
+class Wallet implements Stringable
 {
     use SoftDeleteableEntity;
 
@@ -122,5 +123,15 @@ class Wallet
     public function getTransactions(): Collection
     {
         return $this->transactions;
+    }
+
+    public function getReference(): string
+    {
+        return sprintf("%08d", $this->id);
+    }
+
+    public function __toString(): string
+    {
+        return $this->getReference();
     }
 }

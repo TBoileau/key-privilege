@@ -11,6 +11,7 @@ use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
+use Stringable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -19,7 +20,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * @UniqueEntity("reference")
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=true)
  */
-class Account
+class Account implements Stringable
 {
     use SoftDeleteableEntity;
 
@@ -51,6 +52,11 @@ class Account
      * @ORM\OrderBy({"createdAt" : "asc"})
      */
     private Collection $transactions;
+
+    /**
+     * @ORM\OneToOne(targetEntity=User::class, mappedBy="account")
+     */
+    private ?User $user;
 
     public function __construct()
     {
@@ -100,5 +106,15 @@ class Account
                 $this->getRemainingWallets()->map(fn (Wallet $wallet) => $wallet->getBalance())->toArray()
             )
         );
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function __toString(): string
+    {
+        return $this->user->getFullName();
     }
 }

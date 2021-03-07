@@ -8,6 +8,11 @@ use App\Entity\Administrator;
 use App\Entity\Company\Client;
 use App\Entity\Company\Member;
 use App\Entity\Company\Organization;
+use App\Entity\Key\Account;
+use App\Entity\Key\Purchase;
+use App\Entity\Key\Transaction;
+use App\Entity\Key\Transfer;
+use App\Entity\Key\Wallet;
 use App\Entity\Rules;
 use App\Entity\User\Collaborator;
 use App\Entity\User\Customer;
@@ -51,5 +56,11 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::section('Clients');
         yield MenuItem::linkToCrud('Sociétés', 'fa fa-building', Client::class);
         yield MenuItem::linkToCrud('Utilisateurs', 'fa fa-users', Customer::class);
+        yield MenuItem::section('Gestion des points');
+        yield MenuItem::linkToCrud('Comptes points', 'fa fa-balance-scale', Account::class);
+        yield MenuItem::linkToCrud('Achats de points', 'fa fa-bell', Purchase::class);
+        yield MenuItem::linkToCrud('Portefeuilles', 'fa fa-bank', Wallet::class);
+        yield MenuItem::linkToCrud('Transactions', 'fa fa-list', Transaction::class);
+        yield MenuItem::linkToCrud('Transferts', 'fa fa-exchange', Transfer::class);
     }
 }

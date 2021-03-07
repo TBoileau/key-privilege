@@ -100,7 +100,7 @@ abstract class User implements UserInterface, \Stringable
     protected bool $suspended = false;
 
     /**
-     * @ORM\OneToOne(targetEntity=Account::class, cascade={"persist"}, fetch="EAGER")
+     * @ORM\OneToOne(targetEntity=Account::class, cascade={"persist"}, fetch="EAGER", inversedBy="user")
      * @ORM\JoinColumn(nullable=false)
      */
     protected Account $account;
