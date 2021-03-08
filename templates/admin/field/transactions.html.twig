@@ -20,7 +20,7 @@
                             .setAction('detail')
                             .setEntityId(transaction.account.id) %}
                         <a href="{{ url }}">
-                            {{ transaction.account.user.fullName }}
+                            {{ transaction.account|u.toString }}
                         </a>
                     </td>
                     <td class="text-center">

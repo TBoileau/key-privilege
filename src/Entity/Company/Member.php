@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity\Company;
 
+use App\Entity\Key\Account;
 use App\Entity\User\Collaborator;
 use App\Entity\User\Manager;
 use App\Entity\User\SalesPerson;
@@ -46,6 +47,11 @@ class Member extends Company
      */
     private Collection $salesPersons;
 
+    /**
+     * @ORM\OneToOne(targetEntity=Account::class, cascade={"persist"}, fetch="EAGER", inversedBy="member")
+     */
+    protected ?Account $account = null;
+
     public static function getType(): string
     {
         return "Adhérent";
@@ -53,6 +59,7 @@ class Member extends Company
 
     public function __construct()
     {
+        $this->account = new Account();
         $this->clients = new ArrayCollection();
         $this->managers = new ArrayCollection();
         $this->collaborators = new ArrayCollection();
@@ -100,5 +107,10 @@ class Member extends Company
     public function getSalesPersons(): Collection
     {
         return $this->salesPersons;
+    }
+
+    public function getAccount(): Account
+    {
+        return $this->account;
     }
 }

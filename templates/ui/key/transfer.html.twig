@@ -1,0 +1,51 @@
+{% extends "layouts/page.html.twig" %}
+
+{% set breadcrumbItems = [
+    { route: "key_index", label: "Compte clés"},
+    { route: "key_transfer", label: "Transférer des clés"}
+] %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-12">
+            <section class="section">
+                <h1 class="section-header">Compte clés</h1>
+                <div class="section-body">
+                    <div class="row justify-content-center">
+                        <div class="col-12 col-lg-8">
+                            {{ form_start(form) }}
+                            <div class="card h-100">
+                                <h2 class="card-header">Transférer des clés</h2>
+                                <div class="card-body">
+                                    {{ form_errors(form) }}
+                                    <div class="row mb-3">
+                                        <div class="col-6">
+                                            {{ form_row(form.from) }}
+                                        </div>
+                                        <div class="col-6">
+                                            {{ form_row(form.to) }}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            {{ form_row(form.points) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer p-0 d-flex">
+                                    <a href="{{ path("key_index") }}" class="btn d-block flex-grow-1 btn-outline-secondary rounded-0 border-0">
+                                        Retour
+                                    </a>
+                                    <button type="submit" class="btn d-block flex-grow-1 btn-outline-success rounded-0 border-0">
+                                        Transférer
+                                    </button>
+                                </div>
+                            </div>
+                            {{ form_end(form) }}
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+{% endblock %}

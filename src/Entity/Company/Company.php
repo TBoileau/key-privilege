@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity\Company;
 
+use App\Entity\Key\Account;
 use App\EntityListener\CompanyListener;
 use App\Validator\CompanyNumber;
 use Doctrine\Common\Collections\ArrayCollection;

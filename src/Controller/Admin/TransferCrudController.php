@@ -56,15 +56,15 @@ class TransferCrudController extends AbstractCrudController
     {
         yield AssociationField::new("from", "Émetteur")
             ->setFormTypeOption("choice_label", fn (Account $account) => sprintf(
-                "%s - Solde : %d",
-                $account->getUser()->getFullName(),
+                "%s - Solde : %d clés",
+                $account->__toString(),
                 $account->getBalance()
             ))
             ->setCrudController(AccountCrudController::class);
         yield AssociationField::new("to", "Destinataire")
             ->setFormTypeOption("choice_label", fn (Account $account) => sprintf(
-                "%s - Solde : %d",
-                $account->getUser()->getFullName(),
+                "%s - Solde : %d clés",
+                $account->__toString(),
                 $account->getBalance()
             ))
             ->setCrudController(AccountCrudController::class);

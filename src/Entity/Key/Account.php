@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Entity\Key;
 
+use App\Entity\Company\Member;
 use App\Entity\User\User;
+use App\Repository\Key\AccountRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use DateTimeImmutable;
@@ -16,7 +18,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass=AccountRepository::class)
  * @UniqueEntity("reference")
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=true)
  */
@@ -57,6 +59,11 @@ class Account implements Stringable
      * @ORM\OneToOne(targetEntity=User::class, mappedBy="account")
      */
     private ?User $user;
+
+    /**
+     * @ORM\OneToOne(targetEntity=Member::class, mappedBy="account")
+     */
+    private ?Member $member;
 
     public function __construct()
     {
@@ -113,8 +120,21 @@ class Account implements Stringable
         return $this->user;
     }
 
+    public function getMember(): ?Member
+    {
+        return $this->member;
+    }
+
+    public function getOwner(): User | Member
+    {
+        return $this->user ?? $this->member;
+    }
+
     public function __toString(): string
     {
-        return $this->user->getFullName();
+        if ($this->user !== null) {
+            return sprintf("Utilisateur : %s", $this->user->getFullName());
+        }
+        return sprintf("Société : %s", $this->member->getName());
     }
 }

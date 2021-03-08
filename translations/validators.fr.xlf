@@ -521,6 +521,14 @@
         <source>Please enter a valid week.</source>
         <target>Veuillez entrer une semaine valide.</target>
       </trans-unit>
+      <trans-unit id="transfer_same_account" resname="You cannot transfer points between same account.">
+        <source>You cannot transfer points between same account.</source>
+        <target>Vous ne pouvez pas transférer des clés entre un seul compte clés.</target>
+      </trans-unit>
+      <trans-unit id="transfer_balance_account" resname="The amount of point cannot be less than account balance.">
+        <source>The amount of point cannot be less than account balance.</source>
+        <target>Le montant de clés ne peut pas être supérieur au solde du compte clés émetteur.</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
