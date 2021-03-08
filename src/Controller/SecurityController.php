@@ -66,7 +66,7 @@ class SecurityController extends AbstractController
                 $this->getDoctrine()->getManager()->flush();
                 $mailer->send(
                     (new TemplatedEmail())
-                        ->from(new Address("contact@key-privilege.fr", "Key Privilege"))
+                        ->from(new Address("contact@keyprivilege.fr", "Key Privilege"))
                         ->to(new Address($user->getEmail(), $user->getFullName()))
                         ->htmlTemplate("emails/forgotten_password.html.twig")
                         ->context(["user" => $user])

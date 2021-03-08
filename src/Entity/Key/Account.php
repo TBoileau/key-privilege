@@ -6,6 +6,7 @@ namespace App\Entity\Key;
 
 use App\Entity\Company\Company;
 use App\Entity\User\User;
+use App\Repository\Key\AccountRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use DateTimeImmutable;
@@ -17,7 +18,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass=AccountRepository::class)
  * @UniqueEntity("reference")
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=true)
  */

@@ -47,15 +47,25 @@
                             <a class="nav-link" href="{{ path("cart_index") }}">Panier</a>
                         </li>
                     {% endif %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="dropdown-keys" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Compte clés
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="dropdown-keys">
+                            {% if is_granted("ROLE_KEY_BUY") %}
+                                <li><a class="dropdown-item" href="{{ path("key_purchase") }}">Acheter des clés</a></li>
+                            {% endif %}
+                        </ul>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ path("account_index") }}">Mon compte</a>
                     </li>
                     {% if is_granted("ROLE_CLIENT_ACCESS") or is_granted("ROLE_CLIENT_COMPANY") %}
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <a class="nav-link dropdown-toggle" href="#" id="dropdown-clients" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Clients
                             </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <ul class="dropdown-menu" aria-labelledby="dropdown-clients">
                                 {% if is_granted("ROLE_CLIENT_COMPANY") %}
                                     <li><a class="dropdown-item" href="{{ path("client_company_list") }}">Gestion des sociétés</a></li>
                                     <li><a class="dropdown-item" href="{{ path("client_company_create") }}">Créer une société</a></li>
