@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Entity\Key\Account;
 use App\Entity\Key\Purchase;
 use App\Entity\Key\Transfer;
 use App\Entity\User\Manager;
@@ -30,6 +31,16 @@ class KeyController extends AbstractController
     public function index(): Response
     {
         return $this->render("ui/key/index.html.twig");
+    }
+
+    /**
+     * @Route("/historique/{id}", name="key_history")
+     */
+    public function history(Account $account): Response
+    {
+        return $this->render("ui/key/history.html.twig", [
+            "account" => $account
+        ]);
     }
 
     /**

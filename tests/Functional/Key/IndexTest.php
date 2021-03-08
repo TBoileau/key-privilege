@@ -63,5 +63,9 @@ class IndexTest extends WebTestCase
         $client->request(Request::METHOD_GET, $urlGenerator->generate("key_index"));
 
         $this->assertResponseIsSuccessful();
+
+        $client->clickLink("Historique");
+
+        $this->assertResponseIsSuccessful();
     }
 }

@@ -17,6 +17,11 @@
                                <div class="card-body text-center flex-grow-1 d-flex align-items-center justify-content-center">
                                    <span class="fs-1">Solde : {{ app.user.account.balance }} clés</span>
                                </div>
+                               <div class="card-footer text-end p-0">
+                                   <a href="{{ path("key_history", { id: app.user.account.id }) }}" class="btn d-block btn-outline-primary rounded-0 border-0">
+                                       <span class="fas fa-list me-2"></span>Historique
+                                   </a>
+                               </div>
                            </div>
                         </div>
                         {% if is_granted("ROLE_MANAGER") and app.user.members|length == 1 %}
@@ -25,6 +30,11 @@
                                     <h2 class="card-header">Compte clés adhérent</h2>
                                     <div class="card-body text-center flex-grow-1 d-flex align-items-center justify-content-center">
                                         <span class="fs-1">Solde : {{ app.user.member.account.balance }} clés</span>
+                                    </div>
+                                    <div class="card-footer text-end p-0">
+                                        <a href="{{ path("key_history", { id: app.user.member.account.id }) }}" class="btn d-block btn-outline-primary rounded-0 border-0">
+                                            Historique
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -35,9 +45,14 @@
                                     <h2 class="card-header">Comptes clés adhérent</h2>
                                     <div class="list-group list-group-flush flex-grow-1">
                                         {% for member in app.user.members %}
-                                            <div class="list-group-item d-flex flex-column">
-                                                <span class="fw-bold">{{ member.name }}</span>
-                                                Solde : {{ member.account.balance }} clés
+                                            <div class="list-group-item d-flex justify-content-between align-items-center">
+                                                <div class="d-flex flex-column">
+                                                    <span class="fw-bold">{{ member.name }}</span>
+                                                    Solde : {{ member.account.balance }} clés
+                                                </div>
+                                                <a href="{{ path("key_history", { id: member.account.id }) }}" class="btn btn-outline-primary">
+                                                    <span class="fas fa-list"></span>
+                                                </a>
                                             </div>
                                         {% endfor %}
                                     </div>
