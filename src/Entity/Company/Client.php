@@ -37,6 +37,11 @@ class Client extends Company
      */
     private Collection $customers;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private bool $manualDelivery = false;
+
     public function __construct()
     {
         $this->customers = new ArrayCollection();
@@ -75,5 +80,16 @@ class Client extends Company
     public function getCustomers(): Collection
     {
         return $this->customers;
+    }
+
+    public function isManualDelivery(): bool
+    {
+        return $this->manualDelivery;
+    }
+
+    public function setManualDelivery(bool $manualDelivery): self
+    {
+        $this->manualDelivery = $manualDelivery;
+        return $this;
     }
 }

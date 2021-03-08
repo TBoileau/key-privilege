@@ -78,7 +78,8 @@ class UpdateCompanyTest extends WebTestCase
 
         $client->submitForm("Modifier", [
             "company[name]" => "Raison sociale",
-            "company[companyNumber]" => "42878504200105"
+            "company[companyNumber]" => "42878504200105",
+            "company[manualDelivery]" => 1
         ]);
 
         $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
@@ -92,6 +93,7 @@ class UpdateCompanyTest extends WebTestCase
         $this->assertEquals("Raison sociale", $clientCompany->getName());
         $this->assertEquals("FR17428785042", $clientCompany->getVatNumber());
         $this->assertEquals("42878504200105", $clientCompany->getCompanyNumber());
+        $this->assertTrue($clientCompany->isManualDelivery());
         $this->assertEquals(3, $clientCompany->getMember()->getId());
         $this->assertEquals(7, $clientCompany->getSalesPerson()->getId());
 
@@ -144,6 +146,7 @@ class UpdateCompanyTest extends WebTestCase
         $this->assertEquals("Raison sociale", $clientCompany->getName());
         $this->assertEquals("FR64443061841", $clientCompany->getVatNumber());
         $this->assertEquals("44306184100047", $clientCompany->getCompanyNumber());
+        $this->assertFalse($clientCompany->isManualDelivery());
         $this->assertEquals(3, $clientCompany->getMember()->getId());
         $this->assertEquals(7, $clientCompany->getSalesPerson()->getId());
 
@@ -198,7 +201,8 @@ class UpdateCompanyTest extends WebTestCase
                 "company[name]" => "",
                 "company[companyNumber]" => "44306184100047",
                 "company[member]" => 3,
-                "company[salesPerson]" => 7
+                "company[salesPerson]" => 7,
+                "company[manualDelivery]" => 1
             ],
             "Cette valeur ne doit pas être vide."
         ];
@@ -208,7 +212,8 @@ class UpdateCompanyTest extends WebTestCase
                 "company[name]" => "Raison sociale",
                 "company[companyNumber]" => "",
                 "company[member]" => 3,
-                "company[salesPerson]" => 7
+                "company[salesPerson]" => 7,
+                "company[manualDelivery]" => 1
             ],
             "Cette valeur ne doit pas être vide."
         ];
@@ -218,7 +223,8 @@ class UpdateCompanyTest extends WebTestCase
                 "company[name]" => "Raison sociale",
                 "company[companyNumber]" => "fail",
                 "company[member]" => 3,
-                "company[salesPerson]" => 7
+                "company[salesPerson]" => 7,
+                "company[manualDelivery]" => 1
             ],
             'Le N° de SIRET "fail" n\'est pas valide.'
         ];
@@ -228,7 +234,8 @@ class UpdateCompanyTest extends WebTestCase
                 "company[name]" => "Raison sociale",
                 "company[companyNumber]" => "12345678901234",
                 "company[member]" => 3,
-                "company[salesPerson]" => 7
+                "company[salesPerson]" => 7,
+                "company[manualDelivery]" => 1
             ],
             'Le N° de SIRET "12345678901234" n\'est pas valide.'
         ];
@@ -238,7 +245,8 @@ class UpdateCompanyTest extends WebTestCase
                 "company[name]" => "Raison sociale",
                 "company[companyNumber]" => "12345678901234",
                 "company[member]" => 3,
-                "company[salesPerson]" => 6
+                "company[salesPerson]" => 6,
+                "company[manualDelivery]" => 1
             ],
             'Le/la commercial(e) rattaché(e) n\'appartient à l\'adhérent sélectionné.'
         ];

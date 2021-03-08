@@ -11,6 +11,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -51,6 +52,7 @@ class ClientCrudController extends AbstractCrudController
             ]);
         yield TextField::new('vatNumber', 'N° TVA intra.')
             ->hideOnForm();
+        yield BooleanField::new('manualDelivery', 'Livraison manuelle');
         yield AssociationField::new('member', 'Adhérent')
             ->setCrudController(MemberCrudController::class);
         yield AssociationField::new('salesPerson', 'Commercial')
