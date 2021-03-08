@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
@@ -19,12 +20,8 @@ class Address
     private ?int $id = null;
 
     /**
-     * @ORM\Column
-     */
-    private string $name;
-
-    /**
      * @ORM\Column(type="text")
+     * @Assert\NotBlank
      */
     private string $streetAddress;
 
@@ -35,38 +32,34 @@ class Address
 
     /**
      * @ORM\Column
+     * @Assert\NotBlank
+     * @Assert\Regex(pattern="/^[A-Za-z0-9]{2}\d{3}$/", message="Code postal invalide.")
      */
     private string $zipCode;
 
     /**
      * @ORM\Column
+     * @Assert\NotBlank
      */
     private string $locality;
 
     /**
      * @ORM\Column
+     * @Assert\NotBlank
+     * @Assert\Regex(pattern="/^0\d{9}$/", message="N° de téléphone invalide.")
      */
     private string $phone;
 
     /**
      * @ORM\Column
+     * @Assert\NotBlank
+     * @Assert\Email
      */
     private string $email;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $name): self
-    {
-        $this->name = $name;
-        return $this;
     }
 
     public function getStreetAddress(): string

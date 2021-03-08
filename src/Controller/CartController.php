@@ -7,13 +7,21 @@ namespace App\Controller;
 use App\Entity\Order\Line;
 use App\Entity\Order\Order;
 use App\Entity\Shop\Product;
+use App\Entity\User\Collaborator;
+use App\Entity\User\Customer;
+use App\Entity\User\Employee;
+use App\Entity\User\Manager;
+use App\Entity\User\SalesPerson;
 use App\Entity\User\User;
+use App\Form\Order\OrderType;
 use App\Repository\Order\OrderRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Workflow\WorkflowInterface;
 
 /**
  * @IsGranted("ROLE_SHOP")
@@ -50,8 +58,11 @@ class CartController extends AbstractController
      * @param OrderRepository<Order> $orderRepository
      * @Route("/", name="cart_index")
      */
-    public function index(OrderRepository $orderRepository): Response
-    {
+    public function index(
+        OrderRepository $orderRepository,
+        Request $request,
+        WorkflowInterface $orderStateMachine
+    ): Response {
         /** @var User $user */
         $user = $this->getUser();
 
@@ -65,8 +76,32 @@ class CartController extends AbstractController
             $order = (new Order())->setUser($user);
         }
 
+        $form = $this->createForm(OrderType::class, $order)->handleRequest($request);
+
+        if (
+            $orderStateMachine->can($order, "valid_cart")
+            && $form->isSubmitted()
+            && $form->isValid()
+        ) {
+            if (!($user instanceof Customer && $user->getClient()->isManualDelivery())) {
+                if ($user instanceof Customer) {
+                    $address = $user->getClient()->getMember()->getAddress();
+                } else {
+                    /** @var SalesPerson|Collaborator|Manager $user */
+                    $address = $user->getMember()->getAddress();
+                }
+
+                $order->setAddress($address);
+            }
+            $orderStateMachine->apply($order, "valid_cart");
+            $this->getDoctrine()->getManager()->flush();
+            $this->addFlash("success", "Votre commande a été enregistrée avec succès.");
+            return $this->redirectToRoute("home");
+        }
+
         return $this->render("ui/cart/index.html.twig", [
-            "order" => $order
+            "order" => $order,
+            "form" => $form->createView()
         ]);
     }
 

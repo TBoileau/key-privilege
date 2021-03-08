@@ -71,6 +71,24 @@
                             </table>
                         </div>
                     </div>
+                    {% if workflow_can(order, 'valid_cart') %}
+                        {{ form_start(form) }}
+                        <div class="card mt-4">
+                            <h2 class="card-header">Valider votre commande</h2>
+                            <div class="card-body">
+                                <div class="alert alert-info">
+                                    En validant votre commande, vous serez débité de {{ order.total }} clés.
+                                </div>
+                                {% if form.address is defined %}
+                                    {{ form_rest(form) }}
+                                {% endif %}
+                            </div>
+                            <div class="card-footer text-end p-0">
+                                <button type="submit" class="btn d-block w-100 btn-outline-success rounded-0 border-0">Commander</button>
+                            </div>
+                        </div>
+                        {{ form_end(form) }}
+                    {% endif %}
                 </div>
             </section>
         </div>

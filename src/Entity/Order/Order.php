@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Entity\Order;
 
 use App\Entity\Address;
+use App\Entity\Key\Transaction;
 use App\Entity\Shop\Product;
 use App\Entity\User\User;
 use DateTimeImmutable;
@@ -48,6 +49,12 @@ class Order
     private Collection $lines;
 
     /**
+     * @var Collection<int, Transaction>
+     * @ORM\ManyToMany(targetEntity=Transaction::class)
+     */
+    private Collection $transactions;
+
+    /**
      * @ORM\OneToOne(targetEntity=Address::class, cascade={"persist"})
      */
     private ?Address $address = null;
@@ -56,6 +63,7 @@ class Order
     {
         $this->createdAt = new DateTimeImmutable();
         $this->lines = new ArrayCollection();
+        $this->transactions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -88,6 +96,14 @@ class Order
     {
         $this->user = $user;
         return $this;
+    }
+
+    /**
+     * @return Collection<int, Transaction>
+     */
+    public function getTransactions(): Collection
+    {
+        return $this->transactions;
     }
 
     /**

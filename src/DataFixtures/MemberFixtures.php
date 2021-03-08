@@ -26,7 +26,6 @@ class MemberFixtures extends Fixture implements DependentFixtureInterface
                 ->setName($faker->company)
                 ->setCompanyNumber("44306184100047");
             $member->getAddress()
-                ->setName(sprintf("Adresse %d", $i))
                 ->setLocality("Paris")
                 ->setZipCode("75000")
                 ->setEmail("email@email.com")
