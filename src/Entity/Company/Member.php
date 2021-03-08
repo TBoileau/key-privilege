@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity\Company;
 
+use App\Entity\Address;
 use App\Entity\Key\Account;
 use App\Entity\User\Collaborator;
 use App\Entity\User\Manager;
@@ -50,7 +51,12 @@ class Member extends Company
     /**
      * @ORM\OneToOne(targetEntity=Account::class, cascade={"persist"}, fetch="EAGER", inversedBy="member")
      */
-    protected ?Account $account = null;
+    private ?Account $account = null;
+
+    /**
+     * @ORM\OneToOne(targetEntity=Address::class, cascade={"persist"})
+     */
+    private ?Address $address = null;
 
     public static function getType(): string
     {
@@ -60,10 +66,16 @@ class Member extends Company
     public function __construct()
     {
         $this->account = new Account();
+        $this->address = new Address();
         $this->clients = new ArrayCollection();
         $this->managers = new ArrayCollection();
         $this->collaborators = new ArrayCollection();
         $this->salesPersons = new ArrayCollection();
+    }
+
+    public function getAddress(): Address
+    {
+        return $this->address;
     }
 
     public function getOrganization(): ?Organization

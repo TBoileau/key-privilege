@@ -12,6 +12,7 @@ use App\Repository\Company\MemberRepository;
 use App\Repository\User\SalesPersonRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -21,6 +22,10 @@ class CompanyType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            ->add("manualDelivery", CheckboxType::class, [
+                "label" => "Autoriser le client à saisir manuellement son adresse de livraison",
+                "required" => false
+            ])
             ->add("name", TextType::class, [
                 "label" => "Raison sociale :",
                 "empty_data" => "",
@@ -44,7 +49,7 @@ class CompanyType extends AbstractType
             }
 
             $builder->add("salesPerson", EntityType::class, $memberOptions + [
-                "required" => false,
+                "required" => true,
                 "label" => "Commercial(e) :",
                 "row_attr" => [
                     "class" => "mb-3"
