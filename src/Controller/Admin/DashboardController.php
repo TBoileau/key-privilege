@@ -13,6 +13,7 @@ use App\Entity\Key\Purchase;
 use App\Entity\Key\Transaction;
 use App\Entity\Key\Transfer;
 use App\Entity\Key\Wallet;
+use App\Entity\Question;
 use App\Entity\Rules;
 use App\Entity\User\Collaborator;
 use App\Entity\User\Customer;
@@ -47,6 +48,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Administrateurs', 'fa fa-user-shield', Administrator::class);
         yield MenuItem::linkToCrud('Utilisateurs', 'fa fa-users', User::class);
         yield MenuItem::linkToCrud('Règlements', 'fa fa-file', Rules::class);
+        yield MenuItem::linkToCrud('FAQ', 'fa fa-question-circle', Question::class);
         yield MenuItem::section('Adhérents');
         yield MenuItem::linkToCrud('Groupements', 'fa fa-building', Organization::class);
         yield MenuItem::linkToCrud('Adhérents', 'fa fa-building', Member::class);
