@@ -53,7 +53,13 @@ class MemberTest extends WebTestCase
         $client->submitForm("Créer", [
             "Member[name]" => "Raison sociale",
             "Member[companyNumber]" => "44306184100047",
-            "Member[organization]" => 1
+            "Member[organization]" => 1,
+            "Member[address_name]" => "Adresse",
+            "Member[address_streetAddress]" => "1 rue de la mairie",
+            "Member[address_zipCode]" => "75000",
+            "Member[address_locality]" => "Paris",
+            "Member[address_phone]" => "0123456789",
+            "Member[address_email]" => "email@email.com"
         ]);
 
         $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
@@ -72,7 +78,13 @@ class MemberTest extends WebTestCase
         $client->submitForm("Sauvegarder les modifications", [
             "Member[name]" => "Raison sociale",
             "Member[companyNumber]" => "42878504200105",
-            "Member[organization]" => 1
+            "Member[organization]" => 1,
+            "Member[address_name]" => "Adresse",
+            "Member[address_streetAddress]" => "1 rue de la mairie",
+            "Member[address_zipCode]" => "75000",
+            "Member[address_locality]" => "Paris",
+            "Member[address_phone]" => "0123456789",
+            "Member[address_email]" => "email@email.com"
         ]);
 
         $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);

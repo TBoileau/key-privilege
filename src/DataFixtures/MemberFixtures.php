@@ -20,10 +20,18 @@ class MemberFixtures extends Fixture implements DependentFixtureInterface
         /** @var Organization $organization */
         $organization = $this->getReference("organization");
         for ($i = 1; $i <= 5; $i++) {
+            /** @var Member $member */
             $member = (new Member())
                 ->setOrganization($organization)
                 ->setName($faker->company)
                 ->setCompanyNumber("44306184100047");
+            $member->getAddress()
+                ->setName(sprintf("Adresse %d", $i))
+                ->setLocality("Paris")
+                ->setZipCode("75000")
+                ->setEmail("email@email.com")
+                ->setPhone("0123456789")
+                ->setStreetAddress("1 rue de la mairie");
             $manager->persist($member);
             $this->addReference(sprintf("member_%d", $i), $member);
         }

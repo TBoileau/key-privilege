@@ -11,6 +11,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -53,6 +54,15 @@ class MemberCrudController extends AbstractCrudController
             ->hideOnForm();
         yield AssociationField::new('organization', 'Groupement')
             ->setCrudController(OrganizationCrudController::class);
+        yield FormField::addPanel('Adresse');
+        yield TextField::new("address.name", "Nom")->hideOnIndex();
+        yield TextField::new("address.streetAddress", "Adresse")->hideOnIndex();
+        yield TextField::new("address.restAddress", "Complément d'adresse")->hideOnIndex();
+        yield TextField::new("address.zipCode", "Code postal")->hideOnIndex();
+        yield TextField::new("address.locality", "Ville")->hideOnIndex();
+        yield EmailField::new("address.email", "Email")->hideOnIndex();
+        yield TextField::new("address.phone", "Téléphone")->hideOnIndex();
+        yield FormField::addPanel('Accès');
         yield AssociationField::new("clients", "Clients")
             ->setTemplatePath("admin/field/member_clients.html.twig")
             ->setCrudController(ClientCrudController::class)

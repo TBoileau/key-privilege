@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity\Order;
 
+use App\Entity\Address;
 use App\Entity\Shop\Product;
 use App\Entity\User\User;
 use DateTimeImmutable;
@@ -45,6 +46,11 @@ class Order
      * @ORM\OneToMany(targetEntity=Line::class, mappedBy="order", cascade={"persist"})
      */
     private Collection $lines;
+
+    /**
+     * @ORM\OneToOne(targetEntity=Address::class, cascade={"persist"})
+     */
+    private ?Address $address = null;
 
     public function __construct()
     {
@@ -117,5 +123,16 @@ class Order
                 $this->lines->map(fn (Line $line) => $line->getTotal())->toArray()
             )
         );
+    }
+
+    public function getAddress(): ?Address
+    {
+        return $this->address;
+    }
+
+    public function setAddress(?Address $address): self
+    {
+        $this->address = $address;
+        return $this;
     }
 }
