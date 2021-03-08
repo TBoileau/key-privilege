@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
+use App\Admin\Field\OwnerField;
 use App\Admin\Field\TransactionsField;
 use App\Admin\Field\WalletsField;
 use App\Entity\Key\Account;
@@ -54,8 +55,7 @@ class AccountCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
-        yield AssociationField::new('user', 'Utilisateur')
-            ->setCrudController(UserCrudController::class);
+        yield OwnerField::new('owner', 'Propriétaire');
         yield DateTimeField::new('createdAt', 'Date de création');
         yield IntegerField::new("balance", "Solde en points");
         yield WalletsField::new("wallets", "Portefeuilles")->onlyOnDetail();

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity\Company;
 
+use App\Entity\Key\Account;
 use App\EntityListener\CompanyListener;
 use App\Validator\CompanyNumber;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -50,7 +51,18 @@ abstract class Company implements \Stringable
      */
     protected string $companyNumber;
 
+    /**
+     * @ORM\OneToOne(targetEntity=Account::class, cascade={"persist"}, fetch="EAGER", inversedBy="company")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    protected Account $account;
+
     abstract public static function getType(): string;
+
+    public function __construct()
+    {
+        $this->account = new Account();
+    }
 
     public function getId(): ?int
     {
@@ -93,5 +105,10 @@ abstract class Company implements \Stringable
     public function __toString(): string
     {
         return $this->name;
+    }
+
+    public function getAccount(): Account
+    {
+        return $this->account;
     }
 }

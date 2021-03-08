@@ -102,7 +102,7 @@ class PurchaseCrudController extends AbstractCrudController
     {
         yield TextField::new('reference', 'Référence')->onlyOnDetail();
         yield AssociationField::new("account", "Compte point")
-            ->setFormTypeOption("choice_label", fn (Account $account) => $account->getUser()->getFullName())
+            ->setFormTypeOption("choice_label", fn (Account $account) => $account->__toString())
             ->setCrudController(AccountCrudController::class);
         yield AssociationField::new("wallet", "Portefeuille")
             ->setCrudController(WalletCrudController::class)

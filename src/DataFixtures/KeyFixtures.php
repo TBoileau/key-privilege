@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\DataFixtures;
 
+use App\Entity\Company\Company;
 use App\Entity\Key\Purchase;
 use App\Entity\User\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -19,6 +20,20 @@ class KeyFixtures extends Fixture implements DependentFixtureInterface
 
     public function load(ObjectManager $manager): void
     {
+        /** @var array<Company> $companies */
+        $companies = $manager->getRepository(Company::class)->findAll();
+
+        foreach ($companies as $company) {
+            $purchase = (new Purchase())
+                ->setMode(Purchase::MODE_BANK_WIRE)
+                ->setAccount($company->getAccount())
+                ->setPoints(5000)
+                ->setState("accepted")
+                ->prepare();
+            $purchase->getWallet()->addTransaction($purchase);
+            $manager->persist($purchase);
+        }
+
         /** @var array<User> $users */
         $users = $manager->getRepository(User::class)->findAll();
 

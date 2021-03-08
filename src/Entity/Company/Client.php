@@ -39,6 +39,7 @@ class Client extends Company
 
     public function __construct()
     {
+        parent::__construct();
         $this->customers = new ArrayCollection();
     }
 
