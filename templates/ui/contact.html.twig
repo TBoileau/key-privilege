@@ -1,6 +1,8 @@
-{% extends "layouts/page.html.twig" %}
+{% extends "layouts/%s.html.twig"|format(is_granted("ROLE_USER") ? "page" : "empty") %}
 
-{% set breadcrumbItems = [{ route: "contact", label: "Contact"}] %}
+{% if is_granted("ROLE_USER") %}
+    {% set breadcrumbItems = [{ route: "contact", label: "Contact"}] %}
+{% endif %}
 
 {% block content %}
     <div class="row">

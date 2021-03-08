@@ -18,13 +18,22 @@ class ContactType extends AbstractType
     {
         $builder
             ->add("name", TextType::class, [
-                "label" => "Votre nom :"
+                "label" => "Votre nom :",
+                "row_attr" => [
+                    "class" => "mb-3"
+                ]
             ])
             ->add("email", EmailType::class, [
-                "label" => "Votre adresse email :"
+                "label" => "Votre adresse email :",
+                "row_attr" => [
+                    "class" => "mb-3"
+                ]
             ])
             ->add("subject", TextType::class, [
-                "label" => "Objet :"
+                "label" => "Objet :",
+                "row_attr" => [
+                    "class" => "mb-3"
+                ]
             ])
             ->add("content", TextareaType::class, [
                 "label" => "Votre message :"
