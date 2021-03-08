@@ -47,10 +47,10 @@
                         <div class="col-12 col-sm-6 col-lg-4 mb-4 mb-lg-0">
                             <div class="h-100 d-flex flex-column align-items-center justify-content-around">
                                 {% if is_granted("ROLE_KEY_PURCHASE") %}
-                                    <a href="{{ path("key_purchase") }}" class="btn w-100 d-block btn-primary mb-3 mb-lg-0">Acheter des clés</a>
+                                    <a href="{{ path("key_purchase") }}" class="btn w-100 d-block btn-primary mb-3">Acheter des clés</a>
                                 {% endif %}
                                 {% if is_granted("ROLE_KEY_TRANSFER") %}
-                                    <a href="#" class="btn w-100 d-block btn-primary mb-3 mb-lg-0">Transférer des clés</a>
+                                    <a href="{{ path("key_transfer") }}" class="btn w-100 d-block btn-primary mb-3">Transférer des clés</a>
                                 {% endif %}
                                 <a href="#" class="btn w-100 d-block btn-primary">Historique des transactions</a>
                             </div>

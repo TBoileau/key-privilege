@@ -5,8 +5,11 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\Key\Purchase;
+use App\Entity\Key\Transfer;
 use App\Entity\User\Manager;
 use App\Form\Key\PurchaseType;
+use App\Form\Key\TransferType;
+use App\UseCase\TransferPointsInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -27,6 +30,33 @@ class KeyController extends AbstractController
     public function index(): Response
     {
         return $this->render("ui/key/index.html.twig");
+    }
+
+    /**
+     * @Route("/transferer", name="key_transfer")
+     * @IsGranted("ROLE_KEY_TRANSFER")
+     */
+    public function transfer(Request $request, TransferPointsInterface $transferPoints): Response
+    {
+        /** @var Manager $manager */
+        $manager = $this->getUser();
+
+        $transfer = new Transfer();
+
+        $form = $this->createForm(TransferType::class, $transfer, ["manager" => $manager])->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $transferPoints->execute($transfer);
+            $this->getDoctrine()->getManager()->persist($transfer);
+            $this->getDoctrine()->getManager()->flush();
+            $this->addFlash(
+                "success",
+                "Le transfert de clés a été effectué avec succès."
+            );
+            return $this->redirectToRoute("key_index");
+        }
+
+        return $this->render("ui/key/transfer.html.twig", ["form" => $form->createView()]);
     }
 
     /**

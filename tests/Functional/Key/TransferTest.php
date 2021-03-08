@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Functional\Key;
 
 use App\Entity\Company\Member;
+use App\Entity\Key\Account;
 use App\Entity\Key\Purchase;
 use App\Entity\User\Customer;
 use App\Entity\User\Manager;
@@ -16,9 +17,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class PurchaseTest extends WebTestCase
+class TransferTest extends WebTestCase
 {
-    public function testAsManagerIfAccessAddIsSuccessful(): void
+    public function testAsManagerIfTransferIsSuccessful(): void
     {
         $client = static::createClient();
 
@@ -40,15 +41,14 @@ class PurchaseTest extends WebTestCase
         /** @var UrlGeneratorInterface $urlGenerator */
         $urlGenerator = $client->getContainer()->get("router");
 
-        $client->request(Request::METHOD_GET, $urlGenerator->generate("key_purchase"));
+        $client->request(Request::METHOD_GET, $urlGenerator->generate("key_transfer"));
 
         $this->assertResponseIsSuccessful();
 
-        $client->submitForm("Acheter", [
-            "purchase[points]" => 1000,
-            "purchase[mode]" => Purchase::MODE_CHECK,
-            "purchase[internReference]" => "ref",
-            "purchase[account]" => 2
+        $client->submitForm("Transférer", [
+            "transfer[points]" => 1000,
+            "transfer[from]" => 1,
+            "transfer[to]" => 2
         ]);
 
         $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
@@ -56,16 +56,14 @@ class PurchaseTest extends WebTestCase
         /** @var EntityManagerInterface $entityManager */
         $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
 
-        /** @var Purchase $purchase */
-        $purchase = $entityManager->getRepository(Purchase::class)->findBy([], ["id" => "desc"], 1)[0];
+        /** @var Account $account1 */
+        $account1 = $entityManager->find(Account::class, 1);
 
-        $this->assertEquals(1000, $purchase->getPoints());
-        $this->assertEquals("ref", $purchase->getInternReference());
-        $this->assertEquals("pending", $purchase->getState());
-        $this->assertEquals(Purchase::MODE_CHECK, $purchase->getMode());
-        $this->assertEquals(2, $purchase->getAccount()->getId());
-        $this->assertEquals(3, $purchase->getAccount()->getMember()->getId());
-        $this->assertEmailCount(1);
+        /** @var Account $account2 */
+        $account2 = $entityManager->find(Account::class, 2);
+
+        $this->assertEquals(6000, $account2->getBalance());
+        $this->assertEquals(4000, $account1->getBalance());
 
         $client->followRedirect();
 
@@ -90,11 +88,11 @@ class PurchaseTest extends WebTestCase
         /** @var UrlGeneratorInterface $urlGenerator */
         $urlGenerator = $client->getContainer()->get("router");
 
-        $client->request(Request::METHOD_GET, $urlGenerator->generate("key_purchase"));
+        $client->request(Request::METHOD_GET, $urlGenerator->generate("key_transfer"));
 
         $this->assertResponseIsSuccessful();
 
-        $client->submitForm("Acheter", $formData);
+        $client->submitForm("Transférer", $formData);
 
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
 
@@ -108,20 +106,29 @@ class PurchaseTest extends WebTestCase
     {
         yield [
             [
-                "purchase[points]" => 0,
-                "purchase[mode]" => Purchase::MODE_CHECK,
-                "purchase[internReference]" => "internReference"
+                "transfer[points]" => 0,
+                "transfer[from]" => 1,
+                "transfer[to]" => 6
             ],
             "Cette valeur doit être supérieure à 0."
         ];
 
         yield [
             [
-                "purchase[points]" => "",
-                "purchase[mode]" => Purchase::MODE_CHECK,
-                "purchase[internReference]" => "internReference"
+                "transfer[points]" => 1000,
+                "transfer[from]" => 1,
+                "transfer[to]" => 1
             ],
-            "Cette valeur n'est pas valide."
+            "Vous ne pouvez pas transférer des clés entre un seul compte clés."
+        ];
+
+        yield [
+            [
+                "transfer[points]" => 6000,
+                "transfer[from]" => 1,
+                "transfer[to]" => 6
+            ],
+            "Le montant de clés ne peut pas être supérieur au solde du compte clés émetteur."
         ];
     }
 }

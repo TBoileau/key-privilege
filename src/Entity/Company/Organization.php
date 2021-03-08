@@ -26,7 +26,6 @@ class Organization extends Company
 
     public function __construct()
     {
-        parent::__construct();
         $this->members = new ArrayCollection();
     }
 

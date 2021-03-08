@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity\Key;
 
-use App\Entity\Company\Company;
+use App\Entity\Company\Member;
 use App\Entity\User\User;
 use App\Repository\Key\AccountRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -61,9 +61,9 @@ class Account implements Stringable
     private ?User $user;
 
     /**
-     * @ORM\OneToOne(targetEntity=Company::class, mappedBy="account")
+     * @ORM\OneToOne(targetEntity=Member::class, mappedBy="account")
      */
-    private ?Company $company;
+    private ?Member $member;
 
     public function __construct()
     {
@@ -120,14 +120,14 @@ class Account implements Stringable
         return $this->user;
     }
 
-    public function getCompany(): ?Company
+    public function getMember(): ?Member
     {
-        return $this->company;
+        return $this->member;
     }
 
-    public function getOwner(): User | Company
+    public function getOwner(): User | Member
     {
-        return $this->user ?? $this->company;
+        return $this->user ?? $this->member;
     }
 
     public function __toString(): string
@@ -135,6 +135,6 @@ class Account implements Stringable
         if ($this->user !== null) {
             return sprintf("Utilisateur : %s", $this->user->getFullName());
         }
-        return sprintf("Société : %s", $this->company->getName());
+        return sprintf("Société : %s", $this->member->getName());
     }
 }

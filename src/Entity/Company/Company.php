@@ -51,18 +51,7 @@ abstract class Company implements \Stringable
      */
     protected string $companyNumber;
 
-    /**
-     * @ORM\OneToOne(targetEntity=Account::class, cascade={"persist"}, fetch="EAGER", inversedBy="company")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    protected Account $account;
-
     abstract public static function getType(): string;
-
-    public function __construct()
-    {
-        $this->account = new Account();
-    }
 
     public function getId(): ?int
     {
@@ -105,10 +94,5 @@ abstract class Company implements \Stringable
     public function __toString(): string
     {
         return $this->name;
-    }
-
-    public function getAccount(): Account
-    {
-        return $this->account;
     }
 }

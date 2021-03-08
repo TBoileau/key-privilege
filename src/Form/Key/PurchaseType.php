@@ -44,9 +44,9 @@ class PurchaseType extends AbstractType
             $builder->add("account", EntityType::class, [
                 "label" => "Compte clé :",
                 "class" => Account::class,
-                "choice_name" => fn (Account $account) => $account->getCompany()->getName(),
+                "choice_name" => fn (Account $account) => $account->getMember()->getName(),
                 "query_builder" => fn (AccountRepository $repository) => $repository
-                    ->createQueryBuilderAccountByManager($manager)
+                    ->createQueryBuilderAccountByManagerForPurchase($manager)
             ]);
         }
     }
