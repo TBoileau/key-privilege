@@ -69,7 +69,7 @@ class PurchaseTest extends WebTestCase
 
         $client->followRedirect();
 
-        $this->assertRouteSame("key_purchase");
+        $this->assertRouteSame("key_index");
     }
 
     /**

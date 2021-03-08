@@ -22,8 +22,16 @@ use Symfony\Component\Routing\Annotation\Route;
 class KeyController extends AbstractController
 {
     /**
+     * @Route("/", name="key_index")
+     */
+    public function index(): Response
+    {
+        return $this->render("ui/key/index.html.twig");
+    }
+
+    /**
      * @Route("/acheter", name="key_purchase")
-     * @IsGranted("ROLE_KEY_BUY")
+     * @IsGranted("ROLE_KEY_PURCHASE")
      */
     public function purchase(Request $request, MailerInterface $mailer): Response
     {
@@ -56,7 +64,7 @@ class KeyController extends AbstractController
                     Dès réception du paiement, les clés vous seront crédités.
                 "
             );
-            return $this->redirectToRoute("key_purchase");
+            return $this->redirectToRoute("key_index");
         }
 
         return $this->render("ui/key/purchase.html.twig", ["form" => $form->createView()]);

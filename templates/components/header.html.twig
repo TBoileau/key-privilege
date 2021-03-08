@@ -52,7 +52,8 @@
                             Compte clés
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="dropdown-keys">
-                            {% if is_granted("ROLE_KEY_BUY") %}
+                            <li><a class="dropdown-item" href="{{ path("key_index") }}">Tableau de bord</a></li>
+                            {% if is_granted("ROLE_KEY_PURCHASE") %}
                                 <li><a class="dropdown-item" href="{{ path("key_purchase") }}">Acheter des clés</a></li>
                             {% endif %}
                         </ul>
