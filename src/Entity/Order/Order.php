@@ -55,7 +55,7 @@ class Order
     private Collection $transactions;
 
     /**
-     * @ORM\OneToOne(targetEntity=Address::class, cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity=Address::class, cascade={"persist"})
      */
     private ?Address $address = null;
 

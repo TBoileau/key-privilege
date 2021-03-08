@@ -13,6 +13,7 @@ use App\Entity\Key\Purchase;
 use App\Entity\Key\Transaction;
 use App\Entity\Key\Transfer;
 use App\Entity\Key\Wallet;
+use App\Entity\Order\Order;
 use App\Entity\Question;
 use App\Entity\Rules;
 use App\Entity\User\Collaborator;
@@ -64,5 +65,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Portefeuilles', 'fa fa-bank', Wallet::class);
         yield MenuItem::linkToCrud('Transactions', 'fa fa-list', Transaction::class);
         yield MenuItem::linkToCrud('Transferts', 'fa fa-exchange', Transfer::class);
+        yield MenuItem::section('Commandes');
+        yield MenuItem::linkToCrud('Commandes', 'fa fa-bell', Order::class);
     }
 }
