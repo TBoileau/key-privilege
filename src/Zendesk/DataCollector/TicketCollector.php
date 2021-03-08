@@ -32,6 +32,9 @@ class TicketCollector extends AbstractDataCollector
         return $this->data["tickets"] ?? [];
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     public static function getTemplate(): ?string
     {
         return 'data_collector/tickets.html.twig';

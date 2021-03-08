@@ -18,6 +18,9 @@ class TransferSubscriber implements EventSubscriberInterface
         $this->transferPoint = $transferPoint;
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     public static function getSubscribedEvents(): array
     {
         return [BeforeEntityPersistedEvent::class => ['prePersist']];
