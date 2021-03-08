@@ -1,0 +1,13 @@
+{% if field.value == "cart" %}
+    <span class="badge badge-secondary">Panier non validé</span>
+{% elseif field.value == "pending" %}
+    <span class="badge badge-primary">En cours de traitement</span>
+{% elseif field.value == "on_delivery" %}
+    <span class="badge badge-info">En cours d'acheminement</span>
+{% elseif field.value == "delivered" %}
+    <span class="badge badge-success">Livrée</span>
+{% elseif field.value == "canceled" %}
+    <span class="badge badge-warning">Annulé</span>
+{% else %}
+    <span class="badge badge-danger">Incident de livraison</span>
+{% endif %}

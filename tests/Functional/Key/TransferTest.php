@@ -124,7 +124,7 @@ class TransferTest extends WebTestCase
 
         yield [
             [
-                "transfer[points]" => 6000,
+                "transfer[points]" => 8000,
                 "transfer[from]" => 1,
                 "transfer[to]" => 6
             ],

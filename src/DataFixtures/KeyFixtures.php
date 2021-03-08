@@ -42,7 +42,7 @@ class KeyFixtures extends Fixture implements DependentFixtureInterface
             $purchase = (new Purchase())
                 ->setMode(Purchase::MODE_BANK_WIRE)
                 ->setAccount($user->getAccount())
-                ->setPoints(5000)
+                ->setPoints(7000)
                 ->setState("accepted")
                 ->prepare();
             $purchase->getWallet()->addTransaction($purchase);
