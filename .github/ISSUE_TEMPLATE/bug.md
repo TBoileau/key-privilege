@@ -12,10 +12,10 @@ Rédiger une description synthétique du bug.
 
 **Scénario à reproduirfe**
 Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
+1. Aller sur la page '...'
+2. Cliquer sur '....'
+3. Scroller vers '....'
+4. Voir l'erreur
 
 **Comportement attendu**
 Décrire précisément le comportement attendu par la fonctionnalité/page.
