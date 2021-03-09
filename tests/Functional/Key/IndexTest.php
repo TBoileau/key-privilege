@@ -18,7 +18,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class IndexTest extends WebTestCase
 {
-    public function testAsManagerMultiMemberIfAccessAddIsSuccessful(): void
+    public function testAsManagerMultiMemberIfKeyAccountDashboardWorks(): void
     {
         $client = static::createClient();
 
@@ -45,7 +45,7 @@ class IndexTest extends WebTestCase
         $this->assertResponseIsSuccessful();
     }
 
-    public function testAsManagerMonoMemberIfAccessAddIsSuccessful(): void
+    public function testAsManagerMonoMemberIfKeyAccountDashboardWorks(): void
     {
         $client = static::createClient();
 

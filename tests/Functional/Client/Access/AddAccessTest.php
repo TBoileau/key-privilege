@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class AddAccessTest extends WebTestCase
 {
-    public function testAsSalesPersonIfAccessAddIsSuccessful(): void
+    public function testAsSalesPersonIfAddAccessIsSuccessful(): void
     {
         $client = static::createClient();
 
@@ -62,7 +62,7 @@ class AddAccessTest extends WebTestCase
         $this->assertRouteSame("client_access_list");
     }
 
-    public function testAsManagerIfAccessAddIsSuccessful(): void
+    public function testAsManagerIfAddAccessIsSuccessful(): void
     {
         $client = static::createClient();
 
@@ -117,7 +117,7 @@ class AddAccessTest extends WebTestCase
     /**
      * @dataProvider provideFailedData
      */
-    public function testIfAccessAddIsFailed(array $formData, string $errorMessage): void
+    public function testIfAccessAddFailed(array $formData, string $errorMessage): void
     {
         $client = static::createClient();
 

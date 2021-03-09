@@ -9,6 +9,7 @@ use App\Entity\Order\Order;
 use App\Entity\Shop\Product;
 use App\Entity\User\Customer;
 use App\Entity\User\Manager;
+use App\Zendesk\DataCollector\TicketCollector;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -18,7 +19,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class OrderTest extends WebTestCase
 {
-    public function testIfOrderIsSuccessful(): void
+    public function testAsManagerIfPassingOrderIsSuccessful(): void
     {
         $client = static::createClient();
 
@@ -93,9 +94,15 @@ class OrderTest extends WebTestCase
             $orignalBalance - $order->getTotal(),
             $order->getUser()->getAccount()->getBalance()
         );
+
+        $client->followRedirect();
+
+        $client->clickLink("Détail");
+
+        $this->assertResponseIsSuccessful();
     }
 
-    public function testAsCustomerIfOrderIsSuccessful(): void
+    public function testAsCustomerIfPassingOrderIsSuccessful(): void
     {
         $client = static::createClient();
 
@@ -184,9 +191,15 @@ class OrderTest extends WebTestCase
             $orignalBalance - $order->getTotal(),
             $order->getUser()->getAccount()->getBalance()
         );
+
+        $client->followRedirect();
+
+        $client->clickLink("Détail");
+
+        $this->assertResponseIsSuccessful();
     }
 
-    public function testAsCustomerWithoutManualDeliveryIfOrderIsSuccessful(): void
+    public function testAsCustomerWithoutManualDeliveryIfPassingOrderIsSuccessful(): void
     {
         $client = static::createClient();
 
@@ -281,5 +294,26 @@ class OrderTest extends WebTestCase
             $order->getUser()->getAccount()->getBalance()
         );
         $this->assertEquals($customer->getClient()->getMember()->getAddress(), $order->getAddress());
+
+        $client->followRedirect();
+
+        $client->clickLink("Détail");
+
+        $this->assertResponseIsSuccessful();
+
+        $client->enableProfiler();
+
+        $client->clickLink("Déclencher une demande de SAV");
+
+        $client->submitForm("Envoyer", [
+            "contact[content]" => "Erreur"
+        ]);
+
+        $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
+
+        /** @var TicketCollector $dataCollector */
+        $dataCollector = $client->getProfile()->getCollector(TicketCollector::class);
+
+        $this->assertCount(1, $dataCollector->getTickets());
     }
 }

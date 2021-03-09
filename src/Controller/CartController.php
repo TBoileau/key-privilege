@@ -96,7 +96,7 @@ class CartController extends AbstractController
             $orderStateMachine->apply($order, "valid_cart");
             $this->getDoctrine()->getManager()->flush();
             $this->addFlash("success", "Votre commande a été enregistrée avec succès.");
-            return $this->redirectToRoute("home");
+            return $this->redirectToRoute("order_index");
         }
 
         return $this->render("ui/cart/index.html.twig", [

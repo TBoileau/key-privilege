@@ -19,7 +19,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class TransferTest extends WebTestCase
 {
-    public function testAsManagerIfTransferIsSuccessful(): void
+    public function testAsManagerIfTransferKeysIsSuccessful(): void
     {
         $client = static::createClient();
 
@@ -73,7 +73,7 @@ class TransferTest extends WebTestCase
     /**
      * @dataProvider provideFailedData
      */
-    public function testIfPurchaseIsFailed(array $formData, string $errorMessage): void
+    public function testIfTransferKeysIsFailed(array $formData, string $errorMessage): void
     {
         $client = static::createClient();
 

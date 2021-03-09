@@ -151,4 +151,14 @@ class Order
         $this->address = $address;
         return $this;
     }
+
+    public function getNumberOfProducts(): int
+    {
+        return intval(array_sum($this->lines->map(fn (Line $line) => $line->getQuantity())->toArray()));
+    }
+
+    public function getReference(): string
+    {
+        return sprintf("C%08d", $this->id);
+    }
 }

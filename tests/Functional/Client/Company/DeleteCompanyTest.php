@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class DeleteCompanyTest extends WebTestCase
 {
-    public function testIfCompanyDeleteIsSuccessful(): void
+    public function testIfDeleteCompanyIsSuccessful(): void
     {
         $client = static::createClient();
 
