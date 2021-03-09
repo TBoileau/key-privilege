@@ -28,7 +28,7 @@
                                 {% for order in orders %}
                                     {% if order.state != "cart" %}
                                         <tr>
-                                            <td class="text-center">{{ "%08d"|format(order.id) }}</td>
+                                            <td class="text-center">{{ order.reference }}</td>
                                             <td class="text-center">{{ order.createdAt|date("d/m/Y H:i") }}</td>
                                             <td class="text-center">{{ order.numberOfProducts }}</td>
                                             <td class="text-center">{{ order.total }} clés</td>

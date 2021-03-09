@@ -18,7 +18,7 @@
                                 <div class="list-group list-group-flush">
                                     <div class="list-group-item d-flex flex-column">
                                         <strong>Référence</strong>
-                                        <span>{{ "%08d"|format(order.id) }}</span>
+                                        <span>{{ order.reference }}</span>
                                     </div>
                                     <div class="list-group-item d-flex flex-column">
                                         <strong>Date</strong>
@@ -48,6 +48,11 @@
                                             <span class="badge bg-danger">Incident de livraison</span>
                                         {% endif %}
                                     </div>
+                                </div>
+                                <div class="card-footer text-end p-0">
+                                    <a href="{{ path("order_trigger_sav", { id: order.id }) }}" class="btn d-block btn-outline-danger rounded-0 border-0">
+                                        Déclencher une demande de SAV
+                                    </a>
                                 </div>
                             </div>
                         </div>
