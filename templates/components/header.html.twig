@@ -39,28 +39,6 @@
                     <li class="nav-item">
                         <a class="nav-link" aria-current="page" href="{{ path("home") }}">Accueil</a>
                     </li>
-                    {% if is_granted("ROLE_SHOP") %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ path("shop_index") }}">Boutique</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ path("cart_index") }}">Panier</a>
-                        </li>
-                    {% endif %}
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="dropdown-keys" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Compte clés
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="dropdown-keys">
-                            <li><a class="dropdown-item" href="{{ path("key_index") }}">Tableau de bord</a></li>
-                            {% if is_granted("ROLE_KEY_PURCHASE") %}
-                                <li><a class="dropdown-item" href="{{ path("key_purchase") }}">Acheter des clés</a></li>
-                            {% endif %}
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ path("account_index") }}">Mon compte</a>
-                    </li>
                     {% if is_granted("ROLE_CLIENT_ACCESS") or is_granted("ROLE_CLIENT_COMPANY") %}
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="dropdown-clients" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -81,6 +59,36 @@
                             </ul>
                         </li>
                     {% endif %}
+                    {% if is_granted("ROLE_SHOP") %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="dropdown-shop" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Boutique
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="dropdown-shop">
+                                <li><a class="dropdown-item" href="{{ path("shop_index") }}">Boutique</a></li>
+                                <li><a class="dropdown-item" href="{{ path("cart_index") }}">Panier</a></li>
+                                <li><a class="dropdown-item" href="{{ path("order_index") }}">Commandes</a></li>
+                            </ul>
+                        </li>
+                    {% endif %}
+                    {% if not is_granted("ROLE_KEY_PURCHASE") %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path("key_index") }}">Compte clés</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="dropdown-keys" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Compte clés
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="dropdown-keys">
+                                <li><a class="dropdown-item" href="{{ path("key_index") }}">Tableau de bord</a></li>
+                                <li><a class="dropdown-item" href="{{ path("key_purchase") }}">Acheter des clés</a></li>
+                            </ul>
+                        </li>
+                    {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path("account_index") }}">Mon compte</a>
+                    </li>
                     <li class="nav-item d-lg-none">
                         <a class="nav-link" href="{{ path("security_logout") }}">Se déconnecter</a>
                     </li>

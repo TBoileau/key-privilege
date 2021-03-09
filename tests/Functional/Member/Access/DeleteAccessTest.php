@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class DeleteAccessTest extends WebTestCase
 {
-    public function testIfAccessListIsSuccessful(): void
+    public function testIfDeletingAccessListIsSuccessful(): void
     {
         $client = static::createClient();
 

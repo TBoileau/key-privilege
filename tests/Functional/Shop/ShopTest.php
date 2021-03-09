@@ -74,7 +74,7 @@ class ShopTest extends WebTestCase
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
     }
 
-    public function testIfProductShowIsSuccessful(): void
+    public function testIfProductShowAndAddProductToCartIsSuccessful(): void
     {
         $client = static::createClient();
 

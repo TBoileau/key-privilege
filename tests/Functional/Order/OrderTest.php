@@ -18,7 +18,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class OrderTest extends WebTestCase
 {
-    public function testIfOrderIsSuccessful(): void
+    public function testAsManagerIfPassingOrderIsSuccessful(): void
     {
         $client = static::createClient();
 
@@ -93,9 +93,15 @@ class OrderTest extends WebTestCase
             $orignalBalance - $order->getTotal(),
             $order->getUser()->getAccount()->getBalance()
         );
+
+        $client->followRedirect();
+
+        $client->clickLink("Détail");
+
+        $this->assertResponseIsSuccessful();
     }
 
-    public function testAsCustomerIfOrderIsSuccessful(): void
+    public function testAsCustomerIfPassingOrderIsSuccessful(): void
     {
         $client = static::createClient();
 
@@ -184,9 +190,15 @@ class OrderTest extends WebTestCase
             $orignalBalance - $order->getTotal(),
             $order->getUser()->getAccount()->getBalance()
         );
+
+        $client->followRedirect();
+
+        $client->clickLink("Détail");
+
+        $this->assertResponseIsSuccessful();
     }
 
-    public function testAsCustomerWithoutManualDeliveryIfOrderIsSuccessful(): void
+    public function testAsCustomerWithoutManualDeliveryIfPassingOrderIsSuccessful(): void
     {
         $client = static::createClient();
 
@@ -281,5 +293,11 @@ class OrderTest extends WebTestCase
             $order->getUser()->getAccount()->getBalance()
         );
         $this->assertEquals($customer->getClient()->getMember()->getAddress(), $order->getAddress());
+
+        $client->followRedirect();
+
+        $client->clickLink("Détail");
+
+        $this->assertResponseIsSuccessful();
     }
 }

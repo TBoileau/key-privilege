@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class HomeTest extends WebTestCase
 {
-    public function testIfContactFormWorks(): void
+    public function testIfHomePageWorks(): void
     {
         $client = static::createClient();
 

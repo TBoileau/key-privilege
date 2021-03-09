@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class UpdateAccessTest extends WebTestCase
 {
-    public function testAsManagerIfAccessDenied(): void
+    public function testAsManagerIfUpdateAccessIsForbidden(): void
     {
         $client = static::createClient();
 
@@ -36,7 +36,7 @@ class UpdateAccessTest extends WebTestCase
         $this->assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
     }
 
-    public function testAsManagerIfAccessAddIsSuccessful(): void
+    public function testAsManagerIfUpdateAccessIsSuccessful(): void
     {
         $client = static::createClient();
 
@@ -90,7 +90,7 @@ class UpdateAccessTest extends WebTestCase
     /**
      * @dataProvider provideFailedData
      */
-    public function testIfAccessAddIsFailed(array $formData, string $errorMessage): void
+    public function testIfAddAccessIsFailed(array $formData, string $errorMessage): void
     {
         $client = static::createClient();
 

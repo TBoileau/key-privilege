@@ -22,7 +22,7 @@ class AddAccessTest extends WebTestCase
     /**
      * @dataProvider provideRoles
      */
-    public function testAsManagerIfAccessAddIsSuccessful(string $role, string $class): void
+    public function testAsManagerIfAddingAccessIsSuccessful(string $role, string $class): void
     {
         $client = static::createClient();
 
@@ -86,7 +86,7 @@ class AddAccessTest extends WebTestCase
     /**
      * @dataProvider provideFailedData
      */
-    public function testIfAccessAddIsFailed(array $formData, string $errorMessage): void
+    public function testIfAddingAccessFailed(array $formData, string $errorMessage): void
     {
         $client = static::createClient();
 

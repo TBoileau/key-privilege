@@ -26,7 +26,7 @@ analyze-windows:
 .PHONY: tests
 tests:
 	vendor/bin/behat
-	php bin/phpunit
+	php bin/phpunit --testdox
 
 fixtures-test:
 	php bin/console doctrine:fixtures:load -n --env=test
