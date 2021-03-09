@@ -15,7 +15,7 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class LogAsAccessTest extends WebTestCase
 {
-    public function testIfLogAsIsSuccessful(): void
+    public function testIfLogAsUserIsSuccessful(): void
     {
         $client = static::createClient();
 

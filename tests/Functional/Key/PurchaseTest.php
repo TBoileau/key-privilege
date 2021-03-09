@@ -18,7 +18,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class PurchaseTest extends WebTestCase
 {
-    public function testAsManagerIfAccessAddIsSuccessful(): void
+    public function testAsManagerIfPurchaseKeysIsSuccessful(): void
     {
         $client = static::createClient();
 
@@ -75,7 +75,7 @@ class PurchaseTest extends WebTestCase
     /**
      * @dataProvider provideFailedData
      */
-    public function testIfPurchaseIsFailed(array $formData, string $errorMessage): void
+    public function testIfPurchaseKeysFailed(array $formData, string $errorMessage): void
     {
         $client = static::createClient();
 

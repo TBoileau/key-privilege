@@ -1,0 +1,96 @@
+{% extends "layouts/page.html.twig" %}
+
+{% set breadcrumbItems = [
+    { route: "order_index", label: "Commandes"},
+    { route: "order_detail", routeParams: { id: order.id }, label: "Détail"}
+] %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-12">
+            <section class="section">
+                <h1 class="section-header">Commandes</h1>
+                <div class="section-body">
+                    <div class="row">
+                        <div class="col-12 col-md-4">
+                            <div class="card">
+                                <h2 class="card-header">Détail</h2>
+                                <div class="list-group list-group-flush">
+                                    <div class="list-group-item d-flex flex-column">
+                                        <strong>Référence</strong>
+                                        <span>{{ order.reference }}</span>
+                                    </div>
+                                    <div class="list-group-item d-flex flex-column">
+                                        <strong>Date</strong>
+                                        <span>{{ order.createdAt|date("d/m/Y H:i") }}</span>
+                                    </div>
+                                    <div class="list-group-item d-flex flex-column">
+                                        <strong>Nombre de produits</strong>
+                                        <span>{{ order.numberOfProducts }} produits</span>
+                                    </div>
+                                    <div class="list-group-item d-flex flex-column">
+                                        <strong>Total</strong>
+                                        <span>{{ order.total }} clés</span>
+                                    </div>
+                                    <div class="list-group-item d-flex flex-column align-items-start">
+                                        <strong>Statut</strong>
+                                        {% if order.state == "cart" %}
+                                            <span class="badge bg-secondary">Panier non validé</span>
+                                        {% elseif order.state == "pending" %}
+                                            <span class="badge bg-primary">En cours de traitement</span>
+                                        {% elseif order.state == "on_delivery" %}
+                                            <span class="badge bg-info">En cours d'acheminement</span>
+                                        {% elseif order.state == "delivered" %}
+                                            <span class="badge bg-success">Livrée</span>
+                                        {% elseif order.state == "canceled" %}
+                                            <span class="badge bg-warning">Annulé</span>
+                                        {% else %}
+                                            <span class="badge bg-danger">Incident de livraison</span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="card-footer text-end p-0">
+                                    <a href="{{ path("order_trigger_sav", { id: order.id }) }}" class="btn d-block btn-outline-danger rounded-0 border-0">
+                                        Déclencher une demande de SAV
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-8">
+                            <div class="card">
+                                <h2 class="card-header">Liste des produits</h2>
+                                <div class="card-body p-0">
+                                    <table class="table table-hover mb-0" data-role="accessList">
+                                        <thead>
+                                        <tr>
+                                            <th class="text-center">Produit</th>
+                                            <th class="text-center">Montant unitaire</th>
+                                            <th class="text-center">Quantité</th>
+                                            <th class="text-center">Total</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for line in order.lines %}
+                                            <tr>
+                                                <td class="text-center">{{ line.product.brand.name }} - {{ line.product.name }}</td>
+                                                <td class="text-center">{{ line.amount }} clés</td>
+                                                <td class="text-center">{{ line.quantity }}</td>
+                                                <td class="text-center">{{ order.total }} clés</td>
+                                            </tr>
+                                        {% else %}
+                                            <tr>
+                                                <td class="text-center" colspan="4">Aucun résultat</td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+{% endblock %}
+

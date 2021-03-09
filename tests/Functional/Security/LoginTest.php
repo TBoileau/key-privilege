@@ -35,7 +35,7 @@ class LoginTest extends WebTestCase
         $this->assertRouteSame("home");
     }
 
-    public function testIfUserIsDeleted(): void
+    public function testIfLoginFailedWhenUserIsDeleted(): void
     {
         $client = static::createClient();
 
@@ -70,7 +70,7 @@ class LoginTest extends WebTestCase
         $this->assertSelectorTextContains("form[name=login] > .alert-danger", "Identifiants invalides.");
     }
 
-    public function testIfUserIsSuspended(): void
+    public function testIfLoginFailedWhenUserIsSuspended(): void
     {
         $client = static::createClient();
 
@@ -105,7 +105,7 @@ class LoginTest extends WebTestCase
         $this->assertSelectorTextContains("form[name=login] > .alert-danger", "Votre compte a été suspendu.");
     }
 
-    public function testIfEmailDoesNotExist(): void
+    public function testIfLoginFailedWhenEmailDoesNotExist(): void
     {
         $client = static::createClient();
 
@@ -130,7 +130,7 @@ class LoginTest extends WebTestCase
         $this->assertSelectorTextContains("form[name=login] > .alert-danger", "Identifiants invalides.");
     }
 
-    public function testIfPasswordIsWrong(): void
+    public function testIfLoginFailedWhenPasswordIsWrong(): void
     {
         $client = static::createClient();
 
@@ -155,7 +155,7 @@ class LoginTest extends WebTestCase
         $this->assertSelectorTextContains("form[name=login] > .alert-danger", "Identifiants invalides.");
     }
 
-    public function testIfCsrfIsWrong(): void
+    public function testIfLoginFailedWhenCsrfIsWrong(): void
     {
         $client = static::createClient();
 

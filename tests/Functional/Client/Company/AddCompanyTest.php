@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class AddCompanyTest extends WebTestCase
 {
-    public function testAsSalesPersonIfCompanyAddIsSuccessful(): void
+    public function testAsSalesPersonIfAddCompanyIsSuccessful(): void
     {
         $client = static::createClient();
 
@@ -66,7 +66,7 @@ class AddCompanyTest extends WebTestCase
         );
     }
 
-    public function testAsManagerIfCompanyAddIsSuccessful(): void
+    public function testAsManagerIfAddCompanyIsSuccessful(): void
     {
         $client = static::createClient();
 
@@ -128,7 +128,7 @@ class AddCompanyTest extends WebTestCase
     /**
      * @dataProvider provideFailedData
      */
-    public function testIfCompanyAddIsFailed(array $formData, string $errorMessage): void
+    public function testIfAddCompanyIsFailed(array $formData, string $errorMessage): void
     {
         $client = static::createClient();
 

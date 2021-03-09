@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class CompanyListTest extends WebTestCase
 {
-    public function testAsCollaboratorIfAccessListIsSuccessful(): void
+    public function testAsCollaboratorIfCompaniesListIsForbidden(): void
     {
         $client = static::createClient();
 
@@ -37,7 +37,7 @@ class CompanyListTest extends WebTestCase
         $this->assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
     }
 
-    public function testAsCustomerIfAccessListIsSuccessful(): void
+    public function testAsCustomerIfCompaniesListIsForbidden(): void
     {
         $client = static::createClient();
 
@@ -57,7 +57,7 @@ class CompanyListTest extends WebTestCase
         $this->assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
     }
 
-    public function testAsSalesPersonIfAccessListIsSuccessful(): void
+    public function testAsSalesPersonIfCompaniesListWorks(): void
     {
         $client = static::createClient();
 
@@ -91,7 +91,7 @@ class CompanyListTest extends WebTestCase
         $this->assertPage($crawler, 1, false, 1, false, false);
     }
 
-    public function testAsManagerIfAccessListIsSuccessful(): void
+    public function testAsManagerIfCompaniesListWorks(): void
     {
         $client = static::createClient();
 
