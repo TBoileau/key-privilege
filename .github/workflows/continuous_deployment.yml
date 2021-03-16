@@ -16,7 +16,7 @@ jobs:
           password: ${{ secrets.SSH_PASSWORD }}
           port: 22
           script: |
-            cd ~/key-privilege
+            cd ${{ secrets.SSH_DIRECTORY }}
             git checkout .
             git pull origin develop
             make deploy
