@@ -26,6 +26,9 @@ final class StopHitTransportFactory extends AbstractTransportFactory
     }
 
 
+    /**
+     * @return array<int, string>
+     */
     protected function getSupportedSchemes(): array
     {
         return ['spothit+api'];
