@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace App\Entity\Company;
 
-use App\Entity\Key\Account;
 use App\EntityListener\CompanyListener;
 use App\Validator\CompanyNumber;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
+use Stringable;
 use Symfony\Component\Validator\Constraints as Assert;
+
+use function Symfony\Component\String\u;
 
 /**
  * @ORM\Entity
@@ -22,7 +22,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\DiscriminatorColumn(name="discr", type="string")
  * @ORM\DiscriminatorMap({"client"=Client::class, "member"=Member::class, "organization"=Organization::class})
  */
-abstract class Company implements \Stringable
+abstract class Company implements Stringable
 {
     use SoftDeleteableEntity;
 
@@ -60,7 +60,7 @@ abstract class Company implements \Stringable
 
     public function getName(): string
     {
-        return $this->name;
+        return u($this->name)->upper()->toString();
     }
 
     public function setName(string $name): self
