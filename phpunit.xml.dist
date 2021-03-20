@@ -8,6 +8,7 @@
         <exclude>
             <directory>src/DataFixtures</directory>
             <directory>src/Entity</directory>
+            <directory>src/Mailer</directory>
             <file>src/Kernel.php</file>
         </exclude>
         <report>

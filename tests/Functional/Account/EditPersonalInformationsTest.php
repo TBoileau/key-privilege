@@ -51,10 +51,10 @@ class EditPersonalInformationsTest extends WebTestCase
         $user = $entityManager->find(User::class, 1);
 
         $this->assertNotNull($user);
-        $this->assertEquals("Bernard", $user->getFirstName());
-        $this->assertEquals("Duchemin", $user->getLastName());
+        $this->assertEquals("BERNARD", $user->getFirstName());
+        $this->assertEquals("DUCHEMIN", $user->getLastName());
         $this->assertEquals("edit@email.com", $user->getEmail());
-        $this->assertEquals("Bernard Duchemin", $user->getFullName());
+        $this->assertEquals("BERNARD DUCHEMIN", $user->getFullName());
 
         $client->followRedirect();
 

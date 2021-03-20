@@ -65,8 +65,8 @@ class AddAccessTest extends WebTestCase
         /** @var Collaborator|SalesPerson|Administrator $user */
         $user = $entityManager->getRepository($class)->findOneByEmail("new@email.com");
 
-        $this->assertEquals("Prénom", $user->getFirstName());
-        $this->assertEquals("Nom", $user->getLastName());
+        $this->assertEquals("PRÉNOM", $user->getFirstName());
+        $this->assertEquals("NOM", $user->getLastName());
         $this->assertEquals("new@email.com", $user->getEmail());
         $this->assertEquals(2, $user->getMember()->getId());
         $this->assertEmailCount(1);

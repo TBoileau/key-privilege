@@ -19,6 +19,7 @@ use Stringable;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
 use function Symfony\Component\String\u;
 
 /**
@@ -200,7 +201,7 @@ abstract class User implements UserInterface, Stringable
 
     public function getFullName(): string
     {
-        return sprintf("%s %s", $this->firstName, $this->lastName);
+        return u(sprintf("%s %s", $this->firstName, $this->lastName))->upper()->toString();
     }
 
     public function acceptRules(Rules $rules): void
