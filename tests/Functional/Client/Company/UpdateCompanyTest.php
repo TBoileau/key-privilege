@@ -90,7 +90,7 @@ class UpdateCompanyTest extends WebTestCase
         /** @var Client $clientCompany */
         $clientCompany = $entityManager->getRepository(Client::class)->findOneByName("Raison sociale");
 
-        $this->assertEquals("Raison sociale", $clientCompany->getName());
+        $this->assertEquals("RAISON SOCIALE", $clientCompany->getName());
         $this->assertEquals("FR17428785042", $clientCompany->getVatNumber());
         $this->assertEquals("42878504200105", $clientCompany->getCompanyNumber());
         $this->assertTrue($clientCompany->isManualDelivery());
@@ -143,7 +143,7 @@ class UpdateCompanyTest extends WebTestCase
         /** @var Client $clientCompany */
         $clientCompany = $entityManager->getRepository(Client::class)->findOneByName("Raison sociale");
 
-        $this->assertEquals("Raison sociale", $clientCompany->getName());
+        $this->assertEquals("RAISON SOCIALE", $clientCompany->getName());
         $this->assertEquals("FR64443061841", $clientCompany->getVatNumber());
         $this->assertEquals("44306184100047", $clientCompany->getCompanyNumber());
         $this->assertFalse($clientCompany->isManualDelivery());

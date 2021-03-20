@@ -15,9 +15,12 @@ use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
+use Stringable;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
+use function Symfony\Component\String\u;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -34,7 +37,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *      "manager"=Manager::class
  * })
  */
-abstract class User implements UserInterface, \Stringable
+abstract class User implements UserInterface, Stringable
 {
     use SoftDeleteableEntity;
 
@@ -198,7 +201,7 @@ abstract class User implements UserInterface, \Stringable
 
     public function getFullName(): string
     {
-        return sprintf("%s %s", $this->firstName, $this->lastName);
+        return u(sprintf("%s %s", $this->firstName, $this->lastName))->upper()->toString();
     }
 
     public function acceptRules(Rules $rules): void
@@ -244,7 +247,7 @@ abstract class User implements UserInterface, \Stringable
 
     public function getFirstName(): string
     {
-        return $this->firstName;
+        return u($this->firstName)->upper()->toString();
     }
 
     public function setFirstName(string $firstName): self
@@ -255,7 +258,7 @@ abstract class User implements UserInterface, \Stringable
 
     public function getLastName(): string
     {
-        return $this->lastName;
+        return u($this->lastName)->upper()->toString();
     }
 
     public function setLastName(string $lastName): self

@@ -77,8 +77,8 @@ class UpdateAccessTest extends WebTestCase
         /** @var Collaborator $collaborator */
         $collaborator = $entityManager->getRepository(Collaborator::class)->findOneByEmail("new@email.com");
 
-        $this->assertEquals("Prénom", $collaborator->getFirstName());
-        $this->assertEquals("Nom", $collaborator->getLastName());
+        $this->assertEquals("PRÉNOM", $collaborator->getFirstName());
+        $this->assertEquals("NOM", $collaborator->getLastName());
         $this->assertEquals("new@email.com", $collaborator->getEmail());
         $this->assertEquals(3, $collaborator->getMember()->getId());
 

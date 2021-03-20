@@ -91,8 +91,8 @@ class UpdateAccessTest extends WebTestCase
         /** @var Customer $customer */
         $customer = $entityManager->getRepository(Customer::class)->findOneByEmail("new@email.com");
 
-        $this->assertEquals("Prénom", $customer->getFirstName());
-        $this->assertEquals("Nom", $customer->getLastName());
+        $this->assertEquals("PRÉNOM", $customer->getFirstName());
+        $this->assertEquals("NOM", $customer->getLastName());
         $this->assertEquals("new@email.com", $customer->getEmail());
         $this->assertEquals(27, $customer->getClient()->getId());
 
@@ -142,8 +142,8 @@ class UpdateAccessTest extends WebTestCase
         /** @var Customer $customer */
         $customer = $entityManager->getRepository(Customer::class)->findOneByEmail("new@email.com");
 
-        $this->assertEquals("Prénom", $customer->getFirstName());
-        $this->assertEquals("Nom", $customer->getLastName());
+        $this->assertEquals("PRÉNOM", $customer->getFirstName());
+        $this->assertEquals("NOM", $customer->getLastName());
         $this->assertEquals("new@email.com", $customer->getEmail());
         $this->assertEquals(16, $customer->getClient()->getId());
 
