@@ -6,6 +6,21 @@
 ] %}
 
 {% block content %}
+    {% if cart is defined and cart %}
+        <div class="modal modal-onload" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="alert alert-info text-center mb-0">Produit ajouté au panier avec succès.</div>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="{{ path("shop_index") }}" class="btn btn-secondary" data-bs-dismiss="modal">Continuer ma commande</a>
+                        <a href="{{ path("cart_index") }}" class="btn btn-primary">Voir mon panier</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
     <div class="row">
         <div class="col-12">
             <section class="section">

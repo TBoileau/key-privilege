@@ -1,7 +1,9 @@
 import './styles/app.scss';
 import './bootstrap';
-import { Tooltip, Toast } from 'bootstrap';
+import { Tooltip, Toast, Modal } from 'bootstrap';
 import noUiSlider from 'nouislider';
+
+Array.from(document.querySelectorAll(".modal-onload")).map(e => new Modal(e, { backdrop: false })).forEach(modal => modal.show());
 
 Array.from(document.querySelectorAll("[data-bs-toggle=tooltip]")).map(e => new Tooltip(e));
 

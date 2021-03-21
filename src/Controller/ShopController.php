@@ -29,11 +29,11 @@ use Symfony\Component\Routing\Annotation\Route;
 class ShopController extends AbstractController
 {
     /**
-     * @Route("/products/{slug}", name="shop_product")
+     * @Route("/products/{slug}/{cart}", name="shop_product", defaults={"cart"=false})
      */
-    public function product(Product $product): Response
+    public function product(Product $product, bool $cart): Response
     {
-        return $this->render("ui/shop/product.html.twig", ["product" => $product]);
+        return $this->render("ui/shop/product.html.twig", ["product" => $product, "cart" => $cart]);
     }
 
     /**

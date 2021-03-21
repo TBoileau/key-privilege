@@ -129,7 +129,6 @@ class CartController extends AbstractController
 
         $this->getDoctrine()->getManager()->flush();
 
-        $this->addFlash("success", "Produit ajouté au panier avec succès.");
-        return $this->redirectToRoute("shop_product", ["slug" => $product->getSlug()]);
+        return $this->redirectToRoute("shop_product", ["slug" => $product->getSlug(), "cart" => true]);
     }
 }
