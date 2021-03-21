@@ -61,11 +61,11 @@ class ShopTest extends WebTestCase
 
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
 
-        $client->clickLink("Valeur les moins cher");
+        $client->clickLink("Valeur croissante");
 
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
 
-        $client->clickLink("Valeur les plus cher");
+        $client->clickLink("Valeur décroissante");
 
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
 

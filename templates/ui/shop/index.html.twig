@@ -38,9 +38,9 @@
                             {% if params.sort == "new-products" %}
                                 Nouveautés
                             {% elseif params.sort == "amount-asc" %}
-                                Valeur les moins cher
+                                Valeur croissante
                             {% elseif params.sort == "amount-desc" %}
-                                Valeur les plus cher
+                                Valeur décroissante
                             {% elseif params.sort == "name-asc" %}
                                 Tri A -> Z
                             {% elseif params.sort == "name-desc" %}
@@ -49,8 +49,8 @@
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-sort">
                             <li><a class="dropdown-item" href="{{ path("shop_index", params|merge({ page: 1, sort: "new-products" })) }}">Nouveautés</a></li>
-                            <li><a class="dropdown-item" href="{{ path("shop_index", params|merge({ page: 1, sort: "amount-asc" })) }}">Valeur les moins cher</a></li>
-                            <li><a class="dropdown-item" href="{{ path("shop_index", params|merge({ page: 1, sort: "amount-desc" })) }}">Valeur les plus cher</a></li>
+                            <li><a class="dropdown-item" href="{{ path("shop_index", params|merge({ page: 1, sort: "amount-asc" })) }}">Valeur croissante</a></li>
+                            <li><a class="dropdown-item" href="{{ path("shop_index", params|merge({ page: 1, sort: "amount-desc" })) }}">Valeur décroissante</a></li>
                             <li><a class="dropdown-item" href="{{ path("shop_index", params|merge({ page: 1, sort: "name-asc" })) }}">Tri A -> Z</a></li>
                             <li><a class="dropdown-item" href="{{ path("shop_index", params|merge({ page: 1, sort: "name-desc" })) }}">Tri Z -> A</a></li>
                         </ul>
