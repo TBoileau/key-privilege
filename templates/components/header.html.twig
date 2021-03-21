@@ -16,9 +16,11 @@
                     <div class="identity-logo">
                         <img src="https://via.placeholder.com/150x60" alt="">
                     </div>
-                    <a href="{{ path("security_logout") }}" class="identity-logout">
-                        <span class="fas fa-times"></span> Se déconnecter
-                    </a>
+                    {% if not is_granted('IS_IMPERSONATOR') %}
+                        <a href="{{ path("security_logout") }}" class="identity-logout">
+                            <span class="fas fa-times"></span> Se déconnecter
+                        </a>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -89,9 +91,15 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ path("account_index") }}">Mon compte</a>
                     </li>
-                    <li class="nav-item d-lg-none">
-                        <a class="nav-link" href="{{ path("security_logout") }}">Se déconnecter</a>
-                    </li>
+                    {% if not is_granted('IS_IMPERSONATOR') %}
+                        <li class="nav-item d-lg-none">
+                            <a class="nav-link" href="{{ path("security_logout") }}">Se déconnecter</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a href="{{ impersonation_exit_path(path('home') ) }}" class="nav-link">Retour à mon accès</a>
+                        </li>
+                    {% endif %}
                 </ul>
             </div>
         </div>
