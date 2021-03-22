@@ -36,7 +36,8 @@ class EditPasswordTest extends WebTestCase
 
         $client->submit($crawler->filter("form[name=edit_password]")->form([
             "edit_password[currentPassword]" => "password",
-            "edit_password[plainPassword]" => "new_password"
+            "edit_password[plainPassword][first]" => "new_password",
+            "edit_password[plainPassword][second]" => "new_password"
         ]));
 
         $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
@@ -93,7 +94,8 @@ class EditPasswordTest extends WebTestCase
         yield [
             [
                 "edit_password[currentPassword]" => "fail",
-                "edit_password[plainPassword]" => "new_password"
+                "edit_password[plainPassword][first]" => "new_password",
+                "edit_password[plainPassword][second]" => "new_password"
             ],
             "Cette valeur doit être le mot de passe actuel de l'utilisateur."
         ];
@@ -101,7 +103,8 @@ class EditPasswordTest extends WebTestCase
         yield [
             [
                 "edit_password[currentPassword]" => "",
-                "edit_password[plainPassword]" => "new_password"
+                "edit_password[plainPassword][first]" => "new_password",
+                "edit_password[plainPassword][second]" => "new_password"
             ],
             "Cette valeur ne doit pas être vide."
         ];
@@ -109,7 +112,8 @@ class EditPasswordTest extends WebTestCase
         yield [
             [
                 "edit_password[currentPassword]" => "password",
-                "edit_password[plainPassword]" => "fail"
+                "edit_password[plainPassword][first]" => "fail",
+                "edit_password[plainPassword][second]" => "fail"
             ],
             "Cette chaîne est trop courte. Elle doit avoir au minimum 8 caractères."
         ];
@@ -117,9 +121,19 @@ class EditPasswordTest extends WebTestCase
         yield [
             [
                 "edit_password[currentPassword]" => "password",
-                "edit_password[plainPassword]" => ""
+                "edit_password[plainPassword][first]" => "",
+                "edit_password[plainPassword][second]" => ""
             ],
             "Cette valeur ne doit pas être vide."
+        ];
+
+        yield [
+            [
+                "edit_password[currentPassword]" => "password",
+                "edit_password[plainPassword][first]" => "new_password",
+                "edit_password[plainPassword][second]" => "new_password_fail"
+            ],
+            "Votre mot de passe doit être similaire à la confirmation."
         ];
     }
 }
