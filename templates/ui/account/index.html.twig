@@ -55,7 +55,7 @@
                                 <div class="card-body flex-grow-1">
                                     {% if is_granted("ROLE_CUSTOMER") %}
                                         <div class="row mb-3">
-                                            <div class="col-5 text-end">Société :</div>
+                                            <div class="col-5 text-end">Raison sociale :</div>
                                             <div class="col-7 fw-bold">{{ app.user.client.name }}</div>
                                         </div>
                                         <div class="row mb-3">
@@ -72,19 +72,11 @@
                                             <div class="col-5 text-end">Adhérent :</div>
                                             <div class="col-7 fw-bold">{{ app.user.member.name }}</div>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-5 text-end">Rôle :</div>
-                                            <div class="col-7 fw-bold">Collaborateur</div>
-                                        </div>
                                     {% endif %}
                                     {% if is_granted("ROLE_SALES_PERSON") %}
                                         <div class="row mb-3">
                                             <div class="col-5 text-end">Adhérent :</div>
                                             <div class="col-7 fw-bold">{{ app.user.member.name }}</div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-5 text-end">Rôle :</div>
-                                            <div class="col-7 fw-bold">Commercial</div>
                                         </div>
                                     {% endif %}
                                     {% if is_granted("ROLE_MANAGER") and app.user.members|length == 1 %}
@@ -92,7 +84,7 @@
                                             <div class="col-5 text-end">Adhérent :</div>
                                             <div class="col-7 fw-bold">{{ app.user.member.name }}</div>
                                         </div>
-                                        <div class="row">
+                                        <div class="row mb-3">
                                             <div class="col-5 text-end">Rôle :</div>
                                             <div class="col-7 fw-bold">Administrateur mono-adhérent</div>
                                         </div>
@@ -105,6 +97,18 @@
                                         <div class="row mb-3">
                                             <div class="col-5 text-end">Rôle :</div>
                                             <div class="col-7 fw-bold">Administrateur multi-adhérents</div>
+                                        </div>
+                                    {% endif %}
+                                    {% if not is_granted("ROLE_CUSTOMER") and app.user.member.address is not null %}
+                                        <div class="row">
+                                            <div class="col-5 text-end">Adresse :</div>
+                                            <div class="col-7 fw-bold">
+                                                {{ app.user.member.address.streetAddress }}
+                                                {% if app.user.member.address.restAddress is not null %}
+                                                    <br/>{{ app.user.member.address.restAddress }}
+                                                {% endif %}
+                                                <br/>{{ app.user.member.address.zipCode }} - {{ app.user.member.address.locality }}
+                                            </div>
                                         </div>
                                     {% endif %}
                                 </div>
