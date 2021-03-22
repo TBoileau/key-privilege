@@ -131,9 +131,22 @@
                                 <h2 class="card-header">Règlement</h2>
                                 <div class="list-group list-group-flush flex-grow-1" data-role="rules">
                                     {% for rulesAgreement in app.user.rulesAgreements %}
-                                        <div class="list-group-item d-flex flex-column">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#modal-rules-{{ rulesAgreement.rules.id }}" class="list-group-item d-flex flex-column">
                                             <span class="fw-bold">Règlement publié le {{ rulesAgreement.rules.publishedAt|format_date(pattern="dd MMMM Y", locale='fr') }}</span>
                                             <span class="text-muted">{{ rulesAgreement.accepted ? "Accepté" : "Refusé" }} le {{ rulesAgreement.agreedAt|format_date(pattern="dd MMMM Y", locale='fr') }}</span>
+                                        </a>
+                                        <div class="modal fade" id="modal-rules-{{ rulesAgreement.rules.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-xl">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Règlement publié le {{ rulesAgreement.rules.publishedAt|format_date(pattern="dd MMMM Y", locale='fr') }}</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        {{ rulesAgreement.rules.content|raw }}
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     {% endfor %}
                                 </div>
