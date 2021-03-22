@@ -56,7 +56,7 @@ class EditPasswordTest extends WebTestCase
 
         $client->followRedirect();
 
-        $this->assertRouteSame("account_edit_password");
+        $this->assertRouteSame("account_index");
     }
 
     /**
