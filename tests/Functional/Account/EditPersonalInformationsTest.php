@@ -58,7 +58,7 @@ class EditPersonalInformationsTest extends WebTestCase
 
         $client->followRedirect();
 
-        $this->assertRouteSame("account_edit_personal_informations");
+        $this->assertRouteSame("account_index");
     }
 
     /**

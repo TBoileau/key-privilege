@@ -6,6 +6,7 @@ namespace App\Form\Account;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
 use Symfony\Component\Validator\Constraints\Length;
@@ -23,8 +24,15 @@ class EditPasswordType extends AbstractType
                     new UserPassword()
                 ]
             ])
-            ->add("plainPassword", PasswordType::class, [
-                "label" => "Nouveau mot de passe",
+            ->add("plainPassword", RepeatedType::class, [
+                "type" => PasswordType::class,
+                "invalid_message" => "Votre mot de passe doit être similaire à la confirmation.",
+                "first_options" => [
+                    "label" => "Nouveau mot de passe"
+                ],
+                "second_options" => [
+                    "label" => "Confirmez votre mot de passe"
+                ],
                 "constraints" => [
                     new Length(["min" => 8]),
                     new NotBlank()

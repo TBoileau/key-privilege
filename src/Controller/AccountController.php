@@ -41,7 +41,7 @@ class AccountController extends AbstractController
             $this->getDoctrine()->getManager()->flush();
             $this->addFlash("success", "Votre mot de passe a été modifié avec succès.");
 
-            return $this->redirectToRoute("account_edit_password");
+            return $this->redirectToRoute("account_index");
         }
 
         return $this->render('ui/account/edit_password.html.twig', [
@@ -63,7 +63,7 @@ class AccountController extends AbstractController
             $this->getDoctrine()->getManager()->flush();
             $this->addFlash("success", "Vos informations personnelles ont été modifiées avec succès.");
 
-            return $this->redirectToRoute("account_edit_personal_informations");
+            return $this->redirectToRoute("account_index");
         }
 
         return $this->render('ui/account/edit_personal_informations.html.twig', [

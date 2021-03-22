@@ -39,9 +39,12 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="card-footer text-end p-0">
-                                    <a href="{{ path("account_edit_personal_informations") }}" class="btn d-block btn-outline-primary rounded-0 border-0">
+                                <div class="card-footer text-end p-0 d-flex">
+                                    <a href="{{ path("account_edit_personal_informations") }}" class="btn d-block btn-outline-primary rounded-0 border-0 w-50 d-flex align-items-center justify-content-center">
                                         Modifier mes informations personnelles
+                                    </a>
+                                    <a href="{{ path("contact") }}" class="btn d-block btn-outline-danger rounded-0 border-0 w-50 d-flex align-items-center justify-content-center">
+                                        Signaler une erreur
                                     </a>
                                 </div>
                             </div>
@@ -52,7 +55,7 @@
                                 <div class="card-body flex-grow-1">
                                     {% if is_granted("ROLE_CUSTOMER") %}
                                         <div class="row mb-3">
-                                            <div class="col-5 text-end">Société :</div>
+                                            <div class="col-5 text-end">Raison sociale :</div>
                                             <div class="col-7 fw-bold">{{ app.user.client.name }}</div>
                                         </div>
                                         <div class="row mb-3">
@@ -69,19 +72,11 @@
                                             <div class="col-5 text-end">Adhérent :</div>
                                             <div class="col-7 fw-bold">{{ app.user.member.name }}</div>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-5 text-end">Rôle :</div>
-                                            <div class="col-7 fw-bold">Collaborateur</div>
-                                        </div>
                                     {% endif %}
                                     {% if is_granted("ROLE_SALES_PERSON") %}
                                         <div class="row mb-3">
                                             <div class="col-5 text-end">Adhérent :</div>
                                             <div class="col-7 fw-bold">{{ app.user.member.name }}</div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-5 text-end">Rôle :</div>
-                                            <div class="col-7 fw-bold">Commercial</div>
                                         </div>
                                     {% endif %}
                                     {% if is_granted("ROLE_MANAGER") and app.user.members|length == 1 %}
@@ -89,7 +84,7 @@
                                             <div class="col-5 text-end">Adhérent :</div>
                                             <div class="col-7 fw-bold">{{ app.user.member.name }}</div>
                                         </div>
-                                        <div class="row">
+                                        <div class="row mb-3">
                                             <div class="col-5 text-end">Rôle :</div>
                                             <div class="col-7 fw-bold">Administrateur mono-adhérent</div>
                                         </div>
@@ -102,6 +97,18 @@
                                         <div class="row mb-3">
                                             <div class="col-5 text-end">Rôle :</div>
                                             <div class="col-7 fw-bold">Administrateur multi-adhérents</div>
+                                        </div>
+                                    {% endif %}
+                                    {% if not is_granted("ROLE_CUSTOMER") and app.user.member.address is not null %}
+                                        <div class="row">
+                                            <div class="col-5 text-end">Adresse :</div>
+                                            <div class="col-7 fw-bold">
+                                                {{ app.user.member.address.streetAddress }}
+                                                {% if app.user.member.address.restAddress is not null %}
+                                                    <br/>{{ app.user.member.address.restAddress }}
+                                                {% endif %}
+                                                <br/>{{ app.user.member.address.zipCode }} - {{ app.user.member.address.locality }}
+                                            </div>
                                         </div>
                                     {% endif %}
                                 </div>
@@ -128,9 +135,22 @@
                                 <h2 class="card-header">Règlement</h2>
                                 <div class="list-group list-group-flush flex-grow-1" data-role="rules">
                                     {% for rulesAgreement in app.user.rulesAgreements %}
-                                        <div class="list-group-item d-flex flex-column">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#modal-rules-{{ rulesAgreement.rules.id }}" class="list-group-item d-flex flex-column">
                                             <span class="fw-bold">Règlement publié le {{ rulesAgreement.rules.publishedAt|format_date(pattern="dd MMMM Y", locale='fr') }}</span>
                                             <span class="text-muted">{{ rulesAgreement.accepted ? "Accepté" : "Refusé" }} le {{ rulesAgreement.agreedAt|format_date(pattern="dd MMMM Y", locale='fr') }}</span>
+                                        </a>
+                                        <div class="modal fade" id="modal-rules-{{ rulesAgreement.rules.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-xl">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Règlement publié le {{ rulesAgreement.rules.publishedAt|format_date(pattern="dd MMMM Y", locale='fr') }}</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        {{ rulesAgreement.rules.content|raw }}
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     {% endfor %}
                                 </div>
