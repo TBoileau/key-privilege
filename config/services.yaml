@@ -28,3 +28,10 @@ services:
         tags: ['doctrine.orm.entity_listener']
 
     App\Zendesk\Wrapper\ZendeskWrapperInterface: '@App\Zendesk\Wrapper\ZendeskWrapper'
+
+    App\Mailer\StopHitTransportFactory:
+        tags: ['mailer.transport_factory']
+        autowire: true
+
+    App\Mailer\SpotHitApiTransport:
+        factory: [ 'App\Mailer\StopHitTransportFactory', 'create' ]
