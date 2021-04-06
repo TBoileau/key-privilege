@@ -44,11 +44,11 @@ class AccessType extends AbstractType
                 "empty_data" => ""
             ])
             ->add("email", EmailType::class, [
-                "label" => "Adresse email :",
+                "label" => "Adresse email (= identifiant de votre client) :",
                 "empty_data" => ""
             ])
             ->add("client", EntityType::class, $clientOptions + [
-                "label" => "Client :",
+                "label" => "Raison sociale de votre client :",
                 "class" => Client::class,
                 "choice_label" => "name",
                 "query_builder" => fn (ClientRepository $repository) => $repository
