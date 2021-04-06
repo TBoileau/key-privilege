@@ -49,14 +49,50 @@
                             <ul class="dropdown-menu" aria-labelledby="dropdown-clients">
                                 {% if is_granted("ROLE_CLIENT_COMPANY") %}
                                     <li><a class="dropdown-item" href="{{ path("client_company_create") }}">Créer une société</a></li>
-                                    <li><a class="dropdown-item" href="{{ path("client_company_list") }}">Gestion des sociétés</a></li>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ path("client_company_list") }}">
+                                            Gestion des<br class="d-none d-md-inline d-xxl-none"/><span class="d-md-none d-xxl-inline">&nbsp;</span>informations sociétés
+                                        </a>
+                                    </li>
                                 {% endif %}
                                 {% if is_granted("ROLE_CLIENT_ACCESS") and is_granted("ROLE_CLIENT_COMPANY") %}
                                     <li><hr class="dropdown-divider"></li>
                                 {% endif %}
                                 {% if is_granted("ROLE_CLIENT_ACCESS") %}
-                                    <li><a class="dropdown-item" href="{{ path("client_access_create") }}">Créer un accès pour une société</a></li>
-                                    <li><a class="dropdown-item" href="{{ path("client_access_list") }}">Gestion des accès</a></li>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ path("client_access_create") }}">
+                                            Créer un accès<br class="d-none d-md-inline d-xxl-none"/><span class="d-md-none d-xxl-inline">&nbsp;</span>utilisateur client
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ path("client_access_list") }}">
+                                            Gestion des<br class="d-none d-md-inline d-xl-none"/><span class="d-md-none d-xl-inline">&nbsp;</span>accès client
+                                        </a>
+                                    </li>
+                                {% endif %}
+
+                                {% if is_granted("ROLE_MANAGER") %}
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ path("member_access_create", { role: "collaborateur" }) }}">
+                                            Créer un accès<br class="d-none d-md-inline d-xl-none"/><span class="d-md-none d-xl-inline">&nbsp;</span>collaborateur
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ path("member_access_create", { role: "administrateur" }) }}">
+                                            Créer un accès<br class="d-none d-md-inline d-xl-none"/><span class="d-md-none d-xl-inline">&nbsp;</span>commercial
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ path("member_access_create", { role: "commercial" }) }}">
+                                            Créer un accès<br class="d-none d-md-block d-xl-none"/><span class="d-md-none d-xl-inline">&nbsp;</span>administrateur
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ path("member_access_list") }}">
+                                            Gestion des accès<br/>de mon entreprise
+                                        </a>
+                                    </li>
                                 {% endif %}
                             </ul>
                         </li>
