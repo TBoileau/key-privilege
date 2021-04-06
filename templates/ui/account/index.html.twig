@@ -84,19 +84,11 @@
                                             <div class="col-5 text-end">Adhérent :</div>
                                             <div class="col-7 fw-bold">{{ app.user.member.name }}</div>
                                         </div>
-                                        <div class="row mb-3">
-                                            <div class="col-5 text-end">Rôle :</div>
-                                            <div class="col-7 fw-bold">Administrateur mono-adhérent</div>
-                                        </div>
                                     {% endif %}
                                     {% if is_granted("ROLE_MANAGER") and app.user.members|length > 1 %}
                                         <div class="row mb-3">
                                             <div class="col-5 text-end">Adhérent principal :</div>
                                             <div class="col-7 fw-bold">{{ app.user.member.name }}</div>
-                                        </div>
-                                        <div class="row mb-3">
-                                            <div class="col-5 text-end">Rôle :</div>
-                                            <div class="col-7 fw-bold">Administrateur multi-adhérents</div>
                                         </div>
                                     {% endif %}
                                     {% if not is_granted("ROLE_CUSTOMER") and app.user.member.address is not null %}
