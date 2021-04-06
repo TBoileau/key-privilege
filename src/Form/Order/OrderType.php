@@ -27,7 +27,7 @@ class OrderType extends AbstractType
                 /** @var Customer $customer */
                 $customer = $order->getUser();
 
-                if ($customer->getClient()->isManualDelivery()) {
+                if ($customer->isManualDelivery()) {
                     $form->add("address", AddressType::class);
                 }
             }

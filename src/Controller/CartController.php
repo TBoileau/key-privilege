@@ -83,7 +83,7 @@ class CartController extends AbstractController
             && $form->isSubmitted()
             && $form->isValid()
         ) {
-            if (!($user instanceof Customer && $user->getClient()->isManualDelivery())) {
+            if (!($user instanceof Customer && $user->isManualDelivery())) {
                 if ($user instanceof Customer) {
                     $address = $user->getClient()->getMember()->getAddress();
                 } else {

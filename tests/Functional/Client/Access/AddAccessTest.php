@@ -55,6 +55,7 @@ class AddAccessTest extends WebTestCase
         $this->assertEquals("NOM", $customer->getLastName());
         $this->assertEquals("new@email.com", $customer->getEmail());
         $this->assertEquals(27, $customer->getClient()->getId());
+        $this->assertFalse($customer->isManualDelivery());
         $this->assertEmailCount(1);
 
         $client->followRedirect();
@@ -92,7 +93,8 @@ class AddAccessTest extends WebTestCase
             "access[firstName]" => "Prénom",
             "access[lastName]" => "Nom",
             "access[email]" => "new@email.com",
-            "access[client]" => 16
+            "access[client]" => 16,
+            "access[manualDelivery]" => 1
         ]);
 
         $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
@@ -107,6 +109,7 @@ class AddAccessTest extends WebTestCase
         $this->assertEquals("NOM", $customer->getLastName());
         $this->assertEquals("new@email.com", $customer->getEmail());
         $this->assertEquals(16, $customer->getClient()->getId());
+        $this->assertTrue($customer->isManualDelivery());
         $this->assertEmailCount(1);
 
         $client->followRedirect();

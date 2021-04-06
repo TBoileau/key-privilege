@@ -22,10 +22,6 @@ class CompanyType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add("manualDelivery", CheckboxType::class, [
-                "label" => "Autoriser le client à saisir manuellement son adresse de livraison",
-                "required" => false
-            ])
             ->add("name", TextType::class, [
                 "label" => "Raison sociale :",
                 "empty_data" => "",

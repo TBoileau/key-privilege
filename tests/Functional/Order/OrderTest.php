@@ -112,7 +112,7 @@ class OrderTest extends WebTestCase
         /** @var Customer $customer */
         $customer = $entityManager->find(Customer::class, 16);
 
-        $customer->getClient()->setManualDelivery(true);
+        $customer->setManualDelivery(true);
 
         $entityManager->flush();
 
@@ -209,7 +209,7 @@ class OrderTest extends WebTestCase
         /** @var Customer $customer */
         $customer = $entityManager->find(Customer::class, 16);
 
-        $customer->getClient()->setManualDelivery(false);
+        $customer->setManualDelivery(false);
 
         $purchase = (new Purchase())
             ->setAccount($customer->getAccount())
