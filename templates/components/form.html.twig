@@ -1,5 +1,9 @@
 {% extends "bootstrap_4_layout.html.twig" %}
 
+{% block choice_widget_collapsed -%}
+    {%- set attr = attr|merge({class: (attr.class|default('') ~ ' form-select')|trim}) -%}
+    {{- parent() -}}
+{%- endblock choice_widget_collapsed %}
 
 {% block form_label -%}
     {% if label is not same as(false) -%}
