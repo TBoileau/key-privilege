@@ -51,7 +51,7 @@
                                 </thead>
                                 <tbody>
                                 {% for employee in employees %}
-                                    <tr>
+                                    <tr class="{{ employee.suspended ? "bg-warning" }}">
                                         <td class="text-center">{{ employee.firstName }}</td>
                                         <td class="text-center">{{ employee.lastName }}</td>
                                         <td class="text-center">{{ employee.roleName }}</td>

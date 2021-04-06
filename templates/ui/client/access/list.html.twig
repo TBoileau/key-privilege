@@ -43,7 +43,7 @@
                                 </thead>
                                 <tbody>
                                     {% for customer in customers %}
-                                        <tr>
+                                        <tr class="{{ customer.suspended ? "bg-warning" }}">
                                             <td class="text-center">{{ customer.firstName }}</td>
                                             <td class="text-center">{{ customer.lastName }}</td>
                                             <td class="text-center">{{ customer.client.salesPerson.fullName }}</td>
