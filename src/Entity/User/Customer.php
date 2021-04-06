@@ -18,6 +18,11 @@ class Customer extends User
      */
     private ?Client $client = null;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private bool $manualDelivery = false;
+
     public function getRole(): string
     {
         return "ROLE_CUSTOMER";
@@ -36,6 +41,17 @@ class Customer extends User
     public function setClient(Client $client): self
     {
         $this->client = $client;
+        return $this;
+    }
+
+    public function isManualDelivery(): bool
+    {
+        return $this->manualDelivery;
+    }
+
+    public function setManualDelivery(bool $manualDelivery): self
+    {
+        $this->manualDelivery = $manualDelivery;
         return $this;
     }
 }

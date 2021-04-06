@@ -72,23 +72,9 @@ class CompanyListTest extends WebTestCase
         /** @var UrlGeneratorInterface $urlGenerator */
         $urlGenerator = $client->getContainer()->get("router");
 
-        $crawler = $client->request(Request::METHOD_GET, $urlGenerator->generate("client_company_list"));
-        $this->assertPage($crawler, 10, true, 1, false, true);
+        $client->request(Request::METHOD_GET, $urlGenerator->generate("client_company_list"));
 
-        $crawler = $client->clickLink("Suivant");
-        $this->assertPage($crawler, 10, true, 2, true, false);
-
-        $crawler = $client->clickLink("Précédent");
-        $this->assertPage($crawler, 10, true, 1, false, true);
-
-        $crawler = $client->clickLink("2");
-        $this->assertPage($crawler, 10, true, 2, true, false);
-
-        $crawler = $client->submitForm("Filtrer", [
-            "filter[keywords]" => "Fail"
-        ]);
-
-        $this->assertPage($crawler, 1, false, 1, false, false);
+        $this->assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
     }
 
     public function testAsManagerIfCompaniesListWorks(): void

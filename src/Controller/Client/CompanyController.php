@@ -38,7 +38,7 @@ class CompanyController extends AbstractController
     {
         $form = $this->createForm(FilterType::class)->handleRequest($request);
 
-        /** @var Manager|SalesPerson $employee */
+        /** @var Manager $employee */
         $employee = $this->getUser();
 
         $clients = $clientRepository->getPaginatedClients(
@@ -61,7 +61,7 @@ class CompanyController extends AbstractController
      */
     public function update(Client $client, Request $request): Response
     {
-        /** @var SalesPerson|Manager $employee */
+        /** @var Manager $employee */
         $employee = $this->getUser();
         $client->setMember($employee->getMember());
 
@@ -89,13 +89,9 @@ class CompanyController extends AbstractController
     {
         $client = new Client();
 
-        /** @var SalesPerson|Manager $employee */
+        /** @var Manager $employee */
         $employee = $this->getUser();
         $client->setMember($employee->getMember());
-
-        if ($employee instanceof SalesPerson) {
-            $client->setSalesPerson($employee);
-        }
 
         $form = $this->createForm(CompanyType::class, $client, ["employee" => $employee])->handleRequest($request);
 

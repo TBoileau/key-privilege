@@ -10,18 +10,18 @@
         <div class="col-12">
             <section class="section">
                 <h1 class="section-header">
-                    Gestion des accès
-                    <a href="{{ path("client_access_create") }}" class="btn btn-primary">Créer un nouvel accès</a>
+                    Gestion des accès ({{ customers|length }})
+                    {% if is_granted("ROLE_CLIENT_ACCESS_CREATE") %}
+                        <a href="{{ path("client_access_create") }}" class="btn btn-primary">Créer un nouvel accès</a>
+                    {% endif %}
                 </h1>
                 <div class="section-body">
                     {{ form_start(form, { attr: { method: "GET", action: path("client_access_list", { page: 1 }) }}) }}
                         <div class="card mb-3">
                             <h2 class="card-header">Filtrer</h2>
-                            <div class="card-body">
-                                {{ form_row(form.keywords) }}
-                                <div class="text-end mt-3">
-                                    <button type="submit" class="btn btn-primary">Filtrer</button>
-                                </div>
+                            <div class="card-body d-flex align-items-end">
+                                {{ form_row(form.keywords, { row_attr: { class: "flex-grow-1" }}) }}
+                                <button type="submit" class="btn btn-primary ms-3">Filtrer</button>
                             </div>
                         </div>
                     {{ form_end(form) }}
@@ -45,7 +45,7 @@
                                 </thead>
                                 <tbody>
                                     {% for customer in customers %}
-                                        <tr>
+                                        <tr class="{{ customer.suspended ? "bg-warning" }}">
                                             <td class="text-center">{{ customer.firstName }}</td>
                                             <td class="text-center">{{ customer.lastName }}</td>
                                             <td class="text-center">{{ customer.client.salesPerson.fullName }}</td>
@@ -74,10 +74,10 @@
                                                             <li><a class="dropdown-item" href="{{ path("client_access_delete", { id: customer.id }) }}">Supprimer</a></li>
                                                         {% endif %}
                                                         {% if is_granted("reset", customer) %}
-                                                            <li><a class="dropdown-item" href="{{ path("client_access_reset", { id: customer.id }) }}">Réinitialiser</a></li>
+                                                            <li><a class="dropdown-item" href="{{ path("client_access_reset", { id: customer.id }) }}">Renvoyer un mot de passe</a></li>
                                                         {% endif %}
                                                         {% if is_granted("log_as", customer) %}
-                                                            <li><a class="dropdown-item" href="{{ path("home", { _switch_user: customer.email }) }}">Log as</a></li>
+                                                            <li><a class="dropdown-item" href="{{ path("home", { _switch_user: customer.email }) }}">Voir son profil</a></li>
                                                         {% endif %}
                                                     </ul>
                                                 </div>

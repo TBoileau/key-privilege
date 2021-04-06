@@ -10,7 +10,7 @@
         <div class="col-12">
             <section class="section">
                 <h1 class="section-header">
-                    Gestion des accès adhérents
+                    Gestion des accès adhérents ({{ employees|length }})
                     <div class="dropdown">
                         <button class="btn btn-primary dropdown-toggle" type="button" id="dropdown-create" data-bs-toggle="dropdown" aria-expanded="false">
                             Créer un nouvel accès
@@ -26,11 +26,9 @@
                     {{ form_start(form, { attr: { method: "GET", action: path("member_access_list", { page: 1 }) }}) }}
                     <div class="card mb-3">
                         <h2 class="card-header">Filtrer</h2>
-                        <div class="card-body">
-                            {{ form_row(form.keywords) }}
-                            <div class="text-end mt-3">
-                                <button type="submit" class="btn btn-primary">Filtrer</button>
-                            </div>
+                        <div class="card-body d-flex align-items-end">
+                            {{ form_row(form.keywords, { row_attr: { class: "flex-grow-1" }}) }}
+                            <button type="submit" class="btn btn-primary ms-3">Filtrer</button>
                         </div>
                     </div>
                     {{ form_end(form) }}
@@ -53,7 +51,7 @@
                                 </thead>
                                 <tbody>
                                 {% for employee in employees %}
-                                    <tr>
+                                    <tr class="{{ employee.suspended ? "bg-warning" }}">
                                         <td class="text-center">{{ employee.firstName }}</td>
                                         <td class="text-center">{{ employee.lastName }}</td>
                                         <td class="text-center">{{ employee.roleName }}</td>
@@ -89,10 +87,10 @@
                                                         <li><a class="dropdown-item" href="{{ path("member_access_delete", { id: employee.id }) }}">Supprimer</a></li>
                                                     {% endif %}
                                                     {% if is_granted("reset", employee) %}
-                                                        <li><a class="dropdown-item" href="{{ path("member_access_reset", { id: employee.id }) }}">Réinitialiser</a></li>
+                                                        <li><a class="dropdown-item" href="{{ path("member_access_reset", { id: employee.id }) }}">Renvoyer un mot de passe</a></li>
                                                     {% endif %}
                                                     {% if is_granted("log_as", employee) %}
-                                                        <li><a class="dropdown-item" href="{{ path("home", { _switch_employee: employee.email }) }}">Log as</a></li>
+                                                        <li><a class="dropdown-item" href="{{ path("home", { _switch_employee: employee.email }) }}">Voir son profil</a></li>
                                                     {% endif %}
                                                 </ul>
                                             </div>

@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class AddAccessTest extends WebTestCase
 {
-    public function testAsSalesPersonIfAddAccessIsSuccessful(): void
+    public function testAsSalesPersonIfAddAccessIsForbidden(): void
     {
         $client = static::createClient();
 
@@ -34,32 +34,7 @@ class AddAccessTest extends WebTestCase
 
         $client->request(Request::METHOD_GET, $urlGenerator->generate("client_access_create"));
 
-        $this->assertResponseIsSuccessful();
-
-        $client->submitForm("Créer", [
-            "access[firstName]" => "Prénom",
-            "access[lastName]" => "Nom",
-            "access[email]" => "new@email.com",
-            "access[client]" => 27
-        ]);
-
-        $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
-
-        /** @var EntityManagerInterface $entityManager */
-        $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
-
-        /** @var Customer $customer */
-        $customer = $entityManager->getRepository(Customer::class)->findOneByEmail("new@email.com");
-
-        $this->assertEquals("PRÉNOM", $customer->getFirstName());
-        $this->assertEquals("NOM", $customer->getLastName());
-        $this->assertEquals("new@email.com", $customer->getEmail());
-        $this->assertEquals(27, $customer->getClient()->getId());
-        $this->assertEmailCount(1);
-
-        $client->followRedirect();
-
-        $this->assertRouteSame("client_access_list");
+        $this->assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
     }
 
     public function testAsManagerIfAddAccessIsSuccessful(): void
@@ -92,7 +67,8 @@ class AddAccessTest extends WebTestCase
             "access[firstName]" => "Prénom",
             "access[lastName]" => "Nom",
             "access[email]" => "new@email.com",
-            "access[client]" => 16
+            "access[client]" => 16,
+            "access[manualDelivery]" => 1
         ]);
 
         $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
@@ -107,6 +83,7 @@ class AddAccessTest extends WebTestCase
         $this->assertEquals("NOM", $customer->getLastName());
         $this->assertEquals("new@email.com", $customer->getEmail());
         $this->assertEquals(16, $customer->getClient()->getId());
+        $this->assertTrue($customer->isManualDelivery());
         $this->assertEmailCount(1);
 
         $client->followRedirect();

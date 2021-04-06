@@ -52,7 +52,6 @@ class ClientCrudController extends AbstractCrudController
             ]);
         yield TextField::new('vatNumber', 'N° TVA intra.')
             ->hideOnForm();
-        yield BooleanField::new('manualDelivery', 'Livraison manuelle');
         yield AssociationField::new('member', 'Adhérent')
             ->setCrudController(MemberCrudController::class);
         yield AssociationField::new('salesPerson', 'Commercial')
