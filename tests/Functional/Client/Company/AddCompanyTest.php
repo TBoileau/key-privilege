@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class AddCompanyTest extends WebTestCase
 {
-    public function testAsSalesPersonIfAddCompanyIsSuccessful(): void
+    public function testAsSalesPersonIfAddCompanyIsForbidden(): void
     {
         $client = static::createClient();
 
@@ -34,35 +34,7 @@ class AddCompanyTest extends WebTestCase
 
         $client->request(Request::METHOD_GET, $urlGenerator->generate("client_company_create"));
 
-        $this->assertResponseIsSuccessful();
-
-        $client->submitForm("Créer", [
-            "company[name]" => "Raison sociale",
-            "company[companyNumber]" => "44306184100047"
-        ]);
-
-        $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
-
-        /** @var EntityManagerInterface $entityManager */
-        $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
-
-        /** @var Client $clientCompany */
-        $clientCompany = $entityManager->getRepository(Client::class)->findOneByName("Raison sociale");
-
-        $this->assertEquals("RAISON SOCIALE", $clientCompany->getName());
-        $this->assertEquals("FR64443061841", $clientCompany->getVatNumber());
-        $this->assertEquals("44306184100047", $clientCompany->getCompanyNumber());
-        $this->assertEquals(3, $clientCompany->getMember()->getId());
-        $this->assertEquals(7, $clientCompany->getSalesPerson()->getId());
-
-        $crawler = $client->followRedirect();
-
-        $this->assertRouteSame("client_access_create");
-
-        $this->assertEquals(
-            $clientCompany->getId(),
-            $crawler->filter('form[name=access]')->form()->getPhpValues()["access"]["client"]
-        );
+        $this->assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
     }
 
     public function testAsManagerIfAddCompanyIsSuccessful(): void

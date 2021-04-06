@@ -30,11 +30,13 @@ class ClientVoter extends Voter
         /** @var SalesPerson|Manager $employee */
         $employee = $token->getUser();
 
-        if ($employee instanceof SalesPerson) {
-            return $employee === $client->getSalesPerson();
-        }
-
-        if ($employee instanceof Manager && !$employee->getMembers()->contains($client->getMember())) {
+        if (
+            $employee instanceof SalesPerson
+            || (
+                $employee instanceof Manager
+                && !$employee->getMembers()->contains($client->getMember())
+            )
+        ) {
             return false;
         }
 

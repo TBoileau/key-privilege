@@ -52,12 +52,18 @@ class CustomerVoter extends Voter
         }
 
         switch ($attribute) {
+            case self::ROLE_RESET:
+                return true;
+            case self::ROLE_LOG_AS:
+                return true;
+            case self::ROLE_UPDATE:
+                return true;
             case self::ROLE_ACTIVE:
-                return $customer->isSuspended();
+                return $customer->isSuspended() && $employee instanceof Manager;
             case self::ROLE_SUSPEND:
-                return !$customer->isSuspended();
+                return !$customer->isSuspended() && $employee instanceof Manager;
+            default:
+                return $employee instanceof Manager;
         }
-
-        return true;
     }
 }

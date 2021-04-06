@@ -57,49 +57,6 @@ class UpdateCompanyTest extends WebTestCase
         $this->assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
     }
 
-    public function testAsSalesPersonIfUpdateCompanyIsSuccessful(): void
-    {
-        $client = static::createClient();
-
-        /** @var EntityManagerInterface $entityManager */
-        $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
-
-        /** @var SalesPerson $salesPerson */
-        $salesPerson = $entityManager->find(SalesPerson::class, 7);
-
-        $client->loginUser($salesPerson);
-
-        /** @var UrlGeneratorInterface $urlGenerator */
-        $urlGenerator = $client->getContainer()->get("router");
-
-        $client->request(Request::METHOD_GET, $urlGenerator->generate("client_company_update", ["id" => 27]));
-
-        $this->assertResponseIsSuccessful();
-
-        $client->submitForm("Modifier", [
-            "company[name]" => "Raison sociale",
-            "company[companyNumber]" => "42878504200105"
-        ]);
-
-        $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
-
-        /** @var EntityManagerInterface $entityManager */
-        $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
-
-        /** @var Client $clientCompany */
-        $clientCompany = $entityManager->getRepository(Client::class)->findOneByName("Raison sociale");
-
-        $this->assertEquals("RAISON SOCIALE", $clientCompany->getName());
-        $this->assertEquals("FR17428785042", $clientCompany->getVatNumber());
-        $this->assertEquals("42878504200105", $clientCompany->getCompanyNumber());
-        $this->assertEquals(3, $clientCompany->getMember()->getId());
-        $this->assertEquals(7, $clientCompany->getSalesPerson()->getId());
-
-        $client->followRedirect();
-
-        $this->assertRouteSame("client_company_list");
-    }
-
     public function testAsManagerIfUpdateCompanyIsSuccessful(): void
     {
         $client = static::createClient();

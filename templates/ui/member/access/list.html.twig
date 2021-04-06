@@ -87,10 +87,10 @@
                                                         <li><a class="dropdown-item" href="{{ path("member_access_delete", { id: employee.id }) }}">Supprimer</a></li>
                                                     {% endif %}
                                                     {% if is_granted("reset", employee) %}
-                                                        <li><a class="dropdown-item" href="{{ path("member_access_reset", { id: employee.id }) }}">Réinitialiser</a></li>
+                                                        <li><a class="dropdown-item" href="{{ path("member_access_reset", { id: employee.id }) }}">Renvoyer un mot de passe</a></li>
                                                     {% endif %}
                                                     {% if is_granted("log_as", employee) %}
-                                                        <li><a class="dropdown-item" href="{{ path("home", { _switch_employee: employee.email }) }}">Log as</a></li>
+                                                        <li><a class="dropdown-item" href="{{ path("home", { _switch_employee: employee.email }) }}">Voir son profil</a></li>
                                                     {% endif %}
                                                 </ul>
                                             </div>

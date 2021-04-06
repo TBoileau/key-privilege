@@ -56,6 +56,7 @@ class AccessController extends AbstractController
 
     /**
      * @Route("/creer/{id}", name="client_access_create", defaults={"id"=null})
+     * @IsGranted("ROLE_CLIENT_ACCESS_CREATE")
      */
     public function create(
         ?Client $client,

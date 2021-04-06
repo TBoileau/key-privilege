@@ -54,7 +54,7 @@ class ClientRepository extends ServiceEntityRepository
      * @return Paginator<Client>
      */
     public function getPaginatedClients(
-        SalesPerson | Manager $employee,
+        Manager $employee,
         int $currentPage,
         int $limit,
         ?string $keywords
@@ -70,18 +70,12 @@ class ClientRepository extends ServiceEntityRepository
             ->setMaxResults($limit)
             ->orderBy("c.name", "asc");
 
-        if ($employee instanceof SalesPerson) {
-            $queryBuilder
-                ->andWhere("c.salesPerson = :salesPerson")
-                ->setParameter("salesPerson", $employee);
-        } else {
-            $queryBuilder->andWhere(
-                $queryBuilder->expr()->in(
-                    "m.id",
-                    $employee->getMembers()->map(fn (Member $member) => $member->getId())->toArray()
-                )
-            );
-        }
+        $queryBuilder->andWhere(
+            $queryBuilder->expr()->in(
+                "m.id",
+                $employee->getMembers()->map(fn (Member $member) => $member->getId())->toArray()
+            )
+        );
 
         return new Paginator($queryBuilder);
     }
