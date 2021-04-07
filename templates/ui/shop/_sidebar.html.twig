@@ -2,7 +2,6 @@
     <nav class="section-nav">
         <h1 class="text-center my-0 py-3 px-3 px-lg-0 text-uppercase border-bottom d-flex d-lg-block justify-content-between">
             Boutique
-
             <a href="#" class="sidebar-toggler d-lg-none" aria-expanded="false">
                 <span class="fas fa-times fa-md text-dark"></span>
             </a>
@@ -10,7 +9,7 @@
         <ul class="nav flex-column" id="universes">
             <li class="nav-item">
                 <a class="nav-link" data-bs-toggle="collapse" href="#filter" role="button" aria-expanded="{{ form.vars.submitted ? "true" : "false" }}" aria-controls="filter">Recherche</a>
-                {{ form_start(form, { attr: { class: form.vars.attr.class ~ (form.vars.submitted ? " show") }}) }}
+                {{ form_start(form, {attr: {class: form.vars.attr.class ~ (form.vars.submitted ? " show")}}) }}
                     {{ form_widget(form._token) }}
                     {{ form_widget(form.min) }}
                     {{ form_widget(form.max) }}
@@ -50,7 +49,7 @@
                                 <ul class="nav flex-column collapse {{ not form.vars.submitted and category is not null and category.parent == c and universe is not null and universe == u ? "show" }}" id="category-{{ c.id }}" data-bs-parent="#universe-{{ u.id }}">
                                     {% for child in c.children %}
                                         <li class="nav-item">
-                                            <a href="{{ path("shop_index", { page: 1, category: child.slug, universe: u.slug }) }}" class="nav-link {{ category == child ? "active" }}">{{ child.name }}</a>
+                                            <a href="{{ path("shop_index", {page: 1, category: child.slug, universe: u.slug}) }}" class="nav-link {{ category == child ? "active" }}">{{ child.name }}</a>
                                         </li>
                                     {% endfor %}
                                 </ul>

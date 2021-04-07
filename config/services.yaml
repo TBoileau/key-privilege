@@ -34,4 +34,4 @@ services:
         autowire: true
 
     App\Mailer\SpotHitApiTransport:
-        factory: [ 'App\Mailer\StopHitTransportFactory', 'create' ]
+        factory: ['App\Mailer\StopHitTransportFactory', 'create']

@@ -10,18 +10,17 @@ functional-tests:
 .PHONY: vendor
 analyze:
 	npm audit
+	npx eslint assets/
 	composer valid
+	composer unused --excludePackage=beberlei/doctrineextensions
 	php bin/console doctrine:schema:valid --skip-sync
 	php bin/phpcs
+	php bin/console lint:twig templates/
+	vendor/bin/twigcs templates/
+	php bin/console lint:xliff translations/
+	vendor/bin/phpcpd --exclude src/Controller/Admin/ src/
+	vendor/bin/phpmd src/ text .phpmd.xml
 	php vendor/bin/phpstan analyse -c phpstan.neon src --level 7 --no-progress
-
-.PHONY: vendor
-analyze-windows:
-	npm audit
-	composer valid
-	php bin/console doctrine:schema:valid --skip-sync
-	php bin/phpcs
-	vendor\bin\phpstan.bat analyse -c phpstan.neon src --level 7 --no-progress
 
 .PHONY: tests
 tests:

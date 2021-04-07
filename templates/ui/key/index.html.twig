@@ -1,8 +1,8 @@
 {% extends "layouts/page.html.twig" %}
 
-{% set breadcrumbItems = [
-    { route: "key_index", label: "Compte clés"}
-] %}
+{% block breadcrumb %}
+    {{ include("components/breadcrumb.html.twig", {items: [{route: "key_index", label: "Compte clés"}]}) }}
+{% endblock %}
 
 {% block content %}
     <div class="row">
@@ -18,7 +18,7 @@
                                    <span class="fs-1">Solde : {{ app.user.account.balance }} clés</span>
                                </div>
                                <div class="card-footer text-end p-0">
-                                   <a href="{{ path("key_history", { id: app.user.account.id }) }}" class="btn d-block btn-outline-primary rounded-0 border-0">
+                                   <a href="{{ path("key_history", {id: app.user.account.id}) }}" class="btn d-block btn-outline-primary rounded-0 border-0">
                                        <span class="fas fa-list me-2"></span>Historique
                                    </a>
                                </div>
@@ -32,7 +32,7 @@
                                         <span class="fs-1">Solde : {{ app.user.member.account.balance }} clés</span>
                                     </div>
                                     <div class="card-footer text-end p-0">
-                                        <a href="{{ path("key_history", { id: app.user.member.account.id }) }}" class="btn d-block btn-outline-primary rounded-0 border-0">
+                                        <a href="{{ path("key_history", {id: app.user.member.account.id}) }}" class="btn d-block btn-outline-primary rounded-0 border-0">
                                             Historique
                                         </a>
                                     </div>
@@ -50,7 +50,7 @@
                                                     <span class="fw-bold">{{ member.name }}</span>
                                                     Solde : {{ member.account.balance }} clés
                                                 </div>
-                                                <a href="{{ path("key_history", { id: member.account.id }) }}" class="btn btn-outline-primary">
+                                                <a href="{{ path("key_history", {id: member.account.id}) }}" class="btn btn-outline-primary">
                                                     <span class="fas fa-list"></span>
                                                 </a>
                                             </div>

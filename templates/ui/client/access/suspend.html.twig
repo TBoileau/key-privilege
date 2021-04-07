@@ -1,10 +1,13 @@
 {% extends "layouts/page.html.twig" %}
 
-{% set breadcrumbItems = [
-    { label: "Gestion des clients"},
-    { route: "client_access_list", label: "Gestion des accès"},
-    {route: "client_access_suspend", routeParams: { id: customer.id }, label: "Suspendre un accès"}
-] %}
+{% block breadcrumb %}
+    {{ include("components/breadcrumb.html.twig", {items: [
+        {label: "Gestion des clients"},
+        {route: "client_access_list", label: "Gestion des accès"},
+        {route: "client_access_suspend", routeParams: {id: customer.id}, label: "Suspendre un accès"}
+    ]}) }}
+{% endblock %}
+
 
 {% block content %}
     <div class="row">

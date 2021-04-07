@@ -9,11 +9,7 @@
     <div id="collapse-clients" class="collapse" aria-labelledby="header-clients">
         <ul class="list-group list-group-flush">
             {% for client in field.value %}
-                {% set url = ea_url()
-                    .setDashboard('App\\Controller\\Admin\\DashboardController')
-                    .setController('App\\Controller\\Admin\\ClientCrudController')
-                    .setAction('detail')
-                    .setEntityId(client.id) %}
+                {% set url = ea_url().setDashboard('App\\Controller\\Admin\\DashboardController').setController('App\\Controller\\Admin\\ClientCrudController').setAction('detail').setEntityId(client.id) %}
                 <li class="list-group-item">
                     <a href="{{ url }}">
                         {{ client.name }}

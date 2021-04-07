@@ -4,28 +4,17 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Entity\Contact;
-use App\Entity\Order\Line;
 use App\Entity\Order\Order;
-use App\Entity\Order\SAV;
-use App\Entity\Shop\Product;
-use App\Entity\User\Collaborator;
-use App\Entity\User\Customer;
-use App\Entity\User\Employee;
-use App\Entity\User\Manager;
-use App\Entity\User\SalesPerson;
+use App\Entity\Order\Sav;
 use App\Entity\User\User;
-use App\Form\ContactType;
-use App\Form\Order\OrderType;
+use App\Form\SavType;
 use App\Repository\Order\OrderRepository;
 use App\Zendesk\Wrapper\ZendeskWrapperInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Workflow\WorkflowInterface;
 
 /**
  * @IsGranted("ROLE_SHOP")
@@ -60,19 +49,18 @@ class OrderController extends AbstractController
     /**
      * @Route("/{id}/declencher-sav", name="order_trigger_sav")
      */
-    public function triggerSAV(Order $order, Request $request, ZendeskWrapperInterface $zendeskWrapper): Response
+    public function triggerSAV(Order $order, Request $request): Response
     {
-        $contact = Contact::createFromOrder($order);
+        $sav = new Sav();
 
-        $form = $this->createForm(ContactType::class, $contact)->handleRequest($request);
+        $form = $this->createForm(SavType::class, $sav, ["order" => $order])->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $zendeskWrapper->create($contact);
             $this->addFlash(
                 "success",
                 "Votre demande de SAV a bien été envoyée. Nous vous répondrons dans les plus brefs délais."
             );
-            return $this->redirectToRoute("contact");
+            return $this->redirectToRoute("order_index");
         }
 
         return $this->render("ui/order/trigger_sav.html.twig", [

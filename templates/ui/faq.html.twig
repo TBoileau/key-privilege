@@ -1,8 +1,8 @@
 {% extends 'layouts/page.html.twig' %}
 
-{% set breadcrumbItems = [
-    { route: "faq", label: "FAQ & Règlement"}
-] %}
+{% block breadcrumb %}
+    {{ include("components/breadcrumb.html.twig", {items: [{route: "faq", label: "FAQ & Règlement"}]}) }}
+{% endblock %}
 
 {% block content %}
     <div class="row">

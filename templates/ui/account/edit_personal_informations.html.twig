@@ -1,6 +1,11 @@
 {% extends "layouts/page.html.twig" %}
 
-{% set breadcrumbItems = [{ route: "account_index", label: "Mon compte"}, {route: "account_edit_personal_informations", label: "Modifier mes informations personnelles"}] %}
+{% block breadcrumb %}
+    {{ include("components/breadcrumb.html.twig", {items: [
+        {route: "account_index", label: "Mon compte"},
+        {route: "account_edit_personal_informations", label: "Modifier mes informations personnelles"}
+    ]}) }}
+{% endblock %}
 
 {% block content %}
     <div class="row">
@@ -15,8 +20,8 @@
                                 <h2 class="card-header">Modifier mes informations personnelles</h2>
                                 <div class="card-body">
                                     {{ form_errors(form) }}
-                                    {{ form_row(form.firstName, { row_attr: { class: "mb-3 "}}) }}
-                                    {{ form_row(form.lastName, { row_attr: { class: "mb-3 "}}) }}
+                                    {{ form_row(form.firstName, {row_attr: {class: "mb-3 "}}) }}
+                                    {{ form_row(form.lastName, {row_attr: {class: "mb-3 "}}) }}
                                     {{ form_row(form.email) }}
                                 </div>
                                 <div class="card-footer p-0 d-flex">

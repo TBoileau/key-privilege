@@ -1,10 +1,12 @@
 {% extends "layouts/page.html.twig" %}
 
-{% set breadcrumbItems = [
-    { route: "order_index", label: "Commandes"},
-    { route: "order_detail", routeParams: { id: order.id }, label: "Détail"},
-    { route: "order_trigger_sav", routeParams: { id: order.id }, label: "Déclencher une demande de SAV"}
-] %}
+{% block breadcrumb %}
+    {{ include("components/breadcrumb.html.twig", {items: [
+        {route: "order_index", label: "Commandes"},
+        {route: "order_detail", routeParams: {id: order.id}, label: "Détail"},
+        {route: "order_trigger_sav", routeParams: {id: order.id}, label: "Déclencher une demande de SAV"}
+    ]}) }}
+{% endblock %}
 
 {% block content %}
     <div class="row">

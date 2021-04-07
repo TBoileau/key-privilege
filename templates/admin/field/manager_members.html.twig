@@ -9,11 +9,7 @@
     <div id="collapse-members" class="collapse" aria-labelledby="header-members">
         <ul class="list-group list-group-flush">
             {% for member in field.value %}
-                {% set url = ea_url()
-                    .setDashboard('App\\Controller\\Admin\\DashboardController')
-                    .setController('App\\Controller\\Admin\\MemberCrudController')
-                    .setAction('detail')
-                    .setEntityId(member.id) %}
+                {% set url = ea_url().setDashboard('App\\Controller\\Admin\\DashboardController').setController('App\\Controller\\Admin\\MemberCrudController').setAction('detail').setEntityId(member.id) %}
                 <li class="list-group-item">
                     <a href="{{ url }}">
                         {{ member.name }}

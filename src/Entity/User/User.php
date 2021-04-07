@@ -176,7 +176,7 @@ abstract class User implements UserInterface, Stringable
     /**
      * @see UserInterface
      */
-    public function getSalt(): string | null
+    public function getSalt(): ?string
     {
         return null;
     }

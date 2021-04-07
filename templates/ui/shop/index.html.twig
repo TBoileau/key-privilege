@@ -26,11 +26,11 @@
                              {{ params.limit }} produits par page
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-sort">
-                            <li><a class="dropdown-item" href="{{ path("shop_index", params|merge({ page: 1, limit: 18 })) }}">18 produits par page</a></li>
-                            <li><a class="dropdown-item" href="{{ path("shop_index", params|merge({ page: 1, limit: 36 })) }}">36 produits par page</a></li>
-                            <li><a class="dropdown-item" href="{{ path("shop_index", params|merge({ page: 1, limit: 72 })) }}">72 produits par page</a></li>
-                            <li><a class="dropdown-item" href="{{ path("shop_index", params|merge({ page: 1, limit: 98 })) }}">98 produits par page</a></li>
-                            <li><a class="dropdown-item" href="{{ path("shop_index", params|merge({ page: 1, limit: 196 })) }}">196 produits par page</a></li>
+                            <li><a class="dropdown-item" href="{{ path("shop_index", params|merge({page: 1, limit: 18})) }}">18 produits par page</a></li>
+                            <li><a class="dropdown-item" href="{{ path("shop_index", params|merge({page: 1, limit: 36})) }}">36 produits par page</a></li>
+                            <li><a class="dropdown-item" href="{{ path("shop_index", params|merge({page: 1, limit: 72})) }}">72 produits par page</a></li>
+                            <li><a class="dropdown-item" href="{{ path("shop_index", params|merge({page: 1, limit: 98})) }}">98 produits par page</a></li>
+                            <li><a class="dropdown-item" href="{{ path("shop_index", params|merge({page: 1, limit: 196})) }}">196 produits par page</a></li>
                         </ul>
                     </div>
                     <div class="dropdown">
@@ -48,11 +48,11 @@
                             {% endif %}
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-sort">
-                            <li><a class="dropdown-item" href="{{ path("shop_index", params|merge({ page: 1, sort: "new-products" })) }}">Nouveautés</a></li>
-                            <li><a class="dropdown-item" href="{{ path("shop_index", params|merge({ page: 1, sort: "amount-asc" })) }}">Valeur croissante</a></li>
-                            <li><a class="dropdown-item" href="{{ path("shop_index", params|merge({ page: 1, sort: "amount-desc" })) }}">Valeur décroissante</a></li>
-                            <li><a class="dropdown-item" href="{{ path("shop_index", params|merge({ page: 1, sort: "name-asc" })) }}">Tri A -> Z</a></li>
-                            <li><a class="dropdown-item" href="{{ path("shop_index", params|merge({ page: 1, sort: "name-desc" })) }}">Tri Z -> A</a></li>
+                            <li><a class="dropdown-item" href="{{ path("shop_index", params|merge({page: 1, sort: "new-products"})) }}">Nouveautés</a></li>
+                            <li><a class="dropdown-item" href="{{ path("shop_index", params|merge({page: 1, sort: "amount-asc"})) }}">Valeur croissante</a></li>
+                            <li><a class="dropdown-item" href="{{ path("shop_index", params|merge({page: 1, sort: "amount-desc"})) }}">Valeur décroissante</a></li>
+                            <li><a class="dropdown-item" href="{{ path("shop_index", params|merge({page: 1, sort: "name-asc"})) }}">Tri A -> Z</a></li>
+                            <li><a class="dropdown-item" href="{{ path("shop_index", params|merge({page: 1, sort: "name-desc"})) }}">Tri Z -> A</a></li>
                         </ul>
                     </div>
                 </div>
@@ -61,7 +61,7 @@
         <div class="row align-items-stretch">
             {% for product in products %}
                 <div class="col-12 col-sm-6 col-lg-4 col-xl-3 col-xxl-2 product">
-                    <a href="{{ path("shop_product", { slug: product.slug }) }}" class="card h-100">
+                    <a href="{{ path("shop_product", {slug: product.slug}) }}" class="card h-100">
                         <img src="{{ asset(product.image) }}" class="card-img-top" alt="{{ product.brand.name }} - {{ product.name }}">
                         <div class="card-body flex-grow-1">
                             <span class="fw-bold">{{ product.brand.name }} - {{ product.name }}</span>
@@ -79,13 +79,13 @@
                 <nav class="mb-3 mx-auto">
                     <ul class="pagination justify-content-center mb-0">
                         {% if params.page > 1 %}
-                            <li class="page-item"><a class="page-link" href="{{ path("shop_index", params|merge({ page: params.page - 1 })) }}">Précedent</a></li>
+                            <li class="page-item"><a class="page-link" href="{{ path("shop_index", params|merge({page: params.page - 1})) }}">Précedent</a></li>
                         {% endif %}
                         {% for p in pageRange %}
-                            <li class="page-item {{ p == params.page ? "active" }}"><a class="page-link" href="{{ path("shop_index", params|merge({ page: p })) }}">{{ p }}</a></li>
+                            <li class="page-item {{ p == params.page ? "active" }}"><a class="page-link" href="{{ path("shop_index", params|merge({page: p})) }}">{{ p }}</a></li>
                         {% endfor %}
                         {% if params.page < pages %}
-                            <li class="page-item"><a class="page-link" href="{{ path("shop_index", params|merge({ page: params.page + 1 })) }}">Suivant</a></li>
+                            <li class="page-item"><a class="page-link" href="{{ path("shop_index", params|merge({page: params.page + 1})) }}">Suivant</a></li>
                         {% endif %}
                     </ul>
                 </nav>

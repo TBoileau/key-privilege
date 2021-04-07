@@ -1,8 +1,8 @@
 {% extends "layouts/page.html.twig" %}
 
-{% set breadcrumbItems = [
-    { route: "order_index", label: "Commandes"}
-] %}
+{% block breadcrumb %}
+    {{ include("components/breadcrumb.html.twig", {items: [{route: "order_index", label: "Commandes"}]}) }}
+{% endblock %}
 
 {% block content %}
     <div class="row">
@@ -46,7 +46,7 @@
                                                 {% endif %}
                                             </td>
                                             <td class="text-center">
-                                                <a href="{{ path("order_detail", { id: order.id }) }}" class="btn btn-primary btn-sm">
+                                                <a href="{{ path("order_detail", {id: order.id}) }}" class="btn btn-primary btn-sm">
                                                     <span class="fas fa-eye"></span>
                                                     <span class="sr-only">Détail</span>
                                                 </a>
