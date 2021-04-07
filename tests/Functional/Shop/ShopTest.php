@@ -35,7 +35,7 @@ class ShopTest extends WebTestCase
 
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
 
-        $client->clickLink("Catégorie 64");
+        $client->clickLink("Catégorie 63");
 
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
 

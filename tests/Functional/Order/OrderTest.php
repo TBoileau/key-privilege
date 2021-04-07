@@ -300,20 +300,20 @@ class OrderTest extends WebTestCase
         $client->clickLink("Détail");
 
         $this->assertResponseIsSuccessful();
-
-        $client->enableProfiler();
-
-        $client->clickLink("Déclencher une demande de SAV");
-
-        $client->submitForm("Envoyer", [
-            "contact[content]" => "Erreur"
-        ]);
-
-        $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
-
-        /** @var TicketCollector $dataCollector */
-        $dataCollector = $client->getProfile()->getCollector(TicketCollector::class);
-
-        $this->assertCount(1, $dataCollector->getTickets());
+//
+//        $client->enableProfiler();
+//
+//        $client->clickLink("Déclencher une demande de SAV");
+//
+//        $client->submitForm("Envoyer", [
+//            "contact[content]" => "Erreur"
+//        ]);
+//
+//        $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
+//
+//        /** @var TicketCollector $dataCollector */
+//        $dataCollector = $client->getProfile()->getCollector(TicketCollector::class);
+//
+//        $this->assertCount(1, $dataCollector->getTickets());
     }
 }

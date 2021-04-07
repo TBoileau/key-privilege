@@ -21,7 +21,7 @@ class ShopFixtures extends Fixture
      */
     private array $universes = [];
 
-    private int $categoryId;
+    private int $categoryId = 0;
 
     /**
      * @var array<int, Category>
@@ -66,7 +66,7 @@ class ShopFixtures extends Fixture
     {
         for ($index = 1; $index <= 400; $index++) {
             $brand = (new Brand())->setId($index)->setName(sprintf("Marque %d", $index));
-            $brands[$index] = $brand;
+            $this->brands[$index] = $brand;
             $manager->persist($brand);
         }
     }
@@ -75,15 +75,13 @@ class ShopFixtures extends Fixture
     {
         $this->createUniverses($manager);
 
-        $categoryId = 0;
-
         $manager->persist($category = (new Category())->setId(10000)->setName("Catégorie 1"));
 
         for ($j = 1; $j <= 20; $j++) {
             $manager->persist($categoryLevel1 = (new Category())
-                ->setId($categoryId)
+                ->setId($this->categoryId)
                 ->setParent($category)
-                ->setName(sprintf("Catégorie %d", $categoryId)));
+                ->setName(sprintf("Catégorie %d", $this->categoryId)));
             $this->categoryId++;
 
             shuffle($this->universes);

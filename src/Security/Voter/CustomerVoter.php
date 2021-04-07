@@ -64,11 +64,11 @@ class CustomerVoter extends Voter
 
     private function voteByRoles(Customer $customer, SalesPerson | Manager $employee): bool
     {
-        if ($employee instanceof Manager && !$employee->getMembers()->contains($customer->getClient()->getMember())) {
-            return false;
+        if ($employee instanceof Manager) {
+            return $employee->getMembers()->contains($customer->getClient()->getMember());
         }
 
-        return $employee instanceof SalesPerson && $customer->getClient()->getSalesPerson() === $employee;
+        return $customer->getClient()->getSalesPerson() === $employee;
     }
 
     private function voteOnActive(Customer $customer, SalesPerson | Manager $employee): bool
