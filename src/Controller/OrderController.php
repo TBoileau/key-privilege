@@ -70,7 +70,7 @@ class OrderController extends AbstractController
             $zendeskWrapper->create($contact);
             $this->addFlash(
                 "success",
-                "Votre demande de SAV a bien été envoyé. Nous vous répondrons dans les plus brefs délais."
+                "Votre demande de SAV a bien été envoyée. Nous vous répondrons dans les plus brefs délais."
             );
             return $this->redirectToRoute("contact");
         }
