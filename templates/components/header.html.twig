@@ -76,17 +76,17 @@
                                 {% if is_granted("ROLE_MANAGER") %}
                                     <li><hr class="dropdown-divider"></li>
                                     <li>
-                                        <a class="dropdown-item" href="{{ path("member_access_create", { role: "collaborateur" }) }}">
+                                        <a class="dropdown-item" href="{{ path("member_access_create", {role: "collaborateur"}) }}">
                                             Créer un accès<br class="d-none d-md-inline d-xl-none"/><span class="d-md-none d-xl-inline">&nbsp;</span>collaborateur
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" href="{{ path("member_access_create", { role: "administrateur" }) }}">
+                                        <a class="dropdown-item" href="{{ path("member_access_create", {role: "administrateur"}) }}">
                                             Créer un accès<br class="d-none d-md-inline d-xl-none"/><span class="d-md-none d-xl-inline">&nbsp;</span>commercial
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" href="{{ path("member_access_create", { role: "commercial" }) }}">
+                                        <a class="dropdown-item" href="{{ path("member_access_create", {role: "commercial"}) }}">
                                             Créer un accès<br class="d-none d-md-block d-xl-none"/><span class="d-md-none d-xl-inline">&nbsp;</span>administrateur
                                         </a>
                                     </li>
@@ -108,6 +108,7 @@
                                 <li><a class="dropdown-item" href="{{ path("shop_index") }}">Boutique</a></li>
                                 <li><a class="dropdown-item" href="{{ path("cart_index") }}">Panier</a></li>
                                 <li><a class="dropdown-item" href="{{ path("order_index") }}">Commandes</a></li>
+                                <li><a class="dropdown-item" href="{{ path("sav_index") }}">Service après-vente</a></li>
                             </ul>
                         </li>
                     {% endif %}
@@ -135,7 +136,7 @@
                         </li>
                     {% else %}
                         <li class="nav-item">
-                            <a href="{{ impersonation_exit_path(path('home') ) }}" class="nav-link">Retour à mon accès</a>
+                            <a href="{{ impersonation_exit_path(path('home')) }}" class="nav-link">Retour à mon accès</a>
                         </li>
                     {% endif %}
                 </ul>

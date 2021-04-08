@@ -1,9 +1,11 @@
 {% extends "layouts/page.html.twig" %}
 
-{% set breadcrumbItems = [
-    { label: "Gestion des clients"},
-    { route: "client_access_list", label: "Gestion des accès"}
-] %}
+{% block breadcrumb %}
+    {{ include("components/breadcrumb.html.twig", {items: [
+        {label: "Gestion des clients"},
+        {route: "client_access_list", label: "Gestion des accès"}
+    ]}) }}
+{% endblock %}
 
 {% block content %}
     <div class="row">
@@ -16,11 +18,11 @@
                     {% endif %}
                 </h1>
                 <div class="section-body">
-                    {{ form_start(form, { attr: { method: "GET", action: path("client_access_list", { page: 1 }) }}) }}
+                    {{ form_start(form, {attr: {method: "GET", action: path("client_access_list", {page: 1})}}) }}
                         <div class="card mb-3">
                             <h2 class="card-header">Filtrer</h2>
                             <div class="card-body d-flex align-items-end">
-                                {{ form_row(form.keywords, { row_attr: { class: "flex-grow-1" }}) }}
+                                {{ form_row(form.keywords, {row_attr: {class: "flex-grow-1"}}) }}
                                 <button type="submit" class="btn btn-primary ms-3">Filtrer</button>
                             </div>
                         </div>
@@ -62,22 +64,22 @@
                                                     </button>
                                                     <ul class="dropdown-menu" aria-labelledby="dropdown-{{ customer.id }}">
                                                         {% if is_granted("suspend", customer) %}
-                                                            <li><a class="dropdown-item" href="{{ path("client_access_suspend", { id: customer.id }) }}">Suspendre</a></li>
+                                                            <li><a class="dropdown-item" href="{{ path("client_access_suspend", {id: customer.id}) }}">Suspendre</a></li>
                                                         {% endif %}
                                                         {% if is_granted("active", customer) %}
-                                                            <li><a class="dropdown-item" href="{{ path("client_access_active", { id: customer.id }) }}">Activer</a></li>
+                                                            <li><a class="dropdown-item" href="{{ path("client_access_active", {id: customer.id}) }}">Activer</a></li>
                                                         {% endif %}
                                                         {% if is_granted("update", customer) %}
-                                                            <li><a class="dropdown-item" href="{{ path("client_access_update", { id: customer.id }) }}">Modifier</a></li>
+                                                            <li><a class="dropdown-item" href="{{ path("client_access_update", {id: customer.id}) }}">Modifier</a></li>
                                                         {% endif %}
                                                         {% if is_granted("delete", customer) %}
-                                                            <li><a class="dropdown-item" href="{{ path("client_access_delete", { id: customer.id }) }}">Supprimer</a></li>
+                                                            <li><a class="dropdown-item" href="{{ path("client_access_delete", {id: customer.id}) }}">Supprimer</a></li>
                                                         {% endif %}
                                                         {% if is_granted("reset", customer) %}
-                                                            <li><a class="dropdown-item" href="{{ path("client_access_reset", { id: customer.id }) }}">Renvoyer un mot de passe</a></li>
+                                                            <li><a class="dropdown-item" href="{{ path("client_access_reset", {id: customer.id}) }}">Renvoyer un mot de passe</a></li>
                                                         {% endif %}
                                                         {% if is_granted("log_as", customer) %}
-                                                            <li><a class="dropdown-item" href="{{ path("home", { _switch_user: customer.email }) }}">Voir son profil</a></li>
+                                                            <li><a class="dropdown-item" href="{{ path("home", {_switch_user: customer.email}) }}">Voir son profil</a></li>
                                                         {% endif %}
                                                     </ul>
                                                 </div>
@@ -96,7 +98,7 @@
                                 {{ include("components/pagination.html.twig", {
                                     class: "my-0",
                                     route: "client_access_list",
-                                    currentPage: app.request.get("page", 1),
+                                    current_page: app.request.get("page", 1),
                                     pages: pages
                                 }) }}
                             </div>

@@ -1,9 +1,11 @@
 {% extends "layouts/page.html.twig" %}
 
-{% set breadcrumbItems = [
-    { route: "key_index", label: "Compte clés"},
-    { route: "key_transfer", label: "Transférer des clés"}
-] %}
+{% block breadcrumb %}
+    {{ include("components/breadcrumb.html.twig", {items: [
+        {route: "key_index", label: "Compte clés"},
+        {route: "key_transfer", label: "Transférer des clés"}
+    ]}) }}
+{% endblock %}
 
 {% block content %}
     <div class="row">

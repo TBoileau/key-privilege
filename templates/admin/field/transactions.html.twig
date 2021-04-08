@@ -14,33 +14,20 @@
             {% for transaction in field.value %}
                 <tr>
                     <td class="text-center">
-                        {% set url = ea_url()
-                            .setDashboard('App\\Controller\\Admin\\DashboardController')
-                            .setController('App\\Controller\\Admin\\AccountCrudController')
-                            .setAction('detail')
-                            .setEntityId(transaction.account.id) %}
+                        {% set url = ea_url().setDashboard('App\\Controller\\Admin\\DashboardController').setController('App\\Controller\\Admin\\AccountCrudController').setAction('detail').setEntityId(transaction.account.id) %}
                         <a href="{{ url }}">
                             {{ transaction.account|u.toString }}
                         </a>
                     </td>
                     <td class="text-center">
-                        {% set url = ea_url()
-                            .setDashboard('App\\Controller\\Admin\\DashboardController')
-                            .setController('App\\Controller\\Admin\\WalletCrudController')
-                            .setAction('detail')
-                            .setEntityId(transaction.wallet.id) %}
+                        {% set url = ea_url().setDashboard('App\\Controller\\Admin\\DashboardController').setController('App\\Controller\\Admin\\WalletCrudController').setAction('detail').setEntityId(transaction.wallet.id) %}
                         <a href="{{ url }}">
                             {{ "%08d"|format(transaction.wallet.id) }}
                         </a>
                     </td>
                     <td class="text-center">{{ transaction.createdAt|date("d/m/Y H:i") }}</td>
                     <td class="text-center">
-
-                        {% set url = ea_url()
-                            .setDashboard('App\\Controller\\Admin\\DashboardController')
-                            .setController('App\\Controller\\Admin\\TransactionCrudController')
-                            .setAction('detail')
-                            .setEntityId(transaction.id) %}
+                        {% set url = ea_url().setDashboard('App\\Controller\\Admin\\DashboardController').setController('App\\Controller\\Admin\\TransactionCrudController').setAction('detail').setEntityId(transaction.id) %}
                         <a href="{{ url }}">
                             {{ transaction.type }}
                             {% if constant("OPERATION", transaction) == "ACH" %}

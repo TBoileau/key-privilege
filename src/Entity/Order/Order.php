@@ -159,6 +159,6 @@ class Order
 
     public function getReference(): string
     {
-        return sprintf("C%08d", $this->id);
+        return sprintf("BCB%04d-%d", $this->id, $this->user->getId());
     }
 }

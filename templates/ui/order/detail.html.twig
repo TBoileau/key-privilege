@@ -1,9 +1,11 @@
 {% extends "layouts/page.html.twig" %}
 
-{% set breadcrumbItems = [
-    { route: "order_index", label: "Commandes"},
-    { route: "order_detail", routeParams: { id: order.id }, label: "Détail"}
-] %}
+{% block breadcrumb %}
+    {{ include("components/breadcrumb.html.twig", {items: [
+        {route: "order_index", label: "Commandes"},
+        {route: "order_detail", routeParams: {id: order.id}, label: "Détail"}
+    ]}) }}
+{% endblock %}
 
 {% block content %}
     <div class="row">
@@ -50,7 +52,7 @@
                                     </div>
                                 </div>
                                 <div class="card-footer text-end p-0">
-                                    <a href="{{ path("order_trigger_sav", { id: order.id }) }}" class="btn d-block btn-outline-danger rounded-0 border-0">
+                                    <a href="{{ path("sav_trigger", {id: order.id}) }}" class="btn d-block btn-outline-danger rounded-0 border-0">
                                         Déclencher une demande de SAV
                                     </a>
                                 </div>

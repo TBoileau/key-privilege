@@ -6,6 +6,8 @@ services:
         autoconfigure: true
         bind:
             $mailerSender: '%env(MAILER_SENDER)%'
+            string $uploadDir: 'uploads'
+            string $publicDir: '%kernel.project_dir%/public'
 
     App\:
         resource: '../src/'
@@ -34,4 +36,4 @@ services:
         autowire: true
 
     App\Mailer\SpotHitApiTransport:
-        factory: [ 'App\Mailer\StopHitTransportFactory', 'create' ]
+        factory: ['App\Mailer\StopHitTransportFactory', 'create']

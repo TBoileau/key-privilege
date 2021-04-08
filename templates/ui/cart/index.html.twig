@@ -1,8 +1,8 @@
 {% extends "layouts/page.html.twig" %}
 
-{% set breadcrumbItems = [
-    { route: "cart_index", label: "Panier"}
-] %}
+{% block breadcrumb %}
+    {{ include("components/breadcrumb.html.twig", {items: [{route: "cart_index", label: "Panier"}]}) }}
+{% endblock %}
 
 {% block content %}
     <div class="row">
@@ -29,12 +29,12 @@
                                         <td class="text-center">{{ line.amount }}</td>
                                         <td class="text-center">
                                             <div class="input-group input-group-sm justify-content-center">
-                                                <a href="{{ path("cart_decrease_quantity", { id: line.id }) }}" class="btn btn-sm btn-outline-primary">
+                                                <a href="{{ path("cart_decrease_quantity", {id: line.id}) }}" class="btn btn-sm btn-outline-primary">
                                                     <span class="fas fa-minus"></span>
                                                     <span class="sr-only">Moins</span>
                                                 </a>
                                                 <span class="input-group-text bg-white border-top border-bottom">{{ line.quantity }}</span>
-                                                <a href="{{ path("cart_increase_quantity", { id: line.id }) }}" class="btn btn-sm btn-outline-primary">
+                                                <a href="{{ path("cart_increase_quantity", {id: line.id}) }}" class="btn btn-sm btn-outline-primary">
                                                     <span class="fas fa-plus"></span>
                                                     <span class="sr-only">Plus</span>
                                                 </a>

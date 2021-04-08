@@ -1,10 +1,12 @@
 {% extends "layouts/page.html.twig" %}
 
-{% set breadcrumbItems = [
-    { label: "Gestion des clients"},
-    { route: "client_company_list", label: "Gestion des sociétés"},
-    {route: "client_company_delete", routeParams: { id: client.id }, label: "Supprimer une société"}
-] %}
+{% block breadcrumb %}
+    {{ include("components/breadcrumb.html.twig", {items: [
+        {label: "Gestion des clients"},
+        {route: "client_company_list", label: "Gestion des sociétés"},
+        {route: "client_company_delete", routeParams: {id: client.id}, label: "Supprimer une société"}
+    ]}) }}
+{% endblock %}
 
 {% block content %}
     <div class="row">

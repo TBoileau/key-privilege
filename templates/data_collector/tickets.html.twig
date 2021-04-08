@@ -30,10 +30,14 @@
             <span>{{ collector.tickets|length }}</span>
         </div>
     {% endset %}
+    <div class="sf-toolbar-block sf-toolbar-block-{{ name }} sf-toolbar-status-{{ status|default('normal') }} {{ additional_classes|default('') }}" {{ block_attrs|default('')|raw }}>
+        <a href="{{ url('_profiler', {token: token, panel: name}) }}">
+            <div class="sf-toolbar-icon">{{ icon|default('') }}</div>
+        </a>
+        <div class="sf-toolbar-info">{{ text|default('') }}</div>
+    </div>
 
-    {{ include('@WebProfiler/Profiler/toolbar_item.html.twig', { link: true }) }}
 {% endblock %}
-
 
 {% block head %}
     {{ parent() }}

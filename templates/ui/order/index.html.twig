@@ -1,8 +1,8 @@
 {% extends "layouts/page.html.twig" %}
 
-{% set breadcrumbItems = [
-    { route: "order_index", label: "Commandes"}
-] %}
+{% block breadcrumb %}
+    {{ include("components/breadcrumb.html.twig", {items: [{route: "order_index", label: "Commandes"}]}) }}
+{% endblock %}
 
 {% block content %}
     <div class="row">
@@ -21,7 +21,7 @@
                                     <th class="text-center">Nombre de produits</th>
                                     <th class="text-center">Total (clés)</th>
                                     <th class="text-center">Statut</th>
-                                    <th class="text-center">Actions</th>
+                                    <th class="text-center">Détail</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -46,7 +46,7 @@
                                                 {% endif %}
                                             </td>
                                             <td class="text-center">
-                                                <a href="{{ path("order_detail", { id: order.id }) }}" class="btn btn-primary btn-sm">
+                                                <a href="{{ path("order_detail", {id: order.id}) }}" class="btn btn-primary btn-sm">
                                                     <span class="fas fa-eye"></span>
                                                     <span class="sr-only">Détail</span>
                                                 </a>
@@ -55,13 +55,16 @@
                                     {% endif %}
                                 {% else %}
                                     <tr>
-                                        <td class="text-center" colspan="4">Aucun résultat</td>
+                                        <td class="text-center" colspan="8">Aucun résultat</td>
                                     </tr>
                                 {% endfor %}
                                 </tbody>
                             </table>
                         </div>
                     </div>
+                    {% if is_granted("ROLE_MANAGER") or is_granted("ROLE_SALES_PERSON") %}
+                        {{ render(path('order_clients', {max: 3})) }}
+                    {% endif %}
                 </div>
             </section>
         </div>

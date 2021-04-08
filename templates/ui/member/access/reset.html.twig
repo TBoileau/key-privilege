@@ -1,10 +1,12 @@
 {% extends "layouts/page.html.twig" %}
 
-{% set breadcrumbItems = [
-    { route: "account_index", label: "Mon compte"},
-    { route: "member_access_list", label: "Gestion des accès adhérent"},
-    {route: "member_access_reset", routeParams: { id: user.id }, label: "Réinitialiser un accès"}
-] %}
+{% block breadcrumb %}
+    {{ include("components/breadcrumb.html.twig", {items: [
+        {route: "account_index", label: "Mon compte"},
+        {route: "member_access_list", label: "Gestion des accès adhérent"},
+        {route: "member_access_reset", routeParams: {id: user.id}, label: "Réinitialiser un accès"}
+    ]}) }}
+{% endblock %}
 
 {% block content %}
     <div class="row">

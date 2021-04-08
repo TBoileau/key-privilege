@@ -70,7 +70,7 @@ class WebAuthenticator extends AbstractFormLoginAuthenticator implements Passwor
         return $credentials;
     }
 
-    public function getUser($credentials, UserProviderInterface $userProvider): UserInterface | null
+    public function getUser($credentials, UserProviderInterface $userProvider): ?UserInterface
     {
         $token = new CsrfToken('authenticate', $credentials['csrf_token']);
         if (!$this->csrfTokenManager->isTokenValid($token)) {

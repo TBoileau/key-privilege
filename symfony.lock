@@ -11,8 +11,23 @@
     "behat/transliterator": {
         "version": "v1.3.0"
     },
+    "composer/ca-bundle": {
+        "version": "1.2.9"
+    },
+    "composer/composer": {
+        "version": "2.0.12"
+    },
     "composer/package-versions-deprecated": {
         "version": "1.11.99.1"
+    },
+    "composer/semver": {
+        "version": "3.2.4"
+    },
+    "composer/spdx-licenses": {
+        "version": "1.5.5"
+    },
+    "composer/xdebug-handler": {
+        "version": "1.4.6"
     },
     "dama/doctrine-test-bundle": {
         "version": "4.0",
@@ -138,6 +153,9 @@
     "friendsofphp/proxy-manager-lts": {
         "version": "v1.0.3"
     },
+    "friendsoftwig/twigcs": {
+        "version": "v5.0.0"
+    },
     "gedmo/doctrine-extensions": {
         "version": "v3.0.3"
     },
@@ -149,6 +167,12 @@
     },
     "guzzlehttp/psr7": {
         "version": "1.7.0"
+    },
+    "icanhazstring/composer-unused": {
+        "version": "0.7.5"
+    },
+    "justinrainbow/json-schema": {
+        "version": "5.2.10"
     },
     "laminas/laminas-code": {
         "version": "4.0.0"
@@ -174,6 +198,9 @@
     "nusphere/nusoap": {
         "version": "0.9.6"
     },
+    "pdepend/pdepend": {
+        "version": "2.9.0"
+    },
     "phar-io/manifest": {
         "version": "2.0.1"
     },
@@ -188,6 +215,9 @@
     },
     "phpdocumentor/type-resolver": {
         "version": "1.4.0"
+    },
+    "phpmd/phpmd": {
+        "version": "2.9.1"
     },
     "phpspec/prophecy": {
         "version": "1.12.2"
@@ -260,6 +290,9 @@
     "ralouphie/getallheaders": {
         "version": "3.0.3"
     },
+    "react/promise": {
+        "version": "v2.8.0"
+    },
     "sebastian/cli-parser": {
         "version": "1.0.1"
     },
@@ -296,6 +329,9 @@
     "sebastian/object-reflector": {
         "version": "2.0.4"
     },
+    "sebastian/phpcpd": {
+        "version": "6.0.3"
+    },
     "sebastian/recursion-context": {
         "version": "4.0.4"
     },
@@ -307,6 +343,12 @@
     },
     "sebastian/version": {
         "version": "3.0.2"
+    },
+    "seld/jsonlint": {
+        "version": "1.8.3"
+    },
+    "seld/phar-utils": {
+        "version": "1.1.1"
     },
     "sensio/framework-extra-bundle": {
         "version": "5.2",
@@ -592,9 +634,6 @@
     "symfony/property-info": {
         "version": "v5.2.1"
     },
-    "symfony/proxy-manager-bridge": {
-        "version": "v5.2.1"
-    },
     "symfony/routing": {
         "version": "5.1",
         "recipe": {
@@ -689,6 +728,9 @@
     },
     "symfony/uid": {
         "version": "v5.2.3"
+    },
+    "symfony/ux-dropzone": {
+        "version": "v1.2.0"
     },
     "symfony/validator": {
         "version": "4.3",

@@ -9,16 +9,38 @@ use App\Entity\Order\Order;
 use App\Entity\Shop\Product;
 use App\Entity\User\Customer;
 use App\Entity\User\Manager;
+use App\Entity\User\SalesPerson;
 use App\Zendesk\DataCollector\TicketCollector;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class OrderTest extends WebTestCase
 {
+    public function testAsSalesPersonIfListingOrdersIsSuccessful(): void
+    {
+        $client = static::createClient();
+
+        /** @var EntityManagerInterface $entityManager */
+        $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
+
+        /** @var SalesPerson $salesPerson */
+        $salesPerson = $entityManager->find(SalesPerson::class, 7);
+
+        $client->loginUser($salesPerson);
+
+        /** @var UrlGeneratorInterface $urlGenerator */
+        $urlGenerator = $client->getContainer()->get("router");
+
+        $client->request(Request::METHOD_GET, $urlGenerator->generate("order_index"));
+
+        $this->assertResponseIsSuccessful();
+    }
+
     public function testAsManagerIfPassingOrderIsSuccessful(): void
     {
         $client = static::createClient();
@@ -303,17 +325,24 @@ class OrderTest extends WebTestCase
 
         $client->enableProfiler();
 
-        $client->clickLink("Déclencher une demande de SAV");
+        $crawler = $client->clickLink("Déclencher une demande de SAV");
 
-        $client->submitForm("Envoyer", [
-            "contact[content]" => "Erreur"
-        ]);
+        $client->request(
+            Request::METHOD_POST,
+            '/sav/' . $order->getId() . '/declencher',
+            [
+                'sav' => [
+                    "_token" => $crawler->filter("form[name=sav]")->form()->get("sav")["_token"]->getValue(),
+                    "line" => $order->getLines()->first()->getId(),
+                    "description" => "Description",
+                    "comment" => "Commentaire",
+                    'attachments' => ["uploads/image.png"]
+                ]
+            ]
+        );
 
         $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
 
-        /** @var TicketCollector $dataCollector */
-        $dataCollector = $client->getProfile()->getCollector(TicketCollector::class);
-
-        $this->assertCount(1, $dataCollector->getTickets());
+        $this->assertEmailCount(1);
     }
 }

@@ -1,9 +1,11 @@
 {% extends "layouts/page.html.twig" %}
 
-{% set breadcrumbItems = [
-    { route: "account_index", label: "Mon compte"},
-    {route: "member_access_list", label: "Gestion des accès adhérent"}
-] %}
+{% block breadcrumb %}
+    {{ include("components/breadcrumb.html.twig", {items: [
+        {route: "account_index", label: "Mon compte"},
+        {route: "member_access_list", label: "Gestion des accès adhérent"}
+    ]}) }}
+{% endblock %}
 
 {% block content %}
     <div class="row">
@@ -16,18 +18,18 @@
                             Créer un nouvel accès
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="dropdown-create">
-                            <li><a href="{{ path("member_access_create", { role: "administrateur" }) }}" class="dropdown-item">Administrateur</a></li>
-                            <li><a href="{{ path("member_access_create", { role: "commercial" }) }}" class="dropdown-item">Commercial</a></li>
-                            <li><a href="{{ path("member_access_create", { role: "collaborateur" }) }}" class="dropdown-item">Collaborateur</a></li>
+                            <li><a href="{{ path("member_access_create", {role: "administrateur"}) }}" class="dropdown-item">Administrateur</a></li>
+                            <li><a href="{{ path("member_access_create", {role: "commercial"}) }}" class="dropdown-item">Commercial</a></li>
+                            <li><a href="{{ path("member_access_create", {role: "collaborateur"}) }}" class="dropdown-item">Collaborateur</a></li>
                         </ul>
                     </div>
                 </h1>
                 <div class="section-body">
-                    {{ form_start(form, { attr: { method: "GET", action: path("member_access_list", { page: 1 }) }}) }}
+                    {{ form_start(form, {attr: {method: "GET", action: path("member_access_list", {page: 1})}}) }}
                     <div class="card mb-3">
                         <h2 class="card-header">Filtrer</h2>
                         <div class="card-body d-flex align-items-end">
-                            {{ form_row(form.keywords, { row_attr: { class: "flex-grow-1" }}) }}
+                            {{ form_row(form.keywords, {row_attr: {class: "flex-grow-1"}}) }}
                             <button type="submit" class="btn btn-primary ms-3">Filtrer</button>
                         </div>
                     </div>
@@ -75,22 +77,22 @@
                                                 </button>
                                                 <ul class="dropdown-menu" aria-labelledby="dropdown-{{ employee.id }}">
                                                     {% if is_granted("suspend", employee) %}
-                                                        <li><a class="dropdown-item" href="{{ path("member_access_suspend", { id: employee.id }) }}">Suspendre</a></li>
+                                                        <li><a class="dropdown-item" href="{{ path("member_access_suspend", {id: employee.id}) }}">Suspendre</a></li>
                                                     {% endif %}
                                                     {% if is_granted("active", employee) %}
-                                                        <li><a class="dropdown-item" href="{{ path("member_access_active", { id: employee.id }) }}">Activer</a></li>
+                                                        <li><a class="dropdown-item" href="{{ path("member_access_active", {id: employee.id}) }}">Activer</a></li>
                                                     {% endif %}
                                                     {% if is_granted("update", employee) %}
-                                                        <li><a class="dropdown-item" href="{{ path("member_access_update", { id: employee.id }) }}">Modifier</a></li>
+                                                        <li><a class="dropdown-item" href="{{ path("member_access_update", {id: employee.id}) }}">Modifier</a></li>
                                                     {% endif %}
                                                     {% if is_granted("delete", employee) %}
-                                                        <li><a class="dropdown-item" href="{{ path("member_access_delete", { id: employee.id }) }}">Supprimer</a></li>
+                                                        <li><a class="dropdown-item" href="{{ path("member_access_delete", {id: employee.id}) }}">Supprimer</a></li>
                                                     {% endif %}
                                                     {% if is_granted("reset", employee) %}
-                                                        <li><a class="dropdown-item" href="{{ path("member_access_reset", { id: employee.id }) }}">Renvoyer un mot de passe</a></li>
+                                                        <li><a class="dropdown-item" href="{{ path("member_access_reset", {id: employee.id}) }}">Renvoyer un mot de passe</a></li>
                                                     {% endif %}
                                                     {% if is_granted("log_as", employee) %}
-                                                        <li><a class="dropdown-item" href="{{ path("home", { _switch_employee: employee.email }) }}">Voir son profil</a></li>
+                                                        <li><a class="dropdown-item" href="{{ path("home", {_switch_employee: employee.email}) }}">Voir son profil</a></li>
                                                     {% endif %}
                                                 </ul>
                                             </div>
@@ -109,7 +111,7 @@
                                 {{ include("components/pagination.html.twig", {
                                     class: "my-0",
                                     route: "member_access_list",
-                                    currentPage: app.request.get("page", 1),
+                                    current_page: app.request.get("page", 1),
                                     pages: pages
                                 }) }}
                             </div>

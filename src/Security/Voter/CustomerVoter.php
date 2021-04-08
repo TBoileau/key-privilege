@@ -43,27 +43,41 @@ class CustomerVoter extends Voter
         /** @var SalesPerson|Manager $employee */
         $employee = $token->getUser();
 
-        if ($employee instanceof Manager && !$employee->getMembers()->contains($customer->getClient()->getMember())) {
+        if (!$this->voteByRoles($customer, $employee)) {
             return false;
         }
 
-        if ($employee instanceof SalesPerson && $customer->getClient()->getSalesPerson() !== $employee) {
-            return false;
+        if (in_array($attribute, [self::ROLE_RESET, self::ROLE_LOG_AS, self::ROLE_UPDATE])) {
+            return true;
         }
 
-        switch ($attribute) {
-            case self::ROLE_RESET:
-                return true;
-            case self::ROLE_LOG_AS:
-                return true;
-            case self::ROLE_UPDATE:
-                return true;
-            case self::ROLE_ACTIVE:
-                return $customer->isSuspended() && $employee instanceof Manager;
-            case self::ROLE_SUSPEND:
-                return !$customer->isSuspended() && $employee instanceof Manager;
-            default:
-                return $employee instanceof Manager;
+        if ($attribute === self::ROLE_ACTIVE) {
+            return $this->voteOnActive($customer, $employee);
         }
+
+        if ($attribute === self::ROLE_SUSPEND) {
+            return $this->voteOnSuspend($customer, $employee);
+        }
+
+        return $employee instanceof Manager;
+    }
+
+    private function voteByRoles(Customer $customer, SalesPerson | Manager $employee): bool
+    {
+        if ($employee instanceof Manager) {
+            return $employee->getMembers()->contains($customer->getClient()->getMember());
+        }
+
+        return $customer->getClient()->getSalesPerson() === $employee;
+    }
+
+    private function voteOnActive(Customer $customer, SalesPerson | Manager $employee): bool
+    {
+        return $customer->isSuspended() && $employee instanceof Manager;
+    }
+
+    private function voteOnSuspend(Customer $customer, SalesPerson | Manager $employee): bool
+    {
+        return !$customer->isSuspended() && $employee instanceof Manager;
     }
 }

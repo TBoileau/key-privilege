@@ -21,7 +21,7 @@ class ClientFixtures extends Fixture implements DependentFixtureInterface
         $salesPersons = $manager->getRepository(SalesPerson::class)->findAll();
 
         foreach ($salesPersons as $salesPerson) {
-            for ($j = 1; $j <= 20; $j++) {
+            for ($index = 1; $index <= 20; $index++) {
                 $client = (new Client())
                     ->setMember($salesPerson->getMember())
                     ->setSalesPerson($salesPerson)

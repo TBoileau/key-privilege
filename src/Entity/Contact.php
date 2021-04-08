@@ -31,17 +31,6 @@ class Contact implements \Serializable
      */
     public string $content;
 
-    public static function createFromOrder(Order $order): Contact
-    {
-        $contact = new self();
-
-        $contact->name = $order->getUser()->getFullName();
-        $contact->subject = sprintf("Demande de SAV - N° de commande %s", $order->getReference());
-        $contact->email = $order->getUser()->getEmail();
-
-        return $contact;
-    }
-
     public function serialize(): string
     {
         return \serialize([

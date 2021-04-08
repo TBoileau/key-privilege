@@ -1,16 +1,17 @@
 {% extends "layouts/page.html.twig" %}
 
-{% set breadcrumbItems = [
-    { route: "order_index", label: "Commandes"},
-    { route: "order_detail", routeParams: { id: order.id }, label: "Détail"},
-    { route: "order_trigger_sav", routeParams: { id: order.id }, label: "Déclencher une demande de SAV"}
-] %}
+{% block breadcrumb %}
+    {{ include("components/breadcrumb.html.twig", {items: [
+        {route: "sav_index", label: "Service après-vente"},
+        {route: "sav_trigger", routeParams: {id: order.id}, label: "Déclencher une demande de SAV"}
+    ]}) }}
+{% endblock %}
 
 {% block content %}
     <div class="row">
         <div class="col-12">
             <section class="section">
-                <h1 class="section-header">Commande</h1>
+                <h1 class="section-header">Service après-vente</h1>
                 <div class="section-body">
                     <div class="row justify-content-center">
                         <div class="col-12 col-lg-6">
@@ -19,10 +20,12 @@
                                 <h2 class="card-header">Déclencher une demande de SAV</h2>
                                 <div class="card-body">
                                     {{ form_errors(form) }}
-                                    {{ form_row(form.name) }}
-                                    {{ form_row(form.email) }}
-                                    {{ form_row(form.subject) }}
-                                    {{ form_row(form.content) }}
+                                    {{ form_widget(form._token) }}
+                                    {{ form_row(form.line) }}
+                                    {{ form_row(form.description) }}
+                                    {{ form_row(form.comment) }}
+                                    {{ form_row(form._attachments) }}
+                                    <div id="sav_attachments" class="list-group mt-3"></div>
                                 </div>
                                 <div class="card-footer p-0 d-flex">
                                     <button type="submit" class="btn d-block flex-grow-1 btn-outline-success rounded-0 border-0">
@@ -30,7 +33,7 @@
                                     </button>
                                 </div>
                             </div>
-                            {{ form_end(form) }}
+                            {{ form_end(form, {render_rest: false}) }}
                         </div>
                     </div>
                 </div>
