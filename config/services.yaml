@@ -6,6 +6,8 @@ services:
         autoconfigure: true
         bind:
             $mailerSender: '%env(MAILER_SENDER)%'
+            string $uploadDir: 'uploads'
+            string $publicDir: '%kernel.project_dir%/public'
 
     App\:
         resource: '../src/'

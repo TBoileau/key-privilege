@@ -13,6 +13,7 @@ use App\Zendesk\DataCollector\TicketCollector;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -300,20 +301,62 @@ class OrderTest extends WebTestCase
         $client->clickLink("Détail");
 
         $this->assertResponseIsSuccessful();
-//
-//        $client->enableProfiler();
-//
-//        $client->clickLink("Déclencher une demande de SAV");
-//
-//        $client->submitForm("Envoyer", [
-//            "contact[content]" => "Erreur"
-//        ]);
-//
-//        $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
-//
-//        /** @var TicketCollector $dataCollector */
-//        $dataCollector = $client->getProfile()->getCollector(TicketCollector::class);
-//
-//        $this->assertCount(1, $dataCollector->getTickets());
+
+        $client->enableProfiler();
+
+        $crawler = $client->clickLink("Déclencher une demande de SAV");
+
+        $client->request(
+            Request::METHOD_POST,
+            '/commandes/' . $order->getId() . '/declencher-sav',
+            [
+                'sav' => [
+                    "_token" => $crawler->filter("form[name=sav]")->form()->get("sav")["_token"]->getValue(),
+                    "line" => $order->getLines()->first()->getId(),
+                    "description" => "Description",
+                    "comment" => "Commentaire",
+                    'attachments' => ["uploads/image.png"]
+                ]
+            ]
+        );
+
+        $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
+
+        $this->assertEmailCount(1);
+    }
+
+    public function testIfUploadWorks(): void
+    {
+        $client = static::createClient();
+
+        /** @var EntityManagerInterface $entityManager */
+        $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
+
+        /** @var Manager $manager */
+        $manager = $entityManager->find(Manager::class, 1);
+
+        $client->loginUser($manager);
+
+        copy(
+            __DIR__ . '/../../../public/uploads/image.png',
+            __DIR__ . '/../../../public/uploads/image-test.png'
+        );
+
+        $client->request(
+            Request::METHOD_POST,
+            "/commandes/upload",
+            [],
+            [
+                "file" => new UploadedFile(
+                    __DIR__ . '/../../../public/uploads/image-test.png',
+                    'image.png',
+                    'image/png',
+                    null,
+                    true
+                )
+            ]
+        );
+
+        $this->assertResponseIsSuccessful();
     }
 }

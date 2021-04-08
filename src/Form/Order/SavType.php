@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Form;
+namespace App\Form\Order;
 
 use App\Entity\Order\Line;
 use App\Entity\Order\Order;
@@ -10,6 +10,8 @@ use App\Entity\Order\Sav;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -31,15 +33,37 @@ class SavType extends AbstractType
                 ),
                 "query_builder" => fn (EntityRepository $repository) => $repository->createQueryBuilder("l")
                     ->where("l.order = :order")
-                    ->setParameter("order", $options["order"])
+                    ->setParameter("order", $options["order"]),
+                "row_attr" => [
+                    "class" => "mb-3"
+                ]
             ])
-            ->add("attachments", DropzoneType::class)
+            ->add("_attachments", DropzoneType::class, [
+                "label" => "Pièces jointes :",
+                "required" => false,
+                'mapped' => false,
+                'attr' => [
+                    'data-controller' => 'sav',
+                    'placeholder' => 'Déposer vos pièces jointes'
+                ]
+            ])
+            ->add('attachments', CollectionType::class, [
+                "label" => false,
+                "entry_type" => HiddenType::class,
+                "allow_add" => true
+            ])
             ->add("description", TextareaType::class, [
-                "label" => "Descriptif précis de la panne :"
+                "label" => "Descriptif précis de la panne :",
+                "row_attr" => [
+                    "class" => "mb-3"
+                ]
             ])
             ->add("comment", TextareaType::class, [
                 "required" => false,
-                "label" => "Commentaires :"
+                "label" => "Commentaires :",
+                "row_attr" => [
+                    "class" => "mb-3"
+                ]
             ]);
     }
 
