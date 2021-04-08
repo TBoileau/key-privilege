@@ -48,7 +48,7 @@ export default class extends Controller {
   _onChange(event) {
     const data = new FormData();
     data.append('file', event.detail);
-    fetch('/commandes/upload',
+    fetch('/sav/upload',
         {
           method: 'POST',
           headers: {

@@ -308,7 +308,7 @@ class OrderTest extends WebTestCase
 
         $client->request(
             Request::METHOD_POST,
-            '/commandes/' . $order->getId() . '/declencher-sav',
+            '/sav/' . $order->getId() . '/declencher',
             [
                 'sav' => [
                     "_token" => $crawler->filter("form[name=sav]")->form()->get("sav")["_token"]->getValue(),
@@ -323,40 +323,5 @@ class OrderTest extends WebTestCase
         $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
 
         $this->assertEmailCount(1);
-    }
-
-    public function testIfUploadWorks(): void
-    {
-        $client = static::createClient();
-
-        /** @var EntityManagerInterface $entityManager */
-        $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
-
-        /** @var Manager $manager */
-        $manager = $entityManager->find(Manager::class, 1);
-
-        $client->loginUser($manager);
-
-        copy(
-            __DIR__ . '/../../../public/uploads/image.png',
-            __DIR__ . '/../../../public/uploads/image-test.png'
-        );
-
-        $client->request(
-            Request::METHOD_POST,
-            "/commandes/upload",
-            [],
-            [
-                "file" => new UploadedFile(
-                    __DIR__ . '/../../../public/uploads/image-test.png',
-                    'image.png',
-                    'image/png',
-                    null,
-                    true
-                )
-            ]
-        );
-
-        $this->assertResponseIsSuccessful();
     }
 }

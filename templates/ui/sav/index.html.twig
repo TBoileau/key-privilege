@@ -1,14 +1,14 @@
 {% extends "layouts/page.html.twig" %}
 
 {% block breadcrumb %}
-    {{ include("components/breadcrumb.html.twig", {items: [{route: "order_index", label: "Commandes"}]}) }}
+    {{ include("components/breadcrumb.html.twig", {items: [{route: "sav_index", label: "Service après-vente"}]}) }}
 {% endblock %}
 
 {% block content %}
     <div class="row">
         <div class="col-12">
             <section class="section">
-                <h1 class="section-header">Commandes</h1>
+                <h1 class="section-header">Service après-vente</h1>
                 <div class="section-body">
                     <div class="card">
                         <h2 class="card-header">Liste des commandes</h2>
@@ -21,7 +21,7 @@
                                     <th class="text-center">Nombre de produits</th>
                                     <th class="text-center">Total (clés)</th>
                                     <th class="text-center">Statut</th>
-                                    <th class="text-center">Détail</th>
+                                    <th class="text-center">&nbsp;</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -46,9 +46,8 @@
                                                 {% endif %}
                                             </td>
                                             <td class="text-center">
-                                                <a href="{{ path("order_detail", {id: order.id}) }}" class="btn btn-primary btn-sm">
-                                                    <span class="fas fa-eye"></span>
-                                                    <span class="sr-only">Détail</span>
+                                                <a href="{{ path("sav_trigger", {id: order.id}) }}" class="btn btn-danger btn-sm">
+                                                    Demande de SAV
                                                 </a>
                                             </td>
                                         </tr>
