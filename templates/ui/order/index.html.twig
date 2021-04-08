@@ -62,6 +62,9 @@
                             </table>
                         </div>
                     </div>
+                    {% if is_granted("ROLE_MANAGER") or is_granted("ROLE_SALES_PERSON") %}
+                        {{ render(path('order_clients', {max: 3})) }}
+                    {% endif %}
                 </div>
             </section>
         </div>

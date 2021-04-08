@@ -9,6 +9,7 @@ use App\Entity\Order\Order;
 use App\Entity\Shop\Product;
 use App\Entity\User\Customer;
 use App\Entity\User\Manager;
+use App\Entity\User\SalesPerson;
 use App\Zendesk\DataCollector\TicketCollector;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -20,6 +21,26 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class OrderTest extends WebTestCase
 {
+    public function testAsSalesPersonIfListingOrdersIsSuccessful(): void
+    {
+        $client = static::createClient();
+
+        /** @var EntityManagerInterface $entityManager */
+        $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
+
+        /** @var SalesPerson $salesPerson */
+        $salesPerson = $entityManager->find(SalesPerson::class, 7);
+
+        $client->loginUser($salesPerson);
+
+        /** @var UrlGeneratorInterface $urlGenerator */
+        $urlGenerator = $client->getContainer()->get("router");
+
+        $client->request(Request::METHOD_GET, $urlGenerator->generate("order_index"));
+
+        $this->assertResponseIsSuccessful();
+    }
+
     public function testAsManagerIfPassingOrderIsSuccessful(): void
     {
         $client = static::createClient();
