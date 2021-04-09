@@ -17,23 +17,28 @@ class AddressType extends AbstractType
     {
         $builder
             ->add("streetAddress", TextType::class, [
-                "label" => "Adresse :"
+                "label" => "Adresse :",
+                "empty_data" => ""
             ])
             ->add("restAddress", TextType::class, [
                 "label" => "Complément d'adresse :",
                 "required" => false
             ])
             ->add("zipCode", TextType::class, [
-                'label' => "Code postal :"
+                'label' => "Code postal :",
+                "empty_data" => ""
             ])
             ->add("locality", TextType::class, [
-                'label' => "Ville :"
+                'label' => "Ville :",
+                "empty_data" => ""
             ])
             ->add("phone", TextType::class, [
-                'label' => "N° de téléphone :"
+                'label' => "N° de téléphone :",
+                "empty_data" => ""
             ])
             ->add("email", EmailType::class, [
-                'label' => "Adresse email :"
+                'label' => "Adresse email :",
+                "empty_data" => ""
             ]);
     }
 

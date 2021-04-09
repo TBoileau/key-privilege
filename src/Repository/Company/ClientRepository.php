@@ -62,7 +62,7 @@ class ClientRepository extends ServiceEntityRepository
         $queryBuilder = $this->createQueryBuilder("c")
             ->addSelect("s")
             ->addSelect("m")
-            ->join("c.salesPerson", "s")
+            ->leftJoin("c.salesPerson", "s")
             ->join("c.member", "m")
             ->andWhere("c.name LIKE :keywords")
             ->setParameter("keywords", "%" . ($keywords ?? "") . "%")

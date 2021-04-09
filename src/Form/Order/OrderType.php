@@ -28,7 +28,7 @@ class OrderType extends AbstractType
                 $customer = $order->getUser();
 
                 if ($customer->isManualDelivery()) {
-                    $form->add("address", AddressType::class);
+                    $form->add("address", AddressType::class, ["validation_groups" => ["Default", "order"]]);
                 }
             }
         });

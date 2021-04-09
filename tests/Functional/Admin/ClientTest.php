@@ -53,7 +53,11 @@ class ClientTest extends WebTestCase
             "Client[name]" => "Raison sociale",
             "Client[companyNumber]" => "44306184100047",
             "Client[member]" => 2,
-            "Client[salesPerson]" => 6
+            "Client[salesPerson]" => 6,
+            "Client[address_streetAddress]" => "1 rue de la mairie",
+            "Client[address_restAddress]" => "Batiment A",
+            "Client[address_zipCode]" => "75000",
+            "Client[address_locality]" => "Paris"
         ]);
 
         $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
@@ -73,7 +77,11 @@ class ClientTest extends WebTestCase
             "Client[name]" => "Raison sociale",
             "Client[companyNumber]" => "42878504200105",
             "Client[member]" => 2,
-            "Client[salesPerson]" => 6
+            "Client[salesPerson]" => 6,
+            "Client[address_streetAddress]" => "1 rue de la mairie",
+            "Client[address_restAddress]" => "Batiment A",
+            "Client[address_zipCode]" => "75000",
+            "Client[address_locality]" => "Paris"
         ]);
 
         $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);

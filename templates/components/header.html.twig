@@ -52,7 +52,7 @@
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="dropdown-clients">
                                 {% if is_granted("ROLE_CLIENT_COMPANY") %}
-                                    <li><a class="dropdown-item" href="{{ path("client_company_create") }}">Créer une société</a></li>
+                                    <li><a class="dropdown-item" href="{{ path("client_company_create") }}">Créer une société cliente</a></li>
                                     <li>
                                         <a class="dropdown-item" href="{{ path("client_company_list") }}">
                                             Gestion des<br class="d-none d-md-inline d-xxl-none"/><span class="d-md-none d-xxl-inline">&nbsp;</span>informations sociétés

@@ -24,7 +24,14 @@ class ClientFixtures extends Fixture implements DependentFixtureInterface
             for ($index = 1; $index <= 20; $index++) {
                 $client = (new Client())
                     ->setMember($salesPerson->getMember())
-                    ->setSalesPerson($salesPerson)
+                    ->setSalesPerson($salesPerson);
+                $client->getAddress()
+                    ->setLocality("Paris")
+                    ->setZipCode("75000")
+                    ->setEmail("email@email.com")
+                    ->setPhone("0123456789")
+                    ->setStreetAddress("1 rue de la mairie");
+                $client
                     ->setName($faker->company)
                     ->setCompanyNumber("44306184100047");
                 $manager->persist($client);

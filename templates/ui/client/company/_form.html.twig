@@ -14,12 +14,28 @@
             {% endif %}
         </div>
     {% endif %}
-    <div class="row">
+    <div class="row mb-3">
         <div class="col-6">
             {{ form_row(form.name) }}
         </div>
         <div class="col-6">
             {{ form_row(form.companyNumber) }}
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-6">
+            {{ form_row(form.address.streetAddress) }}
+        </div>
+        <div class="col-6">
+            {{ form_row(form.address.restAddress) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            {{ form_row(form.address.zipCode) }}
+        </div>
+        <div class="col-6">
+            {{ form_row(form.address.locality) }}
         </div>
     </div>
 </div>
