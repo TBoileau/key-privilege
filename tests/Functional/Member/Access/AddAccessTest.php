@@ -54,6 +54,7 @@ class AddAccessTest extends WebTestCase
             "access[firstName]" => "Prénom",
             "access[lastName]" => "Nom",
             "access[email]" => "new@email.com",
+            "access[phone]" => "0123456789",
             "access[member]" => 2
         ]);
 
@@ -123,16 +124,18 @@ class AddAccessTest extends WebTestCase
             [
                 "access[firstName]" => "Prénom",
                 "access[lastName]" => "Nom",
-                "access[email]" => "user+8@email.com"
+                "access[email]" => "user+8@email.com",
+                "access[phone]" => "0123456789"
             ],
-            "Cette valeur est déjà utilisée."
+            "Adresse mail déjà utilisée dans le programme, veuillez renseigner un autre mail."
         ];
 
         yield [
             [
                 "access[firstName]" => "",
                 "access[lastName]" => "Nom",
-                "access[email]" => "new@email.com"
+                "access[email]" => "new@email.com",
+                "access[phone]" => "0123456789"
             ],
             "Cette valeur ne doit pas être vide."
         ];
@@ -141,7 +144,8 @@ class AddAccessTest extends WebTestCase
             [
                 "access[firstName]" => "Prénom",
                 "access[lastName]" => "",
-                "access[email]" => "new@email.com"
+                "access[email]" => "new@email.com",
+                "access[phone]" => "0123456789"
             ],
             "Cette valeur ne doit pas être vide."
         ];
@@ -150,7 +154,8 @@ class AddAccessTest extends WebTestCase
             [
                 "access[firstName]" => "Prénom",
                 "access[lastName]" => "Nom",
-                "access[email]" => ""
+                "access[email]" => "",
+                "access[phone]" => "0123456789"
             ],
             "Cette valeur ne doit pas être vide."
         ];
@@ -159,9 +164,30 @@ class AddAccessTest extends WebTestCase
             [
                 "access[firstName]" => "Prénom",
                 "access[lastName]" => "Nom",
-                "access[email]" => "fail"
+                "access[email]" => "fail",
+                "access[phone]" => "0123456789"
             ],
             "Cette valeur n'est pas une adresse email valide."
+        ];
+
+        yield [
+            [
+                "access[firstName]" => "Prénom",
+                "access[lastName]" => "Nom",
+                "access[email]" => "new@email.com",
+                "access[phone]" => ""
+            ],
+            "Cette valeur ne doit pas être vide."
+        ];
+
+        yield [
+            [
+                "access[firstName]" => "Prénom",
+                "access[lastName]" => "Nom",
+                "access[email]" => "new@email.com",
+                "access[phone]" => "fail"
+            ],
+            "Cette valeur n'est pas un numéro de téléphone valide."
         ];
     }
 }

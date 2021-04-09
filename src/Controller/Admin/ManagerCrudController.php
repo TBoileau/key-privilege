@@ -18,6 +18,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Regex;
 
 class ManagerCrudController extends AbstractCrudController
 {
@@ -57,6 +58,11 @@ class ManagerCrudController extends AbstractCrudController
                 new NotBlank(),
                 new Email()
             ]);
+        yield TextField::new('phone', 'N° de téléphone')
+            ->setFormTypeOption("constraints", [
+                new NotBlank(),
+                new Regex(["pattern" => "/^0[0-9]{9}$/"])
+            ])->hideOnIndex();
         yield TextField::new('plainPassword', 'Mot de passe')
             ->setFormType(PasswordType::class)
             ->setFormTypeOption("constraints", [

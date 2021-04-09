@@ -34,7 +34,7 @@ class ManagerFixtures extends Fixture implements DependentFixtureInterface
         $members = $manager->getRepository(Member::class)->findAll();
 
         foreach ($members as $member) {
-            $manager->persist($this->createUser()->setMember($member));
+            $manager->persist($this->createUser()->setMember($member)->setPhone("0123456789"));
         }
 
         $manager->flush();

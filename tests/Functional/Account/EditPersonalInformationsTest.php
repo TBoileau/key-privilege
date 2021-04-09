@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Tests\Functional\Account;
 
+use App\Entity\User\Employee;
+use App\Entity\User\Manager;
 use App\Entity\User\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Generator;
@@ -39,7 +41,8 @@ class EditPersonalInformationsTest extends WebTestCase
         $client->submit($crawler->filter("form[name=edit_personal_informations]")->form([
             "edit_personal_informations[firstName]" => "Bernard",
             "edit_personal_informations[lastName]" => "Duchemin",
-            "edit_personal_informations[email]" => "edit@email.com"
+            "edit_personal_informations[email]" => "edit@email.com",
+            "edit_personal_informations[phone]" => "0123456789"
         ]));
 
         $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
@@ -47,7 +50,7 @@ class EditPersonalInformationsTest extends WebTestCase
         /** @var EntityManagerInterface $entityManager */
         $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
 
-        /** @var User $user */
+        /** @var Manager $user */
         $user = $entityManager->find(User::class, 1);
 
         $this->assertNotNull($user);
@@ -55,6 +58,7 @@ class EditPersonalInformationsTest extends WebTestCase
         $this->assertEquals("DUCHEMIN", $user->getLastName());
         $this->assertEquals("edit@email.com", $user->getEmail());
         $this->assertEquals("BERNARD DUCHEMIN", $user->getFullName());
+        $this->assertEquals("0123456789", $user->getPhone());
 
         $client->followRedirect();
 
@@ -102,16 +106,18 @@ class EditPersonalInformationsTest extends WebTestCase
             [
                 "edit_personal_informations[firstName]" => "Jean",
                 "edit_personal_informations[lastName]" => "Dupont",
-                "edit_personal_informations[email]" => "user+2@email.com"
+                "edit_personal_informations[email]" => "user+2@email.com",
+                "edit_personal_informations[phone]" => "0123456789"
             ],
-            "Cette valeur est déjà utilisée."
+            "Adresse mail déjà utilisée dans le programme, veuillez renseigner un autre mail."
         ];
 
         yield [
             [
                 "edit_personal_informations[firstName]" => "Jean",
                 "edit_personal_informations[lastName]" => "Dupont",
-                "edit_personal_informations[email]" => "fail"
+                "edit_personal_informations[email]" => "fail",
+                "edit_personal_informations[phone]" => "0123456789"
             ],
             "Cette valeur n'est pas une adresse email valide."
         ];
@@ -120,7 +126,8 @@ class EditPersonalInformationsTest extends WebTestCase
             [
                 "edit_personal_informations[firstName]" => "Jean",
                 "edit_personal_informations[lastName]" => "Dupont",
-                "edit_personal_informations[email]" => ""
+                "edit_personal_informations[email]" => "",
+                "edit_personal_informations[phone]" => "0123456789"
             ],
             "Cette valeur ne doit pas être vide."
         ];
@@ -129,7 +136,8 @@ class EditPersonalInformationsTest extends WebTestCase
             [
                 "edit_personal_informations[firstName]" => "",
                 "edit_personal_informations[lastName]" => "Dupont",
-                "edit_personal_informations[email]" => "edit@email.com"
+                "edit_personal_informations[email]" => "edit@email.com",
+                "edit_personal_informations[phone]" => "0123456789"
             ],
             "Cette valeur ne doit pas être vide."
         ];
@@ -138,9 +146,30 @@ class EditPersonalInformationsTest extends WebTestCase
             [
                 "edit_personal_informations[firstName]" => "Jean",
                 "edit_personal_informations[lastName]" => "",
-                "edit_personal_informations[email]" => "edit@email.com"
+                "edit_personal_informations[email]" => "edit@email.com",
+                "edit_personal_informations[phone]" => "0123456789"
             ],
             "Cette valeur ne doit pas être vide."
+        ];
+
+        yield [
+            [
+                "edit_personal_informations[firstName]" => "Prénom",
+                "edit_personal_informations[lastName]" => "Nom",
+                "edit_personal_informations[email]" => "new@email.com",
+                "edit_personal_informations[phone]" => ""
+            ],
+            "Cette valeur ne doit pas être vide."
+        ];
+
+        yield [
+            [
+                "edit_personal_informations[firstName]" => "Prénom",
+                "edit_personal_informations[lastName]" => "Nom",
+                "edit_personal_informations[email]" => "new@email.com",
+                "edit_personal_informations[phone]" => "fail"
+            ],
+            "Cette valeur n'est pas un numéro de téléphone valide."
         ];
     }
 }

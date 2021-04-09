@@ -22,6 +22,9 @@
                                     {{ form_errors(form) }}
                                     {{ form_row(form.firstName, {row_attr: {class: "mb-3 "}}) }}
                                     {{ form_row(form.lastName, {row_attr: {class: "mb-3 "}}) }}
+                                    {% if form.phone is defined %}
+                                        {{ form_row(form.phone, {row_attr: {class: "mb-3 "}}) }}
+                                    {% endif %}
                                     {{ form_row(form.email) }}
                                 </div>
                                 <div class="card-footer p-0 d-flex">
