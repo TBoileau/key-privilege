@@ -132,7 +132,7 @@ class AddAccessTest extends WebTestCase
                 "access[email]" => "user+8@email.com",
                 "access[client]" => 16
             ],
-            "Cette valeur est déjà utilisée."
+            "Adresse mail déjà utilisée dans le programme, veuillez renseigner un autre mail."
         ];
 
         yield [

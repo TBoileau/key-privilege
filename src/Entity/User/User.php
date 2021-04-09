@@ -26,7 +26,11 @@ use function Symfony\Component\String\u;
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\EntityListeners({"App\EntityListener\UserListener"})
  * @ORM\Table(name="`user`")
- * @UniqueEntity("email", repositoryMethod="findByUniqueEmail")
+ * @UniqueEntity(
+ *     "email",
+ *     repositoryMethod="findByUniqueEmail",
+ *     message="Adresse mail déjà utilisée dans le programme, veuillez renseigner un autre mail."
+ * )
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=true)
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="discr", type="string")

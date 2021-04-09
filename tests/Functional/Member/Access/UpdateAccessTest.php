@@ -127,7 +127,7 @@ class UpdateAccessTest extends WebTestCase
                 "access[lastName]" => "Nom",
                 "access[email]" => "user+8@email.com"
             ],
-            "Cette valeur est déjà utilisée."
+            "Adresse mail déjà utilisée dans le programme, veuillez renseigner un autre mail."
         ];
 
         yield [
