@@ -87,7 +87,10 @@ class UpdateCompanyTest extends WebTestCase
             "company[name]" => "Raison sociale",
             "company[companyNumber]" => "44306184100047",
             "company[member]" => 3,
-            "company[salesPerson]" => 7
+            "company[address][streetAddress]" => "1 rue de la mairie",
+            "company[address][restAddress]" => "Batiment A",
+            "company[address][zipCode]" => "75000",
+            "company[address][locality]" => "Paris",
         ]);
 
         $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
@@ -155,7 +158,11 @@ class UpdateCompanyTest extends WebTestCase
                 "company[name]" => "",
                 "company[companyNumber]" => "44306184100047",
                 "company[member]" => 3,
-                "company[salesPerson]" => 7
+                "company[salesPerson]" => 7,
+                "company[address][streetAddress]" => "1 rue de la mairie",
+                "company[address][restAddress]" => "Batiment A",
+                "company[address][zipCode]" => "75000",
+                "company[address][locality]" => "Paris",
             ],
             "Cette valeur ne doit pas être vide."
         ];
@@ -163,9 +170,55 @@ class UpdateCompanyTest extends WebTestCase
         yield [
             [
                 "company[name]" => "Raison sociale",
-                "company[companyNumber]" => "",
+                "company[companyNumber]" => "44306184100047",
                 "company[member]" => 3,
-                "company[salesPerson]" => 7
+                "company[salesPerson]" => 7,
+                "company[address][streetAddress]" => "1 rue de la mairie",
+                "company[address][restAddress]" => "Batiment A",
+                "company[address][zipCode]" => "fail",
+                "company[address][locality]" => "Paris"
+            ],
+            "Code postal invalide."
+        ];
+
+        yield [
+            [
+                "company[name]" => "Raison sociale",
+                "company[companyNumber]" => "44306184100047",
+                "company[member]" => 3,
+                "company[salesPerson]" => 7,
+                "company[address][streetAddress]" => "",
+                "company[address][restAddress]" => "Batiment A",
+                "company[address][zipCode]" => "75000",
+                "company[address][locality]" => "Paris"
+            ],
+            "Cette valeur ne doit pas être vide."
+        ];
+
+        yield [
+            [
+                "company[name]" => "Raison sociale",
+                "company[companyNumber]" => "44306184100047",
+                "company[member]" => 3,
+                "company[salesPerson]" => 7,
+                "company[address][streetAddress]" => "1 rue de la mairie",
+                "company[address][restAddress]" => "Batiment A",
+                "company[address][zipCode]" => "",
+                "company[address][locality]" => "Paris"
+            ],
+            "Cette valeur ne doit pas être vide."
+        ];
+
+        yield [
+            [
+                "company[name]" => "Raison sociale",
+                "company[companyNumber]" => "44306184100047",
+                "company[member]" => 3,
+                "company[salesPerson]" => 7,
+                "company[address][streetAddress]" => "1 rue de la mairie",
+                "company[address][restAddress]" => "Batiment A",
+                "company[address][zipCode]" => "75000",
+                "company[address][locality]" => ""
             ],
             "Cette valeur ne doit pas être vide."
         ];
@@ -175,7 +228,11 @@ class UpdateCompanyTest extends WebTestCase
                 "company[name]" => "Raison sociale",
                 "company[companyNumber]" => "fail",
                 "company[member]" => 3,
-                "company[salesPerson]" => 7
+                "company[salesPerson]" => 7,
+                "company[address][streetAddress]" => "1 rue de la mairie",
+                "company[address][restAddress]" => "Batiment A",
+                "company[address][zipCode]" => "75000",
+                "company[address][locality]" => "Paris",
             ],
             'Le N° de SIRET "fail" n\'est pas valide.'
         ];
@@ -185,7 +242,11 @@ class UpdateCompanyTest extends WebTestCase
                 "company[name]" => "Raison sociale",
                 "company[companyNumber]" => "12345678901234",
                 "company[member]" => 3,
-                "company[salesPerson]" => 7
+                "company[salesPerson]" => 7,
+                "company[address][streetAddress]" => "1 rue de la mairie",
+                "company[address][restAddress]" => "Batiment A",
+                "company[address][zipCode]" => "75000",
+                "company[address][locality]" => "Paris",
             ],
             'Le N° de SIRET "12345678901234" n\'est pas valide.'
         ];
@@ -195,7 +256,11 @@ class UpdateCompanyTest extends WebTestCase
                 "company[name]" => "Raison sociale",
                 "company[companyNumber]" => "12345678901234",
                 "company[member]" => 3,
-                "company[salesPerson]" => 6
+                "company[salesPerson]" => 6,
+                "company[address][streetAddress]" => "1 rue de la mairie",
+                "company[address][restAddress]" => "Batiment A",
+                "company[address][zipCode]" => "75000",
+                "company[address][locality]" => "Paris",
             ],
             'Le/la commercial(e) rattaché(e) n\'appartient à l\'adhérent sélectionné.'
         ];

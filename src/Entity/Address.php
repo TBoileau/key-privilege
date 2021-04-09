@@ -44,18 +44,18 @@ class Address
     private string $locality;
 
     /**
-     * @ORM\Column
-     * @Assert\NotBlank
-     * @Assert\Regex(pattern="/^0\d{9}$/", message="N° de téléphone invalide.")
+     * @ORM\Column(nullable=true)
+     * @Assert\NotBlank(groups={"order"})
+     * @Assert\Regex(pattern="/^0\d{9}$/", message="N° de téléphone invalide.", groups={"order"})
      */
-    private string $phone;
+    private ?string $phone = null;
 
     /**
-     * @ORM\Column
-     * @Assert\NotBlank
-     * @Assert\Email
+     * @ORM\Column(nullable=true)
+     * @Assert\NotBlank(groups={"order"})
+     * @Assert\Email(groups={"order"})
      */
-    private string $email;
+    private ?string $email = null;
 
     public function getId(): ?int
     {
@@ -106,23 +106,23 @@ class Address
         return $this;
     }
 
-    public function getPhone(): string
+    public function getPhone(): ?string
     {
         return $this->phone;
     }
 
-    public function setPhone(string $phone): self
+    public function setPhone(?string $phone): self
     {
         $this->phone = $phone;
         return $this;
     }
 
-    public function getEmail(): string
+    public function getEmail(): ?string
     {
         return $this->email;
     }
 
-    public function setEmail(string $email): self
+    public function setEmail(?string $email): self
     {
         $this->email = $email;
         return $this;

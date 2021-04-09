@@ -45,11 +45,10 @@ abstract class Company implements Stringable
     protected string $vatNumber;
 
     /**
-     * @ORM\Column
-     * @Assert\NotBlank
+     * @ORM\Column(nullable=true)
      * @CompanyNumber
      */
-    protected string $companyNumber;
+    protected ?string $companyNumber;
 
     abstract public static function getType(): string;
 

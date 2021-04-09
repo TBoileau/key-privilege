@@ -8,6 +8,7 @@ use App\Entity\Company\Client;
 use App\Entity\Company\Member;
 use App\Entity\User\Manager;
 use App\Entity\User\SalesPerson;
+use App\Form\AddressType;
 use App\Repository\Company\MemberRepository;
 use App\Repository\User\SalesPersonRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -23,15 +24,19 @@ class CompanyType extends AbstractType
         $builder
             ->add("name", TextType::class, [
                 "label" => "Raison sociale :",
-                "empty_data" => "",
-                "row_attr" => [
-                    "class" => "mb-3"
-                ]
+                "empty_data" => ""
+            ])
+            ->add("address", AddressType::class, [
+                "label" => false
             ])
             ->add("companyNumber", TextType::class, [
+                "required" => false,
                 "label" => "N° de SIRET :",
                 "empty_data" => ""
             ]);
+
+        $builder->get("address")->remove("email");
+        $builder->get("address")->remove("phone");
 
         /** @var Manager $employee */
         $employee = $options["employee"];
@@ -43,11 +48,9 @@ class CompanyType extends AbstractType
         }
 
         $builder->add("salesPerson", EntityType::class, $memberOptions + [
-            "required" => true,
+            "required" => false,
             "label" => "Commercial(e) :",
-            "row_attr" => [
-                "class" => "mb-3"
-            ],
+            "placeholder" => "Non renseigné",
             "class" => SalesPerson::class,
             "choice_label" => fn (SalesPerson $salesPerson) => $salesPerson->getFullName(),
             "query_builder" => fn (SalesPersonRepository $repository) => $repository
@@ -57,9 +60,6 @@ class CompanyType extends AbstractType
         if ($employee->getMembers()->count() > 1) {
             $builder->add("member", EntityType::class, [
                 "label" => "Adhérent :",
-                "row_attr" => [
-                    "class" => "mb-3"
-                ],
                 "class" => Member::class,
                 "choice_label" => "name",
                 "query_builder" => fn (MemberRepository $repository) => $repository

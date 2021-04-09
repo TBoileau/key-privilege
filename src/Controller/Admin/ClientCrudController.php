@@ -59,5 +59,10 @@ class ClientCrudController extends AbstractCrudController
         yield AssociationField::new("customers", "Utilisateurs")
             ->setTemplatePath("admin/field/client_customers.html.twig")
             ->onlyOnDetail();
+        yield FormField::addPanel('Adresse');
+        yield TextField::new("address.streetAddress", "Adresse")->hideOnIndex();
+        yield TextField::new("address.restAddress", "Complément d'adresse")->hideOnIndex();
+        yield TextField::new("address.zipCode", "Code postal")->hideOnIndex();
+        yield TextField::new("address.locality", "Ville")->hideOnIndex();
     }
 }
