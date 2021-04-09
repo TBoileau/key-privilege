@@ -27,6 +27,12 @@
                                         <div class="col-5 text-end">Email :</div>
                                         <div class="col-7 fw-bold" data-role="email">{{ app.user.email }}</div>
                                     </div>
+                                    {% if is_granted("ROLE_EMPLOYEE") %}
+                                        <div class="row mb-3">
+                                            <div class="col-5 text-end">Téléphone :</div>
+                                            <div class="col-7 fw-bold" data-role="phone">{{ app.user.phone }}</div>
+                                        </div>
+                                    {% endif %}
                                     <div class="row mb-3">
                                         <div class="col-5 text-end">Inscription :</div>
                                         <div class="col-7 fw-bold">{{ app.user.registeredAt|format_date(pattern="dd MMMM Y", locale='fr') }}</div>

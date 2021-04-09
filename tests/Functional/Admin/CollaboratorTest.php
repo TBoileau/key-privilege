@@ -54,6 +54,7 @@ class CollaboratorTest extends WebTestCase
             "Collaborator[lastName]" => "Nom",
             "Collaborator[email]" => "new@email.com",
             "Collaborator[plainPassword]" => "password",
+            "Collaborator[phone]" => "0123456789",
             "Collaborator[member]" => 2
         ]);
 
@@ -74,6 +75,7 @@ class CollaboratorTest extends WebTestCase
             "Collaborator[firstName]" => "Prénom",
             "Collaborator[lastName]" => "Nom",
             "Collaborator[email]" => "new+1@email.com",
+            "Collaborator[phone]" => "0123456789",
             "Collaborator[member]" => 2
         ]);
 

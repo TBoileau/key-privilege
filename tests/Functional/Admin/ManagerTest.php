@@ -54,6 +54,7 @@ class ManagerTest extends WebTestCase
             "Manager[lastName]" => "Nom",
             "Manager[email]" => "new@email.com",
             "Manager[plainPassword]" => "password",
+            "Manager[phone]" => "0123456789",
             "Manager[member]" => 2,
             "Manager[members]" => [2, 3, 4, 5]
         ]);
@@ -75,6 +76,7 @@ class ManagerTest extends WebTestCase
             "Manager[firstName]" => "Prénom",
             "Manager[lastName]" => "Nom",
             "Manager[email]" => "new+1@email.com",
+            "Manager[phone]" => "0123456789",
             "Manager[member]" => 3,
             "Manager[members]" => [2, 4, 5]
         ]);

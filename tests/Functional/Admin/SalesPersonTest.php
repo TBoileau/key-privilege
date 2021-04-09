@@ -54,6 +54,7 @@ class SalesPersonTest extends WebTestCase
             "SalesPerson[lastName]" => "Nom",
             "SalesPerson[email]" => "new@email.com",
             "SalesPerson[plainPassword]" => "password",
+            "SalesPerson[phone]" => "0123456789",
             "SalesPerson[member]" => 2
         ]);
 
@@ -74,6 +75,7 @@ class SalesPersonTest extends WebTestCase
             "SalesPerson[firstName]" => "Prénom",
             "SalesPerson[lastName]" => "Nom",
             "SalesPerson[email]" => "new+1@email.com",
+            "SalesPerson[phone]" => "0123456789",
             "SalesPerson[member]" => 2
         ]);
 

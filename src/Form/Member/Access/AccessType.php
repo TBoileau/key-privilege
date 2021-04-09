@@ -35,6 +35,10 @@ class AccessType extends AbstractType
             ->add("email", EmailType::class, [
                 "label" => "Adresse email :",
                 "empty_data" => ""
+            ])
+            ->add("phone", TextType::class, [
+                "label" => "N° de téléphone :",
+                "empty_data" => ""
             ]);
 
 
