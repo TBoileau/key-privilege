@@ -44,7 +44,11 @@
                     {% if is_granted("ROLE_CLIENT_ACCESS") or is_granted("ROLE_CLIENT_COMPANY") %}
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="dropdown-clients" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Clients
+                                {% if is_granted('ROLE_MANAGER') %}
+                                    Gestion des accès
+                                {% else %}
+                                    Clients
+                                {% endif %}
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="dropdown-clients">
                                 {% if is_granted("ROLE_CLIENT_COMPANY") %}
@@ -81,12 +85,12 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" href="{{ path("member_access_create", {role: "administrateur"}) }}">
+                                        <a class="dropdown-item" href="{{ path("member_access_create", {role: "commercial"}) }}">
                                             Créer un accès<br class="d-none d-md-inline d-xl-none"/><span class="d-md-none d-xl-inline">&nbsp;</span>commercial
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" href="{{ path("member_access_create", {role: "commercial"}) }}">
+                                        <a class="dropdown-item" href="{{ path("member_access_create", {role: "administrateur"}) }}">
                                             Créer un accès<br class="d-none d-md-block d-xl-none"/><span class="d-md-none d-xl-inline">&nbsp;</span>administrateur
                                         </a>
                                     </li>
