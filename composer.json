@@ -17,6 +17,7 @@
         "gedmo/doctrine-extensions": "^3.0",
         "nusphere/nusoap": "^0.9.6",
         "phpdocumentor/reflection-docblock": "^5.2",
+        "phpoffice/phpspreadsheet": "^1.17",
         "sensio/framework-extra-bundle": "^5.1",
         "symfony/apache-pack": "^1.0",
         "symfony/asset": "5.2.*",

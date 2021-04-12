@@ -8,6 +8,7 @@ services:
             $mailerSender: '%env(MAILER_SENDER)%'
             string $uploadDir: 'uploads'
             string $publicDir: '%kernel.project_dir%/public'
+            string $tempDir: '%kernel.cache_dir%'
 
     App\:
         resource: '../src/'
