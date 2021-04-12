@@ -47,6 +47,8 @@ class OrderSubscriber implements EventSubscriberInterface
 
             $debit = new Debit($remainingWallet, -$pointsToDebit, null);
 
+            $debit->setOrder($order);
+
             $order->getTransactions()->add($debit);
 
             $total -= $pointsToDebit;

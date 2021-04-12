@@ -15,7 +15,7 @@
                 <div class="section-body">
                     <div class="row">
                         <div class="col-12 col-lg-6 mb-4 mb-lg-0">
-                            <div class="card">
+                            <div class="card mb-4">
                                 <h2 class="card-header">Suivi des dates d'expiration de vos clés</h2>
                                 <div class="card-body p-0">
                                     <table class="table table-hover mb-0" data-role="accessList">
@@ -28,6 +28,33 @@
                                         </thead>
                                         <tbody>
                                         {% for wallet in account.remainingWallets|sort((a, b) => b.expiredAt < a.expiredAt) %}
+                                            <tr>
+                                                <td class="text-center">{{ wallet.createdAt|date("d/m/Y") }}</td>
+                                                <td class="text-center">{{ wallet.expiredAt|date("d/m/Y") }}</td>
+                                                <td class="text-center">{{ wallet.balance }} clés</td>
+                                            </tr>
+                                        {% else %}
+                                            <tr>
+                                                <td class="text-center" colspan="3">Aucun résultat</td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <h2 class="card-header">Suivi des clés expirés</h2>
+                                <div class="card-body p-0">
+                                    <table class="table table-hover mb-0" data-role="accessList">
+                                        <thead>
+                                        <tr>
+                                            <th class="text-center">Date d'acquisition</th>
+                                            <th class="text-center">Date d'expiration</th>
+                                            <th class="text-center">Clés</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for wallet in account.getExpiredWallets|sort((a, b) => b.expiredAt < a.expiredAt) %}
                                             <tr>
                                                 <td class="text-center">{{ wallet.createdAt|date("d/m/Y") }}</td>
                                                 <td class="text-center">{{ wallet.expiredAt|date("d/m/Y") }}</td>

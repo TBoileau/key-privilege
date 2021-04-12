@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace App\Entity\Key;
 
+use App\Entity\Order\Order;
 use DateTimeImmutable;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -55,6 +58,11 @@ abstract class Transaction
      */
     protected int $points = 0;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Order::class, inversedBy="transactions")
+     */
+    protected ?Order $order = null;
+
     abstract public function getType(): string;
 
     public function __construct(Wallet $wallet, int $points)
@@ -99,5 +107,15 @@ abstract class Transaction
     public function __toString(): string
     {
         return $this->getReference();
+    }
+
+    public function setOrder(?Order $order): void
+    {
+        $this->order = $order;
+    }
+
+    public function getOrder(): ?Order
+    {
+        return $this->order;
     }
 }
