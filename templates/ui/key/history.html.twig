@@ -16,7 +16,7 @@
                     <div class="row">
                         <div class="col-12 col-lg-6 mb-4 mb-lg-0">
                             <div class="card">
-                                <h2 class="card-header">Expiration des clés</h2>
+                                <h2 class="card-header">Suivi des dates d'expiration de vos clés</h2>
                                 <div class="card-body p-0">
                                     <table class="table table-hover mb-0" data-role="accessList">
                                         <thead>
@@ -27,7 +27,7 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        {% for wallet in account.remainingWallets %}
+                                        {% for wallet in account.remainingWallets|sort((a, b) => b.expiredAt < a.expiredAt) %}
                                             <tr>
                                                 <td class="text-center">{{ wallet.createdAt|date("d/m/Y") }}</td>
                                                 <td class="text-center">{{ wallet.expiredAt|date("d/m/Y") }}</td>
@@ -45,7 +45,7 @@
                         </div>
                         <div class="col-12 col-lg-6 mb-4 mb-lg-0">
                             <div class="card">
-                                <h2 class="card-header">Transactions</h2>
+                                <h2 class="card-header">Suivi de vos mouvements de clés</h2>
                                 <div class="card-body p-0">
                                     <table class="table table-hover mb-0" data-role="accessList">
                                         <thead>
