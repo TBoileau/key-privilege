@@ -98,7 +98,7 @@ class TransferType extends AbstractType
                 "class" => Account::class
             ])
             ->add("points", IntegerType::class, [
-                "label" => "Points :"
+                "label" => "Montant du transfert :"
             ]);
     }
 
