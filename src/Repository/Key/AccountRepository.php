@@ -66,8 +66,10 @@ class AccountRepository extends ServiceEntityRepository
         $queryBuilder = $this->createQueryBuilder("a")
             ->addSelect("u")
             ->addSelect("m")
+            ->addSelect("w")
             ->leftJoin("a.user", "u")
             ->leftJoin("a.member", "m")
+            ->leftJoin("a.wallets", "w")
             ->setParameter("members", $manager->getMembers()->map(fn (Member $member) => $member->getId())->toArray());
 
         $queryBuilder->andWhere(
