@@ -22,8 +22,9 @@ class PurchaseType extends AbstractType
     {
         $builder
             ->add("points", IntegerType::class, [
-                "label" => "Points :",
-                "empty_data" => 0
+                "label" => "Montant de votre achat :",
+                "empty_data" => 0,
+                "help" => "Rappel : 1 étoile = 1 euro HT"
             ])
             ->add("internReference", TextType::class, [
                 "label" => "Votre référence interne (visible sur la facture) :",
