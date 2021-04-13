@@ -3,36 +3,35 @@ import './bootstrap';
 import {Tooltip, Toast, Modal} from 'bootstrap';
 import noUiSlider from 'nouislider';
 
-if (document.querySelector("body").classList.contains("purchase")) {
+if (document.querySelector('body').classList.contains('purchase')) {
   const renderPaymentMethod = () => {
-      if (document.getElementById("purchase_mode_0").checked) {
-        document.getElementById("bank-wire")
+    if (document.getElementById('purchase_mode_0').checked) {
+      document.getElementById('bank-wire')
           .classList
-          .remove("d-none");
-        document.getElementById("check")
+          .remove('d-none');
+      document.getElementById('check')
           .classList
-          .add("d-none");
-      } else if (document.getElementById("purchase_mode_1").checked) {
-        document.getElementById("bank-wire")
+          .add('d-none');
+    } else if (document.getElementById('purchase_mode_1').checked) {
+      document.getElementById('bank-wire')
           .classList
-          .add("d-none");
-        document.getElementById("check")
+          .add('d-none');
+      document.getElementById('check')
           .classList
-          .remove("d-none");
-      } else {
-        document.getElementById("bank-wire")
+          .remove('d-none');
+    } else {
+      document.getElementById('bank-wire')
           .classList
-          .add("d-none");
-        document.getElementById("check")
+          .add('d-none');
+      document.getElementById('check')
           .classList
-          .add("d-none");
-      }
+          .add('d-none');
+    }
   };
 
   renderPaymentMethod();
   Array.from(document.querySelectorAll('input[name="purchase[mode]"]'))
-    .forEach(e => e.addEventListener("change", renderPaymentMethod));
-
+      .forEach((e) => e.addEventListener('change', renderPaymentMethod));
 }
 
 Array.from(document.querySelectorAll('.modal-onload'))

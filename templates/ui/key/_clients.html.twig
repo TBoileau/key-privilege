@@ -14,7 +14,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {% for account in accounts|sort((a, b) => a.user.client.name > b.user.client.name) %}
+                            {% for account in accounts|sort((a, b) => a.user.client.name <=> b.user.client.name) %}
                                 <tr>
                                     <td class="text-center">{{ account.user.client.name }}</td>
                                     <td class="text-center">{{ account.user.fullName }}</td>

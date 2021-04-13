@@ -29,7 +29,10 @@ class TransferType extends AbstractType
     {
         /** @var ChoiceGroupView $choiceGroup */
         foreach ($view->children["from"]->vars["choices"] as $choiceGroup) {
-            usort($choiceGroup->choices, fn (ChoiceView $a, ChoiceView $b) => $a->label > $b->label);
+            usort(
+                $choiceGroup->choices,
+                fn (ChoiceView $aChoice, ChoiceView $bChoice): int => $aChoice->label <=> $bChoice->label
+            );
         }
     }
 
