@@ -26,7 +26,7 @@ class PurchaseType extends AbstractType
                 "empty_data" => 0
             ])
             ->add("internReference", TextType::class, [
-                "label" => "Référence interne :",
+                "label" => "Votre référence interne (visible sur la facture) :",
                 "required" => false
             ])
             ->add("mode", ChoiceType::class, [
