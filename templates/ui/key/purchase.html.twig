@@ -7,6 +7,8 @@
     ]}) }}
 {% endblock %}
 
+{% block page %}purchase{% endblock %}
+
 {% block content %}
     <div class="row">
         <div class="col-12">
@@ -33,6 +35,26 @@
                                     <div class="row">
                                         <div class="col-6">
                                             {{ form_row(form.mode) }}
+                                            <div id="check" class="mt-3 d-none">
+                                                <strong>Chèque à l'ordre de :</strong> SARL Les Ateliers du R.O.I.
+                                                <br/>
+                                                <strong>Adresse postale :</strong>
+                                                <br/>
+                                                SARL Les Ateliers du R.O.I.
+                                                18BIS RUE DU MARECHAL LECLERC
+                                                28000 CHARTRES
+                                            </div>
+                                            <div id="bank-wire" class="mt-3 d-none">
+                                                <strong>Référence bancaire :</strong>BANQUE POPULAIRE VAL DE FRANCE
+                                                <br/>
+                                                <strong>Titulaire du compte :</strong> SARL Les Ateliers du R.O.I.
+                                                <br/>
+                                                <strong>RIB :</strong> 18707 00001 30421623924 94
+                                                <br/>
+                                                <strong>IBAN :</strong> FR76 1870 7000 0130 4216 2392 494
+                                                <br/>
+                                                <strong>BIC :</strong> CCBPFRPPVER
+                                            </div>
                                         </div>
                                         <div class="col-6">
                                             {{ form_row(form.internReference) }}

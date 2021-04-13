@@ -31,6 +31,7 @@ class PurchaseType extends AbstractType
             ])
             ->add("mode", ChoiceType::class, [
                 "label" => "Mode de paiement :",
+                "expanded" => true,
                 "choices" => [
                     Purchase::MODE_BANK_WIRE => Purchase::MODE_BANK_WIRE,
                     Purchase::MODE_CHECK => Purchase::MODE_CHECK
