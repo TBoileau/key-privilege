@@ -25,6 +25,38 @@ class AccountRepository extends ServiceEntityRepository
         parent::__construct($registry, Account::class);
     }
 
+    /**
+     * @return array<int, Account>
+     */
+    public function getClientsAccountByEmployee(SalesPerson | Manager $employee): array
+    {
+        $members = [$employee->getMember()->getId()];
+
+        if ($employee instanceof Manager) {
+            $members = $employee->getMembers()->map(fn (Member $member) => $member->getId())->toArray();
+        }
+
+        $customerAccountsQueryBuilder = $this->_em->createQueryBuilder()
+            ->select("account1.id")
+            ->from(Customer::class, "customer")
+            ->join("customer.account", "account1")
+            ->join("customer.client", "client")
+            ->where("client.member IN (:members)")
+            ->getDQL();
+
+        $queryBuilder = $this->createQueryBuilder("a")
+            ->addSelect("u")
+            ->addSelect("w")
+            ->join("a.user", "u")
+            ->leftJoin("a.wallets", "w")
+            ->setParameter("members", $members);
+
+        return $queryBuilder
+            ->andWhere($queryBuilder->expr()->in("a.id", $customerAccountsQueryBuilder))
+            ->getQuery()
+            ->getResult();
+    }
+
     public function createQueryBuilderAccountByManagerForTransfer(Manager $manager): QueryBuilder
     {
         $customerAccountsQueryBuilder = $this->_em->createQueryBuilder()

@@ -10,14 +10,17 @@ use App\Entity\Key\Transaction;
 use App\Entity\Key\Transfer;
 use App\Entity\Key\Wallet;
 use App\Entity\User\Manager;
+use App\Entity\User\SalesPerson;
 use App\Entity\User\User;
 use App\Form\Key\PurchaseType;
 use App\Form\Key\TransferType;
+use App\Repository\Key\AccountRepository;
 use App\UseCase\TransferPointsInterface;
 use Couchbase\WildcardSearchQuery;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -172,5 +175,21 @@ class KeyController extends AbstractController
         }
 
         return $this->render("ui/key/purchase.html.twig", ["form" => $form->createView()]);
+    }
+
+
+    /**
+     * @param AccountRepository<Account> $accountRepository
+     * @Route("/clients", name="key_clients")
+     * @Security("is_granted('ROLE_SALES_PERSON') or is_granted('ROLE_MANAGER')")
+     */
+    public function clients(AccountRepository $accountRepository): Response
+    {
+        /** @var SalesPerson|Manager $user */
+        $user = $this->getUser();
+
+        return $this->render("ui/key/_clients.html.twig", [
+            "accounts" => $accountRepository->getClientsAccountByEmployee($user)
+        ]);
     }
 }
