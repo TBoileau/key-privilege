@@ -13,7 +13,7 @@ Feature: Point
     And second account balance is 500 points
   Scenario: I want to purchase some points but I have expired points
     Given I create first account
-    And 2 years ago, first account purchase 500 points
+    And 3 years ago, first account purchase 500 points
     And 6 month ago, first account purchase 500 points
     When I purchase 1000 points for first account
     Then first account balance is 1500 points

@@ -41,7 +41,7 @@ class Purchase extends Transaction
 
     public function prepare(): self
     {
-        $wallet = new Wallet($this->account, new DateTimeImmutable("1 year first day of next month midnight"));
+        $wallet = new Wallet($this->account, new DateTimeImmutable("2 year first day of next month midnight"));
         $this->createdAt = new DateTimeImmutable();
         $this->wallet = $wallet;
         $wallet->setPurchase($this);

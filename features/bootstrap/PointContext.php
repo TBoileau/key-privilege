@@ -63,7 +63,7 @@ class PointContext implements Context
         $expiredAt->setAccessible(true);
         $expiredAt->setValue(
             $purchase->getWallet(),
-            new DateTimeImmutable(sprintf("%s + %s", $time, "1 year first day of next month midnight"))
+            new DateTimeImmutable(sprintf("%s + %s", $time, "2 year first day of next month midnight"))
         );
 
         $purchase->getWallet()->addTransaction($purchase);

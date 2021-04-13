@@ -101,6 +101,14 @@ class Account implements Stringable
     /**
      * @return Collection<int, Wallet>
      */
+    public function getExpiredWallets(): Collection
+    {
+        return $this->wallets->filter(fn (Wallet $wallet) => $wallet->isExpired() && $wallet->getBalance() > 0);
+    }
+
+    /**
+     * @return Collection<int, Wallet>
+     */
     public function getRemainingWallets(): Collection
     {
         return $this->wallets->filter(fn (Wallet $wallet) => !$wallet->isExpired() && $wallet->getBalance() > 0);

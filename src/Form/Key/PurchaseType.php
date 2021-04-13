@@ -22,15 +22,17 @@ class PurchaseType extends AbstractType
     {
         $builder
             ->add("points", IntegerType::class, [
-                "label" => "Points :",
-                "empty_data" => 0
+                "label" => "Montant de votre achat :",
+                "empty_data" => 0,
+                "help" => "Rappel : 1 étoile = 1 euro HT"
             ])
             ->add("internReference", TextType::class, [
-                "label" => "Référence interne :",
+                "label" => "Votre référence interne (visible sur la facture) :",
                 "required" => false
             ])
             ->add("mode", ChoiceType::class, [
                 "label" => "Mode de paiement :",
+                "expanded" => true,
                 "choices" => [
                     Purchase::MODE_BANK_WIRE => Purchase::MODE_BANK_WIRE,
                     Purchase::MODE_CHECK => Purchase::MODE_CHECK

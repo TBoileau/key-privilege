@@ -72,6 +72,9 @@
                     </div>
                 </div>
             </section>
+            {% if is_granted("ROLE_MANAGER") or is_granted("ROLE_SALES_PERSON") %}
+                {{ render(path('key_clients')) }}
+            {% endif %}
         </div>
     </div>
 {% endblock %}

@@ -13,12 +13,29 @@ use App\Entity\User\SalesPerson;
 use App\Repository\Key\AccountRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\ChoiceList\View\ChoiceGroupView;
+use Symfony\Component\Form\ChoiceList\View\ChoiceView;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TransferType extends AbstractType
 {
+    public function finishView(FormView $view, FormInterface $form, array $options): void
+    {
+        /** @var ChoiceGroupView $choiceGroup */
+        foreach ($view->children["from"]->vars["choices"] as $choiceGroup) {
+            usort(
+                $choiceGroup->choices,
+                fn (ChoiceView $aChoice, ChoiceView $bChoice): int => $aChoice->label <=> $bChoice->label
+            );
+        }
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         /** @var Manager $manager */
@@ -41,8 +58,9 @@ class TransferType extends AbstractType
                     $customer = $account->getUser();
 
                     return sprintf(
-                        "%s - Solde : %d clés",
+                        "%s - %s - Solde : %d clés",
                         $customer->getClient()->getName(),
+                        $customer->getFullName(),
                         $account->getBalance()
                     );
                 }
@@ -83,7 +101,7 @@ class TransferType extends AbstractType
                 "class" => Account::class
             ])
             ->add("points", IntegerType::class, [
-                "label" => "Points :"
+                "label" => "Montant du transfert :"
             ]);
     }
 

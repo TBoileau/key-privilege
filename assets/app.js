@@ -3,6 +3,37 @@ import './bootstrap';
 import {Tooltip, Toast, Modal} from 'bootstrap';
 import noUiSlider from 'nouislider';
 
+if (document.querySelector('body').classList.contains('purchase')) {
+  const renderPaymentMethod = () => {
+    if (document.getElementById('purchase_mode_0').checked) {
+      document.getElementById('bank-wire')
+          .classList
+          .remove('d-none');
+      document.getElementById('check')
+          .classList
+          .add('d-none');
+    } else if (document.getElementById('purchase_mode_1').checked) {
+      document.getElementById('bank-wire')
+          .classList
+          .add('d-none');
+      document.getElementById('check')
+          .classList
+          .remove('d-none');
+    } else {
+      document.getElementById('bank-wire')
+          .classList
+          .add('d-none');
+      document.getElementById('check')
+          .classList
+          .add('d-none');
+    }
+  };
+
+  renderPaymentMethod();
+  Array.from(document.querySelectorAll('input[name="purchase[mode]"]'))
+      .forEach((e) => e.addEventListener('change', renderPaymentMethod));
+}
+
 Array.from(document.querySelectorAll('.modal-onload'))
     .map((e) => new Modal(e, {backdrop: false}))
     .forEach((modal) => modal.show());

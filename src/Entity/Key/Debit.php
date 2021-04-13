@@ -32,6 +32,14 @@ class Debit extends Transaction
 
     public function getType(): string
     {
+        if ($this->transfer !== null) {
+            return "Rétrocession";
+        }
+
+        if ($this->order !== null) {
+            return sprintf("Débit - Commande %s", $this->order->getReference());
+        }
+
         return "Débit";
     }
 }

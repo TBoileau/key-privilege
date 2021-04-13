@@ -67,5 +67,9 @@ class IndexTest extends WebTestCase
         $client->clickLink("Historique");
 
         $this->assertResponseIsSuccessful();
+
+        $client->clickLink("Exporter");
+
+        $this->assertResponseIsSuccessful();
     }
 }

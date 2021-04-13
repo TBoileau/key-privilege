@@ -6,19 +6,30 @@ namespace App\Controller;
 
 use App\Entity\Key\Account;
 use App\Entity\Key\Purchase;
+use App\Entity\Key\Transaction;
 use App\Entity\Key\Transfer;
+use App\Entity\Key\Wallet;
 use App\Entity\User\Manager;
+use App\Entity\User\SalesPerson;
+use App\Entity\User\User;
 use App\Form\Key\PurchaseType;
 use App\Form\Key\TransferType;
+use App\Repository\Key\AccountRepository;
 use App\UseCase\TransferPointsInterface;
+use Couchbase\WildcardSearchQuery;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Uid\Uuid;
 
 /**
  * @Route("/cles")
@@ -31,6 +42,61 @@ class KeyController extends AbstractController
     public function index(): Response
     {
         return $this->render("ui/key/index.html.twig");
+    }
+
+    /**
+     * @Route("/{id}/export", name="key_export")
+     */
+    public function export(Account $account, string $tempDir): BinaryFileResponse
+    {
+        $spreadsheet = new Spreadsheet();
+
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setTitle("Mouvements de clés");
+        $sheet->fromArray(
+            array_merge(
+                [["Date", "Opération", "Clés"]],
+                $account->getTransactions()->map(fn (Transaction $transaction) => [
+                    $transaction->getCreatedAt()->format("d/m/Y"),
+                    $transaction->getType(),
+                    sprintf("%d clés", $transaction->getPoints())
+                ])->toArray()
+            )
+        );
+
+        $sheet = $spreadsheet->createSheet();
+        $sheet->setTitle("Expiration de vos clés");
+        $sheet->fromArray(
+            array_merge(
+                [["Date d'acquisition", "Date d'expiration", "Clés restantes"]],
+                $account->getRemainingWallets()->map(fn (Wallet $wallet) => [
+                    $wallet->getCreatedAt()->format("d/m/Y"),
+                    $wallet->getExpiredAt()->format("d/m/Y"),
+                    sprintf("%d clés", $wallet->getBalance())
+                ])->toArray()
+            )
+        );
+
+        $sheet = $spreadsheet->createSheet();
+        $sheet->setTitle("Clés expirés");
+        $sheet->fromArray(
+            array_merge(
+                [["Date d'acquisition", "Date d'expiration", "Clés restantes"]],
+                $account->getExpiredWallets()->map(fn (Wallet $wallet) => [
+                    $wallet->getCreatedAt()->format("d/m/Y"),
+                    $wallet->getExpiredAt()->format("d/m/Y"),
+                    sprintf("%d clés", $wallet->getBalance())
+                ])->toArray()
+            )
+        );
+
+        $filename = sprintf("export_cles_%s.xlsx", (string) Uuid::v4());
+
+        $writer = new Xlsx($spreadsheet);
+        $writer->save(sprintf("%s/%s", $tempDir, $filename));
+
+
+        return $this->file(sprintf("%s/%s", $tempDir, $filename));
     }
 
     /**
@@ -102,12 +168,28 @@ class KeyController extends AbstractController
                 "success",
                 "
                     Votre demande d'achat de clés a été envoyée avec succès. 
-                    Dès réception du paiement, les clés vous seront crédités.
+                    Dès réception du paiement, les clés vous seront créditées.
                 "
             );
             return $this->redirectToRoute("key_index");
         }
 
         return $this->render("ui/key/purchase.html.twig", ["form" => $form->createView()]);
+    }
+
+
+    /**
+     * @param AccountRepository<Account> $accountRepository
+     * @Route("/clients", name="key_clients")
+     * @Security("is_granted('ROLE_SALES_PERSON') or is_granted('ROLE_MANAGER')")
+     */
+    public function clients(AccountRepository $accountRepository): Response
+    {
+        /** @var SalesPerson|Manager $user */
+        $user = $this->getUser();
+
+        return $this->render("ui/key/_clients.html.twig", [
+            "accounts" => $accountRepository->getClientsAccountByEmployee($user)
+        ]);
     }
 }

@@ -50,7 +50,7 @@ class Order
 
     /**
      * @var Collection<int, Transaction>
-     * @ORM\ManyToMany(targetEntity=Transaction::class)
+     * @ORM\OneToMany(targetEntity=Transaction::class, mappedBy="order")
      */
     private Collection $transactions;
 
