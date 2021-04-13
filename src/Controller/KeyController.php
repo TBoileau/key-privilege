@@ -165,7 +165,7 @@ class KeyController extends AbstractController
                 "success",
                 "
                     Votre demande d'achat de clés a été envoyée avec succès. 
-                    Dès réception du paiement, les clés vous seront crédités.
+                    Dès réception du paiement, les clés vous seront créditées.
                 "
             );
             return $this->redirectToRoute("key_index");
