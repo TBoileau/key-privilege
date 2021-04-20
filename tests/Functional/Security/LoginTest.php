@@ -22,7 +22,7 @@ class LoginTest extends WebTestCase
         $crawler = $client->request("GET", $urlGenerator->generate("security_login"));
 
         $form = $crawler->filter("form[name=login]")->form([
-            "username" => "user+1",
+            "username" => "user1",
             "password" => "password"
         ]);
 
@@ -55,7 +55,7 @@ class LoginTest extends WebTestCase
         $crawler = $client->request("GET", $urlGenerator->generate("security_login"));
 
         $form = $crawler->filter("form[name=login]")->form([
-            "username" => "user+1",
+            "username" => "user1",
             "password" => "password"
         ]);
 
@@ -90,7 +90,7 @@ class LoginTest extends WebTestCase
         $crawler = $client->request("GET", $urlGenerator->generate("security_login"));
 
         $form = $crawler->filter("form[name=login]")->form([
-            "username" => "user+1",
+            "username" => "user1",
             "password" => "password"
         ]);
 

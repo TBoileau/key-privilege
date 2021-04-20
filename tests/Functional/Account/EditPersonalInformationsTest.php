@@ -106,16 +106,6 @@ class EditPersonalInformationsTest extends WebTestCase
             [
                 "edit_personal_informations[firstName]" => "Jean",
                 "edit_personal_informations[lastName]" => "Dupont",
-                "edit_personal_informations[email]" => "user+2@email.com",
-                "edit_personal_informations[phone]" => "0123456789"
-            ],
-            "Adresse mail déjà utilisée dans le programme, veuillez renseigner un autre mail."
-        ];
-
-        yield [
-            [
-                "edit_personal_informations[firstName]" => "Jean",
-                "edit_personal_informations[lastName]" => "Dupont",
                 "edit_personal_informations[email]" => "fail",
                 "edit_personal_informations[phone]" => "0123456789"
             ],

@@ -52,7 +52,6 @@ class CollaboratorTest extends WebTestCase
         $client->submitForm("Créer", [
             "Collaborator[firstName]" => "Prénom",
             "Collaborator[lastName]" => "Nom",
-            "Collaborator[username]" => "new",
             "Collaborator[email]" => "new@email.com",
             "Collaborator[plainPassword]" => "password",
             "Collaborator[phone]" => "0123456789",
@@ -75,7 +74,6 @@ class CollaboratorTest extends WebTestCase
         $client->submitForm("Sauvegarder les modifications", [
             "Collaborator[firstName]" => "Prénom",
             "Collaborator[lastName]" => "Nom",
-            "Collaborator[username]" => "new+1",
             "Collaborator[email]" => "new+1@email.com",
             "Collaborator[phone]" => "0123456789",
             "Collaborator[member]" => 2

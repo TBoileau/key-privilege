@@ -52,7 +52,6 @@ class ManagerTest extends WebTestCase
         $client->submitForm("Créer", [
             "Manager[firstName]" => "Prénom",
             "Manager[lastName]" => "Nom",
-            "Manager[username]" => "new",
             "Manager[email]" => "new@email.com",
             "Manager[plainPassword]" => "password",
             "Manager[phone]" => "0123456789",
@@ -76,7 +75,6 @@ class ManagerTest extends WebTestCase
         $client->submitForm("Sauvegarder les modifications", [
             "Manager[firstName]" => "Prénom",
             "Manager[lastName]" => "Nom",
-            "Manager[username]" => "new+1",
             "Manager[email]" => "new+1@email.com",
             "Manager[phone]" => "0123456789",
             "Manager[member]" => 3,

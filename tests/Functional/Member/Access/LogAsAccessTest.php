@@ -32,7 +32,7 @@ class LogAsAccessTest extends WebTestCase
 
         $client->request(
             Request::METHOD_GET,
-            $urlGenerator->generate("home", ["_switch_user" => "user+11@email.com"])
+            $urlGenerator->generate("home", ["_switch_user" => "user11"])
         );
 
         $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
@@ -44,7 +44,7 @@ class LogAsAccessTest extends WebTestCase
         /** @var TokenStorageInterface $tokenStorage */
         $tokenStorage = $client->getContainer()->get("security.token_storage");
 
-        $this->assertEquals("user+11@email.com", $tokenStorage->getToken()->getUser()->getUsername());
+        $this->assertEquals("user11", $tokenStorage->getToken()->getUser()->getUsername());
 
         /** @var AuthorizationCheckerInterface $authorizationChecker */
         $authorizationChecker = $client->getContainer()->get("security.authorization_checker");
@@ -65,6 +65,6 @@ class LogAsAccessTest extends WebTestCase
         /** @var TokenStorageInterface $tokenStorage */
         $tokenStorage = $client->getContainer()->get("security.token_storage");
 
-        $this->assertEquals("user+1@email.com", $tokenStorage->getToken()->getUser()->getUsername());
+        $this->assertEquals("user1", $tokenStorage->getToken()->getUser()->getUsername());
     }
 }

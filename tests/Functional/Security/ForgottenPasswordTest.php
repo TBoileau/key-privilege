@@ -32,7 +32,7 @@ class ForgottenPasswordTest extends WebTestCase
 
         $client->submit(
             $crawler->filter("form[name=forgotten_password]")->form([
-                "forgotten_password[username]" => "user+1"
+                "forgotten_password[username]" => "user1"
             ])
         );
 
@@ -110,7 +110,7 @@ class ForgottenPasswordTest extends WebTestCase
 
         $client->submit(
             $crawler->filter("form[name=forgotten_password]")->form([
-                "forgotten_password[username]" => "user+1",
+                "forgotten_password[username]" => "user1",
                 "forgotten_password[_token]" => "fail"
             ])
         );

@@ -124,16 +124,6 @@ class UpdateAccessTest extends WebTestCase
     {
         yield [
             [
-                "access[firstName]" => "Prénom",
-                "access[lastName]" => "Nom",
-                "access[email]" => "user+8@email.com",
-                "access[phone]" => "0123456789"
-            ],
-            "Adresse mail déjà utilisée dans le programme, veuillez renseigner un autre mail."
-        ];
-
-        yield [
-            [
                 "access[firstName]" => "",
                 "access[lastName]" => "Nom",
                 "access[email]" => "new@email.com",

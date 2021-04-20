@@ -54,6 +54,7 @@ abstract class User implements UserInterface, Stringable
 
     /**
      * @ORM\Column(unique=true)
+     * @Gedmo\Slug(fields={"lastName"}, separator="", unique=true, updatable=false)
      */
     protected string $username;
 
