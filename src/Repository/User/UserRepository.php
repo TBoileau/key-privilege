@@ -25,7 +25,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class UserRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
 {
-    use UniqueEmailTrait;
+    use UniqueUsernameTrait;
 
     public function __construct(ManagerRegistry $registry)
     {

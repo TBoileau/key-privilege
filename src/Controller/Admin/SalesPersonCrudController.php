@@ -53,6 +53,10 @@ class SalesPersonCrudController extends AbstractCrudController
             ->setFormTypeOption("constraints", [
                 new NotBlank()
             ]);
+        yield TextField::new('username', 'Identifiant')
+            ->setFormTypeOption("constraints", [
+                new NotBlank()
+            ]);
         yield EmailField::new('email', 'Adresse email')
             ->setFormTypeOption("constraints", [
                 new NotBlank(),

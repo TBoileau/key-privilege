@@ -52,6 +52,7 @@ class SalesPersonTest extends WebTestCase
         $client->submitForm("Créer", [
             "SalesPerson[firstName]" => "Prénom",
             "SalesPerson[lastName]" => "Nom",
+            "SalesPerson[username]" => "new",
             "SalesPerson[email]" => "new@email.com",
             "SalesPerson[plainPassword]" => "password",
             "SalesPerson[phone]" => "0123456789",
@@ -74,6 +75,7 @@ class SalesPersonTest extends WebTestCase
         $client->submitForm("Sauvegarder les modifications", [
             "SalesPerson[firstName]" => "Prénom",
             "SalesPerson[lastName]" => "Nom",
+            "SalesPerson[username]" => "new+1",
             "SalesPerson[email]" => "new+1@email.com",
             "SalesPerson[phone]" => "0123456789",
             "SalesPerson[member]" => 2

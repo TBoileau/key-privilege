@@ -26,6 +26,11 @@ use function Symfony\Component\String\u;
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\EntityListeners({"App\EntityListener\UserListener"})
  * @ORM\Table(name="`user`")
+ * @UniqueEntity(
+ *     "username",
+ *     repositoryMethod="findByUniqueUsername",
+ *     message="Cet identifiant existe déjà."
+ * )
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=true)
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="discr", type="string")

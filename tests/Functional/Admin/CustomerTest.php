@@ -52,6 +52,7 @@ class CustomerTest extends WebTestCase
         $client->submitForm("Créer", [
             "Customer[firstName]" => "Prénom",
             "Customer[lastName]" => "Nom",
+            "Customer[username]" => "new",
             "Customer[email]" => "new@email.com",
             "Customer[plainPassword]" => "password",
             "Customer[client]" => 7
@@ -73,6 +74,7 @@ class CustomerTest extends WebTestCase
         $client->submitForm("Sauvegarder les modifications", [
             "Customer[firstName]" => "Prénom",
             "Customer[lastName]" => "Nom",
+            "Customer[username]" => "new+1",
             "Customer[email]" => "new+1@email.com",
             "Customer[client]" => 7
         ]);
