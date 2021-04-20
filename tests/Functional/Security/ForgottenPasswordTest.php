@@ -32,7 +32,7 @@ class ForgottenPasswordTest extends WebTestCase
 
         $client->submit(
             $crawler->filter("form[name=forgotten_password]")->form([
-                "forgotten_password[email]" => "user+1@email.com"
+                "forgotten_password[username]" => "user1"
             ])
         );
 
@@ -85,41 +85,13 @@ class ForgottenPasswordTest extends WebTestCase
         $this->assertRouteSame("security_login");
 
         $form = $crawler->filter("form[name=login]")->form([
-            "email" => "user@email.com",
+            "username" => $user->getUsername(),
             "password" => "new_password"
         ]);
 
         $client->submit($form);
 
         $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
-    }
-
-    public function testIfForgottenPasswordFormIsInvalid(): void
-    {
-        $client = static::createClient();
-
-        /** @var UrlGeneratorInterface $urlGenerator */
-        $urlGenerator = $client->getContainer()->get("router");
-
-        $crawler = $client->request(
-            Request::METHOD_GET,
-            $urlGenerator->generate("security_forgotten_password")
-        );
-
-        $this->assertResponseIsSuccessful();
-
-        $client->submit(
-            $crawler->filter("form[name=forgotten_password]")->form([
-                "forgotten_password[email]" => "fail"
-            ])
-        );
-
-        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
-
-        $this->assertSelectorTextContains(
-            ".form-error-message",
-            "Cette valeur n'est pas une adresse email valide."
-        );
     }
 
     public function testIfForgottenPasswordCsrfTokenIsInvalid(): void
@@ -138,7 +110,7 @@ class ForgottenPasswordTest extends WebTestCase
 
         $client->submit(
             $crawler->filter("form[name=forgotten_password]")->form([
-                "forgotten_password[email]" => "user+1@email.com",
+                "forgotten_password[username]" => "user1",
                 "forgotten_password[_token]" => "fail"
             ])
         );

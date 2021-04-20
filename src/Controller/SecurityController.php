@@ -59,7 +59,7 @@ class SecurityController extends AbstractController
         $form = $this->createForm(ForgottenPasswordType::class)->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $user = $userRepository->findOneBy(["email" => $form->get("email")->getData()]);
+            $user = $userRepository->findOneBy(["username" => $form->get("username")->getData()]);
 
             if ($user !== null) {
                 $user->setForgottenPasswordToken((string) Uuid::v4());
@@ -75,7 +75,10 @@ class SecurityController extends AbstractController
 
             $this->addFlash(
                 "success",
-                "Un email a été envoyé avec la procédure à suivre pour réinitialiser votre mot de passe"
+                sprintf(
+                    "Un email a été envoyé à %s avec la procédure à suivre pour réinitialiser votre mot de passe",
+                    $user->getEmail()
+                )
             );
 
             return $this->redirectToRoute("security_login");

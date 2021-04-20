@@ -13,7 +13,7 @@ use Faker\Factory;
 use Faker\Generator;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
-class UserFixtures extends Fixture implements DependentFixtureInterface
+class CustomerFixtures extends Fixture implements DependentFixtureInterface
 {
     private UserPasswordEncoderInterface $userPasswordEncoder;
 
@@ -44,6 +44,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
     {
         /** @var Customer $user */
         $user = (new Customer())
+            ->setUsername(sprintf("user+%d", $this->autoIncrement))
             ->setFirstName($this->faker->firstName)
             ->setLastName($this->faker->lastName)
             ->setEmail(sprintf("user+%d@email.com", $this->autoIncrement));

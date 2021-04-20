@@ -53,6 +53,7 @@ class ManagerCrudController extends AbstractCrudController
             ->setFormTypeOption("constraints", [
                 new NotBlank()
             ]);
+        yield TextField::new('username', 'Identifiant')->hideOnForm();
         yield EmailField::new('email', 'Adresse email')
             ->setFormTypeOption("constraints", [
                 new NotBlank(),

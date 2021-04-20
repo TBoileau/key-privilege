@@ -27,9 +27,9 @@ use function Symfony\Component\String\u;
  * @ORM\EntityListeners({"App\EntityListener\UserListener"})
  * @ORM\Table(name="`user`")
  * @UniqueEntity(
- *     "email",
- *     repositoryMethod="findByUniqueEmail",
- *     message="Adresse mail déjà utilisée dans le programme, veuillez renseigner un autre mail."
+ *     "username",
+ *     repositoryMethod="findByUniqueUsername",
+ *     message="Cet identifiant existe déjà."
  * )
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=true)
  * @ORM\InheritanceType("SINGLE_TABLE")
@@ -53,7 +53,13 @@ abstract class User implements UserInterface, Stringable
     protected ?int $id = null;
 
     /**
-     * @ORM\Column(type="string", length=180, unique=true)
+     * @ORM\Column(unique=true)
+     * @Gedmo\Slug(fields={"lastName"}, separator="", unique=true, updatable=false)
+     */
+    protected string $username;
+
+    /**
+     * @ORM\Column(type="string", length=180)
      * @Assert\NotBlank
      * @Assert\Email
      */
@@ -136,14 +142,15 @@ abstract class User implements UserInterface, Stringable
         return $this;
     }
 
-    /**
-     * A visual identifier that represents this user.
-     *
-     * @see UserInterface
-     */
     public function getUsername(): string
     {
-        return (string) $this->email;
+        return $this->username;
+    }
+
+    public function setUsername(string $username): User
+    {
+        $this->username = $username;
+        return $this;
     }
 
     /**

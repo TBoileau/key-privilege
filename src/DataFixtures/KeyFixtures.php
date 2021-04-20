@@ -16,7 +16,7 @@ class KeyFixtures extends Fixture implements DependentFixtureInterface
 {
     public function getDependencies(): array
     {
-        return [UserFixtures::class];
+        return [CustomerFixtures::class];
     }
 
     public function load(ObjectManager $manager): void

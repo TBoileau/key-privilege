@@ -84,7 +84,7 @@ class AccessController extends AbstractController
                     ->from(new Address("contact@keyprivilege.fr", "Key Privilege"))
                     ->to(new Address($customer->getEmail(), $customer->getFullName()))
                     ->htmlTemplate("emails/welcome.html.twig")
-                    ->context(["customer" => $customer, "password" => $password])
+                    ->context(["username" => $customer->getUsername(), "password" => $password])
             );
             $this->addFlash(
                 "success",

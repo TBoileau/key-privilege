@@ -22,7 +22,7 @@ class LoginTest extends WebTestCase
         $crawler = $client->request("GET", $urlGenerator->generate("security_login"));
 
         $form = $crawler->filter("form[name=login]")->form([
-            "email" => "user+1@email.com",
+            "username" => "user1",
             "password" => "password"
         ]);
 
@@ -55,7 +55,7 @@ class LoginTest extends WebTestCase
         $crawler = $client->request("GET", $urlGenerator->generate("security_login"));
 
         $form = $crawler->filter("form[name=login]")->form([
-            "email" => "user+1@email.com",
+            "username" => "user1",
             "password" => "password"
         ]);
 
@@ -90,7 +90,7 @@ class LoginTest extends WebTestCase
         $crawler = $client->request("GET", $urlGenerator->generate("security_login"));
 
         $form = $crawler->filter("form[name=login]")->form([
-            "email" => "user+1@email.com",
+            "username" => "user1",
             "password" => "password"
         ]);
 
@@ -115,7 +115,7 @@ class LoginTest extends WebTestCase
         $crawler = $client->request("GET", $urlGenerator->generate("security_login"));
 
         $form = $crawler->filter("form[name=login]")->form([
-            "email" => "fail@email.com",
+            "username" => "fail",
             "password" => "password"
         ]);
 
@@ -140,7 +140,7 @@ class LoginTest extends WebTestCase
         $crawler = $client->request("GET", $urlGenerator->generate("security_login"));
 
         $form = $crawler->filter("form[name=login]")->form([
-            "email" => "user@email.com",
+            "username" => "user",
             "password" => "fail"
         ]);
 
@@ -165,7 +165,7 @@ class LoginTest extends WebTestCase
         $crawler = $client->request("GET", $urlGenerator->generate("security_login"));
 
         $form = $crawler->filter("form[name=login]")->form([
-            "email" => "user@email.com",
+            "username" => "user",
             "password" => "password",
             "_csrf_token" => "fail"
         ]);

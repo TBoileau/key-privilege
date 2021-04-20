@@ -6,6 +6,7 @@ namespace App\EntityListener;
 
 use App\Entity\User\User;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 class UserListener
 {
@@ -16,24 +17,24 @@ class UserListener
         $this->userPasswordEncoder = $userPasswordEncoder;
     }
 
-    public function prePersist(User $administrator): void
+    public function prePersist(User $user): void
     {
-        $this->encodePassword($administrator);
+        $this->encodePassword($user);
     }
 
-    public function preUpdate(User $administrator): void
+    public function preUpdate(User $user): void
     {
-        $this->encodePassword($administrator);
+        $this->encodePassword($user);
     }
 
-    private function encodePassword(User $administrator): void
+    private function encodePassword(User $user): void
     {
-        if ($administrator->getPlainPassword() === null) {
+        if ($user->getPlainPassword() === null) {
             return;
         }
 
-        $administrator->setPassword(
-            $this->userPasswordEncoder->encodePassword($administrator, $administrator->getPlainPassword())
+        $user->setPassword(
+            $this->userPasswordEncoder->encodePassword($user, $user->getPlainPassword())
         );
     }
 }
