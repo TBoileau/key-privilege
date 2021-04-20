@@ -186,6 +186,9 @@
     "laminas/laminas-zendframework-bridge": {
         "version": "1.1.1"
     },
+    "league/csv": {
+        "version": "9.7.1"
+    },
     "maennchen/zipstream-php": {
         "version": "2.1.0"
     },
