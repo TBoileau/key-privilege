@@ -44,6 +44,7 @@ class CollaboratorFixtures extends Fixture implements DependentFixtureInterface
     {
         /** @var Collaborator $user */
         $user = (new Collaborator())
+            ->setUsername(sprintf("user+%d", $this->autoIncrement))
             ->setFirstName($this->faker->firstName)
             ->setLastName($this->faker->lastName)
             ->setEmail(sprintf("user+%d@email.com", $this->autoIncrement));

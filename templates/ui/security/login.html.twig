@@ -7,9 +7,9 @@
             {{ include("components/alert.html.twig", {state: "danger", content: error.messageKey|trans(error.messageData, 'security')}) }}
         {% endif %}
         <div class="row mb-3 align-content-center">
-            <label class="col-12 col-md-5 text-end col-form-label" for="email">Adresse email :</label>
+            <label class="col-12 col-md-5 text-end col-form-label" for="email">Identifiant :</label>
             <div class="col-12 col-md-7">
-                <input type="email" value="{{ last_username }}" name="email" id="email" class="form-control" required autofocus>
+                <input type="text" value="{{ last_username }}" name="username" id="username" class="form-control" required autofocus>
             </div>
         </div>
         <div class="row mb-4 align-content-center">

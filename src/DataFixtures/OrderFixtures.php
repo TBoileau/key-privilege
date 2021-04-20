@@ -34,7 +34,7 @@ class OrderFixtures extends Fixture implements DependentFixtureInterface
 
     public function getDependencies(): array
     {
-        return [UserFixtures::class, ShopFixtures::class];
+        return [CustomerFixtures::class, ShopFixtures::class];
     }
 
     public function load(ObjectManager $manager): void

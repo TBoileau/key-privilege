@@ -58,14 +58,12 @@ class WebAuthenticator extends AbstractFormLoginAuthenticator implements Passwor
     public function getCredentials(Request $request): array
     {
         $credentials = [
-            'email' => $request->request->get('email'),
+            'username' => $request->request->get('username'),
             'password' => $request->request->get('password'),
             'csrf_token' => $request->request->get('_csrf_token'),
         ];
-        $request->getSession()->set(
-            Security::LAST_USERNAME,
-            $credentials['email']
-        );
+
+        $request->getSession()->set(Security::LAST_USERNAME, $credentials['username']);
 
         return $credentials;
     }
@@ -80,7 +78,9 @@ class WebAuthenticator extends AbstractFormLoginAuthenticator implements Passwor
         $this->entityManager->getFilters()->enable("softdeleteable");
 
         /** @var ?User $user */
-        $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $credentials['email']]);
+        $user = $this->entityManager
+            ->getRepository(User::class)
+            ->findOneBy(['username' => $credentials['username']]);
 
         if (!$user) {
             throw new CustomUserMessageAuthenticationException('Identifiants invalides.');

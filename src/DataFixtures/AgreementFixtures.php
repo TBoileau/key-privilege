@@ -14,7 +14,7 @@ class AgreementFixtures extends Fixture implements DependentFixtureInterface
 {
     public function getDependencies(): array
     {
-        return [UserFixtures::class, RulesFixtures::class];
+        return [CustomerFixtures::class, RulesFixtures::class];
     }
 
     public function load(ObjectManager $manager): void

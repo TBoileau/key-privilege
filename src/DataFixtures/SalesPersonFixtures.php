@@ -44,6 +44,7 @@ class SalesPersonFixtures extends Fixture implements DependentFixtureInterface
     {
         /** @var SalesPerson $user */
         $user = (new SalesPerson())
+            ->setUsername(sprintf("user+%d", $this->autoIncrement))
             ->setFirstName($this->faker->firstName)
             ->setLastName($this->faker->lastName)
             ->setEmail(sprintf("user+%d@email.com", $this->autoIncrement));
