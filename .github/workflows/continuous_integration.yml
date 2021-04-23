@@ -41,7 +41,7 @@ jobs:
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: ${{ runner.os }}-composer-
       - name: Install
-        run: make install
+        run: BRANCH=${GITHUB_REF##*/} DATABASE_USER=root DATABASE_PASSWORD=Password123! make install
       - name: Prepare env
         run: make prepare-build
       - name: Analyze

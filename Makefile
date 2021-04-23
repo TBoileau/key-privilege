@@ -1,3 +1,5 @@
+BRANCH_NAME=$(subst $(findstring release/,$(BRANCH)),,$(subst $(findstring feature/,$(BRANCH)),,$(BRANCH)))
+
 unit-tests:
 	php bin/phpunit --testsuite unit
 
@@ -59,8 +61,10 @@ prepare-build:
 install:
 	composer install
 	npm install
-	cp .env.dist .env.dev.local
-	cp .env.dist .env.test.local
+	cp .env.dist .env.local
+	sed -i -e 's/BRANCH/$(BRANCH_NAME)/' .env.local
+	sed -i -e 's/USER/$(DATABASE_USER)/' .env.local
+	sed -i -e 's/PASSWORD/$(DATABASE_USER)/' .env.local
 .PHONY: install
 
 deploy:

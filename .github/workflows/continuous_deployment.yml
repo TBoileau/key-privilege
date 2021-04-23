@@ -14,7 +14,6 @@ jobs:
           port: 22
           script: |
             cd ${{ secrets.SSH_DIRECTORY }}/${GITHUB_REF##*/}
-            git fetch origin
-            git checkout ${GITHUB_REF##*/}
+            git checkout -B ${GITHUB_REF##*/}
             git pull origin ${GITHUB_REF##*/}
             make deploy

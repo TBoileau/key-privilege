@@ -1,0 +1,21 @@
+name: Prepare Deployment
+on:
+  pull_request:
+    types: [opened]
+jobs:
+  ci:
+    name: Prepare
+    runs-on: ubuntu-latest
+    steps:
+      - name: Prepare deployment
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: 22
+          script: |
+            cd ${{ secrets.SSH_DIRECTORY }}
+            BRANCH=${GITHUB_REF##*/} make install
+            cd ${GITHUB_REF##*/}
+            BRANCH=${GITHUB_REF##*/} DATABASE_USER=root DATABASE_PASSWORD=Password123! make install
