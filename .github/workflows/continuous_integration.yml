@@ -21,6 +21,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+      - name: Inject slug/short variables
+        uses: rlespinasse/github-slug-action@v3.x
       - name: Setup PHP, with composer and extensions
         uses: shivammathur/setup-php@v2
         with:
@@ -41,7 +43,7 @@ jobs:
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: ${{ runner.os }}-composer-
       - name: Install
-        run: BRANCH=${GITHUB_REF##*/} DATABASE_USER=root DATABASE_PASSWORD=Password123! make install
+        run: BRANCH=${{ env.GITHUB_REF_SLUG }} DATABASE_USER=root DATABASE_PASSWORD=Password123! make install
       - name: Prepare env
         run: make prepare-build
       - name: Analyze

@@ -7,6 +7,8 @@ jobs:
     name: Prepare
     runs-on: ubuntu-latest
     steps:
+      - name: Inject slug/short variables
+        uses: rlespinasse/github-slug-action@v3.x
       - name: Prepare deployment
         uses: appleboy/ssh-action@master
         with:
@@ -16,6 +18,6 @@ jobs:
           port: 22
           script: |
             cd ${{ secrets.SSH_DIRECTORY }}
-            BRANCH=${GITHUB_REF##*/} make install
+            BRANCH=${{ env.GITHUB_REF_SLUG }} make install
             cd ${GITHUB_REF##*/}
-            BRANCH=${GITHUB_REF##*/} DATABASE_USER=root DATABASE_PASSWORD=Password123! make install
+            BRANCH=${{ env.GITHUB_REF_SLUG }} DATABASE_USER=root DATABASE_PASSWORD=Password123! make install
