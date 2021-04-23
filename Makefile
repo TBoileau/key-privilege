@@ -1,3 +1,14 @@
+ifneq (,$(findstring feature-,$(BRANCH)))
+	TEMP_NAME=$(subst $(findstring feature-,$(BRANCH)),feature/,$(BRANCH))
+else
+	TEMP_NAME=$(BRANCH)
+endif
+ifneq (,$(findstring release-,$(TEMP_NAME)))
+	BRANCH_NAME=$(subst $(findstring release-,$(TEMP_NAME)),release/,$(TEMP_NAME))
+else
+	BRANCH_NAME=$(TEMP_NAME)
+endif
+
 unit-tests:
 	php bin/phpunit --testsuite unit
 

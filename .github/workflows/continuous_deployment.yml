@@ -15,7 +15,5 @@ jobs:
           password: ${{ secrets.SSH_PASSWORD }}
           port: 22
           script: |
-            cd ${{ secrets.SSH_DIRECTORY }}/${{ env.GITHUB_REF_SLUG }}
-            git checkout -B ${{ env.GITHUB_REF_SLUG }}
-            git pull origin ${{ env.GITHUB_REF_SLUG }}}
-            make deploy
+            cd ${{ secrets.SSH_DIRECTORY }}
+            BRANCH=${{ env.GITHUB_REF_SLUG }} make deploy
