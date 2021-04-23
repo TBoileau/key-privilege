@@ -5,7 +5,8 @@ jobs:
     name: Deploy
     runs-on: ubuntu-latest
     steps:
-      - uses: nelonoel/branch-name@v1.0.1
+      - name: Inject slug/short variables
+        uses: rlespinasse/github-slug-action@v3.x
       - name: Deploy from develop
         uses: appleboy/ssh-action@master
         with:
@@ -14,7 +15,7 @@ jobs:
           password: ${{ secrets.SSH_PASSWORD }}
           port: 22
           script: |
-            cd ${{ secrets.SSH_DIRECTORY }}/${BRANCH_NAME}
-            git checkout -B ${BRANCH_NAME}
-            git pull origin ${BRANCH_NAME}
+            cd ${{ secrets.SSH_DIRECTORY }}/${{ env.GITHUB_REF_SLUG }}
+            git checkout -B ${{ env.GITHUB_REF_SLUG }}
+            git pull origin ${{ env.GITHUB_REF_SLUG }}}
             make deploy
