@@ -1,8 +1,5 @@
 name: Continuous Deployment
-on:
-  push:
-    branches:
-      - 'develop'
+on: [push]
 jobs:
   ci:
     name: Deploy
@@ -16,7 +13,8 @@ jobs:
           password: ${{ secrets.SSH_PASSWORD }}
           port: 22
           script: |
-            cd ${{ secrets.SSH_DIRECTORY }}
-            git checkout .
-            git pull origin develop
+            cd ${{ secrets.SSH_DIRECTORY }}/${GITHUB_REF##*/}
+            git fetch origin
+            git checkout ${GITHUB_REF##*/}
+            git pull origin ${GITHUB_REF##*/}
             make deploy
