@@ -5,6 +5,7 @@ jobs:
     name: Deploy
     runs-on: ubuntu-latest
     steps:
+      - uses: nelonoel/branch-name@v1.0.1
       - name: Deploy from develop
         uses: appleboy/ssh-action@master
         with:
@@ -13,7 +14,7 @@ jobs:
           password: ${{ secrets.SSH_PASSWORD }}
           port: 22
           script: |
-            cd ${{ secrets.SSH_DIRECTORY }}/${GITHUB_REF##*/}
-            git checkout -B ${GITHUB_REF##*/}
-            git pull origin ${GITHUB_REF##*/}
+            cd ${{ secrets.SSH_DIRECTORY }}/${BRANCH_NAME}
+            git checkout -B ${BRANCH_NAME}
+            git pull origin ${BRANCH_NAME}
             make deploy
