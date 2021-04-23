@@ -17,6 +17,7 @@ use League\Csv\Reader;
 use League\Csv\Statement;
 use SplFileObject;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -62,18 +63,28 @@ class MigrateCommand extends Command
         /** @var array<int, Organization> $organizations */
         $organizations = [];
 
+
+        $io->info('Organizations migration !');
+        $progressBar = new ProgressBar($output, count($originalOrganizations));
+        $progressBar->start();
         foreach ($originalOrganizations as $id => $originalOrganization) {
+            $progressBar->advance();
             $organization = new Organization();
             $organization->setName($originalOrganization["name"]);
             $organization->setCompanyNumber($originalOrganization["siret"]);
             $this->entityManager->persist($organization);
             $organizations[$id] = $organization;
         }
+        $progressBar->finish();
 
         /** @var array<int, Member> $members */
         $members = [];
 
+        $io->info('Members migration !');
+        $progressBar = new ProgressBar($output, count($originalMembers));
+        $progressBar->start();
         foreach ($originalMembers as $id => $originalMember) {
+            $progressBar->advance();
             $originalAddress = $originalAddresses[$originalMember["address_id"]];
             $member = new Member();
             $member->setOrganization($organizations[$originalMember["organization_id"]]);
@@ -88,11 +99,16 @@ class MigrateCommand extends Command
             $this->entityManager->persist($member);
             $members[$id] = $member;
         }
+        $progressBar->finish();
 
         /** @var array<int, Client> $clients */
         $clients = [];
 
+        $io->info('Clients migration !');
+        $progressBar = new ProgressBar($output, count($originalClients));
+        $progressBar->start();
         foreach ($originalClients as $id => $originalClient) {
+            $progressBar->advance();
             $originalAddress = $originalAddresses[$originalClient["address_id"]];
             $client = new Client();
             $client->setMember($members[$originalClient["member_id"]]);
@@ -108,17 +124,23 @@ class MigrateCommand extends Command
             $this->entityManager->persist($client);
             $clients[$id] = $client;
         }
+        $progressBar->finish();
 
         /** @var array<int, User> $users */
         $users = [];
 
+        $io->info('Users migration !');
+        $progressBar = new ProgressBar($output, count($originalUsers));
+        $progressBar->start();
         foreach ($originalUsers as $id => $originalUser) {
+            $progressBar->advance();
             $user = match ($originalUser["discr"]) {
                 "manager" => new Manager(),
                 "sales_person" => new SalesPerson(),
                 "customer" => new Customer(),
             };
             /** @var User $user */
+            $user->setUsername($originalUser["username"]);
             $user->setPlainPassword("password");
             $user->setDeletedAt($originalUser["deleted_at"] === "" ? null : new DateTime());
             $user->setEmail($originalUser["email"]);
@@ -134,12 +156,14 @@ class MigrateCommand extends Command
             if ($user instanceof Customer) {
                 $user->setManualDelivery($originalUser["manual_delivery"] === "1");
                 if (!isset($clients[$originalUser["company_id"]])) {
+                    $io->warning(sprintf("User %s:%s was not imported !", $originalUser["id"], $user->getFullName()));
                     continue;
                 }
                 $user->setClient($clients[$originalUser["company_id"]]);
             } else {
                 $user->setPhone("0100000000");
                 if (!isset($members[$originalUser["company_id"]])) {
+                    $io->warning(sprintf("User %s:%s was not imported !", $originalUser["id"], $user->getFullName()));
                     continue;
                 }
                 $user->setMember($members[$originalUser["company_id"]]);
@@ -148,8 +172,13 @@ class MigrateCommand extends Command
             $this->entityManager->persist($user);
             $users[$originalUser["id"]] = $user;
         }
+        $progressBar->finish();
 
+        $io->info('Attach sales person to clients !');
+        $progressBar = new ProgressBar($output, count($clients));
+        $progressBar->start();
         foreach ($clients as $id => $client) {
+            $progressBar->advance();
             if (
                 $originalClients[$id]["sales_person_id"] !== ""
                 && isset($users[$originalClients[$id]["sales_person_id"]])
@@ -158,6 +187,7 @@ class MigrateCommand extends Command
                 $client->setSalesPerson($users[$originalClients[$id]["sales_person_id"]]);
             }
         }
+        $progressBar->finish();
 
         $this->entityManager->flush();
 
