@@ -59,12 +59,12 @@ prepare-build:
 	npm run dev
 
 install:
-	composer install
-	npm install
 	cp .env.dist .env.local
 	sed -i -e 's/BRANCH/$(BRANCH_NAME)/' .env.local
 	sed -i -e 's/USER/$(DATABASE_USER)/' .env.local
-	sed -i -e 's/PASSWORD/$(DATABASE_USER)/' .env.local
+	sed -i -e 's/PASSWORD/$(DATABASE_PASSWORD)/' .env.local
+	composer install
+	npm install
 .PHONY: install
 
 deploy:
