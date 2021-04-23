@@ -6,7 +6,6 @@ namespace App\EntityListener;
 
 use App\Entity\User\User;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use Symfony\Component\String\Slugger\SluggerInterface;
 
 class UserListener
 {

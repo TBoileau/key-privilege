@@ -10,7 +10,7 @@
         This ruleset contains a collection of rules.
     </description>
     <exclude-pattern>src/Kernel.php</exclude-pattern>
-    <exclude-pattern>src/Security/LoginFormAuthenticator.php</exclude-pattern>
+    <exclude-pattern>src/Command/MigrateCommand.php</exclude-pattern>
 
     <rule ref="rulesets/controversial.xml" />
 
