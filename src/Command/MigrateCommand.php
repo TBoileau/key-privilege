@@ -12,15 +12,12 @@ use App\Entity\User\User;
 use DateTime;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
-use Iterator;
 use League\Csv\Reader;
 use League\Csv\Statement;
-use SplFileObject;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
@@ -28,7 +25,7 @@ class MigrateCommand extends Command
 {
     protected static $defaultName = 'app:migrate';
 
-    protected static $defaultDescription = 'Migrate from old database to a new one.';
+    protected static string $defaultDescription = 'Migrate from old database to a new one.';
 
     private EntityManagerInterface $entityManager;
 
@@ -38,7 +35,7 @@ class MigrateCommand extends Command
         $this->entityManager = $entityManager;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setDescription(self::$defaultDescription)
@@ -137,7 +134,7 @@ class MigrateCommand extends Command
             $user = match ($originalUser["discr"]) {
                 "manager" => new Manager(),
                 "sales_person" => new SalesPerson(),
-                "customer" => new Customer(),
+                default => new Customer()
             };
             /** @var User $user */
             $user->setUsername($originalUser["username"]);
@@ -161,6 +158,7 @@ class MigrateCommand extends Command
                 }
                 $user->setClient($clients[$originalUser["company_id"]]);
             } else {
+                /** @var SalesPerson|Manager $user */
                 $user->setPhone("0100000000");
                 if (!isset($members[$originalUser["company_id"]])) {
                     $io->warning(sprintf("User %s:%s was not imported !", $originalUser["id"], $user->getFullName()));
