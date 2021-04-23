@@ -25,5 +25,4 @@ jobs:
           message: |
             Installation d'un nouvel environnement
             [https://key-privilege-${{ env.GITHUB_REF_SLUG }}.thomas-boileau.dev](https://key-privilege-${{ env.GITHUB_REF_SLUG }}.thomas-boileau.dev)
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
           repo-token-user-login: 'github-actions[bot]'

@@ -17,3 +17,8 @@ jobs:
           script: |
             cd ${{ secrets.SSH_DIRECTORY }}
             BRANCH=${{ env.GITHUB_REF_SLUG }} make deploy
+      - uses: mshick/add-pr-comment@v1
+        with:
+          message: |
+            Déploiement effectué avec succès !
+          repo-token-user-login: 'github-actions[bot]'
