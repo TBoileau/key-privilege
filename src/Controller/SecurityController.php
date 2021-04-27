@@ -71,15 +71,14 @@ class SecurityController extends AbstractController
                         ->htmlTemplate("emails/forgotten_password.html.twig")
                         ->context(["user" => $user])
                 );
+                $this->addFlash(
+                    "success",
+                    sprintf(
+                        "Un email a été envoyé à %s avec la procédure à suivre pour réinitialiser votre mot de passe",
+                        $user->getEmail()
+                    )
+                );
             }
-
-            $this->addFlash(
-                "success",
-                sprintf(
-                    "Un email a été envoyé à %s avec la procédure à suivre pour réinitialiser votre mot de passe",
-                    $user->getEmail()
-                )
-            );
 
             return $this->redirectToRoute("security_login");
         }
