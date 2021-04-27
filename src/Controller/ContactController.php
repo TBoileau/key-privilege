@@ -25,7 +25,6 @@ class ContactController extends AbstractController
         if ($this->isGranted("ROLE_USER")) {
             /** @var User $user */
             $user = $this->getUser();
-
             $contact->name = $user->getFullName();
             $contact->email = $user->getEmail();
         }

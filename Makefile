@@ -28,6 +28,7 @@ analyze:
 	php bin/phpcs
 	php bin/console lint:twig templates/
 	vendor/bin/twigcs templates/
+	vendor/bin/yaml-lint config/
 	php bin/console lint:xliff translations/
 	vendor/bin/phpcpd --exclude src/Controller/Admin/ src/
 	vendor/bin/phpmd src/ text .phpmd.xml

@@ -20,9 +20,3 @@ jobs:
             cd ${{ secrets.SSH_DIRECTORY }}
             BRANCH=${{ env.GITHUB_REF_SLUG }} make install
             BRANCH=${{ env.GITHUB_REF_SLUG }} DATABASE_USER=root DATABASE_PASSWORD=${{ secrets.DATABASE_ROOT_PASSWORD }} make --directory=${{ env.GITHUB_REF_SLUG }} install
-      - uses: mshick/add-pr-comment@v1
-        with:
-          message: |
-            Installation d'un nouvel environnement
-            [https://key-privilege-${{ env.GITHUB_REF_SLUG }}.thomas-boileau.dev](https://key-privilege-${{ env.GITHUB_REF_SLUG }}.thomas-boileau.dev)
-          repo-token-user-login: 'github-actions[bot]'
