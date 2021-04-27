@@ -14,11 +14,8 @@ class ForgottenPasswordType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add("username", TextType::class, [
-            "label" => "Identifiant :",
-            "constraints" => [new NotBlank()],
-            "label_attr" => [
-                "class" => "col-12 col-md-5 text-end col-form-label"
-            ]
+            "label" => "Identifiant",
+            "constraints" => [new NotBlank()]
         ]);
     }
 }
