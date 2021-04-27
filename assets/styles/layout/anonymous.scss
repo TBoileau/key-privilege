@@ -1,5 +1,6 @@
 body.anonymous {
   color: $white;
+  min-height: calc(100vh - 2rem);
 
   a {
     text-decoration: none;
@@ -29,9 +30,51 @@ body.anonymous {
       height: 490px;
       width: 348px;
 
-      @include media-breakpoint-down(md) {
+      @include media-breakpoint-down(xxl) {
+        height: 350px;
+        width: 248px;
+        bottom: 25px;
+        left: -150px;
+      }
+
+      @include media-breakpoint-down(lg) {
         display: none;
       }
+    }
+
+    > header > .logo-kp {
+      width: 176px;
+
+      @include media-breakpoint-down(xxl) {
+        width: 124px;
+      }
+    }
+
+    > footer {
+      > span {
+        font-weight: 300;
+        text-transform: uppercase;
+        display: block;
+        text-align: center;
+        font-size: 1.2rem;
+
+        @include media-breakpoint-down(xxl) {
+          font-size: 1rem;
+        }
+      }
+
+      > .logo-aa {
+        width: 90px;
+
+        @include media-breakpoint-down(xxl) {
+          width: 60px;
+        }
+      }
+    }
+
+    @include media-breakpoint-down(xxl) {
+      margin-top: 2rem;
+      padding: 1rem 4rem;
     }
 
     @include media-breakpoint-down(md) {

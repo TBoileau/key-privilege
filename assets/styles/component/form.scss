@@ -28,7 +28,7 @@
   + .form-group {
     margin-top: 2rem;
 
-    @include media-breakpoint-down(md) {
+    @include media-breakpoint-down(xxl) {
       margin-top: 1rem;
     }
   }
