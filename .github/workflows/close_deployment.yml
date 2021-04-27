@@ -18,5 +18,4 @@ jobs:
           port: 22
           script: |
             cd ${{ secrets.SSH_DIRECTORY }}
-            BRANCH=${{ env.GITHUB_REF_SLUG }} make install
-            BRANCH=${{ env.GITHUB_REF_SLUG }} DATABASE_USER=root DATABASE_PASSWORD=${{ secrets.DATABASE_ROOT_PASSWORD }} make --directory=${{ env.GITHUB_REF_SLUG }} install
+            BRANCH=${{ env.GITHUB_REF_SLUG }} make uninstall
