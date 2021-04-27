@@ -1,7 +1,7 @@
 name: Close Deployment
 on:
   pull_request:
-    types: [opened]
+    types: [closed]
 jobs:
   ci:
     name: Close
