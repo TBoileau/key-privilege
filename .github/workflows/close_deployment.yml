@@ -1,13 +1,15 @@
-name: Continuous Deployment
-on: [push]
+name: Prepare Deployment
+on:
+  pull_request:
+    types: [opened]
 jobs:
   ci:
-    name: Deploy
+    name: Prepare
     runs-on: ubuntu-latest
     steps:
       - name: Inject slug/short variables
         uses: rlespinasse/github-slug-action@v3.x
-      - name: Deploy from develop
+      - name: Prepare deployment
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -16,4 +18,5 @@ jobs:
           port: 22
           script: |
             cd ${{ secrets.SSH_DIRECTORY }}
-            BRANCH=${{ env.GITHUB_REF_SLUG }} make deploy
+            BRANCH=${{ env.GITHUB_REF_SLUG }} make install
+            BRANCH=${{ env.GITHUB_REF_SLUG }} DATABASE_USER=root DATABASE_PASSWORD=${{ secrets.DATABASE_ROOT_PASSWORD }} make --directory=${{ env.GITHUB_REF_SLUG }} install

@@ -6,22 +6,18 @@
         {% if error %}
             {{ include("components/alert.html.twig", {state: "danger", content: error.messageKey|trans(error.messageData, 'security')}) }}
         {% endif %}
-        <div class="row mb-3 align-content-center">
-            <label class="col-12 col-md-5 text-end col-form-label" for="email">Identifiant :</label>
-            <div class="col-12 col-md-7">
-                <input type="text" value="{{ last_username }}" name="username" id="username" class="form-control" required autofocus>
-            </div>
+        <div class="form-group">
+            <label for="email" class="form-label">Identifiant</label>
+            <input type="text" value="{{ last_username }}" name="username" id="username" class="form-control" required autofocus>
         </div>
-        <div class="row mb-4 align-content-center">
-            <label class="col-12 col-md-5 text-end col-form-label" for="password">Mot de passe :</label>
-            <div class="col-12 col-md-7">
-                <input type="password" name="password" id="password" class="form-control" required>
-            </div>
+        <div class="form-group">
+            <label for="password" class="form-label">Mot de passe</label>
+            <input type="password" name="password" id="password" class="form-control" required>
         </div>
-        <div class="text-center">
-            <button class="btn btn-danger d-block mx-auto mb-3" type="submit">Se connecter</button>
-            <a href="{{ path("security_forgotten_password") }}" class="d-inline-block mx-auto mb-1">Mot de passe oublié ?</a>
-            <a href="{{ path("contact") }}" class="d-inline-block mx-auto">Un problème ? Contactez-nous !</a>
+        <div class="text-center mt-4 mt-xxl-5">
+            <button class="btn btn-danger mb-4 d-block w-100" type="submit">Se connecter</button>
+            <a href="{{ path("security_forgotten_password") }}" class="d-block mx-auto mb-3 fw-bolder">Mot de passe oublié ?</a>
+            <a href="{{ path("contact") }}" class="d-block mx-auto fw-bolder">Un problème ? Contactez-nous !</a>
         </div>
     </form>
 {% endblock %}

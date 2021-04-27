@@ -13,3 +13,27 @@
     }
   }
 }
+
+.form-group {
+  .form-label {
+    margin-bottom: 0.75rem;
+    font-weight: 500;
+
+    @include media-breakpoint-down(md) {
+      margin-bottom: 0.5rem;
+      font-size: .875rem;
+    }
+  }
+
+  + .form-group {
+    margin-top: 2rem;
+
+    @include media-breakpoint-down(xxl) {
+      margin-top: 1rem;
+    }
+  }
+
+  .form-control {
+    padding: ($input-padding-y - .2rem) $input-padding-x;
+  }
+}

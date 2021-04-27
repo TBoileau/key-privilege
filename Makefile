@@ -1,3 +1,14 @@
+ifneq (,$(findstring feature-,$(BRANCH)))
+	TEMP_NAME=$(subst $(findstring feature-,$(BRANCH)),feature/,$(BRANCH))
+else
+	TEMP_NAME=$(BRANCH)
+endif
+ifneq (,$(findstring release-,$(TEMP_NAME)))
+	BRANCH_NAME=$(subst $(findstring release-,$(TEMP_NAME)),release/,$(TEMP_NAME))
+else
+	BRANCH_NAME=$(TEMP_NAME)
+endif
+
 unit-tests:
 	php bin/phpunit --testsuite unit
 
@@ -17,6 +28,7 @@ analyze:
 	php bin/phpcs
 	php bin/console lint:twig templates/
 	vendor/bin/twigcs templates/
+	vendor/bin/yaml-lint config/
 	php bin/console lint:xliff translations/
 	vendor/bin/phpcpd --exclude src/Controller/Admin/ src/
 	vendor/bin/phpmd src/ text .phpmd.xml
@@ -57,10 +69,12 @@ prepare-build:
 	npm run dev
 
 install:
+	cp .env.dist .env.local
+	sed -i -e 's/BRANCH/$(BRANCH)/' .env.local
+	sed -i -e 's/USER/$(DATABASE_USER)/' .env.local
+	sed -i -e 's/PASSWORD/$(DATABASE_PASSWORD)/' .env.local
 	composer install
 	npm install
-	cp .env.dist .env.dev.local
-	cp .env.dist .env.test.local
 .PHONY: install
 
 deploy:

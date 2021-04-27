@@ -1,5 +1,6 @@
 body.anonymous {
   color: $white;
+  min-height: calc(100vh - 2rem);
 
   a {
     text-decoration: none;
@@ -8,32 +9,80 @@ body.anonymous {
   }
 
   > .container-anonymous {
-    width: 700px;
-    max-width: 100%;
-    background-image: url(../../images/anonymous.png);
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: top center;
-
-    &:before {
-      content: "";
-      padding-top: 730px / 700px * 100%;
-      width: 1px;
-      margin-left: -1px;
-      float: left;
-      height: 0;
-      position: relative;
-      overflow: hidden;
-    }
+    width: 100%;
+    max-width: 700px;
+    box-shadow: 3px 3px 12px #00000029;
+    opacity: 1;
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    margin-top: 4rem;
+    padding: 2rem 8rem;
+    position: relative;
 
     &:after {
       content: "";
-      display: table;
-      clear: both;
+      background-image: url("../../images/Kassius_Key_AA_no_ombre.png");
+      background-size: cover;
+      background-repeat: no-repeat;
+      position: absolute;
+      bottom: -50px;
+      left: -200px;
+      height: 490px;
+      width: 348px;
+
+      @include media-breakpoint-down(xxl) {
+        height: 350px;
+        width: 248px;
+        bottom: 25px;
+        left: -150px;
+      }
+
+      @include media-breakpoint-down(lg) {
+        display: none;
+      }
     }
 
-    > * {
-      padding: calc(191px + 2rem) calc(150px + 2rem) 0;
+    > header > .logo-kp {
+      width: 176px;
+
+      @include media-breakpoint-down(xxl) {
+        width: 124px;
+      }
+    }
+
+    > footer {
+      > span {
+        font-weight: 300;
+        text-transform: uppercase;
+        display: block;
+        text-align: center;
+        font-size: 1.2rem;
+
+        @include media-breakpoint-down(xxl) {
+          font-size: 1rem;
+        }
+      }
+
+      > .logo-aa {
+        width: 90px;
+
+        @include media-breakpoint-down(xxl) {
+          width: 60px;
+        }
+      }
+    }
+
+    @include media-breakpoint-down(xxl) {
+      margin-top: 2rem;
+      padding: 1rem 4rem;
+    }
+
+    @include media-breakpoint-down(md) {
+      backdrop-filter: unset;
+      -webkit-backdrop-filter: unset;
+      box-shadow: unset;
+      margin-top: 1rem;
+      padding: 1rem 2rem;
     }
   }
 }
