@@ -15,7 +15,8 @@
     color: $light;
     text-decoration: none;
     font-weight: 500;
-
+    display: flex;
+    align-items: center;
 
     &:last-child {
       padding-right: 0;

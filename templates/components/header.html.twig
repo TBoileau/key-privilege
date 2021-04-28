@@ -6,16 +6,16 @@
             <div class="identity-name">
                 Bonjour <span>{{ app.user.fullName }}</span>
             </div>
-            <div class="identity-balance d-flex align-items-center">
+            <div class="identity-balance">
                 Vos clés :&nbsp;<span class="fw-bolder">{{ app.user.account.balance }}</span> <span class="icon icon-key icon-sm ms-2"></span>
             </div>
             {% if not is_granted('IS_IMPERSONATOR') %}
                 <a href="{{ path("security_logout") }}" class="identity-logout">
-                    Se déconnecter <span class="fas fa-times ms-2"></span>
+                    Se déconnecter <span class="icon icon-logout icon-sm ms-2"></span>
                 </a>
             {% else %}
                 <a href="{{ impersonation_exit_path(path('home')) }}" class="identity-logout">
-                    Retour à mon accès <span class="fas fa-times ms-2"></span>
+                    Retour à mon accès <span class="icon icon-logout icon-sm ms-2"></span>
                 </a>
             {% endif %}
         </div>
