@@ -1,15 +1,15 @@
-name: Prepare Deployment
+name: Close Deployment
 on:
   pull_request:
-    types: [opened]
+    types: [closed]
 jobs:
   ci:
-    name: Prepare
+    name: Close
     runs-on: ubuntu-latest
     steps:
       - name: Inject slug/short variables
         uses: rlespinasse/github-slug-action@v3.x
-      - name: Prepare deployment
+      - name: Close deployment
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SSH_HOST }}

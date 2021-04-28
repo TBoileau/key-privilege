@@ -1,7 +1,7 @@
 name: Prepare Deployment
 on:
   pull_request:
-    types: [closed]
+    types: [opened]
 jobs:
   ci:
     name: Prepare
