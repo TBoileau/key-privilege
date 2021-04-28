@@ -19,9 +19,6 @@ class ResetPasswordType extends AbstractType
             "constraints" => [
                 new Length(["min" => 8]),
                 new NotBlank()
-            ],
-            "label_attr" => [
-                "class" => "col-12 col-md-5 text-end col-form-label"
             ]
         ]);
     }

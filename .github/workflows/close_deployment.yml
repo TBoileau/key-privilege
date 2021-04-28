@@ -1,15 +1,15 @@
-name: Prepare Deployment
+name: Close Deployment
 on:
   pull_request:
-    types: [opened]
+    types: [closed]
 jobs:
   ci:
-    name: Prepare
+    name: Close
     runs-on: ubuntu-latest
     steps:
       - name: Inject slug/short variables
         uses: rlespinasse/github-slug-action@v3.x
-      - name: Prepare deployment
+      - name: Close deployment
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -18,5 +18,4 @@ jobs:
           port: 22
           script: |
             cd ${{ secrets.SSH_DIRECTORY }}
-            BRANCH=${{ env.GITHUB_REF_SLUG }} make install
-            BRANCH=${{ env.GITHUB_REF_SLUG }} DATABASE_USER=root DATABASE_PASSWORD=${{ secrets.DATABASE_ROOT_PASSWORD }} make --directory=${{ env.GITHUB_REF_SLUG }} install
+            BRANCH=${{ env.GITHUB_REF_SLUG }} make uninstall

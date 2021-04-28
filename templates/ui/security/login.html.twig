@@ -1,5 +1,7 @@
 {% extends 'layouts/anonymous.html.twig' %}
 
+{% block layout %}{{ parent() }} login{% endblock %}
+
 {% block content %}
     <form method="post" name="login">
         <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
