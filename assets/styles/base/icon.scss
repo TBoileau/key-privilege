@@ -1,5 +1,7 @@
 .icon {
   display: inline-block;
+  background-repeat: no-repeat;
+  background-size: cover;
 
   &-sm {
     width: .875rem;
@@ -17,8 +19,10 @@
   }
 
   &-key {
-    background-image: url(../../images/icon_key.png);
-    background-repeat: no-repeat;
-    background-size: cover;
+    background-image: url(../../images/cles_rouge.svg);
+  }
+
+  &-logout {
+    background-image: url(../../images/deconnexion_rouge.svg);
   }
 }
