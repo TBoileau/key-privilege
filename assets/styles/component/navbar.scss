@@ -1,6 +1,6 @@
 .navbar {
-  background: rgb(255,255,255);
-  background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(240,240,240,1) 75%, rgba(181,181,181,1) 100%);
+  background: rgb(255, 255, 255);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, rgba(240, 240, 240, 1) 75%, rgba(181, 181, 181, 1) 100%);
   padding: 0;
   height: 50px;
 
@@ -29,7 +29,8 @@
             color: $gray-600;
             font-weight: 500;
 
-            &.active, &[aria-expanded=true] {
+            &.active,
+            &[aria-expanded=true] {
               background: $danger;
               color: $white;
             }
@@ -40,6 +41,107 @@
                 width: 100%;
                 border-top-right-radius: 0;
                 border-top-left-radius: 0;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  @include media-breakpoint-down(lg) {
+    background: $danger;
+    z-index: 1000;
+    height: auto;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+
+    > .container {
+      padding: 0.5rem 0.5rem !important;
+
+      .navbar-brand {
+        margin: 0;
+        display: flex;
+        flex-grow: 1;
+        align-items: center;
+        justify-content: flex-end;
+
+        > .logo-aa {
+          height: 40px;
+        }
+
+        > .logo-kp {
+          height: 55px;
+          margin-right: 1rem;
+        }
+      }
+
+      .navbar-toggler:focus {
+        box-shadow: none;
+      }
+
+      .navbar-collapse {
+        position: fixed;
+        top: 0;
+        left: 0;
+        background: $danger;
+        background: linear-gradient(180deg, rgba($danger, 1) 0%, rgba(138, 16, 2, 1) 100%);
+        box-shadow: $box-shadow;
+        z-index: 10000;
+        color: $light;
+        overflow-y: auto;
+
+        &.show {
+          width: 200px;
+        }
+
+        &.collapsing {
+          transition: none;
+        }
+
+        > .navbar-nav {
+          justify-content: flex-start;
+          padding: 0 1rem;
+
+          > .nav-item {
+            flex-grow: 0;
+            margin-bottom: 1rem;
+            height: auto;
+
+            > .nav-link {
+              color: $light;
+              text-transform: none;
+              height: auto !important;
+              font-weight: bold;
+
+              &[aria-expanded=true] {
+                background: transparent;
+
+                + .dropdown-menu {
+                  border: none;
+                  background: transparent;
+
+                  > li {
+                    text-align: left;
+                    margin-bottom: 0.25rem;
+
+                    > .dropdown-item {
+                      color: $light;
+                      white-space: normal;
+
+                      &:focus {
+                        background: transparent;
+                        color: $light;
+                      }
+                    }
+
+                    > .dropdown-divider {
+                      display: none;
+                    }
+                  }
+                }
               }
             }
           }

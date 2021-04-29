@@ -26,6 +26,8 @@
     "devDependencies": {
         "@symfony/ux-dropzone": "file:vendor/symfony/ux-dropzone/Resources/assets",
         "eslint": "^7.23.0",
-        "eslint-config-google": "^0.14.0"
+        "eslint-config-google": "^0.14.0",
+        "stylelint": "^13.13.0",
+        "stylelint-config-standard": "^22.0.0"
     }
 }

@@ -3,6 +3,15 @@ import './bootstrap';
 import {Tooltip, Toast, Modal} from 'bootstrap';
 import noUiSlider from 'nouislider';
 
+document.querySelector('body').addEventListener('click', (e) => {
+  if (!document.querySelector('.navbar-collapse').contains(e.target)) {
+    e.preventDefault();
+    document.querySelector('.navbar-collapse')
+        .classList
+        .remove('show');
+  }
+});
+
 if (document.querySelector('body').classList.contains('purchase')) {
   const renderPaymentMethod = () => {
     if (document.getElementById('purchase_mode_0').checked) {

@@ -22,6 +22,7 @@ functional-tests:
 analyze:
 	npm audit
 	npx eslint assets/
+	npx stylelint "assets/styles/**/*.scss"
 	composer valid
 	composer unused --excludePackage=beberlei/doctrineextensions
 	php bin/console doctrine:schema:valid --skip-sync
