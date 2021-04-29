@@ -113,6 +113,7 @@
               color: $light;
               text-transform: none;
               height: auto !important;
+              font-weight: bold;
 
               &[aria-expanded=true] {
                 background: transparent;
@@ -122,7 +123,7 @@
                   background: transparent;
 
                   > li {
-                    text-align: center;
+                    text-align: left;
                     > .dropdown-item {
                       color: $light;
                       white-space: normal;
