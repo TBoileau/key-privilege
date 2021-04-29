@@ -1,7 +1,7 @@
 header {
   > div:first-child {
     height: calc(40px + 2rem);
-    padding: 1rem .75rem;
+    padding: 1rem 0.75rem;
     align-items: flex-start;
   }
 
@@ -11,27 +11,9 @@ header {
     }
   }
 
-
   @include media-breakpoint-down(lg) {
-    z-index: 1000;
-
-
-    .navbar {
-      background: $white;
-      .navbar-brand {
-        height: 50px;
-      }
-
-      height: auto;
-
-      .navbar-collapse {
-        margin-top: 1rem;
-        padding-top: .5rem;
-        border-top: 1px solid #dee2e6 !important;
-        .nav-item {
-          border-right: 0 !important;
-        }
-      }
+    ~ main {
+      margin-top: 100px !important;
     }
   }
 }

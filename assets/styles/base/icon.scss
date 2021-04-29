@@ -4,8 +4,8 @@
   background-size: cover;
 
   &-sm {
-    width: .875rem;
-    height: .875rem;
+    width: 0.875rem;
+    height: 0.875rem;
   }
 
   &-md {
@@ -20,6 +20,10 @@
 
   &-key {
     background-image: url(../../images/cles_rouge.svg);
+
+    &.text-light {
+      background-image: url(../../images/cles.svg);
+    }
   }
 
   &-logout {

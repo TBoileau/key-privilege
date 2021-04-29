@@ -2,7 +2,7 @@ body.login {
   > .container-anonymous {
     position: relative;
 
-    &:after {
+    &::after {
       content: "";
       background-image: url("../../images/Kassius_Key_AA_no_ombre.png");
       background-size: cover;

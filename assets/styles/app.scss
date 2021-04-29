@@ -1,25 +1,19 @@
 @import "abstract/variables";
-
 @import "vendor/roboto";
 @import "vendor/bootstrap";
 @import "vendor/fontawesome";
 @import "vendor/nouislider";
-
 @import "theme/default";
-
 @import "layout/anonymous";
 @import "layout/default";
 @import "layout/page";
-
 @import "base/icon";
-
 @import "component/form";
 @import "component/logo";
 @import "component/identity";
 @import "component/button";
 @import "component/pagination";
 @import "component/slider";
-@import "component/dropzone";
 @import "component/accordion";
 @import "component/toasts";
 @import "component/table";
@@ -30,6 +24,5 @@
 @import "component/footer";
 @import "component/section";
 @import "component/card";
-
 @import "page/shop";
 @import "page/login";
