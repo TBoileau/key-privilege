@@ -1,14 +1,18 @@
 .input-group-password {
-  input[type=password] + button > span.far:before {
+  input[type=password] + button > span.far::before {
     content: "\f06e";
   }
-  input[type=text] + button > span.far:before {
+
+  input[type=text] + button > span.far::before {
     content: "\f070";
   }
+
   button {
     border: 1px solid $input-border-color;
 
-    &:hover, &:active, &:focus {
+    &:hover,
+    &:active,
+    &:focus {
       border: 1px solid $input-border-color;
     }
   }
@@ -21,7 +25,7 @@
 
     @include media-breakpoint-down(md) {
       margin-bottom: 0.5rem;
-      font-size: .875rem;
+      font-size: 0.875rem;
     }
   }
 
@@ -34,6 +38,6 @@
   }
 
   .form-control {
-    padding: ($input-padding-y - .2rem) $input-padding-x;
+    padding: ($input-padding-y - 0.2rem) $input-padding-x;
   }
 }

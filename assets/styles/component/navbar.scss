@@ -1,6 +1,6 @@
 .navbar {
-  background: rgb(255,255,255);
-  background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(240,240,240,1) 75%, rgba(181,181,181,1) 100%);
+  background: rgb(255, 255, 255);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, rgba(240, 240, 240, 1) 75%, rgba(181, 181, 181, 1) 100%);
   padding: 0;
   height: 50px;
 
@@ -29,7 +29,8 @@
             color: $gray-600;
             font-weight: 500;
 
-            &.active, &[aria-expanded=true] {
+            &.active,
+            &[aria-expanded=true] {
               background: $danger;
               color: $white;
             }
@@ -58,7 +59,7 @@
     width: 100%;
 
     > .container {
-      padding: .5rem .5rem !important;
+      padding: 0.5rem 0.5rem !important;
 
       .navbar-brand {
         margin: 0;
@@ -86,7 +87,7 @@
         top: 0;
         left: 0;
         background: $danger;
-        background: linear-gradient(180deg, rgba($danger,1) 0%, rgba(138,16,2,1) 100%);
+        background: linear-gradient(180deg, rgba($danger, 1) 0%, rgba(138, 16, 2, 1) 100%);
         box-shadow: $box-shadow;
         z-index: 10000;
         color: $light;
@@ -124,10 +125,18 @@
 
                   > li {
                     text-align: left;
+                    margin-bottom: .25rem;
+
                     > .dropdown-item {
                       color: $light;
                       white-space: normal;
+
+                      &:focus {
+                        background: transparent;
+                        color: $light;
+                      }
                     }
+
                     > .dropdown-divider {
                       display: none;
                     }

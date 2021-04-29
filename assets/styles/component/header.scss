@@ -1,7 +1,7 @@
 header {
   > div:first-child {
     height: calc(40px + 2rem);
-    padding: 1rem .75rem;
+    padding: 1rem 0.75rem;
     align-items: flex-start;
   }
 
@@ -11,9 +11,8 @@ header {
     }
   }
 
-
   @include media-breakpoint-down(lg) {
-    + main {
+    ~ main {
       margin-top: 100px !important;
     }
   }
