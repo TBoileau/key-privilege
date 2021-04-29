@@ -8,7 +8,10 @@
     <div class="row">
         <div class="col-12">
             <section class="section">
-                <h1 class="section-header">Mon compte</h1>
+                <h1 class="section-header">
+                    <span class="icon icon-xl icon-profile me-2"></span>
+                    Mon compte
+                </h1>
                 <div class="section-body">
                     <div class="row align-items-stretch">
                         <div class="col-12 col-lg-4">
@@ -48,11 +51,8 @@
                                     </div>
                                 </div>
                                 <div class="card-footer text-end p-0 d-flex">
-                                    <a href="{{ path("account_edit_personal_informations") }}" class="btn d-block btn-outline-primary rounded-0 border-0 w-50 d-flex align-items-center justify-content-center">
+                                    <a href="{{ path("account_edit_personal_informations") }}" class="btn d-block btn-outline-primary rounded-0 border-0 w-100 d-flex align-items-center justify-content-center">
                                         Modifier mes informations personnelles
-                                    </a>
-                                    <a href="{{ path("contact") }}" class="btn d-block btn-outline-danger rounded-0 border-0 w-50 d-flex align-items-center justify-content-center">
-                                        Signaler une erreur
                                     </a>
                                 </div>
                             </div>
@@ -133,6 +133,12 @@
                                         {% endfor %}
                                     </ul>
                                 {% endif %}
+
+                                <div class="card-footer text-end p-0 d-flex">
+                                    <a href="{{ path("contact") }}" class="btn d-block btn-outline-danger rounded-0 border-0 w-100 d-flex align-items-center justify-content-center">
+                                        Signaler une erreur
+                                    </a>
+                                </div>
                             </div>
                         </div>
                         <div class="col-12 col-lg-4">

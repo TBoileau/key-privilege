@@ -12,8 +12,9 @@
         <div class="col-12">
             <section class="section">
                 <h1 class="section-header">
+                    <span class="icon icon-xl icon-company me-2"></span>
                     Gestion des sociétés ({{ clients|length }})
-                    <a href="{{ path("client_company_create") }}" class="btn btn-primary">Créer une nouvelle société</a>
+{#                    <a href="{{ path("client_company_create") }}" class="btn btn-primary">Créer une nouvelle société</a>#}
                 </h1>
                 <div class="section-body">
                     {{ form_start(form, {attr: {method: "GET", action: path("client_company_list", {page: 1})}}) }}

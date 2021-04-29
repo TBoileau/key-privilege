@@ -3,7 +3,7 @@
 {% block breadcrumb %}
     {{ include("components/breadcrumb.html.twig", {items: [
         {route: "order_index", label: "Commandes"},
-        {route: "order_detail", routeParams: {id: order.id}, label: "Détail"}
+        {route: "order_detail", routeParams: {id: order.id}, label: "Commande N°" ~ order.reference}
     ]}) }}
 {% endblock %}
 
@@ -11,7 +11,10 @@
     <div class="row">
         <div class="col-12">
             <section class="section">
-                <h1 class="section-header">Commandes</h1>
+                <h1 class="section-header">
+                    <span class="icon icon-xl icon-cart me-2"></span>
+                    Commande N°{{ order.reference }}
+                </h1>
                 <div class="section-body">
                     <div class="row">
                         <div class="col-12 col-md-4">

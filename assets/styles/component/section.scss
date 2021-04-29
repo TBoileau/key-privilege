@@ -1,12 +1,13 @@
 .section {
   > .section-header {
     font-weight: 400;
-    background: $black;
+    background: $danger;
+    background: linear-gradient(90deg, rgba($danger, 1) 0%, $dark-danger 100%);
     color: $white;
     text-transform: uppercase;
-    padding: 0.5rem 1rem;
+    padding: 1rem 2rem;
     margin: 0;
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: space-between;
   }

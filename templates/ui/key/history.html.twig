@@ -12,8 +12,8 @@
         <div class="col-12">
             <section class="section">
                 <h1 class="section-header">
-                    Compte clés
-                    <a href="{{ path("key_export", {id: account.id}) }}" class="btn btn-primary">Exporter</a>
+                    <span class="icon icon-xl icon-key me-2"></span>
+                    Historique
                 </h1>
                 <div class="section-body">
                     <div class="row">
@@ -99,6 +99,9 @@
                                             {% endfor %}
                                         </tbody>
                                     </table>
+                                </div>
+                                <div class="card-footer p-0 d-flex">
+                                    <a href="{{ path("key_export", {id: account.id}) }}" class="btn d-block w-100 btn-outline-primary rounded-0 border-0">Exporter</a>
                                 </div>
                             </div>
                         </div>

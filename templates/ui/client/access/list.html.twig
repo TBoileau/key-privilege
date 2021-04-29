@@ -12,11 +12,12 @@
         <div class="col-12">
             <section class="section">
                 <h1 class="section-header">
+                    <span class="icon icon-xl icon-access me-2"></span>
                     Gestion des accès ({{ customers|length }})
-                    {% if is_granted("ROLE_CLIENT_ACCESS_CREATE") %}
-                        <a href="{{ path("client_access_create") }}" class="btn btn-primary">Créer un nouvel accès</a>
-                    {% endif %}
                 </h1>
+{#                {% if is_granted("ROLE_CLIENT_ACCESS_CREATE") %}#}
+{#                    <a href="{{ path("client_access_create") }}" class="btn btn-primary">Créer un nouvel accès</a>#}
+{#                {% endif %}#}
                 <div class="section-body">
                     {{ form_start(form, {attr: {method: "GET", action: path("client_access_list", {page: 1})}}) }}
                         <div class="card mb-3">
