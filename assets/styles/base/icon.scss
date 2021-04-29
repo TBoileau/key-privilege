@@ -20,6 +20,10 @@
 
   &-key {
     background-image: url(../../images/cles_rouge.svg);
+
+    &.text-light {
+      background-image: url(../../images/cles.svg);
+    }
   }
 
   &-logout {
