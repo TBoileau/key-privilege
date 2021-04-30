@@ -12,6 +12,7 @@ use App\Repository\Company\ClientRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -31,9 +32,14 @@ class AccessType extends AbstractType
         }
 
         $builder
-            ->add("manualDelivery", CheckboxType::class, [
+            ->add("manualDelivery", ChoiceType::class, [
+                "expanded" => true,
                 "label" => "Autoriser le client à saisir manuellement son adresse de livraison",
-                "required" => false
+                "required" => true,
+                "choices" => [
+                    "J'autorise mon client à renseigner son adresse de livraison" => 1,
+                    "Je reçois les lots de mes clients pour leur remettre" => 0
+                ]
             ])
             ->add("firstName", TextType::class, [
                 "label" => "Prénom :",
@@ -44,7 +50,7 @@ class AccessType extends AbstractType
                 "empty_data" => ""
             ])
             ->add("email", EmailType::class, [
-                "label" => "Adresse email (= identifiant de votre client) :",
+                "label" => "Adresse email :",
                 "empty_data" => ""
             ])
             ->add("client", EntityType::class, $clientOptions + [

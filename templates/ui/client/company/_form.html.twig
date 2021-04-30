@@ -3,38 +3,40 @@
     {% if form.member is defined or form.salesPerson is defined %}
         <div class="row mb-3">
             {% if form.member is defined %}
-                <div class="col-6">
+                <div class="col-12 col-md-6">
                     {{ form_row(form.member) }}
                 </div>
             {% endif %}
             {% if form.salesPerson is defined %}
-                <div class="col-6">
+                <div class="col-12 col-md-6">
                     {{ form_row(form.salesPerson) }}
                 </div>
             {% endif %}
         </div>
     {% endif %}
     <div class="row mb-3">
-        <div class="col-6">
+        <div class="col-12 col-md-6">
             {{ form_row(form.name) }}
         </div>
-        <div class="col-6">
+        <div class="col-12 col-md-6">
             {{ form_row(form.companyNumber) }}
         </div>
     </div>
     <div class="row mb-3">
-        <div class="col-6">
+        <div class="col-12">
             {{ form_row(form.address.streetAddress) }}
         </div>
-        <div class="col-6">
+    </div>
+    <div class="row mb-3">
+        <div class="col-12">
             {{ form_row(form.address.restAddress) }}
         </div>
     </div>
     <div class="row">
-        <div class="col-6">
+        <div class="col-12 col-md-6">
             {{ form_row(form.address.zipCode) }}
         </div>
-        <div class="col-6">
+        <div class="col-12 col-md-6">
             {{ form_row(form.address.locality) }}
         </div>
     </div>

@@ -30,7 +30,7 @@
                     {{ form_end(form) }}
                     <div class="card">
                         <h2 class="card-header">Liste des accès</h2>
-                        <div class="card-body p-0">
+                        <div class="card-body table-responsive p-0">
                             <table class="table table-hover mb-0" data-role="accessList">
                                 <thead>
                                     <tr>
@@ -61,7 +61,7 @@
                                             <td class="text-center">
                                                 <div class="dropdown">
                                                     <button class="btn btn-sm btn-primary dropdown-toggle" type="button" id="dropdown-{{ customer.id }}" data-bs-toggle="dropdown" aria-expanded="false">
-                                                        Actions
+                                                        <span class="fas fa-cogs"></span>
                                                     </button>
                                                     <ul class="dropdown-menu" aria-labelledby="dropdown-{{ customer.id }}">
                                                         {% if is_granted("suspend", customer) %}
