@@ -2,8 +2,7 @@
 
 {% block breadcrumb %}
     {{ include("components/breadcrumb.html.twig", {items: [
-        {route: "account_index", label: "Mon compte"},
-        {route: "member_access_list", label: "Gestion des accès adhérent"}
+        {route: "member_access_list", label: "Gestion des accès de mon entreprise"}
     ]}) }}
 {% endblock %}
 
@@ -13,7 +12,7 @@
             <section class="section">
                 <h1 class="section-header">
                     <span class="icon icon-xl icon-access me-2"></span>
-                    Gestion des accès adhérents ({{ employees|length }})
+                    Gestion des accès de mon entreprise ({{ employees|length }})
 {#                    <div class="dropdown">#}
 {#                        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdown-create" data-bs-toggle="dropdown" aria-expanded="false">#}
 {#                            Créer un nouvel accès#}

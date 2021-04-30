@@ -2,8 +2,7 @@
 
 {% block breadcrumb %}
     {{ include("components/breadcrumb.html.twig", {items: [
-        {route: "account_index", label: "Mon compte"},
-        {route: "member_access_list", label: "Gestion des accès adhérent adhérent adhérent"},
+        {route: "member_access_list", label: "Gestion des accès de mon entreprise"},
         {route: "member_access_delete", routeParams: {id: user.id}, label: "Supprimer un accès"}
     ]}) }}
 {% endblock %}

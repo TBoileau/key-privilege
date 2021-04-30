@@ -3,7 +3,7 @@
 {% block breadcrumb %}
     {{ include("components/breadcrumb.html.twig", {items: [
         {label: "Gestion des clients"},
-        {route: "client_company_list", label: "Gestion des sociétés"}
+        {route: "client_company_list", label: "Gestion des sociétés cliente"}
     ]}) }}
 {% endblock %}
 
@@ -13,7 +13,7 @@
             <section class="section">
                 <h1 class="section-header">
                     <span class="icon icon-xl icon-company me-2"></span>
-                    Gestion des sociétés ({{ clients|length }})
+                    Gestion des sociétés cliente ({{ clients|length }})
 {#                    <a href="{{ path("client_company_create") }}" class="btn btn-primary">Créer une nouvelle société</a>#}
                 </h1>
                 <div class="section-body">

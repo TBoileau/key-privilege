@@ -38,7 +38,7 @@ class AccessType extends AbstractType
                 "required" => true,
                 "choices" => [
                     "J'autorise mon client à renseigner son adresse de livraison" => 1,
-                    "Je reçois les lots de mes clients pour leur remettre" => 0
+                    "Je reçois les lots de mes clients pour les leur remettre" => 0
                 ]
             ])
             ->add("firstName", TextType::class, [

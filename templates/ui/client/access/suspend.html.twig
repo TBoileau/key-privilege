@@ -3,8 +3,8 @@
 {% block breadcrumb %}
     {{ include("components/breadcrumb.html.twig", {items: [
         {label: "Gestion des clients"},
-        {route: "client_access_list", label: "Gestion des accès"},
-        {route: "client_access_suspend", routeParams: {id: customer.id}, label: "Suspendre un accès"}
+        {route: "client_access_list", label: "Gestion des accès client"},
+        {route: "client_access_suspend", routeParams: {id: customer.id}, label: "Suspendre un accès client"}
     ]}) }}
 {% endblock %}
 
@@ -15,7 +15,7 @@
             <section class="section">
                 <h1 class="section-header">
                     <span class="icon icon-xl icon-access me-2"></span>
-                    Suspendre un accès
+                    Suspendre un accès client
                 </h1>
                 <div class="section-body">
                     <div class="row justify-content-center">

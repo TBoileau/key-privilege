@@ -3,7 +3,7 @@
 {% block breadcrumb %}
     {{ include("components/breadcrumb.html.twig", {items: [
         {label: "Gestion des clients"},
-        {route: "client_access_list", label: "Gestion des accès"}
+        {route: "client_access_list", label: "Gestion des accès client"}
     ]}) }}
 {% endblock %}
 
@@ -13,7 +13,7 @@
             <section class="section">
                 <h1 class="section-header">
                     <span class="icon icon-xl icon-access me-2"></span>
-                    Gestion des accès ({{ customers|length }})
+                    Gestion des accès client ({{ customers|length }})
                 </h1>
 {#                {% if is_granted("ROLE_CLIENT_ACCESS_CREATE") %}#}
 {#                    <a href="{{ path("client_access_create") }}" class="btn btn-primary">Créer un nouvel accès</a>#}

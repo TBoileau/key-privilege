@@ -3,8 +3,8 @@
 {% block breadcrumb %}
     {{ include("components/breadcrumb.html.twig", {items: [
         {label: "Gestion des clients"},
-        {route: "client_company_list", label: "Gestion des sociétés"},
-        {route: "client_company_create", label: "Créer une société"}
+        {route: "client_company_list", label: "Gestion des sociétés cliente"},
+        {route: "client_company_create", label: "Créer une société cliente"}
     ]}) }}
 {% endblock %}
 
@@ -14,7 +14,7 @@
             <section class="section">
                 <h1 class="section-header">
                     <span class="icon icon-xl icon-company me-2"></span>
-                    Créer une société
+                    Créer une société cliente
                 </h1>
                 <div class="section-body">
                     <div class="row justify-content-center">
