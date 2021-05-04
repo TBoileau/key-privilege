@@ -3,6 +3,7 @@ on: [push]
 jobs:
   ci:
     name: Continuous Integration
+    runs-on: ${{ matrix.operating-system }}
     strategy:
       fail-fast: false
       matrix:
