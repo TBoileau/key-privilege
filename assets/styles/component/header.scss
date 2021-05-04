@@ -10,10 +10,4 @@ header {
       padding-left: 303px;
     }
   }
-
-  @include media-breakpoint-down(lg) {
-    ~ main {
-      margin-top: 100px !important;
-    }
-  }
 }

@@ -2,9 +2,13 @@ body.default {
   color: $dark;
 
   > main {
-    min-height: calc(100vh - 221px - 2rem);
+    min-height: calc(100vh - 222px - 2rem);
     margin-top: 1rem;
     margin-bottom: 1rem;
+
+    @include media-breakpoint-down(lg) {
+      min-height: calc(100vh - 147.1px);
+    }
   }
 
   > footer {

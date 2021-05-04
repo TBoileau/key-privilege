@@ -5,7 +5,7 @@
 {% block body %}
     {{ include("components/header.html.twig") }}
     {% block breadcrumb %}{% endblock %}
-    <main class="{{ containerClass|default('container') }}">
+    <main class="{% block main_class %}container{% endblock %}">
         {% block content %}{% endblock %}
     </main>
     {{ include("components/footer.html.twig") }}

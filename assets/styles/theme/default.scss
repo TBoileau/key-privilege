@@ -6,6 +6,7 @@ body {
   min-height: 100vh;
 
   @include media-breakpoint-down(md) {
+    min-height: unset;
     background-image: url(../../images/fond_mobile_logo.jpg);
   }
 
