@@ -3,7 +3,7 @@
 {% block breadcrumb %}
     {{ include("components/breadcrumb.html.twig", {items: [
         {label: "Gestion des clients"},
-        {route: "client_access_list", label: "Gestion des accès"}
+        {route: "client_access_list", label: "Gestion des accès client"}
     ]}) }}
 {% endblock %}
 
@@ -12,11 +12,12 @@
         <div class="col-12">
             <section class="section">
                 <h1 class="section-header">
-                    Gestion des accès ({{ customers|length }})
-                    {% if is_granted("ROLE_CLIENT_ACCESS_CREATE") %}
-                        <a href="{{ path("client_access_create") }}" class="btn btn-primary">Créer un nouvel accès</a>
-                    {% endif %}
+                    <span class="icon icon-xl icon-access me-2"></span>
+                    Gestion des accès client ({{ customers|length }})
                 </h1>
+{#                {% if is_granted("ROLE_CLIENT_ACCESS_CREATE") %}#}
+{#                    <a href="{{ path("client_access_create") }}" class="btn btn-primary">Créer un nouvel accès</a>#}
+{#                {% endif %}#}
                 <div class="section-body">
                     {{ form_start(form, {attr: {method: "GET", action: path("client_access_list", {page: 1})}}) }}
                         <div class="card mb-3">
@@ -29,7 +30,7 @@
                     {{ form_end(form) }}
                     <div class="card">
                         <h2 class="card-header">Liste des accès</h2>
-                        <div class="card-body p-0">
+                        <div class="card-body table-responsive p-0">
                             <table class="table table-hover mb-0" data-role="accessList">
                                 <thead>
                                     <tr>
@@ -60,7 +61,7 @@
                                             <td class="text-center">
                                                 <div class="dropdown">
                                                     <button class="btn btn-sm btn-primary dropdown-toggle" type="button" id="dropdown-{{ customer.id }}" data-bs-toggle="dropdown" aria-expanded="false">
-                                                        Actions
+                                                        <span class="fas fa-cogs"></span>
                                                     </button>
                                                     <ul class="dropdown-menu" aria-labelledby="dropdown-{{ customer.id }}">
                                                         {% if is_granted("suspend", customer) %}

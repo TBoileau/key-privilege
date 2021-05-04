@@ -3,7 +3,7 @@
 {% block breadcrumb %}
     {{ include("components/breadcrumb.html.twig", {items: [
         {label: "Gestion des clients"},
-        {route: "client_company_list", label: "Gestion des sociétés"}
+        {route: "client_company_list", label: "Gestion des sociétés cliente"}
     ]}) }}
 {% endblock %}
 
@@ -12,8 +12,9 @@
         <div class="col-12">
             <section class="section">
                 <h1 class="section-header">
-                    Gestion des sociétés ({{ clients|length }})
-                    <a href="{{ path("client_company_create") }}" class="btn btn-primary">Créer une nouvelle société</a>
+                    <span class="icon icon-xl icon-company me-2"></span>
+                    Gestion des sociétés cliente ({{ clients|length }})
+{#                    <a href="{{ path("client_company_create") }}" class="btn btn-primary">Créer une nouvelle société</a>#}
                 </h1>
                 <div class="section-body">
                     {{ form_start(form, {attr: {method: "GET", action: path("client_company_list", {page: 1})}}) }}
@@ -27,7 +28,7 @@
                     {{ form_end(form) }}
                     <div class="card">
                         <h2 class="card-header">Liste des sociétés</h2>
-                        <div class="card-body p-0">
+                        <div class="card-body table-responsive p-0">
                             <table class="table table-hover mb-0" data-role="accessList">
                                 <thead>
                                     <tr>
@@ -50,7 +51,7 @@
                                             <td class="text-center">
                                                 <div class="dropdown">
                                                     <button class="btn btn-sm btn-primary dropdown-toggle" type="button" id="dropdown-{{ client.id }}" data-bs-toggle="dropdown" aria-expanded="false">
-                                                        Actions
+                                                        <span class="fas fa-cogs"></span>
                                                     </button>
                                                     <ul class="dropdown-menu" aria-labelledby="dropdown-{{ client.id }}">
                                                         {% if is_granted("update", client) %}

@@ -8,7 +8,10 @@
     <div class="row">
         <div class="col-12">
             <section class="section">
-                <h1 class="section-header">Compte clés</h1>
+                <h1 class="section-header">
+                    <span class="icon icon-xl icon-key me-2"></span>
+                    Compte clés
+                </h1>
                 <div class="section-body">
                     <div class="row justify-content-center align-items-stretch">
                         <div class="col-12 col-sm-6 col-lg-4 mb-4 mb-lg-0">
@@ -65,16 +68,16 @@
                                     <a href="{{ path("key_purchase") }}" class="btn w-100 d-block btn-primary mb-3">Acheter des clés</a>
                                 {% endif %}
                                 {% if is_granted("ROLE_KEY_TRANSFER") %}
-                                    <a href="{{ path("key_transfer") }}" class="btn w-100 d-block btn-primary mb-3">Transférer des clés</a>
+                                    <a href="{{ path("key_transfer") }}" class="btn w-100 d-block btn-primary">Transférer des clés</a>
                                 {% endif %}
                             </div>
                         </div>
                     </div>
+                    {% if is_granted("ROLE_MANAGER") or is_granted("ROLE_SALES_PERSON") %}
+                        {{ render(path('key_clients')) }}
+                    {% endif %}
                 </div>
             </section>
-            {% if is_granted("ROLE_MANAGER") or is_granted("ROLE_SALES_PERSON") %}
-                {{ render(path('key_clients')) }}
-            {% endif %}
         </div>
     </div>
 {% endblock %}

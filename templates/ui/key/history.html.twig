@@ -12,15 +12,15 @@
         <div class="col-12">
             <section class="section">
                 <h1 class="section-header">
-                    Compte clés
-                    <a href="{{ path("key_export", {id: account.id}) }}" class="btn btn-primary">Exporter</a>
+                    <span class="icon icon-xl icon-key me-2"></span>
+                    Historique
                 </h1>
                 <div class="section-body">
                     <div class="row">
                         <div class="col-12 col-lg-6 mb-4 mb-lg-0">
                             <div class="card mb-4">
                                 <h2 class="card-header">Suivi des dates d'expiration de vos clés</h2>
-                                <div class="card-body p-0">
+                                <div class="card-body table-responsive p-0">
                                     <table class="table table-hover mb-0" data-role="accessList">
                                         <thead>
                                         <tr>
@@ -47,7 +47,7 @@
                             </div>
                             <div class="card">
                                 <h2 class="card-header">Suivi des clés expirés</h2>
-                                <div class="card-body p-0">
+                                <div class="card-body table-responsive p-0">
                                     <table class="table table-hover mb-0" data-role="accessList">
                                         <thead>
                                         <tr>
@@ -76,7 +76,7 @@
                         <div class="col-12 col-lg-6 mb-4 mb-lg-0">
                             <div class="card">
                                 <h2 class="card-header">Suivi de vos mouvements de clés</h2>
-                                <div class="card-body p-0">
+                                <div class="card-body table-responsive p-0">
                                     <table class="table table-hover mb-0" data-role="accessList">
                                         <thead>
                                             <tr>
@@ -99,6 +99,9 @@
                                             {% endfor %}
                                         </tbody>
                                     </table>
+                                </div>
+                                <div class="card-footer p-0 d-flex">
+                                    <a href="{{ path("key_export", {id: account.id}) }}" class="btn d-block w-100 btn-outline-primary rounded-0 border-0">Exporter</a>
                                 </div>
                             </div>
                         </div>

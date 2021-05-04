@@ -13,27 +13,29 @@
     <div class="row">
         <div class="col-12">
             <section class="section">
-                <h1 class="section-header">Compte clés</h1>
+                <h1 class="section-header">
+                    <span class="icon icon-xl icon-key me-2"></span>
+                    Acheter des clés
+                </h1>
                 <div class="section-body">
                     <div class="row justify-content-center">
-                        <div class="col-12 col-lg-8">
+                        <div class="col-12 col-lg-10 col-xl-8">
                             {{ form_start(form) }}
                             <div class="card h-100">
-                                <h2 class="card-header">Acheter des clés</h2>
                                 <div class="card-body">
                                     {{ form_errors(form) }}
                                     <div class="row mb-3">
-                                        <div class="col-6">
+                                        <div class="col-12 col-md-6">
                                             {{ form_row(form.points) }}
                                         </div>
                                         {% if form.account is defined %}
-                                            <div class="col-6">
+                                            <div class="col-12 col-md-6 mt-3 mb-mt-0">
                                                 {{ form_row(form.account) }}
                                             </div>
                                         {% endif %}
                                     </div>
                                     <div class="row">
-                                        <div class="col-6">
+                                        <div class="col-12 col-md-6 mb-3 mb-md-0">
                                             {{ form_row(form.mode) }}
                                             <div id="check" class="mt-3 d-none">
                                                 <strong>Chèque à l'ordre de :</strong> SARL Les Ateliers du R.O.I.
@@ -56,7 +58,7 @@
                                                 <strong>BIC :</strong> CCBPFRPPVER
                                             </div>
                                         </div>
-                                        <div class="col-6">
+                                        <div class="col-12 col-md-6">
                                             {{ form_row(form.internReference) }}
                                         </div>
                                     </div>

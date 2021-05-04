@@ -4,7 +4,10 @@ import {Tooltip, Toast, Modal} from 'bootstrap';
 import noUiSlider from 'nouislider';
 
 document.querySelector('body').addEventListener('click', (e) => {
-  if (!document.querySelector('.navbar-collapse').contains(e.target)) {
+  if (
+    !document.querySelector('.navbar-collapse').contains(e.target) &&
+    document.querySelector('.navbar-collapse').classList.contains('show')
+  ) {
     e.preventDefault();
     document.querySelector('.navbar-collapse')
         .classList
