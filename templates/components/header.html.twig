@@ -4,10 +4,10 @@
         <img src="{{ asset("build/images/logo_key_privilege.svg") }}" alt="Key Privilege" class="logo-kp">
         <div class="identity">
             <div class="identity-name">
-                Bonjour <span>{{ app.user.fullName }}</span>
+                Bonjour&nbsp;<span>{{ app.user.fullName }}</span>
             </div>
             <div class="identity-balance">
-                Vos clés :&nbsp;<span class="fw-bolder">{{ app.user.account.balance }}</span> <span class="icon icon-key icon-sm ms-2"></span>
+                Vos clés :&nbsp;<span class="fw-bolder">{{ app.user.account.balance }}</span> <span class="icon icon-key text-danger icon-sm ms-2"></span>
             </div>
             {% if not is_granted('IS_IMPERSONATOR') %}
                 <a href="{{ path("security_logout") }}" class="identity-logout">

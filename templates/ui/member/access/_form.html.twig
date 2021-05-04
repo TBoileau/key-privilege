@@ -2,24 +2,24 @@
     {{ form_errors(form) }}
     <div class="row mb-3">
         {% if form.member is defined %}
-            <div class="col-6">
+            <div class="col-12 col-md-6">
                 {{ form_row(form.member) }}
             </div>
         {% endif %}
     </div>
     <div class="row mb-3">
-        <div class="col-6">
+        <div class="col-12 col-md-6 mb-3 mb-md-0">
             {{ form_row(form.email) }}
         </div>
-        <div class="col-6">
+        <div class="col-12 col-md-6">
             {{ form_row(form.phone) }}
         </div>
     </div>
     <div class="row">
-        <div class="col-6">
+        <div class="col-12 col-md-6 mb-3 mb-md-0">
             {{ form_row(form.firstName) }}
         </div>
-        <div class="col-6">
+        <div class="col-12 col-md-6">
             {{ form_row(form.lastName) }}
         </div>
     </div>

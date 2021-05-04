@@ -87,7 +87,7 @@
         top: 0;
         left: 0;
         background: $danger;
-        background: linear-gradient(180deg, rgba($danger, 1) 0%, rgba(138, 16, 2, 1) 100%);
+        background: linear-gradient(180deg, rgba($danger, 1) 0%, $dark-danger 100%);
         box-shadow: $box-shadow;
         z-index: 10000;
         color: $light;

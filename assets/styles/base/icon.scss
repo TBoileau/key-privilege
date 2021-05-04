@@ -18,12 +18,37 @@
     height: 1.125rem;
   }
 
-  &-key {
-    background-image: url(../../images/cles_rouge.svg);
+  &-xl {
+    width: 1.75rem;
+    height: 1.75rem;
+  }
 
-    &.text-light {
-      background-image: url(../../images/cles.svg);
+  &-key {
+    background-image: url(../../images/cles.svg);
+
+    &.text-danger {
+      background-image: url(../../images/cles_rouge.svg);
     }
+  }
+
+  &-access {
+    background-image: url(../../images/acces.svg);
+  }
+
+  &-faq {
+    background-image: url(../../images/faq_reglement.svg);
+  }
+
+  &-cart {
+    background-image: url(../../images/cart.svg);
+  }
+
+  &-company {
+    background-image: url(../../images/societe.svg);
+  }
+
+  &-profile {
+    background-image: url(../../images/profil.svg);
   }
 
   &-logout {
