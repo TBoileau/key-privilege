@@ -6,4 +6,12 @@
       }
     }
   }
+
+  .carousel-indicators {
+    > * {
+      border-radius: 50%;
+      height: .5rem;
+      width: .5rem;
+    }
+  }
 }

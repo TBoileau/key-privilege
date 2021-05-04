@@ -5,9 +5,7 @@ body.home {
     }
 
     > .container-fluid {
-      @include media-breakpoint-down(lg) {
-        padding: 0 !important;
-      }
+      padding: 0 !important;
     }
   }
 }

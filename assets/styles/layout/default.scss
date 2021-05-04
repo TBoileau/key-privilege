@@ -3,7 +3,6 @@ body.default {
 
   > main {
     min-height: calc(100vh - 222px - 2rem);
-    margin-top: 1rem;
     margin-bottom: 1rem;
 
     @include media-breakpoint-down(lg) {
