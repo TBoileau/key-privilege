@@ -1,0 +1,11 @@
+body.home {
+  > main {
+    @include media-breakpoint-down(lg) {
+      margin-top: 81.5px !important;
+    }
+
+    > .container-fluid {
+      padding: 0 !important;
+    }
+  }
+}
