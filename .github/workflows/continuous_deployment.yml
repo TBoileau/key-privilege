@@ -1,7 +1,7 @@
 name: Continuous Deployment
 on: [push]
 jobs:
-  ci:
+  cd:
     name: Deploy
     runs-on: ubuntu-latest
     steps:

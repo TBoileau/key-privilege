@@ -4,3 +4,6 @@ parameters:
         console_application_loader: build/console.php
     doctrine:
         objectManagerLoader: build/doctrine.php
+    level: 7
+    paths:
+        - src

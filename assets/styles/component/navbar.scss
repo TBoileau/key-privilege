@@ -93,6 +93,26 @@
         color: $light;
         overflow-y: auto;
 
+        &::-webkit-scrollbar {
+          width: 5px;
+          height: 5px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+          background: $list-group-border-color;
+          border-radius: 5px;
+        }
+
+        &::-webkit-scrollbar-track {
+          background: transparent;
+          border-radius: 5px;
+          box-shadow: inset 7px 10px 12px transparent;
+        }
+
+        &::-webkit-scrollbar-thumb:hover {
+          background: transparent;
+        }
+
         &.show {
           width: 200px;
         }
@@ -131,7 +151,8 @@
                       color: $light;
                       white-space: normal;
 
-                      &:focus {
+                      &:focus,
+                      &:hover {
                         background: transparent;
                         color: $light;
                       }
