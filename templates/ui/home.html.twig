@@ -11,11 +11,21 @@
                 <div id="carousel-home" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-indicators">
                         <button type="button" data-bs-target="#carousel-home" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                        <button type="button" data-bs-target="#carousel-home" data-bs-slide-to="1" aria-current="true" aria-label="Slide 2"></button>
+                        <button type="button" data-bs-target="#carousel-home" data-bs-slide-to="2" aria-current="true" aria-label="Slide 3"></button>
                     </div>
                     <div class="carousel-inner">
                         <div class="carousel-item active">
                             <img src="{{ asset("build/images/visuel_carrousel_desktop.jpg") }}" class="d-none d-lg-block w-100" />
                             <img src="{{ asset("build/images/visuel_carrousel_mobile.jpg") }}" class="d-block d-lg-none w-100" />
+                        </div>
+                        <div class="carousel-item">
+                            <img src="{{ asset("build/images/carrousel2.jpg") }}" class="d-none d-lg-block w-100" />
+                            <img src="{{ asset("build/images/carrousel2_mobile.jpg") }}" class="d-block d-lg-none w-100" />
+                        </div>
+                        <div class="carousel-item">
+                            <img src="{{ asset("build/images/carrousel3_mobile.jpg") }}" class="d-none d-lg-block w-100" />
+                            <img src="{{ asset("build/images/carrousel3.jpg") }}" class="d-block d-lg-none w-100" />
                         </div>
                     </div>
                 </div>
