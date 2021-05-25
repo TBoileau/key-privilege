@@ -62,16 +62,18 @@
                                 </div>
                             </div>
                         {% endif %}
-                        <div class="col-12 col-sm-6 col-lg-4 mb-4 mb-lg-0">
-                            <div class="h-100 d-flex flex-column align-items-center justify-content-around">
-                                {% if is_granted("ROLE_KEY_PURCHASE") %}
-                                    <a href="{{ path("key_purchase") }}" class="btn w-100 d-block btn-primary mb-3">Acheter des clés</a>
-                                {% endif %}
-                                {% if is_granted("ROLE_KEY_TRANSFER") %}
-                                    <a href="{{ path("key_transfer") }}" class="btn w-100 d-block btn-primary">Transférer des clés</a>
-                                {% endif %}
+                        {% if is_granted("ROLE_KEY_PURCHASE") or is_granted("ROLE_KEY_TRANSFER") %}
+                            <div class="col-12 col-sm-6 col-lg-4 mb-4 mb-lg-0">
+                                <div class="h-100 d-flex flex-column align-items-center justify-content-around">
+                                    {% if is_granted("ROLE_KEY_PURCHASE") %}
+                                        <a href="{{ path("key_purchase") }}" class="btn w-100 d-block btn-primary mb-3">Acheter des clés</a>
+                                    {% endif %}
+                                    {% if is_granted("ROLE_KEY_TRANSFER") %}
+                                        <a href="{{ path("key_transfer") }}" class="btn w-100 d-block btn-primary">Transférer des clés</a>
+                                    {% endif %}
+                                </div>
                             </div>
-                        </div>
+                        {% endif %}
                     </div>
                     {% if is_granted("ROLE_MANAGER") or is_granted("ROLE_SALES_PERSON") %}
                         {{ render(path('key_clients')) }}
