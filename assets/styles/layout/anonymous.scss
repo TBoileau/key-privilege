@@ -1,6 +1,6 @@
 body.anonymous {
   color: $white;
-  min-height: calc(100vh - 2rem);
+  min-height: calc(100vh - 4rem);
 
   a {
     text-decoration: none;
@@ -60,5 +60,13 @@ body.anonymous {
       margin-top: 1rem;
       padding: 1rem 2rem;
     }
+  }
+
+  @include media-breakpoint-down(xxl) {
+    min-height: calc(100vh - 2rem);
+  }
+
+  @include media-breakpoint-down(md) {
+    min-height: calc(100vh - 1rem);
   }
 }
