@@ -102,7 +102,7 @@ class LoginTest extends WebTestCase
 
         $this->assertRouteSame("security_login");
 
-        $this->assertSelectorTextContains("form[name=login] > .alert-danger", "Votre compte a été suspendu.");
+        $this->assertSelectorTextContains("form[name=login] > .alert-danger", "Identifiants invalides.");
     }
 
     public function testIfLoginFailedWhenEmailDoesNotExist(): void
