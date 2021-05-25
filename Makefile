@@ -20,7 +20,7 @@ functional-tests:
 
 .PHONY: vendor
 analyze:
-	npm audit
+	npm audit --production
 	npx eslint assets/
 	npx stylelint "assets/styles/**/*.scss"
 	composer valid
