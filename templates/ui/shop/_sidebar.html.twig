@@ -40,23 +40,33 @@
                 {{ form_end(form) }}
             </li>
             {% for u in universes %}
-                <li class="nav-item">
-                    <a class="nav-link" data-bs-toggle="collapse" href="#universe-{{ u.id }}" role="button" aria-expanded="{{ not form.vars.submitted and universe is not null and universe == u ? "true" : "false" }}" aria-controls="universe-{{ u.id }}">{{ u.name }}</a>
-                    <ul class="nav flex-column collapse {{ not form.vars.submitted and universe is not null and universe == u ? "show" }}" id="universe-{{ u.id }}" data-bs-parent="#universes">
-                        {% for c in u.categories %}
-                            <li class="nav-item">
-                                <a class="nav-link" data-bs-toggle="collapse" href="#category-{{ c.id }}" role="button" aria-expanded="{{ not form.vars.submitted and category is not null and category.parent == c and universe is not null and universe == u ? "true" : "false" }}" aria-controls="category-{{ c.id }}">{{ c.name }}</a>
-                                <ul class="nav flex-column collapse {{ not form.vars.submitted and category is not null and category.parent == c and universe is not null and universe == u ? "show" }}" id="category-{{ c.id }}" data-bs-parent="#universe-{{ u.id }}">
-                                    {% for child in c.children %}
-                                        <li class="nav-item">
-                                            <a href="{{ path("shop_index", {page: 1, category: child.slug, universe: u.slug}) }}" class="nav-link {{ category == child ? "active" }}">{{ child.name }}</a>
-                                        </li>
-                                    {% endfor %}
-                                </ul>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                </li>
+                {% if u.numberOfProducts > 0 %}
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="collapse" href="#universe-{{ u.id }}" role="button" aria-expanded="{{ not form.vars.submitted and universe is not null and universe == u ? "true" : "false" }}" aria-controls="universe-{{ u.id }}">{{ u.name }}</a>
+                        <ul class="nav flex-column collapse {{ not form.vars.submitted and universe is not null and universe == u ? "show" }}" id="universe-{{ u.id }}" data-bs-parent="#universes">
+                            {% for c in u.categories %}
+                                {% if c.numberOfProducts > 0 %}
+                                    <li class="nav-item">
+                                        {% if c.children|length > 0 %}
+                                            <a class="nav-link" data-bs-toggle="collapse" href="#category-{{ c.id }}" role="button" aria-expanded="{{ not form.vars.submitted and category is not null and category.parent == c and universe is not null and universe == u ? "true" : "false" }}" aria-controls="category-{{ c.id }}">{{ c.name }} ({{ c.numberOfProducts }})</a>
+                                            <ul class="nav flex-column collapse {{ not form.vars.submitted and category is not null and category.parent == c and universe is not null and universe == u ? "show" }}" id="category-{{ c.id }}" data-bs-parent="#universe-{{ u.id }}">
+                                                {% for child in c.children %}
+                                                    {% if child.numberOfProducts > 0 %}
+                                                        <li class="nav-item">
+                                                            <a href="{{ path("shop_index", {page: 1, category: child.slug, universe: u.slug}) }}" class="nav-link {{ category == child ? "active" }}">{{ child.name }} ({{ child.numberOfProducts }})</a>
+                                                        </li>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </ul>
+                                        {% else %}
+                                            <a href="{{ path("shop_index", {page: 1, category: c.slug, universe: u.slug}) }}" class="nav-link {{ category == c ? "active" }}">{{ c.name }} ({{ c.numberOfProducts }})</a>
+                                        {% endif %}
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </li>
+                {% endif %}
             {% endfor %}
         </ul>
     </nav>

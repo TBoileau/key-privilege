@@ -78,6 +78,11 @@ class Category
      */
     private ?Product $lastProduct = null;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private int $numberOfProducts = 0;
+
     public function __construct()
     {
         $this->children = new ArrayCollection();
@@ -196,6 +201,17 @@ class Category
     public function setLastProduct(?Product $lastProduct): self
     {
         $this->lastProduct = $lastProduct;
+        return $this;
+    }
+
+    public function getNumberOfProducts(): int
+    {
+        return $this->numberOfProducts;
+    }
+
+    public function setNumberOfProducts(int $numberOfProducts): self
+    {
+        $this->numberOfProducts = $numberOfProducts;
         return $this;
     }
 }

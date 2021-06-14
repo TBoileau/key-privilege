@@ -10,6 +10,8 @@ use App\Entity\Shop\Product;
 use App\Entity\Shop\Universe;
 use DateTimeImmutable;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 
@@ -48,6 +50,7 @@ class ShopFixtures extends Fixture
             $manager->persist($category = (new Category())
                 ->setId($this->categoryId)
                 ->setParent($parent)
+                ->setNumberOfProducts(10)
                 ->setName(sprintf("Catégorie %d", $this->categoryId)));
             $this->categoryId++;
 
@@ -55,6 +58,7 @@ class ShopFixtures extends Fixture
                 $manager->persist($subCategory = (new Category())
                     ->setId($this->categoryId)
                     ->setParent($category)
+                    ->setNumberOfProducts(10)
                     ->setName(sprintf("Catégorie %d", $this->categoryId)));
                 $this->categories[] = $subCategory;
                 $this->categoryId++;
@@ -71,6 +75,9 @@ class ShopFixtures extends Fixture
         }
     }
 
+    /**
+     * @param EntityManagerInterface $manager
+     */
     public function load(ObjectManager $manager): void
     {
         $this->createUniverses($manager);
@@ -81,6 +88,7 @@ class ShopFixtures extends Fixture
             $manager->persist($categoryLevel1 = (new Category())
                 ->setId($this->categoryId)
                 ->setParent($category)
+                ->setNumberOfProducts(10)
                 ->setName(sprintf("Catégorie %d", $this->categoryId)));
             $this->categoryId++;
 

@@ -88,8 +88,10 @@ class ProductRepository extends ServiceEntityRepository
 
         if ($category !== null) {
             $queryBuilder
-                ->andWhere("p.category = :category")
-                ->setParameter("category", $category);
+                ->andWhere("c.left >= :left")
+                ->andWhere("c.right <= :right")
+                ->setParameter("left", $category->getLeft())
+                ->setParameter("right", $category->getRight());
         }
 
         if ($filter->brand !== null) {
