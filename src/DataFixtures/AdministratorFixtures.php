@@ -6,9 +6,10 @@ namespace App\DataFixtures;
 
 use App\Entity\Administrator;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class AdministratorFixtures extends Fixture
+class AdministratorFixtures extends Fixture implements FixtureGroupInterface
 {
     public function load(ObjectManager $manager): void
     {
@@ -19,5 +20,10 @@ class AdministratorFixtures extends Fixture
         $admin->setLastName("Doe");
         $manager->persist($admin);
         $manager->flush();
+    }
+
+    public static function getGroups(): array
+    {
+        return ['prod'];
     }
 }
