@@ -183,12 +183,6 @@
     "laminas/laminas-code": {
         "version": "4.0.0"
     },
-    "laminas/laminas-eventmanager": {
-        "version": "3.3.0"
-    },
-    "laminas/laminas-zendframework-bridge": {
-        "version": "1.1.1"
-    },
     "league/csv": {
         "version": "9.7.1"
     },
