@@ -1,0 +1,40 @@
+parameters:
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        bind:
+            $mailerSender: '%env(MAILER_SENDER)%'
+            string $uploadDir: 'uploads'
+            string $publicDir: '%kernel.project_dir%/public'
+            string $tempDir: '%kernel.cache_dir%'
+
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+            - '../src/Tests/'
+
+    App\Controller\:
+        resource: '../src/Controller/'
+        tags: ['controller.service_arguments']
+
+    App\EventListener\RequestListener:
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onRequest }
+
+    App\EntityListener\:
+        resource: '../src/EntityListener/'
+        tags: ['doctrine.orm.entity_listener']
+
+    App\Zendesk\Wrapper\ZendeskWrapperInterface: '@App\Zendesk\Wrapper\ZendeskWrapper'
+
+    App\Mailer\StopHitTransportFactory:
+        tags: ['mailer.transport_factory']
+        autowire: true
+
+    App\Mailer\SpotHitApiTransport:
+        factory: ['App\Mailer\StopHitTransportFactory', 'create']

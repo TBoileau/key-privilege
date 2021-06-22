@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="128px" preserveAspectRatio="none" style="width:423px;height:128px;" version="1.1" viewBox="0 0 423 128" width="423px" zoomAndPan="magnify"><defs><filter height="300%" id="fekx3tej3hh8u" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="2.0"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><rect fill="#FEFECE" filter="url(#fekx3tej3hh8u)" height="33.9688" style="stroke: #A80036; stroke-width: 1.5;" width="166" x="118" y="10"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="146" x="128" y="31.1387">Page d'authentification</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="201" x2="201" y1="43.9688" y2="63.9688"/><line style="stroke: #A80036; stroke-width: 1.5;" x1="90.5" x2="90.5" y1="63.9688" y2="83.9688"/><rect fill="#FEFECE" filter="url(#fekx3tej3hh8u)" height="33.9688" style="stroke: #A80036; stroke-width: 1.5;" width="161" x="10" y="83.9688"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="141" x="20" y="105.1074">Oubli de mot de passe</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="301.5" x2="301.5" y1="63.9688" y2="83.9688"/><rect fill="#FEFECE" filter="url(#fekx3tej3hh8u)" height="33.9688" style="stroke: #A80036; stroke-width: 1.5;" width="221" x="191" y="83.9688"/><text fill="#000000" font-family="sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="201" x="201" y="105.1074">Réinitialisation du mot de passe</text><line style="stroke: #A80036; stroke-width: 1.5;" x1="90.5" x2="301.5" y1="63.9688" y2="63.9688"/><!--MD5=[6ed6a17de66bd996f17088efcaa8380e]
+@startwbs
++ Page d'authentification
+++ Oubli de mot de passe
+++ Réinitialisation du mot de passe
+@endwbs
+
+PlantUML version 1.2019.12(Sun Nov 03 10:24:54 UTC 2019)
+(GPL source distribution)
+Java Runtime: Java(TM) SE Runtime Environment
+JVM: Java HotSpot(TM) 64-Bit Server VM
+Java Version: 1.7.0_25-b15
+Operating System: Linux
+Default Encoding: UTF-8
+Language: en
+Country: US
+--></g></svg>

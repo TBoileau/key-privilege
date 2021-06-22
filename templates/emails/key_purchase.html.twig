@@ -1,0 +1,11 @@
+{% extends 'layouts/email.html.twig' %}
+
+{% block body %}
+    Clés : {{ purchase.points }}
+    <br/>
+    Compte clés : {{ purchase.account|u.toString }}
+    <br/>
+    Mode de paiement : {{ purchase.mode }}
+    <br/>
+    Référence interne : {{ purchase.internReference }}
+{% endblock %}

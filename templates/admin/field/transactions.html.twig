@@ -1,0 +1,47 @@
+<div class="card">
+    <div class="card-header">Liste des transactions</div>
+    <table class="table table-bordered bg-white mb-0">
+        <thead>
+            <tr>
+                <th class="text-center">Compte points</th>
+                <th class="text-center">Portefeuille</th>
+                <th class="text-center">Date</th>
+                <th class="text-center">Opérations</th>
+                <th class="text-center">Points</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for transaction in field.value %}
+                <tr>
+                    <td class="text-center">
+                        {% set url = ea_url().setDashboard('App\\Controller\\Admin\\DashboardController').setController('App\\Controller\\Admin\\AccountCrudController').setAction('detail').setEntityId(transaction.account.id) %}
+                        <a href="{{ url }}">
+                            {{ transaction.account|u.toString }}
+                        </a>
+                    </td>
+                    <td class="text-center">
+                        {% set url = ea_url().setDashboard('App\\Controller\\Admin\\DashboardController').setController('App\\Controller\\Admin\\WalletCrudController').setAction('detail').setEntityId(transaction.wallet.id) %}
+                        <a href="{{ url }}">
+                            {{ "%08d"|format(transaction.wallet.id) }}
+                        </a>
+                    </td>
+                    <td class="text-center">{{ transaction.createdAt|date("d/m/Y H:i") }}</td>
+                    <td class="text-center">
+                        {% set url = ea_url().setDashboard('App\\Controller\\Admin\\DashboardController').setController('App\\Controller\\Admin\\TransactionCrudController').setAction('detail').setEntityId(transaction.id) %}
+                        <a href="{{ url }}">
+                            {{ transaction.type }}
+                            {% if constant("OPERATION", transaction) == "ACH" %}
+                                - {{ transaction.mode }}
+                            {% endif %}
+                        </a>
+                    </td>
+                    <td class="text-center">{{ transaction.points }}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td class="text-center" colspan="5">Aucun résultat</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

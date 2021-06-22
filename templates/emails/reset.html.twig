@@ -1,0 +1,6 @@
+{% extends 'layouts/email.html.twig' %}
+
+{% block body %}
+    Mot de passe : {{ password }}
+    <a href="{{ absolute_url(path("security_login")) }}">Clique ici</a>
+{% endblock %}

@@ -1,0 +1,76 @@
+{% extends "layouts/page.html.twig" %}
+
+{% block breadcrumb %}
+    {{ include("components/breadcrumb.html.twig", {items: [{route: "order_index", label: "Commandes"}]}) }}
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-12">
+            <section class="section">
+                <h1 class="section-header">
+                    <span class="icon icon-xl icon-cart me-2"></span>
+                    Commandes
+                </h1>
+                <div class="section-body">
+                    <div class="card">
+                        <h2 class="card-header">Liste des commandes</h2>
+                        <div class="card-body table-responsive p-0">
+                            <table class="table table-hover mb-0" data-role="accessList">
+                                <thead>
+                                <tr>
+                                    <th class="text-center">Référence</th>
+                                    <th class="text-center">Date</th>
+                                    <th class="text-center">Nombre de produits</th>
+                                    <th class="text-center">Total (clés)</th>
+                                    <th class="text-center">Statut</th>
+                                    <th class="text-center">Détail</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for order in orders %}
+                                    {% if order.state != "cart" %}
+                                        <tr>
+                                            <td class="text-center">{{ order.reference }}</td>
+                                            <td class="text-center">{{ order.createdAt|date("d/m/Y H:i") }}</td>
+                                            <td class="text-center">{{ order.numberOfProducts }}</td>
+                                            <td class="text-center">{{ order.total }} clés</td>
+                                            <td class="text-center">
+                                                {% if order.state == "pending" %}
+                                                    <span class="badge bg-primary">En cours de traitement</span>
+                                                {% elseif order.state == "on_delivery" %}
+                                                    <span class="badge bg-info">En cours d'acheminement</span>
+                                                {% elseif order.state == "delivered" %}
+                                                    <span class="badge bg-success">Livrée</span>
+                                                {% elseif order.state == "canceled" %}
+                                                    <span class="badge bg-warning">Annulé</span>
+                                                {% else %}
+                                                    <span class="badge bg-danger">Incident de livraison</span>
+                                                {% endif %}
+                                            </td>
+                                            <td class="text-center">
+                                                <a href="{{ path("order_detail", {id: order.id}) }}" class="btn btn-primary btn-sm">
+                                                    <span class="fas fa-eye"></span>
+                                                    <span class="sr-only">Détail</span>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    {% endif %}
+                                {% else %}
+                                    <tr>
+                                        <td class="text-center" colspan="8">Aucun résultat</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    {% if is_granted("ROLE_MANAGER") or is_granted("ROLE_SALES_PERSON") %}
+                        {{ render(path('order_clients')) }}
+                    {% endif %}
+                </div>
+            </section>
+        </div>
+    </div>
+{% endblock %}
+

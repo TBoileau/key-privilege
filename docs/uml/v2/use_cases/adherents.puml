@@ -1,0 +1,16 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+actor Groupement
+database Database
+database Mailer
+rectangle "Gestion des adhérents" {
+    Groupement -- (Liste des adhérents)
+    (Liste des adhérents) -- Database
+    (Créer un adhérent) .> (Liste des adhérents) : extends
+    (Modifier un adhérent) .> (Liste des adhérents) : extends
+    (Créer un adhérent) -- Mailer
+    (Fiche adhérent) .> (Liste des adhérents) : extends
+    (Suspendre tous les accès) .> (Liste des adhérents) : extends
+}
+@enduml

@@ -1,0 +1,16 @@
+body {
+  background-image: url(../../images/texture_fond_logo.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  min-height: 100vh;
+
+  @include media-breakpoint-down(md) {
+    min-height: unset;
+    background-image: url(../../images/fond_mobile_logo.jpg);
+  }
+
+  a {
+    color: $dark;
+  }
+}

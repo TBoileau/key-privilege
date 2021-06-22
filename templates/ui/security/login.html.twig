@@ -1,0 +1,25 @@
+{% extends 'layouts/anonymous.html.twig' %}
+
+{% block layout %}{{ parent() }} login{% endblock %}
+
+{% block content %}
+    <form method="post" name="login">
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+        {% if error %}
+            {{ include("components/alert.html.twig", {state: "danger", content: error.messageKey|trans(error.messageData, 'security')}) }}
+        {% endif %}
+        <div class="form-group">
+            <label for="email" class="form-label">Identifiant</label>
+            <input type="text" value="{{ last_username }}" name="username" id="username" class="form-control" required autofocus>
+        </div>
+        <div class="form-group">
+            <label for="password" class="form-label">Mot de passe</label>
+            <input type="password" name="password" id="password" class="form-control" required>
+        </div>
+        <div class="text-center mt-4 mt-xxl-5">
+            <button class="btn btn-danger mb-4 d-block w-100" type="submit">Se connecter</button>
+            <a href="{{ path("security_forgotten_password") }}" class="d-block mx-auto mb-3 fw-bolder">Mot de passe oublié ?</a>
+            <a href="{{ path("contact") }}" class="d-block mx-auto fw-bolder">Un problème ? Contactez-nous !</a>
+        </div>
+    </form>
+{% endblock %}

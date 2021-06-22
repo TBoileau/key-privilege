@@ -1,0 +1,16 @@
+{% set cruds = {
+    "App\\Entity\\User\\Customer": {crud: 'App\\Controller\\Admin\\CustomerCrudController', type: "user"},
+    "App\\Entity\\User\\Collaborator": {crud: 'App\\Controller\\Admin\\CollaboratorCrudController', type: "user"},
+    "App\\Entity\\User\\SalesPerson": {crud: 'App\\Controller\\Admin\\SalesPersonCrudController', type: "user"},
+    "App\\Entity\\User\\Manager": {crud: 'App\\Controller\\Admin\\ManagerCrudController', type: "user"},
+    "App\\Entity\\Company\\Organization": {crud: 'App\\Controller\\Admin\\OrganizationCrudController', type: "company"},
+    "App\\Entity\\Company\\Member": {crud: 'App\\Controller\\Admin\\MemberCrudController', type: "company"},
+    "App\\Entity\\Company\\Client": {crud: 'App\\Controller\\Admin\\ClientCrudController', type: "company"}
+} %}
+
+{% set url = ea_url().setDashboard('App\\Controller\\Admin\\DashboardController').setController(cruds[field.value|class].crud).setAction('detail').setEntityId(field.value.id) %}
+<a href="{{ url }}">
+    {{ field.value|u.toString }}
+</a>
+
+

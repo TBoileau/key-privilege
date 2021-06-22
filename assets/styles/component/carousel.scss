@@ -1,0 +1,17 @@
+.carousel {
+  .carousel-inner {
+    .carousel-item {
+      > img {
+        width: 100%;
+      }
+    }
+  }
+
+  .carousel-indicators {
+    > * {
+      border-radius: 50%;
+      height: 0.5rem;
+      width: 0.5rem;
+    }
+  }
+}

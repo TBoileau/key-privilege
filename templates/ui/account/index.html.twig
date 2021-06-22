@@ -1,0 +1,175 @@
+{% extends "layouts/page.html.twig" %}
+
+{% block breadcrumb %}
+    {{ include("components/breadcrumb.html.twig", {items: [{route: "account_index", label: "Mon compte"}]}) }}
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-12">
+            <section class="section">
+                <h1 class="section-header">
+                    <span class="icon icon-xl icon-profile me-2"></span>
+                    Mon compte
+                </h1>
+                <div class="section-body">
+                    <div class="row align-items-stretch">
+                        <div class="col-12 col-lg-4">
+                            <div class="card h-100">
+                                <h2 class="card-header">Informations personnelles</h2>
+                                <div class="card-body flex-grow-1">
+                                    <div class="row mb-3">
+                                        <div class="col-5 text-end">Prénom :</div>
+                                        <div class="col-7 fw-bold" data-role="firstName">{{ app.user.firstName }}</div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-5 text-end">Nom :</div>
+                                        <div class="col-7 fw-bold" data-role="lastName">{{ app.user.lastName }}</div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-5 text-end">Email :</div>
+                                        <div class="col-7 fw-bold" data-role="email">{{ app.user.email }}</div>
+                                    </div>
+                                    {% if is_granted("ROLE_EMPLOYEE") %}
+                                        <div class="row mb-3">
+                                            <div class="col-5 text-end">Téléphone :</div>
+                                            <div class="col-7 fw-bold" data-role="phone">{{ app.user.phone }}</div>
+                                        </div>
+                                    {% endif %}
+                                    <div class="row mb-3">
+                                        <div class="col-5 text-end">Inscription :</div>
+                                        <div class="col-7 fw-bold">{{ app.user.registeredAt|format_date(pattern="dd MMMM Y", locale='fr') }}</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-5 text-end">Mot de passe :</div>
+                                        <div class="col-7 fw-bold d-flex justify-content-between">
+                                            *********
+                                            <a href="{{ path("account_edit_password") }}" class="ml-2">
+                                                <span class="fas fa-edit"></span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer text-end p-0 d-flex">
+                                    <a href="{{ path("account_edit_personal_informations") }}" class="btn d-block btn-outline-primary rounded-0 border-0 w-100 d-flex align-items-center justify-content-center">
+                                        Modifier mes informations personnelles
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-4">
+                            <div class="card h-100">
+                                <h2 class="card-header">Mon profil Key Privilege</h2>
+                                <div class="card-body flex-grow-1">
+                                    {% if is_granted("ROLE_CUSTOMER") %}
+                                        <div class="row mb-3">
+                                            <div class="col-5 text-end">Raison sociale :</div>
+                                            <div class="col-7 fw-bold">{{ app.user.client.name }}</div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-5 text-end">Adhérent :</div>
+                                            <div class="col-7 fw-bold">{{ app.user.client.member.name }}</div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-5 text-end">Commercial :</div>
+                                            <div class="col-7 fw-bold">{{ app.user.client.salesPerson.fullName }}</div>
+                                        </div>
+                                    {% endif %}
+                                    {% if is_granted("ROLE_COLLABORATOR") %}
+                                        <div class="row mb-3">
+                                            <div class="col-5 text-end">Adhérent :</div>
+                                            <div class="col-7 fw-bold">{{ app.user.member.name }}</div>
+                                        </div>
+                                    {% endif %}
+                                    {% if is_granted("ROLE_SALES_PERSON") %}
+                                        <div class="row mb-3">
+                                            <div class="col-5 text-end">Adhérent :</div>
+                                            <div class="col-7 fw-bold">{{ app.user.member.name }}</div>
+                                        </div>
+                                    {% endif %}
+                                    {% if is_granted("ROLE_MANAGER") and app.user.members|length == 1 %}
+                                        <div class="row mb-3">
+                                            <div class="col-5 text-end">Adhérent :</div>
+                                            <div class="col-7 fw-bold">{{ app.user.member.name }}</div>
+                                        </div>
+                                    {% endif %}
+                                    {% if is_granted("ROLE_MANAGER") and app.user.members|length > 1 %}
+                                        <div class="row mb-3">
+                                            <div class="col-5 text-end">Adhérent principal :</div>
+                                            <div class="col-7 fw-bold">{{ app.user.member.name }}</div>
+                                        </div>
+                                    {% endif %}
+                                    {% if is_granted("ROLE_CUSTOMER") %}
+                                        <div class="row">
+                                            <div class="col-5 text-end">Adresse :</div>
+                                            <div class="col-7 fw-bold">
+                                                {{ app.user.client.address.streetAddress }}
+                                                {% if app.user.client.address.restAddress is not null %}
+                                                    <br/>{{ app.user.client.address.restAddress }}
+                                                {% endif %}
+                                                <br/>{{ app.user.client.address.zipCode }} - {{ app.user.client.address.locality }}
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                    {% if not is_granted("ROLE_CUSTOMER") and app.user.member.address is not null %}
+                                        <div class="row">
+                                            <div class="col-5 text-end">Adresse :</div>
+                                            <div class="col-7 fw-bold">
+                                                {{ app.user.member.address.streetAddress }}
+                                                {% if app.user.member.address.restAddress is not null %}
+                                                    <br/>{{ app.user.member.address.restAddress }}
+                                                {% endif %}
+                                                <br/>{{ app.user.member.address.zipCode }} - {{ app.user.member.address.locality }}
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                </div>
+
+                                {% if is_granted("ROLE_MANAGER") and app.user.members|length > 1 %}
+                                    <h2 class="card-header">Adhérents</h2>
+                                    <ul class="list-group list-group-flush flex-grow-1" data-role="members">
+                                        {% for member in app.user.members %}
+                                            <li class="list-group-item">{{ member.name }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
+
+                                <div class="card-footer text-end p-0 d-flex">
+                                    <a href="{{ path("contact") }}" class="btn d-block btn-outline-danger rounded-0 border-0 w-100 d-flex align-items-center justify-content-center">
+                                        Signaler une erreur
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-4">
+                            <div class="card h-100">
+                                <h2 class="card-header">Règlement</h2>
+                                <div class="list-group list-group-flush flex-grow-1" data-role="rules">
+                                    {% for rules_agreement in app.user.rulesAgreements %}
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#modal-rules-{{ rules_agreement.rules.id }}" class="list-group-item d-flex flex-column">
+                                            <span class="fw-bold">Règlement publié le {{ rules_agreement.rules.publishedAt|format_date(pattern="dd MMMM Y", locale='fr') }}</span>
+                                            <span class="text-muted">{{ rules_agreement.accepted ? "Accepté" : "Refusé" }} le {{ rules_agreement.agreedAt|format_date(pattern="dd MMMM Y", locale='fr') }}</span>
+                                        </a>
+                                        <div class="modal fade" id="modal-rules-{{ rules_agreement.rules.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-xl">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Règlement publié le {{ rules_agreement.rules.publishedAt|format_date(pattern="dd MMMM Y", locale='fr') }}</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        {{ rules_agreement.rules.content|raw }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends 'layouts/base.html.twig' %}
+
+{% block layout %}{{ parent() }} page{% endblock %}
+
+{% block body %}
+    {{ include("components/header.html.twig") }}
+    {% block breadcrumb %}{% endblock %}
+    <main class="{% block main_class %}container{% endblock %}">
+        {% block content %}{% endblock %}
+    </main>
+    {{ include("components/footer.html.twig") }}
+{% endblock %}

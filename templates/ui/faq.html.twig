@@ -1,0 +1,39 @@
+{% extends 'layouts/page.html.twig' %}
+
+{% block breadcrumb %}
+    {{ include("components/breadcrumb.html.twig", {items: [{route: "faq", label: "FAQ & Règlement"}]}) }}
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-12">
+            <section class="section">
+                <h1 class="section-header">
+                    <span class="icon icon-xl icon-faq me-2"></span>
+                    FAQ & Règlement
+                </h1>
+                <div class="section-body">
+                    <div class="card mb-4">
+                        <h2 class="card-header">FAQ</h2>
+                        <div class="accordion accordion-flush" id="accordion-faq">
+                            {% for question in questions %}
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="heading-{{ question.id }}">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-{{ question.id }}" aria-expanded="false" aria-controls="collapse-{{ question.id }}">
+                                            {{ question.name }}
+                                        </button>
+                                    </h2>
+                                    <div id="collapse-{{ question.id }}" class="accordion-collapse collapse" aria-labelledby="heading-{{ question.id }}" data-bs-parent="#accordion-faq">
+                                        <div class="accordion-body">
+                                            {{ question.answer|raw }}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+{% endblock %}

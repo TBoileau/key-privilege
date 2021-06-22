@@ -1,0 +1,9 @@
+.btn {
+  text-transform: uppercase;
+
+  &:focus,
+  &:active {
+    outline: 0;
+    box-shadow: none;
+  }
+}

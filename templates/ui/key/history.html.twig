@@ -1,0 +1,114 @@
+{% extends "layouts/page.html.twig" %}
+
+{% block breadcrumb %}
+    {{ include("components/breadcrumb.html.twig", {items: [
+        {route: "key_index", label: "Compte clés"},
+        {route: "key_history", routeParams: {id: account.id}, label: "Historique"}
+    ]}) }}
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-12">
+            <section class="section">
+                <h1 class="section-header">
+                    <span class="icon icon-xl icon-key me-2"></span>
+                    Historique
+                </h1>
+                <div class="section-body">
+                    <div class="row">
+                        <div class="col-12 col-lg-6 mb-4 mb-lg-0">
+                            <div class="card mb-4">
+                                <h2 class="card-header">Suivi des dates d'expiration de vos clés</h2>
+                                <div class="card-body table-responsive p-0">
+                                    <table class="table table-hover mb-0" data-role="accessList">
+                                        <thead>
+                                        <tr>
+                                            <th class="text-center">Date d'acquisition</th>
+                                            <th class="text-center">Date d'expiration</th>
+                                            <th class="text-center">Clés restantes</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for wallet in account.remainingWallets|sort((a, b) => b.expiredAt < a.expiredAt) %}
+                                            <tr>
+                                                <td class="text-center">{{ wallet.createdAt|date("d/m/Y") }}</td>
+                                                <td class="text-center">{{ wallet.expiredAt|date("d/m/Y") }}</td>
+                                                <td class="text-center">{{ wallet.balance }} clés</td>
+                                            </tr>
+                                        {% else %}
+                                            <tr>
+                                                <td class="text-center" colspan="3">Aucun résultat</td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <h2 class="card-header">Suivi des clés expirés</h2>
+                                <div class="card-body table-responsive p-0">
+                                    <table class="table table-hover mb-0" data-role="accessList">
+                                        <thead>
+                                        <tr>
+                                            <th class="text-center">Date d'acquisition</th>
+                                            <th class="text-center">Date d'expiration</th>
+                                            <th class="text-center">Clés</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for wallet in account.getExpiredWallets|sort((a, b) => b.expiredAt < a.expiredAt) %}
+                                            <tr>
+                                                <td class="text-center">{{ wallet.createdAt|date("d/m/Y") }}</td>
+                                                <td class="text-center">{{ wallet.expiredAt|date("d/m/Y") }}</td>
+                                                <td class="text-center">{{ wallet.balance }} clés</td>
+                                            </tr>
+                                        {% else %}
+                                            <tr>
+                                                <td class="text-center" colspan="3">Aucun résultat</td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6 mb-4 mb-lg-0">
+                            <div class="card">
+                                <h2 class="card-header">Suivi de vos mouvements de clés</h2>
+                                <div class="card-body table-responsive p-0">
+                                    <table class="table table-hover mb-0" data-role="accessList">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center">Date</th>
+                                                <th class="text-center">Opération</th>
+                                                <th class="text-center">Clés</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for transaction in account.transactions|reverse %}
+                                                <tr>
+                                                    <td class="text-center">{{ transaction.createdAt|date("d/m/Y") }}</td>
+                                                    <td class="text-center">{{ transaction.type }}</td>
+                                                    <td class="text-center">{{ transaction.points }} clés</td>
+                                                </tr>
+                                            {% else %}
+                                                <tr>
+                                                    <td class="text-center" colspan="3">Aucun résultat</td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="card-footer p-0 d-flex">
+                                    <a href="{{ path("key_export", {id: account.id}) }}" class="btn d-block w-100 btn-outline-primary rounded-0 border-0">Exporter</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+{% endblock %}
+

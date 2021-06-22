@@ -1,0 +1,215 @@
+body.shop {
+  overflow-y: hidden;
+  grid-template-rows: 168px calc(100vh - 268px) 100px;
+  grid-template-columns: 0 auto;
+  display: grid;
+  grid-column-gap: 0;
+  grid-row-gap: 0;
+
+  @include media-breakpoint-down(lg) {
+    display: flex;
+    height: 100vh;
+    flex-direction: column;
+  }
+
+  > header {
+    grid-area: 1 / 1 / 2 / 3;
+  }
+
+  > aside {
+    grid-area: 2 / 1 / 3 / 2;
+    background: $white;
+    overflow-y: auto;
+    max-height: 100%;
+
+    @include media-breakpoint-down(lg) {
+      position: fixed;
+      height: calc(100vh - 100px);
+      top: 50px;
+      left: 0;
+      width: 100%;
+      z-index: 999;
+      display: none;
+    }
+
+    &::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: $list-group-border-color;
+      border-radius: 5px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent;
+      border-radius: 5px;
+      box-shadow: inset 7px 10px 12px transparent;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+      background: transparent;
+    }
+
+    > nav {
+      .nav {
+        > .nav-item {
+          > .nav-link {
+            border-bottom: $list-group-border-width solid $list-group-border-color;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            &::after {
+              font-family: "Font Awesome 5 Free", serif;
+              font-weight: bold;
+            }
+
+            &[aria-expanded=false]::after {
+              content: "\f054";
+            }
+
+            &[aria-expanded=true]::after {
+              content: "\f078";
+            }
+
+            &.active {
+              background: rgba($danger, 0.75);
+              color: $white;
+            }
+          }
+        }
+      }
+
+      > .nav {
+        > .nav-item {
+          &:not(:first-child) {
+            > .nav {
+              .nav-link {
+                padding-left: 2rem;
+              }
+
+              > .nav-item {
+                > .nav {
+                  .nav-link {
+                    padding-left: 3rem;
+                  }
+                }
+              }
+            }
+          }
+
+          &:first-child {
+            > .nav {
+              > .nav-item {
+                .nav-link {
+                  padding-top: 1rem;
+                  padding-bottom: 2rem;
+                  display: block;
+
+                  > span {
+                    margin-bottom: 1rem;
+                    display: block;
+                  }
+                }
+
+                &:last-child {
+                  > .nav-link {
+                    padding-bottom: 1rem;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  > main {
+    .sidebar-toggler {
+      &[aria-expanded=true] > .fas::before {
+        content: "\f00d";
+      }
+
+      &[aria-expanded=false] > .fas::before {
+        content: "\f0c9";
+      }
+    }
+
+    grid-area: 2 / 2 / 3 / 3;
+    background: $black;
+    margin: 0;
+    padding: 24px 24px 0;
+    overflow-y: auto;
+    max-height: 100%;
+
+    @include media-breakpoint-down(lg) {
+      height: calc(100vh - 100px);
+    }
+
+    &::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: $gray-800;
+      border-radius: 5px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent;
+      border-radius: 5px;
+      box-shadow: inset 7px 10px 12px transparent;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+      background: transparent;
+    }
+
+    .product {
+      margin-bottom: 24px;
+
+      > a {
+        color: inherit;
+        text-decoration: none;
+
+        &:hover {
+          color: inherit;
+          text-decoration: none;
+        }
+      }
+    }
+  }
+
+  &.sidebar-open {
+    grid-template-columns: 250px auto;
+
+    > aside {
+      @include media-breakpoint-down(lg) {
+        top: 81.75px;
+        display: block;
+      }
+    }
+
+    > main {
+      @include media-breakpoint-down(lg) {
+        display: none;
+      }
+    }
+  }
+
+  > footer {
+    grid-area: 3 / 1 / 4 / 3;
+
+    @include media-breakpoint-down(lg) {
+      position: fixed;
+      height: 50px;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+    }
+  }
+}

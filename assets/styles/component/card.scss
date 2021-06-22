@@ -1,0 +1,20 @@
+.card {
+  border: none;
+
+  > .card-header {
+    background: $danger;
+    color: $white;
+    font-size: $h5-font-size;
+    font-weight: 400;
+    border: none;
+  }
+
+  > .card-body {
+    background: $white;
+  }
+
+  > .card-footer {
+    background: $white;
+    border-top: 1px solid rgba($dark, 0.1);
+  }
+}

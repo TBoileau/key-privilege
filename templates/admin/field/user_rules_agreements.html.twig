@@ -1,0 +1,27 @@
+<div class="card">
+    <div class="card-header" id="header-rules">
+        <h2 class="mb-0">
+            <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapse-rules" aria-expanded="false" aria-controls="collapse-rules">
+                Règlements acceptés/refusés
+            </button>
+        </h2>
+    </div>
+    <div id="collapse-rules" class="collapse" aria-labelledby="header-rules">
+        <ul class="list-group list-group-flush">
+            {% for rules_agreement in field.value %}
+                <li class="list-group-item justify-content-between align-items-center">
+                    Règlement publié le {{ rules_agreement.rules.publishedAt|date("d/m/Y") }}
+                    {% if rules_agreement.accepted %}
+                        <span class="ml-5 badge badge-success badge-pill">Accepté le {{ rules_agreement.agreedAt|date("d/m/Y") }}</span>
+                    {% else %}
+                        <span class="ml-5 badge badge-danger badge-pill">Refusé le {{ rules_agreement.agreedAt|date("d/m/Y") }}</span>
+                    {% endif %}
+                </li>
+            {% else %}
+                <li class="list-group-item">
+                    Aucun règlement
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>

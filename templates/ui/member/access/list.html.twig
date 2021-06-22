@@ -1,0 +1,125 @@
+{% extends "layouts/page.html.twig" %}
+
+{% block breadcrumb %}
+    {{ include("components/breadcrumb.html.twig", {items: [
+        {route: "member_access_list", label: "Gestion des accès de mon entreprise"}
+    ]}) }}
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-12">
+            <section class="section">
+                <h1 class="section-header">
+                    <span class="icon icon-xl icon-access me-2"></span>
+                    Gestion des accès de mon entreprise ({{ employees|length }})
+{#                    <div class="dropdown">#}
+{#                        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdown-create" data-bs-toggle="dropdown" aria-expanded="false">#}
+{#                            Créer un nouvel accès#}
+{#                        </button>#}
+{#                        <ul class="dropdown-menu" aria-labelledby="dropdown-create">#}
+{#                            <li><a href="{{ path("member_access_create", {role: "administrateur"}) }}" class="dropdown-item">Administrateur</a></li>#}
+{#                            <li><a href="{{ path("member_access_create", {role: "commercial"}) }}" class="dropdown-item">Commercial</a></li>#}
+{#                            <li><a href="{{ path("member_access_create", {role: "collaborateur"}) }}" class="dropdown-item">Collaborateur</a></li>#}
+{#                        </ul>#}
+{#                    </div>#}
+                </h1>
+                <div class="section-body">
+                    {{ form_start(form, {attr: {method: "GET", action: path("member_access_list", {page: 1})}}) }}
+                    <div class="card mb-3">
+                        <h2 class="card-header">Filtrer</h2>
+                        <div class="card-body d-flex align-items-end">
+                            {{ form_row(form.keywords, {row_attr: {class: "flex-grow-1"}}) }}
+                            <button type="submit" class="btn btn-primary ms-3">Filtrer</button>
+                        </div>
+                    </div>
+                    {{ form_end(form) }}
+                    <div class="card">
+                        <h2 class="card-header">Liste des accès</h2>
+                        <div class="card-body table-responsive p-0">
+                            <table class="table table-hover mb-0" data-role="accessList">
+                                <thead>
+                                <tr>
+                                    <th class="text-center">Prénom</th>
+                                    <th class="text-center">Nom</th>
+                                    <th class="text-center">Rôle</th>
+                                    {% if is_granted("ROLE_MANAGER") and app.user.members|length > 1 %}
+                                        <th class="text-center">Adhérent</th>
+                                    {% endif %}
+                                    <th class="text-center">Date d'inscription</th>
+                                    <th class="text-center">Dernière connexion</th>
+                                    <th class="text-center">Actions</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for employee in employees %}
+                                    <tr class="{{ employee.suspended ? "bg-warning" }}">
+                                        <td class="text-center">{{ employee.firstName }}</td>
+                                        <td class="text-center">{{ employee.lastName }}</td>
+                                        <td class="text-center">{{ employee.roleName }}</td>
+                                        {% if is_granted("ROLE_MANAGER") and app.user.members|length > 1 %}
+                                            <td class="text-center">
+                                                {% if employee.role == "ROLE_MANAGER" and employee.members|length > 1  %}
+                                                    {% for member in employee.members %}
+                                                        {{ member.name ~ (not loop.last ? ", ") }}
+                                                    {% endfor %}
+                                                {% else %}
+                                                    {{ employee.member.name }}
+                                                {% endif %}
+                                            </td>
+                                        {% endif %}
+                                        <td class="text-center">{{ employee.registeredAt|date("d/m/Y H:i") }}</td>
+                                        <td class="text-center">{{ employee.lastLogin|date("d/m/Y H:i") }}</td>
+                                        <td class="text-center">
+                                            <div class="dropdown">
+                                                <button class="btn btn-sm btn-primary dropdown-toggle" type="button" id="dropdown-{{ employee.id }}" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <span class="fas fa-cogs"></span>
+                                                </button>
+                                                <ul class="dropdown-menu" aria-labelledby="dropdown-{{ employee.id }}">
+                                                    {% if is_granted("suspend", employee) %}
+                                                        <li><a class="dropdown-item" href="{{ path("member_access_suspend", {id: employee.id}) }}">Suspendre</a></li>
+                                                    {% endif %}
+                                                    {% if is_granted("active", employee) %}
+                                                        <li><a class="dropdown-item" href="{{ path("member_access_active", {id: employee.id}) }}">Activer</a></li>
+                                                    {% endif %}
+                                                    {% if is_granted("update", employee) %}
+                                                        <li><a class="dropdown-item" href="{{ path("member_access_update", {id: employee.id}) }}">Modifier</a></li>
+                                                    {% endif %}
+                                                    {% if is_granted("delete", employee) %}
+                                                        <li><a class="dropdown-item" href="{{ path("member_access_delete", {id: employee.id}) }}">Supprimer</a></li>
+                                                    {% endif %}
+                                                    {% if is_granted("reset", employee) %}
+                                                        <li><a class="dropdown-item" href="{{ path("member_access_reset", {id: employee.id}) }}">Renvoyer un mot de passe</a></li>
+                                                    {% endif %}
+                                                    {% if is_granted("log_as", employee) %}
+                                                        <li><a class="dropdown-item" href="{{ path("home", {_switch_employee: employee.email}) }}">Voir son profil</a></li>
+                                                    {% endif %}
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% else %}
+                                    <tr>
+                                        <td class="text-center" colspan="8">Aucun résultat</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        {% if pages > 1 %}
+                            <div class="card-footer p-0">
+                                {{ include("components/pagination.html.twig", {
+                                    class: "my-0",
+                                    route: "member_access_list",
+                                    current_page: app.request.get("page", 1),
+                                    pages: pages
+                                }) }}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+{% endblock %}
+

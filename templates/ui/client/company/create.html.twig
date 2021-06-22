@@ -1,0 +1,41 @@
+{% extends "layouts/page.html.twig" %}
+
+{% block breadcrumb %}
+    {{ include("components/breadcrumb.html.twig", {items: [
+        {label: "Gestion des clients"},
+        {route: "client_company_list", label: "Gestion des sociétés cliente"},
+        {route: "client_company_create", label: "Créer une société cliente"}
+    ]}) }}
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-12">
+            <section class="section">
+                <h1 class="section-header">
+                    <span class="icon icon-xl icon-company me-2"></span>
+                    Créer une société cliente
+                </h1>
+                <div class="section-body">
+                    <div class="row justify-content-center">
+                        <div class="col-12 col-lg-8 col-xl-6">
+                            {{ form_start(form) }}
+                                <div class="card h-100">
+                                    {{ include("ui/client/company/_form.html.twig", {form: form}) }}
+                                    <div class="card-footer p-0 d-flex">
+                                        <a href="{{ path("client_company_list") }}" class="btn d-block flex-grow-1 btn-outline-secondary rounded-0 border-0">
+                                            Retour
+                                        </a>
+                                        <button type="submit" class="btn d-block flex-grow-1 btn-outline-success rounded-0 border-0">
+                                            Créer
+                                        </button>
+                                    </div>
+                                </div>
+                            {{ form_end(form) }}
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+{% endblock %}

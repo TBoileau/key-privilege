@@ -1,0 +1,9 @@
+parameters:
+    symfony:
+        container_xml_path: var/cache/dev/App_KernelDevDebugContainer.xml
+        console_application_loader: build/console.php
+    doctrine:
+        objectManagerLoader: build/doctrine.php
+    level: 7
+    paths:
+        - src

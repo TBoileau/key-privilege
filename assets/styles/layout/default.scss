@@ -1,0 +1,16 @@
+body.default {
+  color: $dark;
+
+  > main {
+    min-height: calc(100vh - 222px - 2rem);
+    margin-bottom: 1rem;
+
+    @include media-breakpoint-down(lg) {
+      min-height: calc(100vh - 147.1px);
+    }
+  }
+
+  > footer {
+    background: rgba($dark, 0.8);
+  }
+}

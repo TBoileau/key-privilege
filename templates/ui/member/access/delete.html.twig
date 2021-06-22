@@ -1,0 +1,47 @@
+{% extends "layouts/page.html.twig" %}
+
+{% block breadcrumb %}
+    {{ include("components/breadcrumb.html.twig", {items: [
+        {route: "member_access_list", label: "Gestion des accès de mon entreprise"},
+        {route: "member_access_delete", routeParams: {id: user.id}, label: "Supprimer un accès"}
+    ]}) }}
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-12">
+            <section class="section">
+                <h1 class="section-header">
+                    <span class="icon icon-xl icon-access me-2"></span>
+                    Supprimer un accès
+                </h1>
+                <div class="section-body">
+                    <div class="row justify-content-center">
+                        <div class="col-12 col-lg-4">
+                            {{ form_start(form) }}
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    {{ form_errors(form) }}
+                                    {{ include("components/alert.html.twig", {
+                                        state: "info",
+                                        content: "Êtes-vous de vouloir supprimer l'accès de <strong>%s</strong> ?"|format(user.fullName),
+                                        class: "mb-0"
+                                    }) }}
+                                </div>
+                                <div class="card-footer p-0 d-flex">
+                                    <a href="{{ path("member_access_list") }}" class="btn d-block flex-grow-1 btn-outline-secondary rounded-0 border-0">
+                                        Retour
+                                    </a>
+                                    <button type="submit" class="btn d-block flex-grow-1 btn-outline-danger rounded-0 border-0">
+                                        Supprimer
+                                    </button>
+                                </div>
+                            </div>
+                            {{ form_end(form) }}
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+{% endblock %}

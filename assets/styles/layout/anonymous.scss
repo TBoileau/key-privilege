@@ -1,0 +1,72 @@
+body.anonymous {
+  color: $white;
+  min-height: calc(100vh - 4rem);
+
+  a {
+    text-decoration: none;
+    color: $danger;
+    font-weight: 500;
+  }
+
+  > .container-anonymous {
+    width: 100%;
+    max-width: 700px;
+    box-shadow: 3px 3px 12px #00000029;
+    opacity: 1;
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    margin-top: 4rem;
+    padding: 2rem 8rem;
+
+    > header > .logo-kp {
+      width: 176px;
+
+      @include media-breakpoint-down(xxl) {
+        width: 124px;
+      }
+    }
+
+    > footer {
+      > span {
+        font-weight: 300;
+        text-transform: uppercase;
+        display: block;
+        text-align: center;
+        font-size: 1.2rem;
+
+        @include media-breakpoint-down(xxl) {
+          font-size: 1rem;
+        }
+      }
+
+      > .logo-aa {
+        width: 90px;
+
+        @include media-breakpoint-down(xxl) {
+          width: 60px;
+        }
+      }
+    }
+
+    @include media-breakpoint-down(xxl) {
+      margin-top: 2rem;
+      padding: 1rem 4rem;
+    }
+
+    @include media-breakpoint-down(md) {
+      backdrop-filter: unset;
+      -webkit-backdrop-filter: unset;
+      box-shadow: unset;
+      margin-top: 1rem;
+      padding: 1rem 2rem;
+    }
+  }
+
+  @include media-breakpoint-down(xxl) {
+    min-height: calc(100vh - 2rem);
+  }
+
+  @include media-breakpoint-down(md) {
+    min-height: calc(100vh - 1rem);
+  }
+}

@@ -1,0 +1,85 @@
+{% extends "layouts/page.html.twig" %}
+
+{% block breadcrumb %}
+    {{ include("components/breadcrumb.html.twig", {items: [{route: "key_index", label: "Compte clés"}]}) }}
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-12">
+            <section class="section">
+                <h1 class="section-header">
+                    <span class="icon icon-xl icon-key me-2"></span>
+                    Compte clés
+                </h1>
+                <div class="section-body">
+                    <div class="row justify-content-center align-items-stretch">
+                        <div class="col-12 col-sm-6 col-lg-4 mb-4 mb-lg-0">
+                           <div class="card h-100">
+                               <h2 class="card-header">Compte clés personnel</h2>
+                               <div class="card-body text-center flex-grow-1 d-flex align-items-center justify-content-center">
+                                   <span class="fs-1">Solde : {{ app.user.account.balance }} clés</span>
+                               </div>
+                               <div class="card-footer text-end p-0">
+                                   <a href="{{ path("key_history", {id: app.user.account.id}) }}" class="btn d-block btn-outline-primary rounded-0 border-0">
+                                       <span class="fas fa-list me-2"></span>Historique
+                                   </a>
+                               </div>
+                           </div>
+                        </div>
+                        {% if is_granted("ROLE_MANAGER") and app.user.members|length == 1 %}
+                            <div class="col-12 col-sm-6 col-lg-4 mb-4 mb-lg-0">
+                                <div class="card h-100">
+                                    <h2 class="card-header">Compte clés adhérent</h2>
+                                    <div class="card-body text-center flex-grow-1 d-flex align-items-center justify-content-center">
+                                        <span class="fs-1">Solde : {{ app.user.member.account.balance }} clés</span>
+                                    </div>
+                                    <div class="card-footer text-end p-0">
+                                        <a href="{{ path("key_history", {id: app.user.member.account.id}) }}" class="btn d-block btn-outline-primary rounded-0 border-0">
+                                            Historique
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                        {% if is_granted("ROLE_MANAGER") and app.user.members|length > 1 %}
+                            <div class="col-12 col-sm-6 col-lg-4 mb-4 mb-lg-0">
+                                <div class="card h-100">
+                                    <h2 class="card-header">Comptes clés adhérent</h2>
+                                    <div class="list-group list-group-flush flex-grow-1">
+                                        {% for member in app.user.members %}
+                                            <div class="list-group-item d-flex justify-content-between align-items-center">
+                                                <div class="d-flex flex-column">
+                                                    <span class="fw-bold">{{ member.name }}</span>
+                                                    Solde : {{ member.account.balance }} clés
+                                                </div>
+                                                <a href="{{ path("key_history", {id: member.account.id}) }}" class="btn btn-outline-primary">
+                                                    <span class="fas fa-list"></span>
+                                                </a>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                        {% if is_granted("ROLE_KEY_PURCHASE") or is_granted("ROLE_KEY_TRANSFER") %}
+                            <div class="col-12 col-sm-6 col-lg-4 mb-4 mb-lg-0">
+                                <div class="h-100 d-flex flex-column align-items-center justify-content-around">
+                                    {% if is_granted("ROLE_KEY_PURCHASE") %}
+                                        <a href="{{ path("key_purchase") }}" class="btn w-100 d-block btn-primary mb-3">Acheter des clés</a>
+                                    {% endif %}
+                                    {% if is_granted("ROLE_KEY_TRANSFER") %}
+                                        <a href="{{ path("key_transfer") }}" class="btn w-100 d-block btn-primary">Transférer des clés</a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                    {% if is_granted("ROLE_MANAGER") or is_granted("ROLE_SALES_PERSON") %}
+                        {{ render(path('key_clients')) }}
+                    {% endif %}
+                </div>
+            </section>
+        </div>
+    </div>
+{% endblock %}

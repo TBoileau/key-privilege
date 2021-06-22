@@ -1,0 +1,48 @@
+{% extends "layouts/page.html.twig" %}
+
+{% block breadcrumb %}
+    {{ include("components/breadcrumb.html.twig", {items: [
+        {route: "account_index", label: "Mon compte"},
+        {route: "account_edit_personal_informations", label: "Modifier mes informations personnelles"}
+    ]}) }}
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-12">
+            <section class="section">
+                <h1 class="section-header">
+                    <span class="icon icon-xl icon-profile me-2"></span>
+                    Modifier mes informations personnelles
+                </h1>
+                <div class="section-body">
+                    <div class="row justify-content-center">
+                        <div class="col-12 col-lg-4">
+                            {{ form_start(form) }}
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    {{ form_errors(form) }}
+                                    {{ form_row(form.firstName, {row_attr: {class: "mb-3 "}}) }}
+                                    {{ form_row(form.lastName, {row_attr: {class: "mb-3 "}}) }}
+                                    {% if form.phone is defined %}
+                                        {{ form_row(form.phone, {row_attr: {class: "mb-3 "}}) }}
+                                    {% endif %}
+                                    {{ form_row(form.email) }}
+                                </div>
+                                <div class="card-footer p-0 d-flex">
+                                    <a href="{{ path("account_index") }}" class="btn d-block flex-grow-1 btn-outline-secondary rounded-0 border-0">
+                                        Retour
+                                    </a>
+                                    <button type="submit" class="btn d-block flex-grow-1 btn-outline-success rounded-0 border-0">
+                                        Modifier
+                                    </button>
+                                </div>
+                            </div>
+                            {{ form_end(form) }}
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+{% endblock %}

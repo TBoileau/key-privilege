@@ -1,0 +1,23 @@
+<nav>
+    <ul class="pagination justify-content-end {{ class|default('') }}">
+        {% if current_page > 1 %}
+            <li class="page-item">
+                <a class="page-link" data-role="previous" href="{{ path(route, {page: current_page - 1}) }}">Précédent</a>
+            </li>
+        {% endif %}
+        {% set page_range = range(
+            max(1, current_page - 3),
+            min(pages, current_page + 3)
+        ) %}
+        {% for page in page_range %}
+            <li class="page-item  {{ page == current_page ? "active" : "" }}">
+                <a class="page-link" href="{{ path(route, {page: page}) }}">{{ page }}</a>
+            </li>
+        {% endfor %}
+        {% if current_page < pages %}
+            <li class="page-item">
+                <a class="page-link" data-role="next" href="{{ path(route, {page: current_page + 1}) }}">Suivant</a>
+            </li>
+        {% endif %}
+    </ul>
+</nav>

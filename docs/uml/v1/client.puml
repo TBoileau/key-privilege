@@ -1,0 +1,14 @@
+@startwbs
++ Client - Page d'accueil
+++ Boutique
++++ Panier
+++++ Passer commande
+++- Détail d'un produit
+++ Historique de commandes
++++ Détail d'une commande
+++ Mes clés
++++ Détail d'une transaction de clés
+++ Mon compte
++++ Mes informations
+++- Modifier mon mot de passe
+@endwbs

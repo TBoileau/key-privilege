@@ -1,0 +1,17 @@
+{% extends 'layouts/email.html.twig' %}
+
+{% block body %}
+    Utilisateur : {{ user.id }} - {{ user.fullName }}
+    <br/>
+    Email : <a href="mailto:{{ user.email }}">{{ user.email }}</a>
+    <br/>
+    Commande : {{ sav.line.order.reference }}
+    <br/>
+    Produit : {{ sav.line.product.reference }} - {{ sav.line.product.name }} - {{ sav.line.product.brand.name }}
+    <br/>
+    Description : {{ sav.description }}
+    {% if sav.comment is not null %}
+        <br/>
+        Commentaire : {{ sav.comment }}
+    {% endif %}
+{% endblock %}

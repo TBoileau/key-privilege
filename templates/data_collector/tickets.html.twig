@@ -1,0 +1,77 @@
+{% extends '@WebProfiler/Profiler/layout.html.twig' %}
+
+{% block toolbar %}
+    {% set icon %}
+        <svg version="1.1"
+             id="Layer_1"
+             xmlns="http://www.w3.org/2000/svg"
+             xmlns:xlink="http://www.w3.org/1999/xlink"
+             x="0px"
+             y="0px"
+             viewBox="0 0 965 692.6"
+             style="enable-background:new 0 0 965 692.6;"
+             xml:space="preserve">
+                <style type="text/css">
+                    .st0{fill:#03363D;}
+                </style>
+            <g>
+                <polygon class="st0" points="453.1,208.5 453.1,646.3 90.5,646.3 	"/>
+                <path class="st0" d="M453.1,51.4c0,100.1-81.2,181.3-181.3,181.3S90.5,151.5,90.5,51.4H453.1z"/>
+                <path class="st0" d="M512.9,646.3C512.9,546.1,594,465,694.2,465s181.3,81.2,181.3,181.3H512.9z"/>
+                <polygon class="st0" points="512.9,489.1 512.9,51.4 875.5,51.4 	"/>
+            </g>
+        </svg>
+        <span class="sf-toolbar-value">Zendesk</span>
+    {% endset %}
+
+    {% set text %}
+        <div class="sf-toolbar-info-piece">
+            <b>Tickets</b>
+            <span>{{ collector.tickets|length }}</span>
+        </div>
+    {% endset %}
+    <div class="sf-toolbar-block sf-toolbar-block-{{ name }} sf-toolbar-status-{{ status|default('normal') }} {{ additional_classes|default('') }}" {{ block_attrs|default('')|raw }}>
+        <a href="{{ url('_profiler', {token: token, panel: name}) }}">
+            <div class="sf-toolbar-icon">{{ icon|default('') }}</div>
+        </a>
+        <div class="sf-toolbar-info">{{ text|default('') }}</div>
+    </div>
+
+{% endblock %}
+
+{% block head %}
+    {{ parent() }}
+{% endblock %}
+
+{% block menu %}
+    {# This left-hand menu appears when using the full-screen profiler. #}
+    <span class="label">
+        <span class="icon">
+
+            <svg version="1.1"
+                 id="Layer_1"
+                 xmlns="http://www.w3.org/2000/svg"
+                 xmlns:xlink="http://www.w3.org/1999/xlink"
+                 x="0px"
+                 y="0px"
+                 viewBox="0 0 965 692.6"
+                 style="enable-background:new 0 0 965 692.6;"
+                 xml:space="preserve">
+                    <style type="text/css">
+                        .st0{fill:#03363D;}
+                    </style>
+                <g>
+                    <polygon class="st0" points="453.1,208.5 453.1,646.3 90.5,646.3 	"/>
+                    <path class="st0" d="M453.1,51.4c0,100.1-81.2,181.3-181.3,181.3S90.5,151.5,90.5,51.4H453.1z"/>
+                    <path class="st0" d="M512.9,646.3C512.9,546.1,594,465,694.2,465s181.3,81.2,181.3,181.3H512.9z"/>
+                    <polygon class="st0" points="512.9,489.1 512.9,51.4 875.5,51.4 	"/>
+                </g>
+            </svg>
+        </span>
+        <strong>Zendesk</strong>
+    </span>
+{% endblock %}
+
+{% block panel %}
+    <h2>Tickets {{ collector.tickets|length }}</h2>
+{% endblock %}

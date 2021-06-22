@@ -1,0 +1,35 @@
+<div class="card">
+    <div class="card-header">Lignes de commandes</div>
+    <table class="table table-bordered bg-white mb-0">
+        <thead>
+            <tr>
+                <th class="text-center">Produit</th>
+                <th class="text-center">Montant unitaire</th>
+                <th class="text-center">Quantité</th>
+                <th class="text-center">Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for line in field.value %}
+                <tr>
+                    <td class="text-center">
+                        {{ line.product.name }}
+                    </td>
+                    <td class="text-center">
+                        {{ line.amount }}
+                    </td>
+                    <td class="text-center">
+                        {{ line.quantity }}
+                    </td>
+                    <td class="text-center">
+                        {{ line.total }}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td class="text-center" colspan="4">Aucun résultat</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

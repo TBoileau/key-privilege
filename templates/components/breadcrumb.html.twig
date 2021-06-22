@@ -1,0 +1,17 @@
+{% set items = items is not defined ? [] : items %}
+<nav aria-label="breadcrumb" class="container">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item" aria-current="page">
+            <a href="{{ path("home") }}">Accueil</a>
+        </li>
+        {% for item in items %}
+            <li class="breadcrumb-item" aria-current="page">
+                {% if item.route is defined %}
+                    <a href="{{ path(item.route, item.routeParams|default({})) }}">{{ item.label }}</a>
+                {% else %}
+                    {{ item.label }}
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ol>
+</nav>

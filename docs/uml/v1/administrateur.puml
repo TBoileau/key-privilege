@@ -1,0 +1,37 @@
+@startwbs
++ Administrateur Adhérent - Page d'accueil
+++ Boutique
++++ Détail d'un produit
+++ Liste des clients
+++- Détail d'un client
+++++ [C] Historique des transactions de clés
++++++ Détail d'une transaction de clés
++++- [C] Historique des commandes
+++++- Détail d'une commande
+++++ Retrocéder des clés
++++- Céder des clés
+++++ Suspendre un client
++++- Modifier un client
++++ Ajouter un client
+++ Liste des commerciaux
++++ Détail d'un commercial
+++++ [C] Liste des clients
+++++ [C] Historique des transactions de clés
++++++ Détail d'une transaction de clés
++++- [C] Historique des commandes
+++++- Détail d'une commande
+++++ Retrocéder des clés
++++- Céder des clés
+++++ Suspendre un commercial
++++- Modifier un commercial
+++- Ajouter un commercial
+++ Clés
++++ Historique des transactions de clés
+++++ Détail d'une transaction de clés
+++- Céder des clés
++++ Rétrocéder des clés
+++- Acheter des clés
+++ Mon compte
++++ Mes informations
+++- Modifier mon mot de passe
+@endwbs

@@ -1,0 +1,14 @@
+.toast-container {
+  position: fixed;
+  z-index: 99999;
+  bottom: 1rem;
+  right: 1rem;
+  width: 300px;
+
+  > .toast {
+    > .toast-body {
+      background: $white;
+      color: $dark;
+    }
+  }
+}

@@ -1,0 +1,57 @@
+.icon {
+  display: inline-block;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  &-sm {
+    width: 0.875rem;
+    height: 0.875rem;
+  }
+
+  &-md {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  &-lg {
+    width: 1.125rem;
+    height: 1.125rem;
+  }
+
+  &-xl {
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+
+  &-key {
+    background-image: url(../../images/cles.svg);
+
+    &.text-danger {
+      background-image: url(../../images/cles_rouge.svg);
+    }
+  }
+
+  &-access {
+    background-image: url(../../images/acces.svg);
+  }
+
+  &-faq {
+    background-image: url(../../images/faq_reglement.svg);
+  }
+
+  &-cart {
+    background-image: url(../../images/cart.svg);
+  }
+
+  &-company {
+    background-image: url(../../images/societe.svg);
+  }
+
+  &-profile {
+    background-image: url(../../images/profil.svg);
+  }
+
+  &-logout {
+    background-image: url(../../images/deconnexion_rouge.svg);
+  }
+}

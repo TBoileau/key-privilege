@@ -1,0 +1,43 @@
+.input-group-password {
+  input[type=password] + button > span.far::before {
+    content: "\f06e";
+  }
+
+  input[type=text] + button > span.far::before {
+    content: "\f070";
+  }
+
+  button {
+    border: 1px solid $input-border-color;
+
+    &:hover,
+    &:active,
+    &:focus {
+      border: 1px solid $input-border-color;
+    }
+  }
+}
+
+.form-group {
+  .form-label {
+    margin-bottom: 0.75rem;
+    font-weight: 500;
+
+    @include media-breakpoint-down(md) {
+      margin-bottom: 0.5rem;
+      font-size: 0.875rem;
+    }
+  }
+
+  + .form-group {
+    margin-top: 2rem;
+
+    @include media-breakpoint-down(xxl) {
+      margin-top: 1rem;
+    }
+  }
+
+  .form-control {
+    padding: ($input-padding-y - 0.2rem) $input-padding-x;
+  }
+}

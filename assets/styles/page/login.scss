@@ -1,0 +1,34 @@
+body.login {
+  > .container-anonymous {
+    position: relative;
+
+    &::after {
+      content: "";
+      background-image: url("../../images/Kassius_Key_AA_no_ombre.png");
+      background-size: cover;
+      background-repeat: no-repeat;
+      position: absolute;
+      bottom: -50px;
+      left: -200px;
+      height: 490px;
+      width: 348px;
+
+      @include media-breakpoint-down(xxl) {
+        height: 350px;
+        width: 248px;
+        bottom: 25px;
+        left: -150px;
+      }
+
+      @include media-breakpoint-down(lg) {
+        display: none;
+      }
+    }
+  }
+
+  .btn {
+    font-size: 1.25rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+}

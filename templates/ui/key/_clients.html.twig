@@ -1,0 +1,63 @@
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card h-100">
+            <h2 class="card-header">Compte clés - Clients</h2>
+            <div class="card-body table-responsive p-0">
+                <table class="table mb-0">
+                    <thead>
+                    <tr>
+                        <th class="text-center">Client</th>
+                        <th class="text-center">Utilisateur</th>
+                        <th class="text-center">Solde</th>
+                        <th class="text-center">Détail</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for account in accounts|sort((a, b) => a.user.client.name <=> b.user.client.name) %}
+                        <tr>
+                            <td class="text-center">{{ account.user.client.name }}</td>
+                            <td class="text-center">{{ account.user.fullName }}</td>
+                            <td class="text-center">{{ account.balance }} clés</td>
+                            <td class="text-center">
+                                <a class="btn btn-primary btn-sm" data-bs-toggle="collapse" href="#account-{{ account.id }}" role="button" aria-expanded="false" aria-controls="account-{{ account.id }}">
+                                    <span class="fas fa-eye"></span>
+                                </a>
+                            </td>
+                        </tr>
+                        <tr class="collapse" id="account-{{ account.id }}">
+                            <td colspan="4" class="p-0">
+                                <table class="table table-hover mb-0" data-role="accessList">
+                                    <thead>
+                                    <tr>
+                                        <th class="text-center">Date d'acquisition</th>
+                                        <th class="text-center">Date d'expiration</th>
+                                        <th class="text-center">Clés restantes</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for wallet in account.remainingWallets|sort((a, b) => b.expiredAt < a.expiredAt) %}
+                                        <tr>
+                                            <td class="text-center">{{ wallet.createdAt|date("d/m/Y") }}</td>
+                                            <td class="text-center">{{ wallet.expiredAt|date("d/m/Y") }}</td>
+                                            <td class="text-center">{{ wallet.balance }} clés</td>
+                                        </tr>
+                                    {% else %}
+                                        <tr>
+                                            <td class="text-center" colspan="3">Aucun résultat</td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td class="text-center" colspan="4">Aucun résultat</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

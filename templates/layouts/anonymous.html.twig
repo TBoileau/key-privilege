@@ -1,0 +1,17 @@
+{% extends 'layouts/base.html.twig' %}
+
+{% block layout %}anonymous{% endblock %}
+
+{% block body %}
+    <div class="container container-anonymous">
+        <header>
+            <img src="{{ asset("build/images/logo_key_privilege.svg") }}" alt="Key Privilege" class="mx-auto d-block mb-5 logo-kp" />
+        </header>
+        {% block content %}{% endblock %}
+        <footer>
+            <img src="{{ asset("build/images/logo_aa_blanc_vertical.svg") }}" alt="Alternative Autoparts" class="logo-aa mx-auto d-block mt-4" />
+            <hr class="w-75 bg-white mx-auto">
+            <span class="text-uppercase fw-light d-block text-center">Key Privilege Programme de fidélisation</span>
+        </footer>
+    </div>
+{% endblock %}

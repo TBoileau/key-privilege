@@ -1,0 +1,25 @@
+<div class="card">
+    <div class="card-header" id="header-members">
+        <h2 class="mb-0">
+            <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapse-members" aria-expanded="false" aria-controls="collapse-members">
+                Liste des adhérents ({{ field.value|length }})
+            </button>
+        </h2>
+    </div>
+    <div id="collapse-members" class="collapse" aria-labelledby="header-members">
+        <ul class="list-group list-group-flush">
+            {% for member in field.value %}
+                {% set url = ea_url().setDashboard('App\\Controller\\Admin\\DashboardController').setController('App\\Controller\\Admin\\MemberCrudController').setAction('detail').setEntityId(member.id) %}
+                <li class="list-group-item">
+                    <a href="{{ url }}">
+                        {{ member.name }}
+                    </a>
+                </li>
+            {% else %}
+            <li class="list-group-item">
+                Aucun adhérent
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>

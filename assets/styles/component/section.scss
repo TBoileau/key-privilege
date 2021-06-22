@@ -1,0 +1,19 @@
+.section {
+  > .section-header {
+    font-weight: 400;
+    background: $danger;
+    background: linear-gradient(90deg, rgba($danger, 1) 0%, $dark-danger 100%);
+    color: $white;
+    padding: 1rem 2rem;
+    margin: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 18px;
+  }
+
+  > .section-body {
+    background: $gray-200;
+    padding: 2rem;
+  }
+}

@@ -1,0 +1,47 @@
+<div class="card">
+    <div class="card-header">Liste des portefeuilles</div>
+    <table class="table table-bordered bg-white mb-0">
+        <thead>
+            <tr>
+                <th class="text-center">Date de création</th>
+                <th class="text-center">Solde</th>
+                <th class="text-center">Date d'expiration</th>
+                <th class="text-center">Transaction initiale</th>
+                <th class="text-center">Statut</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for wallet in field.value %}
+                <tr>
+                    <td class="text-center">{{ wallet.createdAt|date("d/m/Y H:i") }}</td>
+                    <td class="text-center">{{ wallet.balance }}</td>
+                    <td class="text-center">
+                        {% if wallet.expiredAt is not null %}
+                            {{ wallet.expiredAt|date("d/m/Y H:i") }}
+                        {% else %}
+                            <span class="badge badge-info">N/C</span>
+                        {% endif %}
+                    </td>
+                    <td class="text-center">
+                        {% set url = ea_url().setDashboard('App\\Controller\\Admin\\DashboardController').setController('App\\Controller\\Admin\\TransactionCrudController').setAction('detail').setEntityId(wallet.purchase.id) %}
+                        <a href="{{ url }}">
+                            {{ "%08d"|format(wallet.purchase.id) }}
+                        </a>
+                    </td>
+                    <td class="text-center">
+                        {% if wallet.expired %}
+                            <span class="badge badge-danger">Expiré</span>
+                        {% else %}
+                            <span class="badge badge-success">Actif</span>
+                        {% endif %}
+
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td class="text-center" colspan="6">Aucun résultat</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

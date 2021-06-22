@@ -1,0 +1,26 @@
+.identity {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+  justify-content: flex-end;
+
+  > a:hover {
+    color: $danger;
+  }
+
+  > * {
+    border-right: 1px solid rgba($light, 0.5);
+    padding: 0 1rem;
+    color: $light;
+    text-decoration: none;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+
+    &:last-child {
+      padding-right: 0;
+      border-right: 0;
+    }
+  }
+}

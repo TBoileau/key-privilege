@@ -1,0 +1,22 @@
+<div class="card">
+    <div class="card-header" id="header-collaborators">
+        <h2 class="mb-0">
+            <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapse-collaborators" aria-expanded="false" aria-controls="collapse-collaborators">
+                Liste des collaborateurs ({{ field.value|length }})
+            </button>
+        </h2>
+    </div>
+    <div id="collapse-collaborators" class="collapse" aria-labelledby="header-collaborators">
+        <ul class="list-group list-group-flush">
+            {% for client in field.value %}
+                <li class="list-group-item">
+                    {{ client.fullName }}
+                </li>
+            {% else %}
+            <li class="list-group-item">
+                Aucun collaborateur
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>

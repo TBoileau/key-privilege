@@ -1,0 +1,42 @@
+{% extends "layouts/page.html.twig" %}
+
+{% block breadcrumb %}
+    {{ include("components/breadcrumb.html.twig", {items: [
+        {route: "sav_index", label: "Service après-vente"},
+        {route: "sav_trigger", routeParams: {id: order.id}, label: "Déclencher une demande de SAV"}
+    ]}) }}
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-12">
+            <section class="section">
+                <h1 class="section-header">Déclencher une demande de SAV</h1>
+                <div class="section-body">
+                    <div class="row justify-content-center">
+                        <div class="col-12 col-lg-6">
+                            {{ form_start(form) }}
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    {{ form_errors(form) }}
+                                    {{ form_widget(form._token) }}
+                                    {{ form_row(form.line) }}
+                                    {{ form_row(form.description) }}
+                                    {{ form_row(form.comment) }}
+                                    {{ form_row(form._attachments) }}
+                                    <div id="sav_attachments" class="list-group mt-3"></div>
+                                </div>
+                                <div class="card-footer p-0 d-flex">
+                                    <button type="submit" class="btn d-block flex-grow-1 btn-outline-success rounded-0 border-0">
+                                        Envoyer
+                                    </button>
+                                </div>
+                            </div>
+                            {{ form_end(form, {render_rest: false}) }}
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>{% block title %}Key Privilege{% endblock %}</title>
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('app') }}
+        {% endblock %}
+        {% block javascripts %}
+            {{ encore_entry_script_tags('app') }}
+        {% endblock %}
+        <link rel="apple-touch-icon" sizes="76x76" href="{{ asset("build/images/apple-touch-icon.png") }}">
+        <link rel="icon" type="image/png" sizes="32x32" href="{{ asset("build/images/favicon-32x32.png") }}">
+        <link rel="icon" type="image/png" sizes="16x16" href="{{ asset("build/images/favicon-16x16.png") }}">
+        <link rel="icon" href="{{ asset("build/images/favicon.ico") }}">
+        <meta name="msapplication-TileColor" content="#da532c">
+        <meta name="theme-color" content="#ffffff">
+    </head>
+    <body class="{% block page %}{% endblock %} {% block layout %}default{% endblock %}">
+        {% block body %}{% endblock %}
+        {{ include("components/toasts.html.twig") }}
+    </body>
+</html>

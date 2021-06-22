@@ -1,0 +1,60 @@
+framework:
+    workflows:
+        purchase:
+            type: 'state_machine'
+            audit_trail:
+                enabled: true
+            marking_store:
+                type: 'method'
+                property: 'state'
+            supports:
+                - App\Entity\Key\Purchase
+            initial_marking: pending
+            places:
+                - pending
+                - refused
+                - canceled
+                - accepted
+            transitions:
+                cancel:
+                    from: pending
+                    to: canceled
+                refuse:
+                    from: pending
+                    to: refused
+                accept:
+                    from: pending
+                    to: accepted
+        order:
+            type: 'state_machine'
+            audit_trail:
+                enabled: true
+            marking_store:
+                type: 'method'
+                property: 'state'
+            supports:
+                - App\Entity\Order\Order
+            initial_marking: cart
+            places:
+                - cart
+                - pending
+                - on_delivery
+                - delivered
+                - canceled
+                - incident
+            transitions:
+                valid_cart:
+                    from: cart
+                    to: pending
+                to_delivery:
+                    from: pending
+                    to: on_delivery
+                deliver:
+                    from: on_delivery
+                    to: delivered
+                canceled:
+                    from: [pending,on_delivery]
+                    to: canceled
+                to_incident:
+                    from: [delivered,on_delivery]
+                    to: incident

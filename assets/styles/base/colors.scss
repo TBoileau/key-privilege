@@ -1,0 +1,4 @@
+.bg-gradient {
+  background: $danger !important;
+  background: linear-gradient(90deg, rgba($danger, 1) 0%, $dark-danger 100%) !important;
+}
