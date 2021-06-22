@@ -82,4 +82,11 @@ class Universe
         $this->slug = $slug;
         return $this;
     }
+
+    public function getNumberOfProducts(): int
+    {
+        return array_sum(
+            $this->categories->map(fn (Category $category) => $category->getNumberOfProducts())->toArray()
+        );
+    }
 }

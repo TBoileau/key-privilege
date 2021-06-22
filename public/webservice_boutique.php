@@ -9,9 +9,10 @@ date_default_timezone_set('Europe/Paris');
 require __DIR__ . "/../vendor/autoload.php";
 
 use Symfony\Component\Dotenv\Dotenv;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 
 $dotenv = new Dotenv();
-$dotenv->load(__DIR__.'/.env.local');
+$dotenv->load(__DIR__.'/../.env.local');
 
 header('Content-Type: text/html; charset=ISO-8859-1');
 
@@ -32,13 +33,12 @@ $serveur->register('loadSelectionProduit');
 $serveur->register('loadFichiers');
 $serveur->register('loadImages');
 
-
-
+$database = parse_url($_ENV["DATABASE_URL"]);
 
 $PDO = new \PDO(
-    sprintf("mysql:host=%s;dbname=%s", getenv("DATABASE_HOST"), getenv("DATABASE_NAME")),
-    getenv("DATABASE_USER"),
-    getenv("DATABASE_PASSWORD")
+    sprintf("mysql:host=%s;dbname=%s", $database["host"], trim($database["path"], "/")),
+    $database["user"],
+    $database["pass"]
 );
 
 $PDO->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -48,7 +48,7 @@ $PDO->query("SET FOREIGN_KEY_CHECKS=0;");
 function loadImages() {
     $images = array();
 
-    if (!$folder_handle = opendir("products")) {
+    if (!$folder_handle = opendir(sprintf("%s/../public/shop/products", __DIR__))) {
         return $images;
     } else{
         while(false !== ($filename = readdir($folder_handle))) {
@@ -62,34 +62,27 @@ function loadImages() {
 }
 
 function loadFichiers($file) {
-    $count = 0;
     $zip = new ZipArchive();
 
-    if ($zip->open(sprintf("%s/../public/shop/sync/%s/%s", __DIR__, date("d-m-Y"), $file)) === true) {
-        for($i = 0; $i < $zip->numFiles; $i++) {
-            $filename = $zip->getNameIndex($i);
-            $fileInfo = pathinfo($filename);
-            if(
-                copy(
-                    sprintf("%s/../public/shop/%s/%s#%s", __DIR__ , date("d-m-Y"), $file, $filename),
-                    sprintf("%s/../public/shop/products/%s", __DIR__ , $fileInfo['basename'])
-                )
-            ){
-                $count++;
-            }
-        }
-        $zip->close();
-    }
+    $zip->open(sprintf("%s/../public/shop/sync/%s/%s", __DIR__, date("d-m-Y"), $file));
+
+    $count = $zip->count();
+
+    $zip->extractTo(sprintf("%s/../public/shop/products", __DIR__));
+
+    $zip->close();
 
     return $count;
 }
 
 function loadUnivers($file) {
+    $slugger = new AsciiSlugger();
+
     global $PDO;
     $numberOfUniversesProcessed = 0;
     $resource = fopen(
         sprintf(
-            "%s/../public/shop/sync_products/%s/%s",
+            "%s/../public/shop/sync/%s/%s",
             __DIR__,
             date("d-m-Y"),
             $file
@@ -102,9 +95,9 @@ function loadUnivers($file) {
             $statement->execute([$data[0]]);
 
             if(intval($statement->fetch(\PDO::FETCH_OBJ)->numberOfUniverses) === 0){
-                $PDO->prepare("INSERT INTO universe SET id = ?, name = ?")->execute([$data[0], $data[3]]);
+                $PDO->prepare("INSERT INTO universe SET id = ?, name = ?, slug = ?")->execute([$data[0], $data[3], $slugger->slug($data[3])->lower()->toString()]);
             }else{
-                $PDO->prepare("UPDATE universe SET name = ? WHERE id = ?")->execute([$data[3], $data[0]]);
+                $PDO->prepare("UPDATE universe SET name = ?, slug = ? WHERE id = ?")->execute([$data[3], $slugger->slug($data[3])->lower()->toString(), $data[0]]);
             }
 
             $numberOfUniversesProcessed++;
@@ -115,11 +108,12 @@ function loadUnivers($file) {
 }
 
 function loadCategories($file) {
+    $slugger = new AsciiSlugger();
     global $PDO;
     $numberOfCategoriesProcessed = 0;
     $resource = fopen(
         sprintf(
-            "%s/../public/shop/sync_products/%s/%s",
+            "%s/../public/shop/sync/%s/%s",
             __DIR__,
             date("d-m-Y"),
             $file
@@ -130,12 +124,13 @@ function loadCategories($file) {
         $PDO->query("TRUNCATE TABLE category");
 
         while (($data = fgetcsv($resource, 0, ";")) !== FALSE) {
-            $PDO->prepare("INSERT INTO category SET id = ?, name = ?, lft = ?, rgt = ?, lvl = ?, root_id = 1")->execute([
+            $PDO->prepare("INSERT INTO category SET id = ?, name = ?, lft = ?, rgt = ?, lvl = ?, root_id = 1, slug = ?")->execute([
                 $data[0],
                 $data[1],
                 $data[2],
                 $data[3],
-                $data[4]
+                $data[4],
+                sprintf("%s-%s", $data[0], $slugger->slug($data[1])->lower()->toString()),
             ]);
 
             $numberOfCategoriesProcessed++;
@@ -151,7 +146,7 @@ function loadMarques($file) {
     $numberOfBrandsProcessed = 0;
     $resource = fopen(
         sprintf(
-            "%s/../public/shop/sync_products/%s/%s",
+            "%s/../public/shop/sync/%s/%s",
             __DIR__,
             date("d-m-Y"),
             $file
@@ -182,7 +177,7 @@ function loadUniversCat($file) {
     $numberOfUniversesProcessed = 0;
     $resource = fopen(
         sprintf(
-            "%s/../public/shop/sync_products/%s/%s",
+            "%s/../public/shop/sync/%s/%s",
             __DIR__,
             date("d-m-Y"),
             $file
@@ -201,6 +196,7 @@ function loadUniversCat($file) {
 }
 
 function loadDetailsProduits($file) {
+    $slugger = new AsciiSlugger();
     $fields = [1 => "name", 2 => "description", 4 => "image"];
     global $PDO;
 
@@ -208,7 +204,7 @@ function loadDetailsProduits($file) {
 
     $resource = fopen(
         sprintf(
-            "%s/../public/shop/sync_products/%s/%s",
+            "%s/../public/shop/sync/%s/%s",
             __DIR__,
             date("d-m-Y"),
             $file
@@ -231,7 +227,9 @@ function loadDetailsProduits($file) {
     }
 
     foreach($products as $id => $product){
-        $PDO->prepare("UPDATE product SET name = :name, description = :description, image = :image")->execute($product);
+        $product["slug"] = sprintf("%s-%s", $id, $slugger->slug($product["name"])->lower()->toString());
+        $product["id"] = $id;
+        $PDO->prepare("UPDATE product SET name = :name, slug=:slug, description = :description, image = :image WHERE id=:id")->execute($product);
     }
 
     $PDO->query("UPDATE product SET image = REPLACE(image,'Images/','')");
@@ -255,7 +253,7 @@ function loadProduits($file){
     $numberOfProductsUpdated = 0;
     $resource = fopen(
         sprintf(
-            "%s/../public/shop/sync_products/%s/%s",
+            "%s/../public/shop/sync/%s/%s",
             __DIR__,
             date("d-m-Y"),
             $file
@@ -277,7 +275,7 @@ function loadProduits($file){
 
             if(intval($statement->fetch(\PDO::FETCH_OBJ)->numberOfProducts) === 0){
 
-                $PDO->query("
+                $PDO->prepare("
 					INSERT INTO product
 					SET 
                         id = ?,
@@ -288,6 +286,7 @@ function loadProduits($file){
                         active=1,
                         amount = ?,
                         name = '',
+                        slug=?,
                         description = '',
                         image = ''
                 ")->execute([
@@ -296,12 +295,13 @@ function loadProduits($file){
                     $data[4],
                     $data[7],
                     $data[9],
-                    $amount
+                    $amount,
+                    $data[0]
                 ]);
 
                 $numberOfProductsAdded++;
             }else{
-                $PDO->query("
+                $PDO->prepare("
 					UPDATE product
 					SET 
                         brand_id = ?,
@@ -326,6 +326,18 @@ function loadProduits($file){
 
         fclose($resource);
     }
+    $PDO->prepare("
+        UPDATE category AS c1
+        INNER JOIN (
+            SELECT c.id, IFNULL(p.nb, 0) as nb
+            FROM category AS c
+            LEFT JOIN category AS cc ON c.lft >= cc.lft AND c.rgt <= cc.rgt
+            LEFT JOIN (SELECT COUNT(id) as nb, category_id FROM product GROUP BY category_id) AS p ON (p.category_id = cc.id)
+            GROUP BY c.id
+        ) AS c2 ON (c1.id = c2.id)
+        SET c1.number_of_products = c2.nb
+    ")->execute([]);
+
     return ["ADD"=>$numberOfProductsAdded,"UPDATE"=>$numberOfProductsUpdated];
 }
 
