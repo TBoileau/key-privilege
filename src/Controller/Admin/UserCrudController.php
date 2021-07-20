@@ -45,7 +45,7 @@ class UserCrudController extends AbstractCrudController
     {
         $logAs = Action::new("logAs", 'Se connecter en tant que')
             ->displayAsLink()
-            ->linkToRoute("index", fn (User $user) => ["_switch_user" => $user->getEmail()]);
+            ->linkToRoute("home", fn (User $user) => ["_switch_user" => $user->getEmail()]);
         $reset = Action::new("reset", 'Réinitialiser')
             ->displayAsLink()
             ->linkToRoute("admin_user_reset", fn (User $user) => ["user" => $user->getId()]);
