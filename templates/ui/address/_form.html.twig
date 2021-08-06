@@ -1,0 +1,53 @@
+<div class="card-body">
+    {{ form_errors(form) }}
+    <div class="row mb-3 align-items-center">
+        <div class="col-6">
+            {{ form_row(form.type) }}
+        </div>
+        <div class="col-6">
+            {{ form_row(form.default) }}
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-6">
+            {{ form_row(form.firstName) }}
+        </div>
+        <div class="col-6">
+            {{ form_row(form.lastName) }}
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-6">
+            {{ form_row(form.professional) }}
+        </div>
+        <div class="col-6">
+            {{ form_row(form.companyName) }}
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-12">
+            {{ form_row(form.streetAddress) }}
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-12">
+            {{ form_row(form.restAddress) }}
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-12 col-md-6 mb-3 mb-md-0">
+            {{ form_row(form.zipCode) }}
+        </div>
+        <div class="col-12 col-md-6">
+            {{ form_row(form.locality) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 col-md-6 mb-3 mb-md-0">
+            {{ form_row(form.phone) }}
+        </div>
+        <div class="col-12 col-md-6">
+            {{ form_row(form.email) }}
+        </div>
+    </div>
+</div>
