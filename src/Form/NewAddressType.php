@@ -29,7 +29,8 @@ class NewAddressType extends AddressType
             ])
             ->add("default", CheckboxType::class, [
                 "label" => "Adresse par défaut ?",
-                "mapped" => false
+                "mapped" => false,
+                "required" => false,
             ]);
     }
 }

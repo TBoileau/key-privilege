@@ -100,6 +100,8 @@ class ShopTest extends WebTestCase
 
         $client->clickLink("Ajouter au panier");
 
+        echo $client->getResponse()->getContent();
+
         $client->followRedirect();
 
         /** @var EntityManagerInterface $entityManager */

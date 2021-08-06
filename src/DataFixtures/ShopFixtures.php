@@ -122,6 +122,10 @@ class ShopFixtures extends Fixture
                 ->setReference(sprintf("REF_%d", $i))
                 ->setAmount(intval(ceil(rand(10, 2000) / 5) * 5))
                 ->setImage("shop/products/image.png")
+                ->setPurchasePrice(rand(10, 2000))
+                ->setSalePrice(rand(10, 2000))
+                ->setRetailPrice(rand(10, 2000))
+                ->setVat(1)
                 ->setUpdatedAt(new DateTimeImmutable());
 
             if ($i === 2000) {

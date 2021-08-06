@@ -37,7 +37,7 @@ analyze:
 	vendor/bin/twigcs templates/
 	vendor/bin/yaml-lint config/
 	php bin/console lint:xliff translations/
-	vendor/bin/phpcpd --exclude src/Controller/Admin/ src/
+	vendor/bin/phpcpd --exclude src/Controller/Admin/ --exclude src/Entity src/
 	vendor/bin/phpmd src/ text .phpmd.xml
 	php vendor/bin/phpstan analyse -c phpstan.neon src --level 7 --no-progress
 

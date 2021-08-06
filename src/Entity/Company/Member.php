@@ -7,6 +7,7 @@ namespace App\Entity\Company;
 use App\Entity\Address;
 use App\Entity\Key\Account;
 use App\Entity\User\Collaborator;
+use App\Entity\User\Employee;
 use App\Entity\User\Manager;
 use App\Entity\User\SalesPerson;
 use App\Repository\Company\MemberRepository;

@@ -288,7 +288,11 @@ function loadProduits($file){
                         name = '',
                         slug=?,
                         description = '',
-                        image = ''
+                        image = '',
+                        puchase_price=?,
+                        sale_price=?,
+                        retail_price=?,
+                        vat=?
                 ")->execute([
                     $data[0],
                     $data[1],
@@ -296,7 +300,11 @@ function loadProduits($file){
                     $data[7],
                     $data[9],
                     $amount,
-                    $data[0]
+                    $data[0],
+                    $data[19],
+                    $data[20],
+                    $data[16],
+                    $data[3],
                 ]);
 
                 $numberOfProductsAdded++;
@@ -309,7 +317,11 @@ function loadProduits($file){
                         updated_at = ?,
                         reference = ?,
                         active=1,
-                        amount = ?
+                        amount = ?,
+                        puchase_price=?,
+                        sale_price=?,
+                        retail_price=?,
+                        vat=?
                     WHERE id = ?
                 ")->execute([
                     $data[1],
@@ -317,7 +329,11 @@ function loadProduits($file){
                     $data[7],
                     $data[9],
                     $amount,
-                    $data[0]
+                    $data[0],
+                    $data[19],
+                    $data[20],
+                    $data[16],
+                    $data[3],
                 ]);
 
                 $numberOfProductsUpdated++;

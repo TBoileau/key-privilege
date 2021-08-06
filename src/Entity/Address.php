@@ -127,6 +127,11 @@ class Address
         return sprintf('%s %s', $this->getFirstName(), $this->getLastName());
     }
 
+    public function getName(): string
+    {
+        return $this->companyName !== null ? u($this->companyName)->upper()->toString() : $this->getFullName();
+    }
+
     public function getCompanyName(): ?string
     {
         return $this->companyName;

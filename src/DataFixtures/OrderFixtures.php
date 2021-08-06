@@ -68,7 +68,16 @@ class OrderFixtures extends Fixture implements DependentFixtureInterface
                 ->setDeliveryAddress($deliveryAddress)
                 ->setUser($user);
 
-            $order->getLines()->add((new Line())->increaseQuantity()->setOrder($order)->setProduct($product));
+            $order->getLines()->add(
+                (new Line())
+                    ->increaseQuantity()
+                    ->setOrder($order)
+                    ->setProduct($product)
+                    ->setPurchasePrice($product->getPurchasePrice())
+                    ->setSalePrice($product->getSalePrice())
+                    ->setRetailPrice($product->getRetailPrice())
+                    ->setVat($product->getVat())
+            );
 
             $manager->persist($order);
 

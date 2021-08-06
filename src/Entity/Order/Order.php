@@ -129,6 +129,10 @@ class Order
             $line = new Line();
             $line->setOrder($this);
             $line->setProduct($product);
+            $line->setRetailPrice($product->getRetailPrice());
+            $line->setPurchasePrice($product->getPurchasePrice());
+            $line->setVat($product->getVat());
+            $line->setSalePrice($product->getSalePrice());
             $this->lines->add($line);
         }
 
