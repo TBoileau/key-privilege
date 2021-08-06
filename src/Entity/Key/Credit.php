@@ -18,7 +18,7 @@ class Credit extends Transaction
      */
     private ?Transfer $transfer = null;
 
-    public function __construct(Wallet $wallet, int $points, Transfer $transfer)
+    public function __construct(Wallet $wallet, int $points, ?Transfer $transfer = null)
     {
         parent::__construct($wallet, $points);
         $this->transfer = $transfer;

@@ -1,6 +1,8 @@
 <?php
 
 use App\Entity\Address;
+use App\Entity\Key\Credit;
+use App\Entity\Key\Wallet;
 use App\Entity\Order\Line;
 use App\Entity\Order\Order;
 use App\Entity\User\Collaborator;
@@ -8,6 +10,7 @@ use App\Entity\User\Customer;
 use App\Entity\User\Employee;
 use App\Entity\User\Manager;
 use App\Entity\User\SalesPerson;
+use App\Repository\Order\LineRepository;
 use App\Repository\Order\OrderRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -22,6 +25,72 @@ date_default_timezone_set('Europe/Paris');
 /** @var EntityManagerInterface $entityManager */
 $entityManager = require __DIR__ . "/../build/doctrine.php";
 
+$server = new nusoap_server;
+$server->register('pushCommande');
+$server->register('pushFacture');
+
+/**
+ * @param array<array-key, array<string, mixed> $request
+ * @return array<string, int>
+ */
+function pushCommande(array $request): array {
+    global $entityManager;
+
+    /** @var OrderRepository $orderRepository */
+    $orderRepository = $entityManager->getRepository(Order::class);
+
+    /** @var LineRepository $lineRepository */
+    $lineRepository = $entityManager->getRepository(Line::class);
+
+    $response = ["CMD"=>0, "TRACKING" => 0, "EMAIL" => 0,"DOC" => []];
+
+    if (!empty($orders)) {
+        foreach ($request as $requestOrder){
+            /** @var Order $order */
+            $order = $orderRepository->find((int) $requestOrder['IDCOMPTA']);
+
+            if ($order === null) {
+                continue;
+            }
+
+            /** @var array<array-key, Line> $orderLinesCanceled */
+            $linesCanceled = [];
+
+            foreach ($requestOrder['Tracking'] ?? [] as $tracking) {
+                if (in_array($tracking['IDSTATUTLIVR'], [2, 9])) {
+                    $linesCanceled[] = $lineRepository->find((int) $tracking['IDBDCELT_CLIENT']);
+                }
+            }
+
+            foreach ($requestOrder['Expedition'] ?? [] as $delivery) {
+                if ($delivery["LIVRE"]) {
+                    $order->setState("delivered");
+                } else {
+                    $order->setState("on_delivery");
+                }
+            }
+
+            if (count($linesCanceled) === $order->getLines()->count()) {
+                $order->setState("canceled");
+            }
+
+            foreach ($linesCanceled as $line) {
+                $wallet = new Wallet(
+                    $order->getUser()->getAccount(),
+                    new DateTimeImmutable("2 year first day of next month midnight")
+                );
+
+                $credit = new Credit($wallet, $line->getTotal());
+                $credit->setOrder($order);
+                $entityManager->persist($wallet);
+                $entityManager->flush();
+            }
+        }
+    }
+
+    return $response;
+}
+
 $request = Request::createFromGlobals();
 
 if($request->isMethod(Request::METHOD_GET) && $request->get("ACTION") === "getCommandes"){
@@ -29,6 +98,7 @@ if($request->isMethod(Request::METHOD_GET) && $request->get("ACTION") === "getCo
 
     /** @var OrderRepository $orderRepository */
     $orderRepository = $entityManager->getRepository(Order::class);
+
 
     /** @var array<array-key, Order> $orders */
     $orders = $orderRepository->findBy(['state' => 'pending']);
@@ -150,4 +220,6 @@ if($request->isMethod(Request::METHOD_GET) && $request->get("ACTION") === "getCo
     }
 
     (new JsonResponse($response, JsonResponse::HTTP_OK, ["Access-Control-Allow-Origin" => "*"]))->send();
+} else {
+    $server->service($HTTP_RAW_POST_DATA ?? '');
 }
