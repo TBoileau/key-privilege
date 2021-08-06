@@ -7,6 +7,8 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
+use function Symfony\Component\String\u;
+
 /**
  * @ORM\Entity
  */
@@ -77,6 +79,11 @@ class Address
      */
     private ?string $email = null;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private bool $deleted = false;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -95,7 +102,7 @@ class Address
 
     public function getFirstName(): ?string
     {
-        return $this->firstName;
+        return u($this->firstName)->upper()->toString();
     }
 
     public function setFirstName(?string $firstName): Address
@@ -106,13 +113,18 @@ class Address
 
     public function getLastName(): ?string
     {
-        return $this->lastName;
+        return u($this->lastName)->upper()->toString();
     }
 
     public function setLastName(?string $lastName): Address
     {
         $this->lastName = $lastName;
         return $this;
+    }
+
+    public function getFullName(): string
+    {
+        return sprintf('%s %s', $this->getFirstName(), $this->getLastName());
     }
 
     public function getCompanyName(): ?string
@@ -189,6 +201,17 @@ class Address
     public function setEmail(?string $email): self
     {
         $this->email = $email;
+        return $this;
+    }
+
+    public function isDeleted(): bool
+    {
+        return $this->deleted;
+    }
+
+    public function setDeleted(bool $deleted): Address
+    {
+        $this->deleted = $deleted;
         return $this;
     }
 }

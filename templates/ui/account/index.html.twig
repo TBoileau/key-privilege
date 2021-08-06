@@ -112,12 +112,9 @@
                                         </div>
                                     {% endif %}
                                     {% if not is_granted("ROLE_CUSTOMER") and app.user.member.deliveryAddress is not null %}
-                                        <div class="row">
+                                        <div class="row mb-3">
                                             <div class="col-5 text-end">
                                                 Adresse de livraison :
-                                                {% if is_granted("ROLE_MANAGER") %}
-                                                    <a href="{{ path('account_edit_delivery_address') }}" class="btn btn-sm d-block btn-outline-primary">Modifier</a>
-                                                {% endif %}
                                             </div>
                                             <div class="col-7 fw-bold">
                                                 {{ app.user.member.deliveryAddress.firstName }} {{ app.user.member.deliveryAddress.lastName }}<br/>
@@ -136,9 +133,6 @@
                                         <div class="row">
                                             <div class="col-5 text-end">
                                                 Adresse de facturation :
-                                                {% if is_granted("ROLE_MANAGER") %}
-                                                    <a href="{{ path("account_edit_billing_address") }}" class="btn btn-sm d-block btn-outline-primary">Modifier</a>
-                                                {% endif %}
                                             </div>
                                             <div class="col-7 fw-bold">
                                                 {{ app.user.member.billingAddress.firstName }} {{ app.user.member.billingAddress.lastName }}<br/>
@@ -165,6 +159,11 @@
                                 {% endif %}
 
                                 <div class="card-footer text-end p-0 d-flex">
+                                    {% if is_granted("ROLE_MANAGER") %}
+                                        <a href="{{ path("address_list") }}" class="btn d-block btn-outline-primary rounded-0 border-0 w-100 d-flex align-items-center justify-content-center">
+                                            Mes adresses
+                                        </a>
+                                    {% endif %}
                                     <a href="{{ path("contact") }}" class="btn d-block btn-outline-danger rounded-0 border-0 w-100 d-flex align-items-center justify-content-center">
                                         Signaler une erreur
                                     </a>

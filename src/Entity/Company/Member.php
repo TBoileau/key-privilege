@@ -63,6 +63,20 @@ class Member extends Company
      */
     private ?Address $billingAddress = null;
 
+    /**
+     * @var Collection<array-key, Address>
+     * @ORM\ManyToMany(targetEntity=Address::class)
+     * @ORM\JoinTable(name="member_delivery_addresses")
+     */
+    private Collection $deliveryAddresses;
+
+    /**
+     * @var Collection<array-key, Address>
+     * @ORM\ManyToMany(targetEntity=Address::class)
+     * @ORM\JoinTable(name="member_billing_addresses")
+     */
+    private Collection $billingAddresses;
+
     public static function getType(): string
     {
         return "Adhérent";
@@ -77,6 +91,8 @@ class Member extends Company
         $this->managers = new ArrayCollection();
         $this->collaborators = new ArrayCollection();
         $this->salesPersons = new ArrayCollection();
+        $this->deliveryAddresses = new ArrayCollection();
+        $this->billingAddresses = new ArrayCollection();
     }
 
     public function getDeliveryAddress(): ?Address
@@ -145,5 +161,21 @@ class Member extends Company
     public function getAccount(): Account
     {
         return $this->account;
+    }
+
+    /**
+     * @return Collection<array-key, Address>
+     */
+    public function getDeliveryAddresses(): Collection
+    {
+        return $this->deliveryAddresses;
+    }
+
+    /**
+     * @return Collection<array-key, Address>
+     */
+    public function getBillingAddresses(): Collection
+    {
+        return $this->billingAddresses;
     }
 }
