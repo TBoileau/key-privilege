@@ -83,8 +83,41 @@
                                     <div class="alert alert-info">
                                         En validant votre commande, vous serez débité de {{ order.total }} clés.
                                     </div>
-                                    {% if form.address is defined %}
-                                        {{ form_rest(form) }}
+                                    {% if form.deliveryAddress is defined %}
+                                        <div class="row mb-3">
+                                            <div class="col-6">
+                                                {{ form_row(form.deliveryAddress.firstName) }}
+                                            </div>
+                                            <div class="col-6">
+                                                {{ form_row(form.deliveryAddress.lastName) }}
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-6">
+                                                {{ form_row(form.deliveryAddress.professional) }}
+                                            </div>
+                                            <div class="col-6">
+                                                {{ form_row(form.deliveryAddress.companyName) }}
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-12">
+                                                {{ form_row(form.deliveryAddress.streetAddress) }}
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-12">
+                                                {{ form_row(form.deliveryAddress.restAddress) }}
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12 col-md-6 mb-3 mb-md-0">
+                                                {{ form_row(form.deliveryAddress.zipCode) }}
+                                            </div>
+                                            <div class="col-12 col-md-6">
+                                                {{ form_row(form.deliveryAddress.locality) }}
+                                            </div>
+                                        </div>
                                     {% endif %}
                                 </div>
                                 <div class="card-footer text-end p-0">

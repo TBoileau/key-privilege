@@ -20,6 +20,26 @@ class Address
     private ?int $id = null;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    private bool $professional = true;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private ?string $firstName = null;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private ?string $lastName = null;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private ?string $companyName = null;
+
+    /**
      * @ORM\Column(type="text")
      * @Assert\NotBlank
      */
@@ -60,6 +80,50 @@ class Address
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function isProfessional(): bool
+    {
+        return $this->professional;
+    }
+
+    public function setProfessional(bool $professional): Address
+    {
+        $this->professional = $professional;
+        return $this;
+    }
+
+    public function getFirstName(): ?string
+    {
+        return $this->firstName;
+    }
+
+    public function setFirstName(?string $firstName): Address
+    {
+        $this->firstName = $firstName;
+        return $this;
+    }
+
+    public function getLastName(): ?string
+    {
+        return $this->lastName;
+    }
+
+    public function setLastName(?string $lastName): Address
+    {
+        $this->lastName = $lastName;
+        return $this;
+    }
+
+    public function getCompanyName(): ?string
+    {
+        return $this->companyName;
+    }
+
+    public function setCompanyName(?string $companyName): Address
+    {
+        $this->companyName = $companyName;
+        return $this;
     }
 
     public function getStreetAddress(): string

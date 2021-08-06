@@ -11,6 +11,8 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
@@ -54,13 +56,32 @@ class MemberCrudController extends AbstractCrudController
             ->hideOnForm();
         yield AssociationField::new('organization', 'Groupement')
             ->setCrudController(OrganizationCrudController::class);
-        yield FormField::addPanel('Adresse');
-        yield TextField::new("address.streetAddress", "Adresse")->hideOnIndex();
-        yield TextField::new("address.restAddress", "Complément d'adresse")->hideOnIndex();
-        yield TextField::new("address.zipCode", "Code postal")->hideOnIndex();
-        yield TextField::new("address.locality", "Ville")->hideOnIndex();
-        yield EmailField::new("address.email", "Email")->hideOnIndex();
-        yield TextField::new("address.phone", "Téléphone")->hideOnIndex();
+        yield FormField::addPanel('Adresse de livraison');
+        yield TextField::new("deliveryAddress.firstName", "Prénom")->hideOnIndex();
+        yield TextField::new("deliveryAddress.lastName", "Nom")->hideOnIndex();
+        yield ChoiceField::new("deliveryAddress.professional", "Adresse professionnelle ?")
+            ->setChoices([true => 'Oui', false => 'Non'])
+            ->hideOnIndex();
+        yield TextField::new("deliveryAddress.companyName", "Raison sociale")->hideOnIndex();
+        yield TextField::new("deliveryAddress.streetAddress", "Adresse")->hideOnIndex();
+        yield TextField::new("deliveryAddress.restAddress", "Complément d'adresse")->hideOnIndex();
+        yield TextField::new("deliveryAddress.zipCode", "Code postal")->hideOnIndex();
+        yield TextField::new("deliveryAddress.locality", "Ville")->hideOnIndex();
+        yield EmailField::new("deliveryAddress.email", "Email")->hideOnIndex();
+        yield TextField::new("deliveryAddress.phone", "Téléphone")->hideOnIndex();
+        yield FormField::addPanel('Adresse de facturation');
+        yield TextField::new("billingAddress.firstName", "Prénom")->hideOnIndex();
+        yield TextField::new("billingAddress.lastName", "Nom")->hideOnIndex();
+        yield ChoiceField::new("billingAddress.professional", "Adresse professionnelle ?")
+            ->setChoices([true => 'Oui', false => 'Non'])
+            ->hideOnIndex();
+        yield TextField::new("billingAddress.companyName", "Raison sociale")->hideOnIndex();
+        yield TextField::new("billingAddress.streetAddress", "Adresse")->hideOnIndex();
+        yield TextField::new("billingAddress.restAddress", "Complément d'adresse")->hideOnIndex();
+        yield TextField::new("billingAddress.zipCode", "Code postal")->hideOnIndex();
+        yield TextField::new("billingAddress.locality", "Ville")->hideOnIndex();
+        yield EmailField::new("billingAddress.email", "Email")->hideOnIndex();
+        yield TextField::new("billingAddress.phone", "Téléphone")->hideOnIndex();
         yield FormField::addPanel('Accès');
         yield AssociationField::new("clients", "Clients")
             ->setTemplatePath("admin/field/member_clients.html.twig")

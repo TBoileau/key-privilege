@@ -54,11 +54,24 @@ class MemberTest extends WebTestCase
             "Member[name]" => "Raison sociale",
             "Member[companyNumber]" => "44306184100047",
             "Member[organization]" => 1,
-            "Member[address_streetAddress]" => "1 rue de la mairie",
-            "Member[address_zipCode]" => "75000",
-            "Member[address_locality]" => "Paris",
-            "Member[address_phone]" => "0123456789",
-            "Member[address_email]" => "email@email.com"
+            "Member[deliveryAddress_firstName]" => "John",
+            "Member[deliveryAddress_lastName]" => "Doe",
+            "Member[deliveryAddress_companyName]" => "Société",
+            "Member[deliveryAddress_professional]" => "Oui",
+            "Member[deliveryAddress_streetAddress]" => "1 rue de la mairie",
+            "Member[deliveryAddress_zipCode]" => "75000",
+            "Member[deliveryAddress_locality]" => "Paris",
+            "Member[deliveryAddress_phone]" => "0123456789",
+            "Member[deliveryAddress_email]" => "email@email.com",
+            "Member[billingAddress_firstName]" => "John",
+            "Member[billingAddress_lastName]" => "Doe",
+            "Member[billingAddress_companyName]" => "Société",
+            "Member[billingAddress_professional]" => "Oui",
+            "Member[billingAddress_streetAddress]" => "1 rue de la mairie",
+            "Member[billingAddress_zipCode]" => "75000",
+            "Member[billingAddress_locality]" => "Paris",
+            "Member[billingAddress_phone]" => "0123456789",
+            "Member[billingAddress_email]" => "email@email.com"
         ]);
 
         $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
@@ -78,11 +91,24 @@ class MemberTest extends WebTestCase
             "Member[name]" => "Raison sociale",
             "Member[companyNumber]" => "42878504200105",
             "Member[organization]" => 1,
-            "Member[address_streetAddress]" => "1 rue de la mairie",
-            "Member[address_zipCode]" => "75000",
-            "Member[address_locality]" => "Paris",
-            "Member[address_phone]" => "0123456789",
-            "Member[address_email]" => "email@email.com"
+            "Member[deliveryAddress_firstName]" => "John",
+            "Member[deliveryAddress_lastName]" => "Doe",
+            "Member[deliveryAddress_companyName]" => "Société",
+            "Member[deliveryAddress_professional]" => "Oui",
+            "Member[deliveryAddress_streetAddress]" => "1 rue de la mairie",
+            "Member[deliveryAddress_zipCode]" => "75000",
+            "Member[deliveryAddress_locality]" => "Paris",
+            "Member[deliveryAddress_phone]" => "0123456789",
+            "Member[deliveryAddress_email]" => "email@email.com",
+            "Member[billingAddress_firstName]" => "John",
+            "Member[billingAddress_lastName]" => "Doe",
+            "Member[billingAddress_companyName]" => "Société",
+            "Member[billingAddress_professional]" => "Oui",
+            "Member[billingAddress_streetAddress]" => "1 rue de la mairie",
+            "Member[billingAddress_zipCode]" => "75000",
+            "Member[billingAddress_locality]" => "Paris",
+            "Member[billingAddress_phone]" => "0123456789",
+            "Member[billingAddress_email]" => "email@email.com"
         ]);
 
         $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);

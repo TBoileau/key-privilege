@@ -57,7 +57,12 @@ class Order
     /**
      * @ORM\ManyToOne(targetEntity=Address::class, cascade={"persist"})
      */
-    private ?Address $address = null;
+    private ?Address $deliveryAddress = null;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Address::class, cascade={"persist"})
+     */
+    private ?Address $billingAddress = null;
 
     public function __construct()
     {
@@ -141,14 +146,27 @@ class Order
         );
     }
 
-    public function getAddress(): ?Address
+    public function getDeliveryAddress(): ?Address
     {
-        return $this->address;
+        return $this->deliveryAddress;
     }
 
-    public function setAddress(?Address $address): self
+    public function setDeliveryAddress(?Address $deliveryAddress): self
     {
-        $this->address = $address;
+        $this->deliveryAddress = $deliveryAddress;
+
+        return $this;
+    }
+
+    public function getBillingAddress(): ?Address
+    {
+        return $this->billingAddress;
+    }
+
+    public function setBillingAddress(?Address $billingAddress): self
+    {
+        $this->billingAddress = $billingAddress;
+
         return $this;
     }
 

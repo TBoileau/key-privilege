@@ -12,6 +12,8 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -60,9 +62,17 @@ class ClientCrudController extends AbstractCrudController
             ->setTemplatePath("admin/field/client_customers.html.twig")
             ->onlyOnDetail();
         yield FormField::addPanel('Adresse');
+        yield TextField::new("address.firstName", "Prénom")->hideOnIndex();
+        yield TextField::new("address.lastName", "Nom")->hideOnIndex();
+        yield ChoiceField::new("address.professional", "Adresse professionnelle ?")
+            ->setChoices([true => 'Oui', false => 'Non'])
+            ->hideOnIndex();
+        yield TextField::new("address.companyName", "Raison sociale")->hideOnIndex();
         yield TextField::new("address.streetAddress", "Adresse")->hideOnIndex();
         yield TextField::new("address.restAddress", "Complément d'adresse")->hideOnIndex();
         yield TextField::new("address.zipCode", "Code postal")->hideOnIndex();
         yield TextField::new("address.locality", "Ville")->hideOnIndex();
+        yield EmailField::new("address.email", "Email")->hideOnIndex();
+        yield TextField::new("address.phone", "Téléphone")->hideOnIndex();
     }
 }

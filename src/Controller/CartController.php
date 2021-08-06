@@ -83,15 +83,22 @@ class CartController extends AbstractController
             && $form->isSubmitted()
             && $form->isValid()
         ) {
+            if ($user instanceof Customer) {
+                $order->setBillingAddress($user->getClient()->getMember()->getBillingAddress());
+            } else {
+                /** @var Manager|Collaborator|SalesPerson $user */
+                $order->setBillingAddress($user->getMember()->getBillingAddress());
+            }
+
             if (!($user instanceof Customer && $user->isManualDelivery())) {
                 if ($user instanceof Customer) {
-                    $address = $user->getClient()->getMember()->getAddress();
+                    $address = $user->getClient()->getMember()->getDeliveryAddress();
                 } else {
-                    /** @var SalesPerson|Collaborator|Manager $user */
-                    $address = $user->getMember()->getAddress();
+                    /** @var Manager|Collaborator|SalesPerson $user */
+                    $address = $user->getMember()->getDeliveryAddress();
                 }
 
-                $order->setAddress($address);
+                $order->setDeliveryAddress($address);
             }
             $orderStateMachine->apply($order, "valid_cart");
             $this->getDoctrine()->getManager()->flush();

@@ -54,9 +54,14 @@ class Member extends Company
     private ?Account $account = null;
 
     /**
-     * @ORM\OneToOne(targetEntity=Address::class, cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity=Address::class, cascade={"persist"})
      */
-    private ?Address $address = null;
+    private ?Address $deliveryAddress = null;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Address::class, cascade={"persist"})
+     */
+    private ?Address $billingAddress = null;
 
     public static function getType(): string
     {
@@ -66,16 +71,32 @@ class Member extends Company
     public function __construct()
     {
         $this->account = new Account();
-        $this->address = new Address();
+        $this->billingAddress = new Address();
+        $this->deliveryAddress = new Address();
         $this->clients = new ArrayCollection();
         $this->managers = new ArrayCollection();
         $this->collaborators = new ArrayCollection();
         $this->salesPersons = new ArrayCollection();
     }
 
-    public function getAddress(): Address
+    public function getDeliveryAddress(): ?Address
     {
-        return $this->address;
+        return $this->deliveryAddress;
+    }
+
+    public function setDeliveryAddress(?Address $deliveryAddress): void
+    {
+        $this->deliveryAddress = $deliveryAddress;
+    }
+
+    public function getBillingAddress(): ?Address
+    {
+        return $this->billingAddress;
+    }
+
+    public function setBillingAddress(?Address $billingAddress): void
+    {
+        $this->billingAddress = $billingAddress;
     }
 
     public function getOrganization(): ?Organization
