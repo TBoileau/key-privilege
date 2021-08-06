@@ -57,31 +57,31 @@ class MemberCrudController extends AbstractCrudController
         yield AssociationField::new('organization', 'Groupement')
             ->setCrudController(OrganizationCrudController::class);
         yield FormField::addPanel('Adresse de livraison');
-        yield TextField::new("deliveryAddress.firstName", "Prénom")->hideOnIndex();
-        yield TextField::new("deliveryAddress.lastName", "Nom")->hideOnIndex();
+        yield TextField::new("deliveryAddress.firstName", "Prénom")->hideOnIndex()->onlyWhenCreating();
+        yield TextField::new("deliveryAddress.lastName", "Nom")->hideOnIndex()->onlyWhenCreating();
         yield ChoiceField::new("deliveryAddress.professional", "Adresse professionnelle ?")
             ->setChoices([true => 'Oui', false => 'Non'])
-            ->hideOnIndex();
-        yield TextField::new("deliveryAddress.companyName", "Raison sociale")->hideOnIndex();
-        yield TextField::new("deliveryAddress.streetAddress", "Adresse")->hideOnIndex();
-        yield TextField::new("deliveryAddress.restAddress", "Complément d'adresse")->hideOnIndex();
-        yield TextField::new("deliveryAddress.zipCode", "Code postal")->hideOnIndex();
-        yield TextField::new("deliveryAddress.locality", "Ville")->hideOnIndex();
-        yield EmailField::new("deliveryAddress.email", "Email")->hideOnIndex();
-        yield TextField::new("deliveryAddress.phone", "Téléphone")->hideOnIndex();
+            ->hideOnIndex()->onlyWhenCreating();
+        yield TextField::new("deliveryAddress.companyName", "Raison sociale")->hideOnIndex()->onlyWhenCreating();
+        yield TextField::new("deliveryAddress.streetAddress", "Adresse")->hideOnIndex()->onlyWhenCreating();
+        yield TextField::new("deliveryAddress.restAddress", "Complément d'adresse")->hideOnIndex()->onlyWhenCreating();
+        yield TextField::new("deliveryAddress.zipCode", "Code postal")->hideOnIndex()->onlyWhenCreating();
+        yield TextField::new("deliveryAddress.locality", "Ville")->hideOnIndex()->onlyWhenCreating();
+        yield EmailField::new("deliveryAddress.email", "Email")->hideOnIndex()->onlyWhenCreating();
+        yield TextField::new("deliveryAddress.phone", "Téléphone")->hideOnIndex()->onlyWhenCreating();
         yield FormField::addPanel('Adresse de facturation');
-        yield TextField::new("billingAddress.firstName", "Prénom")->hideOnIndex();
-        yield TextField::new("billingAddress.lastName", "Nom")->hideOnIndex();
+        yield TextField::new("billingAddress.firstName", "Prénom")->hideOnIndex()->onlyWhenCreating();
+        yield TextField::new("billingAddress.lastName", "Nom")->hideOnIndex()->onlyWhenCreating();
         yield ChoiceField::new("billingAddress.professional", "Adresse professionnelle ?")
             ->setChoices([true => 'Oui', false => 'Non'])
-            ->hideOnIndex();
-        yield TextField::new("billingAddress.companyName", "Raison sociale")->hideOnIndex();
-        yield TextField::new("billingAddress.streetAddress", "Adresse")->hideOnIndex();
-        yield TextField::new("billingAddress.restAddress", "Complément d'adresse")->hideOnIndex();
-        yield TextField::new("billingAddress.zipCode", "Code postal")->hideOnIndex();
-        yield TextField::new("billingAddress.locality", "Ville")->hideOnIndex();
-        yield EmailField::new("billingAddress.email", "Email")->hideOnIndex();
-        yield TextField::new("billingAddress.phone", "Téléphone")->hideOnIndex();
+            ->hideOnIndex()->onlyWhenCreating();
+        yield TextField::new("billingAddress.companyName", "Raison sociale")->hideOnIndex()->onlyWhenCreating();
+        yield TextField::new("billingAddress.streetAddress", "Adresse")->hideOnIndex()->onlyWhenCreating();
+        yield TextField::new("billingAddress.restAddress", "Complément d'adresse")->hideOnIndex()->onlyWhenCreating();
+        yield TextField::new("billingAddress.zipCode", "Code postal")->hideOnIndex()->onlyWhenCreating();
+        yield TextField::new("billingAddress.locality", "Ville")->hideOnIndex()->onlyWhenCreating();
+        yield EmailField::new("billingAddress.email", "Email")->hideOnIndex()->onlyWhenCreating();
+        yield TextField::new("billingAddress.phone", "Téléphone")->hideOnIndex()->onlyWhenCreating();
         yield FormField::addPanel('Accès');
         yield AssociationField::new("clients", "Clients")
             ->setTemplatePath("admin/field/member_clients.html.twig")
