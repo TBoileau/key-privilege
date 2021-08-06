@@ -54,10 +54,15 @@ class ClientTest extends WebTestCase
             "Client[companyNumber]" => "44306184100047",
             "Client[member]" => 2,
             "Client[salesPerson]" => 6,
+            "Client[address_firstName]" => "John",
+            "Client[address_lastName]" => "Doe",
+            "Client[address_companyName]" => "Société",
+            "Client[address_professional]" => "Oui",
             "Client[address_streetAddress]" => "1 rue de la mairie",
-            "Client[address_restAddress]" => "Batiment A",
             "Client[address_zipCode]" => "75000",
-            "Client[address_locality]" => "Paris"
+            "Client[address_locality]" => "Paris",
+            "Client[address_phone]" => "0123456789",
+            "Client[address_email]" => "email@email.com",
         ]);
 
         $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
@@ -78,10 +83,15 @@ class ClientTest extends WebTestCase
             "Client[companyNumber]" => "42878504200105",
             "Client[member]" => 2,
             "Client[salesPerson]" => 6,
+            "Client[address_firstName]" => "John",
+            "Client[address_lastName]" => "Doe",
+            "Client[address_companyName]" => "Société",
+            "Client[address_professional]" => "Oui",
             "Client[address_streetAddress]" => "1 rue de la mairie",
-            "Client[address_restAddress]" => "Batiment A",
             "Client[address_zipCode]" => "75000",
-            "Client[address_locality]" => "Paris"
+            "Client[address_locality]" => "Paris",
+            "Client[address_phone]" => "0123456789",
+            "Client[address_email]" => "email@email.com",
         ]);
 
         $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);

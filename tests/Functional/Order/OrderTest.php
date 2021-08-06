@@ -111,7 +111,6 @@ class OrderTest extends WebTestCase
         $order = $entityManager->getRepository(Order::class)->find($order->getId());
 
         $this->assertEquals("pending", $order->getState());
-        $this->assertEquals($manager->getMember()->getAddress(), $order->getAddress());
         $this->assertEquals(
             $orignalBalance - $order->getTotal(),
             $order->getUser()->getAccount()->getBalance()
@@ -188,11 +187,14 @@ class OrderTest extends WebTestCase
         $client->clickLink("Panier");
 
         $client->submitForm("Commander", [
-            "order[address][streetAddress]" => "10 rue de la mairie",
-            "order[address][locality]" => "Chartres",
-            "order[address][zipCode]" => "28000",
-            "order[address][email]" => "new+email@email.com",
-            "order[address][phone]" => "0213465798"
+            "order[deliveryAddress][firstName]" => "John",
+            "order[deliveryAddress][lastName]" => "Doe",
+            "order[deliveryAddress][companyName]" => "Société",
+            "order[deliveryAddress][professional]" => 1,
+            "order[deliveryAddress][streetAddress]" => "1 rue de la mairie",
+            "order[deliveryAddress][restAddress]" => "Batiment A",
+            "order[deliveryAddress][zipCode]" => "75000",
+            "order[deliveryAddress][locality]" => "Paris"
         ]);
 
         $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
@@ -204,11 +206,6 @@ class OrderTest extends WebTestCase
         $order = $entityManager->getRepository(Order::class)->find($order->getId());
 
         $this->assertEquals("pending", $order->getState());
-        $this->assertEquals("10 rue de la mairie", $order->getAddress()->getStreetAddress());
-        $this->assertEquals("Chartres", $order->getAddress()->getLocality());
-        $this->assertEquals("28000", $order->getAddress()->getZipCode());
-        $this->assertEquals("0213465798", $order->getAddress()->getPhone());
-        $this->assertEquals("new+email@email.com", $order->getAddress()->getEmail());
         $this->assertEquals(
             $orignalBalance - $order->getTotal(),
             $order->getUser()->getAccount()->getBalance()
@@ -315,7 +312,6 @@ class OrderTest extends WebTestCase
             $orignalBalance - $order->getTotal(),
             $order->getUser()->getAccount()->getBalance()
         );
-        $this->assertEquals($customer->getClient()->getMember()->getAddress(), $order->getAddress());
 
         $client->followRedirect();
 

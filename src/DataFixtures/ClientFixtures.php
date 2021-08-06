@@ -26,6 +26,8 @@ class ClientFixtures extends Fixture implements DependentFixtureInterface
                     ->setMember($salesPerson->getMember())
                     ->setSalesPerson($salesPerson);
                 $client->getAddress()
+                    ->setFirstName("John")
+                    ->setLastName("Doe")
                     ->setLocality("Paris")
                     ->setZipCode("75000")
                     ->setEmail("email@email.com")
@@ -34,6 +36,9 @@ class ClientFixtures extends Fixture implements DependentFixtureInterface
                 $client
                     ->setName($faker->company)
                     ->setCompanyNumber("44306184100047");
+
+                $client->getAddress()->setCompanyName($client->getName());
+
                 $manager->persist($client);
             }
         }

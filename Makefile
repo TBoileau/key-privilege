@@ -18,6 +18,12 @@ acceptance-tests:
 functional-tests:
 	php bin/phpunit --testsuite functional
 
+.PHONY: fix
+fix:
+	npx eslint assets/ --fix
+	npx stylelint "assets/styles/**/*.scss" --fix
+	php bin/phpcbf
+
 .PHONY: vendor
 analyze:
 	npm audit --production

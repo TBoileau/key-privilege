@@ -87,12 +87,18 @@ class MigrateCommand extends Command
             $member->setOrganization($organizations[$originalMember["organization_id"]]);
             $member->setName($originalMember["name"]);
             $member->setCompanyNumber($originalMember["siret"]);
-            $member->getAddress()->setPhone($originalAddress["phone"]);
-            $member->getAddress()->setStreetAddress($originalAddress["street_address"]);
-            $member->getAddress()->setEmail($originalAddress["email"]);
-            $member->getAddress()->setZipCode($originalAddress["zip_code"]);
-            $member->getAddress()->setLocality($originalAddress["locality"]);
-            $member->getAddress()->setRestAddress($originalAddress["rest_address"]);
+            $member->getBillingAddress()->setPhone($originalAddress["phone"]);
+            $member->getBillingAddress()->setStreetAddress($originalAddress["street_address"]);
+            $member->getBillingAddress()->setEmail($originalAddress["email"]);
+            $member->getBillingAddress()->setZipCode($originalAddress["zip_code"]);
+            $member->getBillingAddress()->setLocality($originalAddress["locality"]);
+            $member->getBillingAddress()->setRestAddress($originalAddress["rest_address"]);
+            $member->getDeliveryAddress()->setPhone($originalAddress["phone"]);
+            $member->getDeliveryAddress()->setStreetAddress($originalAddress["street_address"]);
+            $member->getDeliveryAddress()->setEmail($originalAddress["email"]);
+            $member->getDeliveryAddress()->setZipCode($originalAddress["zip_code"]);
+            $member->getDeliveryAddress()->setLocality($originalAddress["locality"]);
+            $member->getDeliveryAddress()->setRestAddress($originalAddress["rest_address"]);
             $this->entityManager->persist($member);
             $members[$id] = $member;
         }

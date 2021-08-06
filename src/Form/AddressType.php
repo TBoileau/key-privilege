@@ -6,6 +6,7 @@ namespace App\Form;
 
 use App\Entity\Address;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -16,6 +17,26 @@ class AddressType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            ->add("professional", ChoiceType::class, [
+                "label" => "Adresse professionelle ?",
+                "choices" => [
+                    "Oui" => true,
+                    "Non" => false,
+                ]
+            ])
+            ->add("firstName", TextType::class, [
+                "label" => "Prénom :",
+                "empty_data" => ""
+            ])
+            ->add("lastName", TextType::class, [
+                "label" => "Nom :",
+                "empty_data" => ""
+            ])
+            ->add("companyName", TextType::class, [
+                'required' => false,
+                "label" => "Raison sociale :",
+                "empty_data" => ""
+            ])
             ->add("streetAddress", TextType::class, [
                 "label" => "Adresse :",
                 "empty_data" => ""

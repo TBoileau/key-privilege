@@ -2,14 +2,18 @@
 
 namespace App\Controller;
 
+use App\Entity\Address;
+use App\Entity\User\Manager;
 use App\Entity\User\User;
 use App\Form\Account\EditPasswordType;
 use App\Form\Account\EditPersonalInformationsType;
+use App\Form\AddressType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * @Route("/mon-compte")
@@ -67,6 +71,56 @@ class AccountController extends AbstractController
         }
 
         return $this->render('ui/account/edit_personal_informations.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @IsGranted("ROLE_MANAGER")
+     * @Route("/modifier-adresse-facturation", name="account_edit_billing_address")
+     */
+    public function editBillingAddress(Request $request): Response
+    {
+        $address = new Address();
+
+        $form = $this->createForm(AddressType::class, $address)->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            /** @var Manager $user */
+            $user = $this->getUser();
+            $user->getMember()->setBillingAddress($address);
+            $this->getDoctrine()->getManager()->flush();
+            $this->addFlash("success", "L'adresse de facturation a été modifiée avec succès.");
+
+            return $this->redirectToRoute("account_index");
+        }
+
+        return $this->render('ui/account/edit_billing_address.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @IsGranted("ROLE_MANAGER")
+     * @Route("/modifier-adresse-livraison", name="account_edit_delivery_address")
+     */
+    public function editDeliveryAddress(Request $request): Response
+    {
+        $address = new Address();
+
+        $form = $this->createForm(AddressType::class, $address)->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            /** @var Manager $user */
+            $user = $this->getUser();
+            $user->getMember()->setDeliveryAddress($address);
+            $this->getDoctrine()->getManager()->flush();
+            $this->addFlash("success", "L'adresse de livraison a été modifiée avec succès.");
+
+            return $this->redirectToRoute("account_index");
+        }
+
+        return $this->render('ui/account/edit_billing_address.html.twig', [
             'form' => $form->createView()
         ]);
     }

@@ -51,10 +51,12 @@ class OrderFixtures extends Fixture implements DependentFixtureInterface
          */
         foreach ($users as $k => $user) {
             if ($user instanceof Customer) {
-                $address = $user->getClient()->getMember()->getAddress();
+                $deliveryAddress = $user->getClient()->getMember()->getDeliveryAddress();
+                $billingAddress = $user->getClient()->getMember()->getBillingAddress();
             } else {
                 /** @var SalesPerson|Collaborator|Manager $user */
-                $address = $user->getMember()->getAddress();
+                $deliveryAddress = $user->getMember()->getDeliveryAddress();
+                $billingAddress = $user->getMember()->getBillingAddress();
             }
 
             $token = new UsernamePasswordToken($user, [], "main", $user->getRoles());
@@ -62,7 +64,8 @@ class OrderFixtures extends Fixture implements DependentFixtureInterface
             $this->tokenStorage->setToken($token);
 
             $order = (new Order())
-                ->setAddress($address)
+                ->setBillingAddress($billingAddress)
+                ->setDeliveryAddress($deliveryAddress)
                 ->setUser($user);
 
             $order->getLines()->add((new Line())->increaseQuantity()->setOrder($order)->setProduct($product));

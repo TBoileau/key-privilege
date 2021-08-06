@@ -16,7 +16,10 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Filter\DateTimeFilter;
@@ -65,5 +68,32 @@ class OrderCrudController extends AbstractCrudController
         yield OrderStateField::new('state', 'State');
         yield LinesField::new("lines", "Lignes de commande")->onlyOnDetail();
         yield TransactionsField::new("transactions", "Transactions")->onlyOnDetail();
+
+        yield FormField::addPanel('Adresse de livraison');
+        yield TextField::new("deliveryAddress.firstName", "Prénom")->onlyOnDetail();
+        yield TextField::new("deliveryAddress.lastName", "Nom")->onlyOnDetail();
+        yield ChoiceField::new("deliveryAddress.professional", "Adresse professionnelle ?")
+            ->setChoices([true => 'Oui', false => 'Non'])
+            ->onlyOnDetail();
+        yield TextField::new("deliveryAddress.companyName", "Raison sociale")->onlyOnDetail();
+        yield TextField::new("deliveryAddress.streetAddress", "Adresse")->onlyOnDetail();
+        yield TextField::new("deliveryAddress.restAddress", "Complément d'adresse")->onlyOnDetail();
+        yield TextField::new("deliveryAddress.zipCode", "Code postal")->onlyOnDetail();
+        yield TextField::new("deliveryAddress.locality", "Ville")->onlyOnDetail();
+        yield EmailField::new("deliveryAddress.email", "Email")->onlyOnDetail();
+        yield TextField::new("deliveryAddress.phone", "Téléphone")->onlyOnDetail();
+        yield FormField::addPanel('Adresse de facturation');
+        yield TextField::new("billingAddress.firstName", "Prénom")->onlyOnDetail();
+        yield TextField::new("billingAddress.lastName", "Nom")->onlyOnDetail();
+        yield ChoiceField::new("billingAddress.professional", "Adresse professionnelle ?")
+            ->setChoices([true => 'Oui', false => 'Non'])
+            ->onlyOnDetail();
+        yield TextField::new("billingAddress.companyName", "Raison sociale")->onlyOnDetail();
+        yield TextField::new("billingAddress.streetAddress", "Adresse")->onlyOnDetail();
+        yield TextField::new("billingAddress.restAddress", "Complément d'adresse")->onlyOnDetail();
+        yield TextField::new("billingAddress.zipCode", "Code postal")->onlyOnDetail();
+        yield TextField::new("billingAddress.locality", "Ville")->onlyOnDetail();
+        yield EmailField::new("billingAddress.email", "Email")->onlyOnDetail();
+        yield TextField::new("billingAddress.phone", "Téléphone")->onlyOnDetail();
     }
 }
