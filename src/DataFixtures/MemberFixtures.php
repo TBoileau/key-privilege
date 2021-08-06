@@ -43,6 +43,8 @@ class MemberFixtures extends Fixture implements DependentFixtureInterface
                 ->setEmail("email@email.com")
                 ->setPhone("0123456789")
                 ->setStreetAddress("1 rue de la mairie");
+            $member->getDeliveryAddresses()->add($member->getDeliveryAddress());
+            $member->getBillingAddresses()->add($member->getBillingAddress());
             $manager->persist($member);
             $this->addReference(sprintf("member_%d", $i), $member);
         }
