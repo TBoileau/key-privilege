@@ -13,7 +13,7 @@ use App\Entity\User\Manager;
 use App\Entity\User\SalesPerson;
 use App\Form\Key\PurchaseType;
 use App\Form\Key\TransferType;
-use App\Pdf\GeneratorInterface;
+use App\Pdf\Generator;
 use App\Repository\Key\AccountRepository;
 use App\UseCase\TransferPointsInterface;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -142,7 +142,7 @@ class KeyController extends AbstractController
     public function purchase(
         Request $request,
         MailerInterface $mailer,
-        GeneratorInterface $generator,
+        Generator $generator,
         string $publicDir
     ): Response {
         /** @var Manager $manager */

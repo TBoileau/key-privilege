@@ -177,6 +177,9 @@
     "icanhazstring/composer-unused": {
         "version": "0.7.5"
     },
+    "jurosh/pdf-merge": {
+        "version": "2.1.0"
+    },
     "justinrainbow/json-schema": {
         "version": "5.2.10"
     },
@@ -400,6 +403,12 @@
         "files": [
             "./config/packages/sensio_framework_extra.yaml"
         ]
+    },
+    "setasign/fpdf": {
+        "version": "1.8.4"
+    },
+    "setasign/fpdi": {
+        "version": "v2.3.6"
     },
     "squizlabs/php_codesniffer": {
         "version": "3.0",

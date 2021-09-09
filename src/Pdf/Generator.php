@@ -4,16 +4,18 @@ declare(strict_types=1);
 
 namespace App\Pdf;
 
+use App\Entity\Order\Order;
+use Jurosh\PDFMerge\PDFMerger;
 use Knp\Snappy\Pdf;
 use Twig\Environment;
 
-final class Generator implements GeneratorInterface
+class Generator implements GeneratorInterface
 {
     private Pdf $pdf;
 
     private Environment $twig;
 
-    private string $publicDir;
+    protected string $publicDir;
 
     public function __construct(Pdf $pdf, Environment $twig, string $publicDir)
     {
@@ -25,15 +27,25 @@ final class Generator implements GeneratorInterface
     /**
      * @param array<string, mixed> $data
      */
-    public function generate(string $filename, string $view, array $data = []): string
+    protected function generatePage(string $filename, string $view, array $data = []): string
     {
-        $html = $this->twig->render($view, $data);
+        if (is_file(sprintf('%s/pdf/%s.pdf', $this->publicDir, $filename))) {
+            unlink(sprintf('%s/pdf/%s.pdf', $this->publicDir, $filename));
+        }
 
         $this->pdf->generateFromHtml(
-            $html,
+            $this->twig->render($view, $data),
             sprintf('%s/pdf/%s.pdf', $this->publicDir, $filename)
         );
 
         return sprintf('pdf/%s.pdf', $filename);
+    }
+
+    /**
+     * @param array<string, mixed> $data
+     */
+    public function generate(string $filename, string $view, array $data = []): string
+    {
+        return $this->generatePage($filename, $view, $data);
     }
 }

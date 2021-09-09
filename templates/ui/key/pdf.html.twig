@@ -22,15 +22,13 @@
                                 <br/>
                                 28000 CHARTRES
                                 <br/>
-                                SARL au capital de 50.000,00 €
+                                SARL au capital de 200.000,00 €
                                 <br/>
                                 R.C.S CHARTRES 453 809 071
                                 <br/>
                                 N° TVA intra : FR 21 453 809 071
                                 <br/>
                                 N.A.F.: 7311Z
-                                <br/>
-                                Télécopie : 02 37 34 47 30
                                 <br/>
                                 Email : comptabilite@ateliersduroi.com
                             </td>
@@ -123,7 +121,7 @@
                         </tr>
                         {% if purchase.internReference is not null %}
                             <tr>
-                                <td class="text-center" colspan="3">Votre N° de commande / Votre référence</td>
+                                <td class="text-center" colspan="3">Votre N° de commande interne / Votre référence</td>
                                 <td class="text-center">{{ purchase.internReference }}</td>
                             </tr>
                         {% endif %}
@@ -149,8 +147,8 @@
                         <td class="text-center">CLE1</td>
                         <td class="text-center">Achat de clés dans le cadre du programe Key Privilege</td>
                         <td class="text-center">1,00 €</td>
-                        <td class="text-center">{{ (purchase.priceExcludingTax / 100)|format_currency('EUR') }}</td>
                         <td class="text-center">{{ purchase.points }}</td>
+                        <td class="text-center">{{ (purchase.priceExcludingTax / 100)|format_currency('EUR', locale='fr') }}</td>
                         <td class="text-center">1</td>
                     </tr>
                     </tbody>
@@ -171,7 +169,7 @@
                     <tbody>
                         <tr>
                             <td class="text-center">1</td>
-                            <td class="text-center">{{ (purchase.priceExcludingTax / 100)|format_currency('EUR') }}</td>
+                            <td class="text-center">{{ (purchase.priceExcludingTax / 100)|format_currency('EUR', locale='fr') }}</td>
                             <td class="text-center">20%</td>
                             <td class="text-center">{{ (purchase.tax / 100)|format_currency('EUR', locale='fr') }}</td>
                         </tr>
@@ -191,11 +189,11 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td class="text-center">{{ (purchase.priceExcludingTax / 100)|format_currency('EUR') }}</td>
+                            <td class="text-center">{{ (purchase.priceExcludingTax / 100)|format_currency('EUR', locale='fr') }}</td>
                             <td class="text-center">{{ 0|format_currency('EUR') }}</td>
-                            <td class="text-center">{{ (purchase.priceIncludingTax / 100)|format_currency('EUR') }}</td>
+                            <td class="text-center">{{ (purchase.priceIncludingTax / 100)|format_currency('EUR', locale='fr') }}</td>
                             <td class="text-center">{{ 0|format_currency('EUR') }}</td>
-                            <td class="text-center">{{ (purchase.priceIncludingTax / 100)|format_currency('EUR') }}</td>
+                            <td class="text-center">{{ (purchase.priceIncludingTax / 100)|format_currency('EUR', locale='fr') }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -240,7 +238,7 @@
                         <tbody>
                             <tr>
                                 <td class="text-center">A réception</td>
-                                <td class="text-center">{{ (purchase.priceIncludingTax / 100)|format_currency('EUR') }}</td>
+                                <td class="text-center">{{ (purchase.priceIncludingTax / 100)|format_currency('EUR', locale='fr') }}</td>
                                 <td class="text-center">Virement</td>
                             </tr>
                         </tbody>

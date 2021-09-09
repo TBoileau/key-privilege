@@ -11,6 +11,7 @@ use App\Entity\User\Customer;
 use App\Entity\User\Manager;
 use App\Entity\User\SalesPerson;
 use App\Pdf\Generator as PdfGenerator;
+use App\Pdf\OrderGenerator;
 use App\Zendesk\DataCollector\TicketCollector;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -33,11 +34,7 @@ class OrderTest extends WebTestCase
         $order = $entityManager->find(Order::class, 1);
 
         /** @var PdfGenerator $generator */
-        $generator = $client->getContainer()->get(PdfGenerator::class);
-
-        if (is_file(__DIR__ . '/../../../public/pdf/test.pdf')) {
-            unlink(__DIR__ . '/../../../public/pdf/test.pdf');
-        }
+        $generator = $client->getContainer()->get(OrderGenerator::class);
 
         $generator->generate('test', 'ui/order/pdf.html.twig', ['order' => $order]);
 

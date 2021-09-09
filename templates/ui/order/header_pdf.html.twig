@@ -87,52 +87,5 @@
                 </table>
             </div>
         </div>
-        <div class="row mb-4">
-            <div class="col-12">
-                <table class="table table-bordered" width="100%">
-                    <thead>
-                        <tr>
-                            <th class="text-center fw-bold bg-light">Référence</th>
-                            <th class="text-center fw-bold bg-light">Désignation produit</th>
-                            <th class="text-center fw-bold bg-light">Valeur</th>
-                            <th class="text-center fw-bold bg-light">Quantité</th>
-                            <th class="text-center fw-bold bg-light">Total</th>
-                        </tr>
-                    </thead>
-                    <tbody class="small">
-                        {% for line in lines %}
-                            <tr>
-                                <td class="text-center">{{ line.product.reference }}</td>
-                                <td class="text-center">{{ line.product.name }} - {{ line.product.brand.name }} ({{ line.product.reference }})</td>
-                                <td class="text-center">{{ line.amount }}</td>
-                                <td class="text-center">{{ line.quantity }}</td>
-                                <td class="text-center">{{ line.total }}</td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <th class="text-right" colspan="4">Solde avant commande</th>
-                            <td class="text-center">{{ order.user.account.balance + order.total }}</td>
-                        </tr>
-                        <tr>
-                            <th class="text-right" colspan="4">Total commande</th>
-                            <td class="text-center">{{ order.total }}</td>
-                        </tr>
-                        <tr>
-                            <th class="text-right" colspan="4">Solde restant</th>
-                            <td class="text-center">{{ order.user.account.balance }}</td>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                <p class="text-end">
-                    {{ page }}/{{ pages }}
-                </p>
-            </div>
-        </div>
     </div>
 {% endblock %}

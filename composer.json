@@ -16,6 +16,7 @@
         "doctrine/orm": "^2.8",
         "easycorp/easyadmin-bundle": "^3.2",
         "gedmo/doctrine-extensions": "^3.0",
+        "jurosh/pdf-merge": "^2.1",
         "knplabs/knp-snappy-bundle": "^1.8",
         "league/csv": "^9.7",
         "nusphere/nusoap": "^0.9.6",

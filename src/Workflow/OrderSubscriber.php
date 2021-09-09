@@ -8,6 +8,7 @@ use App\Entity\Key\Debit;
 use App\Entity\Order\Order;
 use App\Entity\User\User;
 use App\Pdf\GeneratorInterface;
+use App\Pdf\OrderGenerator;
 use App\Repository\Order\OrderRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -20,7 +21,7 @@ class OrderSubscriber implements EventSubscriberInterface
 
     private GeneratorInterface $generator;
 
-    public function __construct(TokenStorageInterface $tokenStorage, GeneratorInterface $generator)
+    public function __construct(TokenStorageInterface $tokenStorage, OrderGenerator $generator)
     {
         $this->tokenStorage = $tokenStorage;
         $this->generator = $generator;
