@@ -91,6 +91,8 @@ class PurchaseTest extends WebTestCase
         $client->followRedirect();
 
         $this->assertRouteSame("key_index");
+
+        $this->assertFileExists(sprintf(__DIR__ . '/../../../public/pdf/%s.pdf', $purchase->getReference()));
     }
 
     /**

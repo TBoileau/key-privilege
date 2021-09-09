@@ -7,6 +7,7 @@ namespace App\Workflow;
 use App\Entity\Key\Debit;
 use App\Entity\Order\Order;
 use App\Entity\User\User;
+use App\Pdf\GeneratorInterface;
 use App\Repository\Order\OrderRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -17,9 +18,12 @@ class OrderSubscriber implements EventSubscriberInterface
 {
     private TokenStorageInterface $tokenStorage;
 
-    public function __construct(TokenStorageInterface $tokenStorage)
+    private GeneratorInterface $generator;
+
+    public function __construct(TokenStorageInterface $tokenStorage, GeneratorInterface $generator)
     {
         $this->tokenStorage = $tokenStorage;
+        $this->generator = $generator;
     }
 
     /**
@@ -57,6 +61,8 @@ class OrderSubscriber implements EventSubscriberInterface
                 break;
             }
         }
+
+        $this->generator->generate($order->getReference(), 'ui/order/pdf.html.twig', ['order' => $order]);
     }
 
     public function onGuardValidCart(GuardEvent $event): void

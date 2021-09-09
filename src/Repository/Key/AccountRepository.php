@@ -16,7 +16,7 @@ use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @template T
- * @extends ServiceEntityRepository<T>
+ * @extends ServiceEntityRepository<Account>
  */
 class AccountRepository extends ServiceEntityRepository
 {

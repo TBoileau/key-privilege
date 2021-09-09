@@ -63,7 +63,7 @@ class Account implements Stringable
     /**
      * @ORM\OneToOne(targetEntity=Member::class, mappedBy="account")
      */
-    private ?Member $member;
+    private ?Member $member = null;
 
     public function __construct()
     {

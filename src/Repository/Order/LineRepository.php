@@ -12,7 +12,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Line[]    findAll()
  * @method Line[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  * @template T
- * @extends ServiceEntityRepository<T>
+ * @extends ServiceEntityRepository<Line>
  */
 class LineRepository extends ServiceEntityRepository
 {

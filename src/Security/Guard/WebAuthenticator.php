@@ -53,7 +53,7 @@ class WebAuthenticator extends AbstractFormLoginAuthenticator implements Passwor
     }
 
     /**
-     * @return array<string, string>
+     * @return array<string, bool|float|int|string|null>
      */
     public function getCredentials(Request $request): array
     {

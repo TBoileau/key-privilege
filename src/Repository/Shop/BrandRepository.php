@@ -12,7 +12,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Brand[]    findAll()
  * @method Brand[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  * @template T
- * @extends ServiceEntityRepository<T>
+ * @extends ServiceEntityRepository<Brand>
  */
 class BrandRepository extends ServiceEntityRepository
 {
