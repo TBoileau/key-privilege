@@ -145,4 +145,10 @@ class Account implements Stringable
         }
         return sprintf("Société : %s", $this->member->getName());
     }
+
+    public function setMember(?Member $member): Account
+    {
+        $this->member = $member;
+        return $this;
+    }
 }

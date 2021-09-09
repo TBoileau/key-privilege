@@ -86,6 +86,7 @@ class Member extends Company
     public function __construct()
     {
         $this->account = new Account();
+        $this->account->setMember($this);
         $this->billingAddress = new Address();
         $this->deliveryAddress = new Address();
         $this->clients = new ArrayCollection();

@@ -6,9 +6,8 @@ namespace App\Tests\Functional\Key;
 
 use App\Entity\Company\Member;
 use App\Entity\Key\Purchase;
-use App\Entity\User\Customer;
 use App\Entity\User\Manager;
-use App\Entity\User\SalesPerson;
+use App\Pdf\Generator as PdfGenerator;
 use Doctrine\ORM\EntityManagerInterface;
 use Generator;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -18,6 +17,28 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class PurchaseTest extends WebTestCase
 {
+    public function testGeneratePdf(): void
+    {
+        $client = static::createClient();
+
+        /** @var EntityManagerInterface $entityManager */
+        $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
+
+        /** @var Purchase $purchase */
+        $purchase = $entityManager->find(Purchase::class, 1);
+
+        /** @var PdfGenerator $generator */
+        $generator = $client->getContainer()->get(PdfGenerator::class);
+
+        if (is_file(__DIR__ . '/../../../public/pdf/test.pdf')) {
+            unlink(__DIR__ . '/../../../public/pdf/test.pdf');
+        }
+
+        $generator->generate('test', 'ui/key/pdf.html.twig', ['purchase' => $purchase]);
+
+        $this->assertFileExists(__DIR__ . '/../../../public/pdf/test.pdf');
+    }
+
     public function testAsManagerIfPurchaseKeysIsSuccessful(): void
     {
         $client = static::createClient();
