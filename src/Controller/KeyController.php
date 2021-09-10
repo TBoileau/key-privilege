@@ -150,6 +150,8 @@ class KeyController extends AbstractController
 
         $purchase = new Purchase();
 
+        $purchase->setManager($manager);
+
         if ($manager->getMembers()->count() === 1) {
             $purchase->setAccount($manager->getMember()->getAccount());
         }

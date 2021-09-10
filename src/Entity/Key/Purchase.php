@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace App\Entity\Key;
 
 use App\Entity\Address;
-use App\Entity\Company\Member;
+use App\Entity\User\Manager;
+use App\Repository\Key\PurchaseRepository;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass=PurchaseRepository::class)
  */
 class Purchase extends Transaction
 {
@@ -47,6 +48,11 @@ class Purchase extends Transaction
      */
     private string $mode;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Manager::class)
+     */
+    private ?Manager $manager = null;
+
     public function __construct()
     {
     }
@@ -66,7 +72,16 @@ class Purchase extends Transaction
         return $this;
     }
 
+    public function getManager(): ?Manager
+    {
+        return $this->manager;
+    }
 
+    public function setManager(?Manager $manager): Purchase
+    {
+        $this->manager = $manager;
+        return $this;
+    }
 
     public function setAccount(Account $account): self
     {
