@@ -226,7 +226,7 @@ function purchaseToArray(Purchase $purchase): array
         "PAUHT" => 1,
         "PVUHT" => 1,
         "VALEUR" => 1,
-        "PPGC" => 1,
+        "PPGC" => 1.2,
         "IDBDC" => 100000 + $purchase->getId(),
         "QTE" => $purchase->getPoints(),
         "REFERENCE" => 'CLE1',
@@ -319,10 +319,10 @@ if($request->isMethod(Request::METHOD_GET) && $request->get("ACTION") === "getCo
 
     $row = 0;
 
-//    foreach($orders as $order) {
-//        $response[$row] = orderToArray($order);
-//        $row++;
-//    }
+    foreach($orders as $order) {
+        $response[$row] = orderToArray($order);
+        $row++;
+    }
 
     /** @var PurchaseRepository $purchaseRepository */
     $purchaseRepository = $entityManager->getRepository(Purchase::class);
