@@ -74,7 +74,7 @@ class OrderSubscriber implements EventSubscriberInterface
         /** @var User $user */
         $user = $this->tokenStorage->getToken()->getUser();
 
-        if ($user->getAccount()->getBalance() < $order->getTotal()) {
+        if ($user->getAccount()->getBalance() < $order->getTotal() || $user->getDeliveryAddress() === null) {
             $event->setBlocked(true);
         }
     }

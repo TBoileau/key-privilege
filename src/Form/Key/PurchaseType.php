@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Form\Key;
 
+use App\Entity\Address;
 use App\Entity\Key\Account;
 use App\Entity\Key\Purchase;
 use App\Entity\User\Manager;
@@ -41,6 +42,32 @@ class PurchaseType extends AbstractType
 
         /** @var Manager $manager */
         $manager = $options["manager"];
+
+        $builder->add("deliveryAddress", EntityType::class, [
+            'label' => 'Adresse de livraison',
+            "class" => Address::class,
+            "choice_label" => fn (Address $address) => sprintf(
+                "%s - %s %s %s",
+                $address->getFullName(),
+                $address->getStreetAddress(),
+                $address->getLocality(),
+                $address->getLocality()
+            ),
+            "choices" => $manager->getDeliveryAddresses()
+        ]);
+
+        $builder->add("billingAddress", EntityType::class, [
+            'label' => 'Adresse de livraison',
+            "class" => Address::class,
+            "choice_label" => fn (Address $address) => sprintf(
+                "%s - %s %s %s",
+                $address->getFullName(),
+                $address->getStreetAddress(),
+                $address->getLocality(),
+                $address->getLocality()
+            ),
+            "choices" => $manager->getBillingAddresses()
+        ]);
 
         if ($manager->getMembers()->count() > 1) {
             $builder->add("account", EntityType::class, [

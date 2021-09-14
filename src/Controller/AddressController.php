@@ -5,7 +5,12 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\Address;
+use App\Entity\User\Collaborator;
+use App\Entity\User\Customer;
+use App\Entity\User\Employee;
 use App\Entity\User\Manager;
+use App\Entity\User\SalesPerson;
+use App\Entity\User\User;
 use App\Form\AddressType;
 use App\Form\NewAddressType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -17,7 +22,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @Route("/mon-compte/mes-adresses")
- * @IsGranted("ROLE_MANAGER")
+ * @IsGranted("ROLE_ADDRESS")
  */
 class AddressController extends AbstractController
 {
@@ -36,33 +41,53 @@ class AddressController extends AbstractController
     {
         $address = new Address();
 
-        $form = $this->createForm(NewAddressType::class, $address)->handleRequest($request);
+        /** @var SalesPerson|Collaborator|Manager|Customer $user */
+        $user = $this->getUser();
+
+        if (!$user instanceof Manager) {
+            $request->query->set('type', 'delivery');
+        }
+
+        $form = $this->createForm(
+            NewAddressType::class,
+            $address,
+            ['type' => $request->query->get('type', null)]
+        )->handleRequest($request);
+
+        $types = [
+            "billing" => [
+                'default' => static fn (Manager $manager) => $manager
+                    ->getMember()
+                    ->setBillingAddress($address),
+                'collection' => static fn (Manager $manager) => $manager
+                    ->getMember()
+                    ->getBillingAddresses()
+                    ->add($address),
+            ],
+            "delivery" => [
+                'default' => static fn (User $user) => $user->setDeliveryAddress($address),
+                'collection' => static fn (User $user) => $user->getDeliveryAddresses()->add($address),
+            ]
+        ];
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var Manager $user */
-            $user = $this->getUser();
+            if ($form->has('type')) {
+                /** @var string $type */
+                $type = $form->get("type")->getData();
+                /** @var boolean $default */
+                $default = $form->get("default")->getData();
 
-            /** @var string $type */
-            $type = $form->get("type")->getData();
+                /** @var Manager $manager */
+                $manager = $user;
 
-            /** @var boolean $default */
-            $default = $form->get("default")->getData();
+                $types[$type]["collection"]($manager);
 
-            $types = [
-                "billing" => [
-                    'default' => fn () => $user->getMember()->setBillingAddress($address),
-                    'collection' => fn () => $user->getMember()->getBillingAddresses()->add($address),
-                ],
-                "delivery" => [
-                    'default' => fn () => $user->getMember()->setDeliveryAddress($address),
-                    'collection' => fn () => $user->getMember()->getDeliveryAddresses()->add($address),
-                ]
-            ];
-
-            $types[$type]["collection"]();
-
-            if ($default) {
-                $types[$type]["default"]();
+                if ($default) {
+                    $types[$type]["default"]($manager);
+                }
+            } else {
+                $types["delivery"]["collection"]($user);
+                $types["delivery"]["default"]($user);
             }
 
             $this->getDoctrine()->getManager()->flush();
@@ -86,8 +111,8 @@ class AddressController extends AbstractController
         if ($user->getMember()->getBillingAddresses()->contains($address)) {
             $user->getMember()->setBillingAddress($address);
         }
-        if ($user->getMember()->getDeliveryAddresses()->contains($address)) {
-            $user->getMember()->setDeliveryAddress($address);
+        if ($user->getDeliveryAddresses()->contains($address)) {
+            $user->setDeliveryAddress($address);
         }
         $this->getDoctrine()->getManager()->flush();
         $this->addFlash('success', 'L\'adresse par défaut a été modifiée avec succès.');

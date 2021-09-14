@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity\User;
 
+use App\Entity\Address;
 use App\Entity\Rules;
 use App\Entity\RulesAgreement;
 use App\Entity\Key\Account;
@@ -118,11 +119,24 @@ abstract class User implements UserInterface, Stringable
      */
     protected Account $account;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Address::class, cascade={"persist"})
+     */
+    private ?Address $deliveryAddress = null;
+
+    /**
+     * @var Collection<array-key, Address>
+     * @ORM\ManyToMany(targetEntity=Address::class)
+     * @ORM\JoinTable(name="member_delivery_addresses")
+     */
+    private Collection $deliveryAddresses;
+
     public function __construct()
     {
         $this->rulesAgreements = new ArrayCollection();
         $this->registeredAt = new DateTimeImmutable();
         $this->account = new Account();
+        $this->deliveryAddresses = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -343,5 +357,23 @@ abstract class User implements UserInterface, Stringable
     public function getAccount(): Account
     {
         return $this->account;
+    }
+
+    public function getDeliveryAddress(): ?Address
+    {
+        return $this->deliveryAddress;
+    }
+
+    public function setDeliveryAddress(?Address $deliveryAddress): void
+    {
+        $this->deliveryAddress = $deliveryAddress;
+    }
+
+    /**
+     * @return Collection<array-key, Address>
+     */
+    public function getDeliveryAddresses(): Collection
+    {
+        return $this->deliveryAddresses;
     }
 }

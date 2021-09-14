@@ -13,67 +13,69 @@
             <section class="section">
                 <h1 class="section-header">
                     <span class="icon icon-xl icon-access me-2"></span>
-                    Gestion des adresses ({{ app.user.member.deliveryAddresses|filter(a => not a.deleted)|length + app.user.member.billingAddresses|filter(a => not a.deleted)|length }})
+                    Gestion des adresses
                 </h1>
                 <a href="{{ path("address_create") }}" class="btn btn-primary">Créer une nouvelle adresse</a>
                 <div class="section-body">
-                    <div class="card mb-5">
-                        <h2 class="card-header">Liste des adresses de facturation</h2>
-                        <div class="card-body table-responsive p-0">
-                            <table class="table table-hover mb-0" data-role="accessList">
-                                <thead>
-                                    <tr>
-                                        <th class="text-center">Contact</th>
-                                        <th class="text-center">Email</th>
-                                        <th class="text-center">Téléphone</th>
-                                        <th class="text-center">Adresse professionelle ?</th>
-                                        <th class="text-center">Adresse</th>
-                                        <th class="text-center">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for address in app.user.member.billingAddresses|filter(a => not a.deleted) %}
-                                        <tr class="{{ address == app.user.member.billingAddress ? "bg-success" }}">
-                                            <td class="text-center">{{ address.fullName }}</td>
-                                            <td class="text-center">{{ address.email }}</td>
-                                            <td class="text-center">{{ address.phone }}</td>
-                                            <td class="text-center">
-                                                {% if address.professional %}
-                                                    {{ address.companyName }}
-                                                {% else %}
-                                                    <span class="bagde badge-danger">Non</span>
-                                                {% endif %}
-                                            </td>
-                                            <td class="text-center">
-                                                {{ address.streetAddress }}
-                                                {% if address.restAddress is not null %}
-                                                    <br>{{ address.restAddress }}
-                                                {% endif %}
-                                                <br>{{ address.zipCode }} - {{ address.locality }}
-                                            </td>
-                                            <td class="text-center">
-                                                {% if address != app.user.member.billingAddress %}
-                                                    <div class="dropdown">
-                                                        <button class="btn btn-sm btn-primary dropdown-toggle" type="button" id="dropdown-{{ address.id }}" data-bs-toggle="dropdown" aria-expanded="false">
-                                                            <span class="fas fa-cogs"></span>
-                                                        </button>
-                                                        <ul class="dropdown-menu" aria-labelledby="dropdown-{{ address.id }}">
-                                                            <li><a class="dropdown-item" href="{{ path("address_default", {id: address.id}) }}">Adresse par défaut</a></li>
-                                                            <li><a class="dropdown-item" href="{{ path("address_delete", {id: address.id}) }}">Supprimer</a></li>
-                                                        </ul>
-                                                    </div>
-                                                {% endif %}
-                                            </td>
-                                        </tr>
-                                    {% else %}
+                    {% if is_granted('ROLE_MANAGER') %}
+                        <div class="card mb-5">
+                            <h2 class="card-header">Liste des adresses de facturation</h2>
+                            <div class="card-body table-responsive p-0">
+                                <table class="table table-hover mb-0" data-role="accessList">
+                                    <thead>
                                         <tr>
-                                            <td class="text-center" colspan="8">Aucun résultat</td>
+                                            <th class="text-center">Contact</th>
+                                            <th class="text-center">Email</th>
+                                            <th class="text-center">Téléphone</th>
+                                            <th class="text-center">Adresse professionelle ?</th>
+                                            <th class="text-center">Adresse</th>
+                                            <th class="text-center">Actions</th>
                                         </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                        {% for address in app.user.member.billingAddresses|filter(a => not a.deleted) %}
+                                            <tr class="{{ address == app.user.member.billingAddress ? "bg-success" }}">
+                                                <td class="text-center">{{ address.fullName }}</td>
+                                                <td class="text-center">{{ address.email }}</td>
+                                                <td class="text-center">{{ address.phone }}</td>
+                                                <td class="text-center">
+                                                    {% if address.professional %}
+                                                        {{ address.companyName }}
+                                                    {% else %}
+                                                        <span class="bagde badge-danger">Non</span>
+                                                    {% endif %}
+                                                </td>
+                                                <td class="text-center">
+                                                    {{ address.streetAddress }}
+                                                    {% if address.restAddress is not null %}
+                                                        <br>{{ address.restAddress }}
+                                                    {% endif %}
+                                                    <br>{{ address.zipCode }} - {{ address.locality }}
+                                                </td>
+                                                <td class="text-center">
+                                                    {% if address != app.user.member.billingAddress %}
+                                                        <div class="dropdown">
+                                                            <button class="btn btn-sm btn-primary dropdown-toggle" type="button" id="dropdown-{{ address.id }}" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                <span class="fas fa-cogs"></span>
+                                                            </button>
+                                                            <ul class="dropdown-menu" aria-labelledby="dropdown-{{ address.id }}">
+                                                                <li><a class="dropdown-item" href="{{ path("address_default", {id: address.id}) }}">Adresse par défaut</a></li>
+                                                                <li><a class="dropdown-item" href="{{ path("address_delete", {id: address.id}) }}">Supprimer</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    {% endif %}
+                                                </td>
+                                            </tr>
+                                        {% else %}
+                                            <tr>
+                                                <td class="text-center" colspan="8">Aucun résultat</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
-                    </div>
+                    {% endif %}
                     <div class="card">
                         <h2 class="card-header">Liste des adresses de livraison</h2>
                         <div class="card-body table-responsive p-0">
@@ -89,8 +91,8 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {% for address in app.user.member.deliveryAddresses|filter(a => not a.deleted) %}
-                                    <tr class="{{ address == app.user.member.deliveryAddress ? "bg-success" }}">
+                                {% for address in app.user.deliveryAddresses|filter(a => not a.deleted) %}
+                                    <tr class="{{ address == app.user.deliveryAddress ? "bg-success" }}">
                                         <td class="text-center">{{ address.fullName }}</td>
                                         <td class="text-center">{{ address.email }}</td>
                                         <td class="text-center">{{ address.phone }}</td>
@@ -109,7 +111,7 @@
                                             <br>{{ address.zipCode }} - {{ address.locality }}
                                         </td>
                                         <td class="text-center">
-                                            {% if address != app.user.member.deliveryAddress %}
+                                            {% if address != app.user.deliveryAddress %}
                                                 <div class="dropdown">
                                                     <button class="btn btn-sm btn-primary dropdown-toggle" type="button" id="dropdown-{{ address.id }}" data-bs-toggle="dropdown" aria-expanded="false">
                                                         <span class="fas fa-cogs"></span>

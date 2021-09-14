@@ -148,6 +148,14 @@ class KeyController extends AbstractController
         /** @var Manager $manager */
         $manager = $this->getUser();
 
+        if ($manager->getDeliveryAddress() === null || $manager->getMember()->getBillingAddress() === null) {
+            $this->addFlash(
+                'danger',
+                'Vous devez avoir saisi au moins une adresse de facturation et de livraison.'
+            );
+            return $this->redirectToRoute('address_list');
+        }
+
         $purchase = new Purchase();
 
         $purchase->setManager($manager);

@@ -34,7 +34,7 @@ class OrderFixtures extends Fixture implements DependentFixtureInterface
 
     public function getDependencies(): array
     {
-        return [CustomerFixtures::class, ShopFixtures::class];
+        return [KeyFixtures::class, ShopFixtures::class];
     }
 
     public function load(ObjectManager $manager): void
@@ -50,12 +50,11 @@ class OrderFixtures extends Fixture implements DependentFixtureInterface
          * @var User $user
          */
         foreach ($users as $k => $user) {
+            $deliveryAddress = $user->getDeliveryAddress();
             if ($user instanceof Customer) {
-                $deliveryAddress = $user->getClient()->getMember()->getDeliveryAddress();
                 $billingAddress = $user->getClient()->getMember()->getBillingAddress();
             } else {
                 /** @var SalesPerson|Collaborator|Manager $user */
-                $deliveryAddress = $user->getMember()->getDeliveryAddress();
                 $billingAddress = $user->getMember()->getBillingAddress();
             }
 
