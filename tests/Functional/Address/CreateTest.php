@@ -27,7 +27,7 @@ class CreateTest extends WebTestCase
         /** @var Manager $user */
         $user = $entityManager->find(User::class, 1);
 
-        $originalAddress = $user->getMember()->getDeliveryAddress();
+        $originalAddress = $user->getDeliveryAddress();
 
         $client->loginUser($user);
 
@@ -60,7 +60,7 @@ class CreateTest extends WebTestCase
         /** @var Manager $user */
         $user = $entityManager->find(User::class, 1);
 
-        $this->assertNotEquals($originalAddress, $user->getMember()->getDeliveryAddress());
+        $this->assertNotEquals($originalAddress, $user->getDeliveryAddress());
     }
 
     public function testIfCreateBillingAddressIsSuccessful(): void
