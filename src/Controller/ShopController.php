@@ -67,7 +67,7 @@ class ShopController extends AbstractController
             $filter
         );
 
-        $pages = ceil(count($products) / $request->query->getInt("limit", 9));
+        $pages = ceil(count($products) / $request->query->getInt("limit", 18));
 
         return $this->render("ui/shop/index.html.twig", [
             "universes" => $universeRepository->getUniverses(),
