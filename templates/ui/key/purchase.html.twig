@@ -25,6 +25,16 @@
                                 <div class="card-body">
                                     {{ form_errors(form) }}
                                     <div class="row mb-3">
+                                        <div class="col-12">
+                                            {{ form_row(form.billingAddress) }}
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-12">
+                                            {{ form_row(form.deliveryAddress) }}
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
                                         <div class="col-12 col-md-6">
                                             {{ form_row(form.points) }}
                                         </div>

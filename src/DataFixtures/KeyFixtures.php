@@ -4,10 +4,14 @@ declare(strict_types=1);
 
 namespace App\DataFixtures;
 
+use App\Entity\Address;
 use App\Entity\Company\Company;
 use App\Entity\Company\Member;
 use App\Entity\Key\Purchase;
+use App\Entity\User\Collaborator;
+use App\Entity\User\Customer;
 use App\Entity\User\Manager;
+use App\Entity\User\SalesPerson;
 use App\Entity\User\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -17,7 +21,7 @@ class KeyFixtures extends Fixture implements DependentFixtureInterface
 {
     public function getDependencies(): array
     {
-        return [CustomerFixtures::class];
+        return [UserFixtures::class];
     }
 
     public function load(ObjectManager $manager): void
@@ -36,11 +40,15 @@ class KeyFixtures extends Fixture implements DependentFixtureInterface
                 ->setPoints(5000)
                 ->setState("accepted")
                 ->prepare();
+            $purchase->setBillingAddress($member->getBillingAddress());
+            /** @var Manager $user */
+            $user = $member->getManagers()->first();
+            $purchase->setDeliveryAddress($user->getDeliveryAddress());
             $purchase->getWallet()->addTransaction($purchase);
             $manager->persist($purchase);
         }
 
-        /** @var array<User> $users */
+        /** @var array<Customer|SalesPerson|Collaborator|Manager> $users */
         $users = $manager->getRepository(User::class)->findAll();
 
         foreach ($users as $user) {
@@ -50,6 +58,18 @@ class KeyFixtures extends Fixture implements DependentFixtureInterface
                 ->setPoints(7000)
                 ->setState("accepted")
                 ->prepare();
+            $purchase->setDeliveryAddress($user->getDeliveryAddress());
+
+            if ($user instanceof Customer) {
+                /** @var Address $address */
+                $address = $user->getClient()->getMember()->getBillingAddress();
+                $purchase->setBillingAddress($address);
+            } elseif (in_array($user::class, [Collaborator::class, SalesPerson::class, Manager::class])) {
+                /** @var Address $address */
+                $address = $user->getMember()->getBillingAddress();
+                $purchase->setBillingAddress($address);
+            }
+
             $purchase->getWallet()->addTransaction($purchase);
             $manager->persist($purchase);
         }
