@@ -1,0 +1,296 @@
+{% extends 'layouts/pdf.html.twig' %}
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="row mb-5">
+            <div class="col">
+                <h1 style="font-size: 3rem;">Bon de commande N°{{ purchase.reference }}</h1>
+            </div>
+        </div>
+        <div class="row mb-4">
+            <div class="col-4">
+                <table class="table table-bordered" width="100%">
+                    <thead>
+                        <tr>
+                            <th class="text-center fw-bold bg-light">Les Ateliers du R.O.I.</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-left small">
+                                18 BIS RUE DU MARECHAL LECLERC
+                                <br/>
+                                28000 CHARTRES
+                                <br/>
+                                SARL au capital de 200.000,00 €
+                                <br/>
+                                R.C.S CHARTRES 453 809 071
+                                <br/>
+                                N° TVA intra : FR 21 453 809 071
+                                <br/>
+                                N.A.F.: 7311Z
+                                <br/>
+                                Email : comptabilite@ateliersduroi.com
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-4">
+                <table class="table table-bordered" width="100%">
+                    <thead>
+                        <tr>
+                            <th class="text-center fw-bold bg-light">Adresse de facturation</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-left small">
+                                {{ purchase.account.member.name }}
+                                <br/>
+                                {{ purchase.billingAddress.fullName }}
+                                <br/>
+                                {{ purchase.billingAddress.streetAddress }}
+                                <br/>
+                                {% if purchase.billingAddress.restAddress is not null %}
+                                    {{ purchase.billingAddress.restAddress }}
+                                    <br/>
+                                {% endif %}
+                                {{ purchase.billingAddress.zipCode }} {{ purchase.billingAddress.locality }}
+                                <br/>
+                                Téléphone : {{ purchase.billingAddress.phone }}
+                                <br/>
+                                Email : {{ purchase.billingAddress.email }}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-4">
+                <table class="table table-bordered" width="100%">
+                    <thead>
+                        <tr>
+                            <th class="text-center fw-bold bg-light">Adresse de livraison</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-left small">
+                                {{ purchase.account.member.name }}
+                                <br/>
+                                {{ purchase.deliveryAddress.fullName }}
+                                <br/>
+                                {{ purchase.deliveryAddress.streetAddress }}
+                                <br/>
+                                {% if purchase.deliveryAddress.restAddress is not null %}
+                                    {{ purchase.deliveryAddress.restAddress }}
+                                    <br/>
+                                {% endif %}
+                                {{ purchase.deliveryAddress.zipCode }} {{ purchase.deliveryAddress.locality }}
+                                <br/>
+                                Téléphone : {{ purchase.deliveryAddress.phone }}
+                                <br/>
+                                Email : {{ purchase.deliveryAddress.email }}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row mb-4">
+            <div class="col-12">
+                <table class="table table-bordered" width="100%">
+                    <thead>
+                    <tr>
+                        <th class="text-center fw-bold bg-light">Numéro</th>
+                        <th class="text-center fw-bold bg-light">Date</th>
+                        <th class="text-center fw-bold bg-light">Client</th>
+                        <th class="text-center fw-bold bg-light">Dossier</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-center">{{ purchase.reference }}</td>
+                            <td class="text-center">{{ purchase.createdAt|date("d/m/Y") }}</td>
+                            <td class="text-center">{{ "CL%06d"|format(purchase.account.member.id) }}</td>
+                            <td class="text-center">Key Privilege 2021</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center" colspan="3">Référence à indiquer en cas de règlement par virement</td>
+                            <td class="text-center">{{ purchase.reference }}</td>
+                        </tr>
+                        {% if purchase.internReference is not null %}
+                            <tr>
+                                <td class="text-center" colspan="3">Votre N° de commande interne / Votre référence</td>
+                                <td class="text-center">{{ purchase.internReference }}</td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row mb-4">
+            <div class="col-12">
+                <table class="table table-bordered" width="100%">
+                    <thead>
+                        <tr>
+                            <th class="text-center fw-bold bg-light">Référence</th>
+                            <th class="text-center fw-bold bg-light">Désignation</th>
+                            <th class="text-center fw-bold bg-light">Prix Unitaire HT</th>
+                            <th class="text-center fw-bold bg-light">Quantité</th>
+                            <th class="text-center fw-bold bg-light">Montant HT</th>
+                            <th class="text-center fw-bold bg-light">Code TVA</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td class="text-center">CLE1</td>
+                        <td class="text-center">Achat de clés dans le cadre du programe Key Privilege</td>
+                        <td class="text-center">1,00 €</td>
+                        <td class="text-center">{{ purchase.points }}</td>
+                        <td class="text-center">{{ (purchase.priceExcludingTax / 100)|format_currency('EUR', locale='fr') }}</td>
+                        <td class="text-center">1</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row mb-4">
+            <div class="col-5">
+                <table class="table table-bordered" width="100%">
+                    <thead>
+                        <tr>
+                            <th class="text-center fw-bold bg-light">Code TVA</th>
+                            <th class="text-center fw-bold bg-light">Base</th>
+                            <th class="text-center fw-bold bg-light">Taux</th>
+                            <th class="text-center fw-bold bg-light">Montant</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-center">1</td>
+                            <td class="text-center">{{ (purchase.priceExcludingTax / 100)|format_currency('EUR', locale='fr') }}</td>
+                            <td class="text-center">20%</td>
+                            <td class="text-center">{{ (purchase.tax / 100)|format_currency('EUR', locale='fr') }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-7">
+                <table class="table table-bordered" width="100%">
+                    <thead>
+                        <tr>
+                            <th class="text-center fw-bold bg-light">Total HT</th>
+                            <th class="text-center fw-bold bg-light">Remise</th>
+                            <th class="text-center fw-bold bg-light">Total TTC</th>
+                            <th class="text-center fw-bold bg-light">Acompte</th>
+                            <th class="text-center fw-bold bg-light">NET A PAYER</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-center">{{ (purchase.priceExcludingTax / 100)|format_currency('EUR', locale='fr') }}</td>
+                            <td class="text-center">{{ 0|format_currency('EUR') }}</td>
+                            <td class="text-center">{{ (purchase.priceIncludingTax / 100)|format_currency('EUR', locale='fr') }}</td>
+                            <td class="text-center">{{ 0|format_currency('EUR') }}</td>
+                            <td class="text-center">{{ (purchase.priceIncludingTax / 100)|format_currency('EUR', locale='fr') }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% if purchase.mode == 'Virement' %}
+            <div class="row">
+                <div class="col-6">
+                    <table class="table table-bordered" width="100%">
+                        <thead>
+                            <tr>
+                                <th class="text-center fw-bold bg-light">Référence BANQUE POPULAIRE VAL DE FRANCE</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="text-left">
+                                    Titulaire du compte SARL LES ATELIERS DU R.O.I.
+                                    <br/>
+                                    RIB : 18707 00001 30421623924 94
+                                    <br/>
+                                    IBAN : FR76 1870 7000 0130 4216 2392 494
+                                    <br/>
+                                    BIC : CCBPFRPPVER
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-6">
+                    <table class="table table-bordered" width="100%">
+                        <thead>
+                            <tr>
+                                <th class="text-center fw-bold bg-light" colspan="3">Condition de règlement</th>
+                            </tr>
+                            <tr>
+                                <th class="text-center fw-bold">Date du règlement</th>
+                                <th class="text-center fw-bold">Montant en €</th>
+                                <th class="text-center fw-bold">Mode de règlement</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="text-center">A réception</td>
+                                <td class="text-center">{{ (purchase.priceIncludingTax / 100)|format_currency('EUR', locale='fr') }}</td>
+                                <td class="text-center">Virement</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        {% else %}
+            <div class="row">
+                <div class="col-6">
+                    <table class="table table-bordered" width="100%">
+                        <thead>
+                        <tr>
+                            <th class="text-center fw-bold bg-light">Référence BANQUE POPULAIRE VAL DE FRANCE</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td class="text-left">
+                                Titulaire du compte SARL LES ATELIERS DU R.O.I.
+                                <br/>
+                                RIB : 18707 00001 30421623924 94
+                                <br/>
+                                IBAN : FR76 1870 7000 0130 4216 2392 494
+                                <br/>
+                                BIC : CCBPFRPPVER
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-6">
+                    <table class="table table-bordered" width="100%">
+                        <thead>
+                        <tr>
+                            <th class="text-center fw-bold bg-light" colspan="3">Condition de règlement</th>
+                        </tr>
+                        <tr>
+                            <th class="text-center fw-bold">Date du règlement</th>
+                            <th class="text-center fw-bold">Montant en €</th>
+                            <th class="text-center fw-bold">Mode de règlement</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td class="text-center">A réception</td>
+                            <td class="text-center">{{ (purchase.priceIncludingTax / 100)|format_currency('EUR') }}</td>
+                            <td class="text-center">Chèque</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

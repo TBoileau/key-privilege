@@ -63,7 +63,7 @@ class Account implements Stringable
     /**
      * @ORM\OneToOne(targetEntity=Member::class, mappedBy="account")
      */
-    private ?Member $member;
+    private ?Member $member = null;
 
     public function __construct()
     {
@@ -144,5 +144,11 @@ class Account implements Stringable
             return sprintf("Utilisateur : %s", $this->user->getFullName());
         }
         return sprintf("Société : %s", $this->member->getName());
+    }
+
+    public function setMember(?Member $member): Account
+    {
+        $this->member = $member;
+        return $this;
     }
 }

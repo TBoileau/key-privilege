@@ -12,7 +12,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Universe[]    findAll()
  * @method Universe[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  * @template T
- * @extends ServiceEntityRepository<T>
+ * @extends ServiceEntityRepository<Universe>
  */
 class UniverseRepository extends ServiceEntityRepository
 {

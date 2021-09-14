@@ -44,6 +44,7 @@ class ManagerFixtures extends Fixture implements DependentFixtureInterface
     {
         /** @var Manager $user */
         $user = (new Manager())
+            ->setIsInEmailCopy(true)
             ->setUsername(sprintf("user+%d", $this->autoIncrement))
             ->setFirstName($this->faker->firstName)
             ->setLastName($this->faker->lastName)

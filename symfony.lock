@@ -177,8 +177,26 @@
     "icanhazstring/composer-unused": {
         "version": "0.7.5"
     },
+    "jurosh/pdf-merge": {
+        "version": "2.1.0"
+    },
     "justinrainbow/json-schema": {
         "version": "5.2.10"
+    },
+    "knplabs/knp-snappy": {
+        "version": "v1.2.1"
+    },
+    "knplabs/knp-snappy-bundle": {
+        "version": "1.5",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "1.5",
+            "ref": "c81bdcf4a9d4e7b1959071457f9608631865d381"
+        },
+        "files": [
+            "config/packages/knp_snappy.yaml"
+        ]
     },
     "laminas/laminas-code": {
         "version": "4.0.0"
@@ -385,6 +403,12 @@
         "files": [
             "./config/packages/sensio_framework_extra.yaml"
         ]
+    },
+    "setasign/fpdf": {
+        "version": "1.8.4"
+    },
+    "setasign/fpdi": {
+        "version": "v2.3.6"
     },
     "squizlabs/php_codesniffer": {
         "version": "3.0",

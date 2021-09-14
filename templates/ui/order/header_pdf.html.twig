@@ -1,0 +1,91 @@
+{% extends 'layouts/pdf.html.twig' %}
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="row mb-5">
+            <div class="col">
+                <h1 style="font-size: 3rem;">Bon de commande N°{{ order.reference }}</h1>
+            </div>
+        </div>
+        <div class="row mb-4 justify-content-end">
+            <div class="col-4">
+                <table class="table table-bordered" width="100%">
+                    <thead>
+                        <tr>
+                            <th class="text-center fw-bold bg-light">Commanditaire</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-left small">
+                                {{ order.user.fullName }}
+                                <br/>
+                                {{ order.companyName }}
+                                <br/>
+                                Email : {{ order.user.email }}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-4">
+                <table class="table table-bordered" width="100%">
+                    <thead>
+                        <tr>
+                            <th class="text-center fw-bold bg-light">Adresse de livraison</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-left small">
+                                {% if order.deliveryAddress.professional %}
+                                    {{ order.deliveryAddress.companyName }}
+                                    <br/>
+                                {% endif %}
+                                {{ order.deliveryAddress.fullName }}
+                                <br/>
+                                {{ order.deliveryAddress.streetAddress }}
+                                <br/>
+                                {% if order.deliveryAddress.restAddress is not null %}
+                                    {{ order.deliveryAddress.restAddress }}
+                                    <br/>
+                                {% endif %}
+                                {{ order.deliveryAddress.zipCode }} {{ order.deliveryAddress.locality }}
+                                <br/>
+                                Téléphone : {{ order.deliveryAddress.phone }}
+                                <br/>
+                                Email : {{ order.deliveryAddress.email }}
+                                <br/>
+                                {% if order.deliveryAddress.professional %}
+                                    <i>Adresse professionnelle</i>
+                                {% else %}
+                                    <i>Adresse personnelle</i>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row mb-4">
+            <div class="col-12">
+                <table class="table table-bordered" width="100%">
+                    <thead>
+                    <tr>
+                        <th class="text-center fw-bold bg-light">Numéro</th>
+                        <th class="text-center fw-bold bg-light">Date</th>
+                        <th class="text-center fw-bold bg-light">Compte client</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-center">{{ order.reference }}</td>
+                            <td class="text-center">{{ order.createdAt|date("d/m/Y") }}</td>
+                            <td class="text-center">{{ "CL%06d"|format(order.user.id) }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

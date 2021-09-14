@@ -1,4 +1,12 @@
 services:
+  App\Pdf\Generator:
+    public: true
+    autowire: true
+    arguments:
+      - '@knp_snappy.pdf'
+      - '@twig'
+      - '%kernel.project_dir%/public'
+
   EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator:
     public: true
     autowire: true

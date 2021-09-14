@@ -24,10 +24,26 @@ class Manager extends User
      */
     private Collection $members;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private bool $isInEmailCopy = true;
+
     public function __construct()
     {
         parent::__construct();
         $this->members = new ArrayCollection();
+    }
+
+    public function isInEmailCopy(): bool
+    {
+        return $this->isInEmailCopy;
+    }
+
+    public function setIsInEmailCopy(bool $isInEmailCopy): self
+    {
+        $this->isInEmailCopy = $isInEmailCopy;
+        return $this;
     }
 
     public function getRoleName(): string

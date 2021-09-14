@@ -42,6 +42,26 @@ class Line
      */
     private int $quantity = 0;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private int $purchasePrice;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private int $salePrice;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private int $retailPrice;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private int $vat;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -95,5 +115,49 @@ class Line
     public function getTotal(): int
     {
         return $this->quantity * $this->amount;
+    }
+
+    public function getPurchasePrice(): int
+    {
+        return $this->purchasePrice;
+    }
+
+    public function setPurchasePrice(int $purchasePrice): self
+    {
+        $this->purchasePrice = $purchasePrice;
+        return $this;
+    }
+
+    public function getSalePrice(): int
+    {
+        return $this->salePrice;
+    }
+
+    public function setSalePrice(int $salePrice): self
+    {
+        $this->salePrice = $salePrice;
+        return $this;
+    }
+
+    public function getRetailPrice(): int
+    {
+        return $this->retailPrice;
+    }
+
+    public function setRetailPrice(int $retailPrice): self
+    {
+        $this->retailPrice = $retailPrice;
+        return $this;
+    }
+
+    public function getVat(): int
+    {
+        return $this->vat;
+    }
+
+    public function setVat(int $vat): self
+    {
+        $this->vat = $vat;
+        return $this;
     }
 }

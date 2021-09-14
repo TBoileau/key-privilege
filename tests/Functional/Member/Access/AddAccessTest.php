@@ -56,7 +56,7 @@ class AddAccessTest extends WebTestCase
             "access[email]" => "new@email.com",
             "access[phone]" => "0123456789",
             "access[member]" => 2
-        ]);
+        ] + ($role === "administrateur" ? ["access[isInEmailCopy]" => 1] : []));
 
         $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
 
