@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\Entity\Address;
 use App\Entity\Company\Client;
 use App\Entity\Company\Member;
 use App\Entity\Company\Organization;
@@ -93,12 +94,6 @@ class MigrateCommand extends Command
             $member->getBillingAddress()->setZipCode($originalAddress["zip_code"]);
             $member->getBillingAddress()->setLocality($originalAddress["locality"]);
             $member->getBillingAddress()->setRestAddress($originalAddress["rest_address"]);
-            $member->getDeliveryAddress()->setPhone($originalAddress["phone"]);
-            $member->getDeliveryAddress()->setStreetAddress($originalAddress["street_address"]);
-            $member->getDeliveryAddress()->setEmail($originalAddress["email"]);
-            $member->getDeliveryAddress()->setZipCode($originalAddress["zip_code"]);
-            $member->getDeliveryAddress()->setLocality($originalAddress["locality"]);
-            $member->getDeliveryAddress()->setRestAddress($originalAddress["rest_address"]);
             $this->entityManager->persist($member);
             $members[$id] = $member;
         }

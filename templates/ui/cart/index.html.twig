@@ -64,7 +64,7 @@
                                         <tr class="fw-bold">
                                             <td class="text-end border-top" colspan="3">Solde après commande</td>
                                             <td class="text-center border-top">
-                                                {% if not workflow_can(order, 'valid_cart') %}
+                                                {% if app.user.account.balance < order.total %}
                                                     <span class="fas fa-exclamation-triangle text-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Votre solde de clé n'est pas suffisant pour passer commande"></span>
                                                 {% endif %}
 
@@ -75,6 +75,16 @@
                                 </table>
                             </div>
                         </div>
+                        {% if app.user.deliveryAddress is null %}
+                            <div class="card mt-4">
+                                <div class="card-body">
+                                    <div class="alert alert-info mb-0">
+                                        Attention, vous n'avez renseigné aucune adresse de livraison.
+                                        Cliquez <a href="{{ path("address_create", {type: 'delivery'}) }}" class="fw-bold">ici</a> pour en créer une !
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
                         {% if workflow_can(order, 'valid_cart') %}
                             {{ form_start(form) }}
                             <div class="card mt-4">
@@ -85,37 +95,12 @@
                                     </div>
                                     {% if form.deliveryAddress is defined %}
                                         <div class="row mb-3">
-                                            <div class="col-6">
-                                                {{ form_row(form.deliveryAddress.firstName) }}
-                                            </div>
-                                            <div class="col-6">
-                                                {{ form_row(form.deliveryAddress.lastName) }}
-                                            </div>
-                                        </div>
-                                        <div class="row mb-3">
-                                            <div class="col-6">
-                                                {{ form_row(form.deliveryAddress.professional) }}
-                                            </div>
-                                            <div class="col-6">
-                                                {{ form_row(form.deliveryAddress.companyName) }}
-                                            </div>
-                                        </div>
-                                        <div class="row mb-3">
                                             <div class="col-12">
-                                                {{ form_row(form.deliveryAddress.streetAddress) }}
-                                            </div>
-                                        </div>
-                                        <div class="row mb-3">
-                                            <div class="col-12">
-                                                {{ form_row(form.deliveryAddress.restAddress) }}
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-12 col-md-6 mb-3 mb-md-0">
-                                                {{ form_row(form.deliveryAddress.zipCode) }}
-                                            </div>
-                                            <div class="col-12 col-md-6">
-                                                {{ form_row(form.deliveryAddress.locality) }}
+                                                <div class="form-group">
+                                                    {{ form_label(form.deliveryAddress) }}
+                                                    {{ form_widget(form.deliveryAddress) }}
+                                                    <div class="form-text">Cliquez <a href="{{ path('address_create', {type: 'delivery'}) }}">ici</a> si vous souhaitez ajouter une nouvelle adresse de livraison.</div>
+                                                </div>
                                             </div>
                                         </div>
                                     {% endif %}

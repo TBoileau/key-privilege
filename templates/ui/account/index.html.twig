@@ -111,21 +111,21 @@
                                             </div>
                                         </div>
                                     {% endif %}
-                                    {% if not is_granted("ROLE_CUSTOMER") and app.user.member.deliveryAddress is not null %}
+                                    {% if app.user.deliveryAddress is not null %}
                                         <div class="row mb-3">
                                             <div class="col-5 text-end">
                                                 Adresse de livraison :
                                             </div>
                                             <div class="col-7 fw-bold">
-                                                {{ app.user.member.deliveryAddress.firstName }} {{ app.user.member.deliveryAddress.lastName }}<br/>
-                                                {% if app.user.member.deliveryAddress.companyName is not null %}
-                                                    {{ app.user.member.deliveryAddress.companyName }}<br/>
+                                                {{ app.user.deliveryAddress.firstName }} {{ app.user.deliveryAddress.lastName }}<br/>
+                                                {% if app.user.deliveryAddress.companyName is not null %}
+                                                    {{ app.user.deliveryAddress.companyName }}<br/>
                                                 {% endif %}
-                                                {{ app.user.member.deliveryAddress.streetAddress }}
-                                                {% if app.user.member.deliveryAddress.restAddress is not null %}
-                                                    <br/>{{ app.user.member.deliveryAddress.restAddress }}
+                                                {{ app.user.deliveryAddress.streetAddress }}
+                                                {% if app.user.deliveryAddress.restAddress is not null %}
+                                                    <br/>{{ app.user.deliveryAddress.restAddress }}
                                                 {% endif %}
-                                                <br/>{{ app.user.member.deliveryAddress.zipCode }} - {{ app.user.member.deliveryAddress.locality }}
+                                                <br/>{{ app.user.deliveryAddress.zipCode }} - {{ app.user.deliveryAddress.locality }}
                                             </div>
                                         </div>
                                     {% endif %}
@@ -159,7 +159,7 @@
                                 {% endif %}
 
                                 <div class="card-footer text-end p-0 d-flex">
-                                    {% if is_granted("ROLE_MANAGER") %}
+                                    {% if is_granted("ROLE_ADDRESS") %}
                                         <a href="{{ path("address_list") }}" class="btn d-block btn-outline-primary rounded-0 border-0 w-100 d-flex align-items-center justify-content-center">
                                             Mes adresses
                                         </a>

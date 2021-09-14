@@ -45,7 +45,7 @@ class Address
      * @ORM\Column(type="text")
      * @Assert\NotBlank
      */
-    private string $streetAddress;
+    private string $streetAddress = '';
 
     /**
      * @ORM\Column(type="text", nullable=true)
@@ -57,13 +57,13 @@ class Address
      * @Assert\NotBlank
      * @Assert\Regex(pattern="/^[A-Za-z0-9]{2}\d{3}$/", message="Code postal invalide.")
      */
-    private string $zipCode;
+    private string $zipCode = '';
 
     /**
      * @ORM\Column
      * @Assert\NotBlank
      */
-    private string $locality;
+    private string $locality = '';
 
     /**
      * @ORM\Column(nullable=true)

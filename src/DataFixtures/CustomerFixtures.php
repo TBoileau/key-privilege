@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\DataFixtures;
 
+use App\Entity\Address;
 use App\Entity\Company\Client;
 use App\Entity\User\Customer;
 use Doctrine\Bundle\FixturesBundle\Fixture;

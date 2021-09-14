@@ -76,39 +76,36 @@ class CartController extends AbstractController
             $order = (new Order())->setUser($user);
         }
 
-        $form = $this->createForm(OrderType::class, $order)->handleRequest($request);
+        $form = null;
 
-        if (
-            $orderStateMachine->can($order, "valid_cart")
-            && $form->isSubmitted()
-            && $form->isValid()
-        ) {
-            if ($user instanceof Customer) {
-                $order->setBillingAddress($user->getClient()->getMember()->getBillingAddress());
-            } else {
-                /** @var Manager|Collaborator|SalesPerson $user */
-                $order->setBillingAddress($user->getMember()->getBillingAddress());
-            }
+        if ($user->getDeliveryAddress() !== null) {
+            $order->setDeliveryAddress($user->getDeliveryAddress());
 
-            if (!($user instanceof Customer && $user->isManualDelivery())) {
+            $form = $this->createForm(OrderType::class, $order)->handleRequest($request);
+
+            if (
+                $orderStateMachine->can($order, "valid_cart")
+                && $form->isSubmitted()
+                && $form->isValid()
+            ) {
                 if ($user instanceof Customer) {
-                    $address = $user->getClient()->getMember()->getDeliveryAddress();
+                    $order->setBillingAddress($user->getClient()->getMember()->getBillingAddress());
                 } else {
                     /** @var Manager|Collaborator|SalesPerson $user */
-                    $address = $user->getMember()->getDeliveryAddress();
+                    $order->setBillingAddress($user->getMember()->getBillingAddress());
                 }
 
-                $order->setDeliveryAddress($address);
+                $order->setDeliveryAddress($user->getDeliveryAddress());
+                $orderStateMachine->apply($order, "valid_cart");
+                $this->getDoctrine()->getManager()->flush();
+                $this->addFlash("success", "Votre commande a été enregistrée avec succès.");
+                return $this->redirectToRoute("order_index");
             }
-            $orderStateMachine->apply($order, "valid_cart");
-            $this->getDoctrine()->getManager()->flush();
-            $this->addFlash("success", "Votre commande a été enregistrée avec succès.");
-            return $this->redirectToRoute("order_index");
         }
 
         return $this->render("ui/cart/index.html.twig", [
             "order" => $order,
-            "form" => $form->createView()
+            "form" => $form?->createView()
         ]);
     }
 
