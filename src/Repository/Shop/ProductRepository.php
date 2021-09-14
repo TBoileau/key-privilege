@@ -5,7 +5,11 @@ namespace App\Repository\Shop;
 use App\Entity\Shop\Category;
 use App\Entity\Shop\Filter;
 use App\Entity\Shop\Product;
+use App\Entity\Shop\Universe;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\Expr;
+use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -71,6 +75,7 @@ class ProductRepository extends ServiceEntityRepository
         int $limit,
         string $sort,
         ?Category $category,
+        ?Universe $universe,
         Filter $filter
     ): Paginator {
         $queryBuilder = $this->createQueryBuilder("p")
@@ -86,25 +91,7 @@ class ProductRepository extends ServiceEntityRepository
             ->setMaxResults($limit)
             ->setFirstResult(($page - 1) * $limit);
 
-        if ($category !== null) {
-            $queryBuilder
-                ->andWhere("c.left >= :left")
-                ->andWhere("c.right <= :right")
-                ->setParameter("left", $category->getLeft())
-                ->setParameter("right", $category->getRight());
-        }
-
-        if ($filter->brand !== null) {
-            $queryBuilder
-                ->andWhere("b = :brand")
-                ->setParameter("brand", $filter->brand);
-        }
-
-        if ($filter->keywords !== null) {
-            $queryBuilder
-                ->andWhere("CONCAT(p.name, ' ', p.description, ' ', b.name) LIKE :keywords")
-                ->setParameter("keywords", $filter->keywords);
-        }
+        $this->filterProducts($queryBuilder, $category, $universe, $filter);
 
         switch ($sort) {
             case "amount-asc":
@@ -125,5 +112,60 @@ class ProductRepository extends ServiceEntityRepository
         }
 
         return new Paginator($queryBuilder);
+    }
+
+    private function filterProducts(
+        QueryBuilder $queryBuilder,
+        ?Category $category,
+        ?Universe $universe,
+        Filter $filter
+    ): void {
+        if ($category !== null) {
+            $queryBuilder
+                ->andWhere("c.left >= :left")
+                ->andWhere("c.right <= :right")
+                ->setParameter("left", $category->getLeft())
+                ->setParameter("right", $category->getRight());
+        }
+
+        if ($universe !== null && $category === null) {
+            /** @var array<array-key, Category> $categories */
+            $categories = $this->_em->createQueryBuilder()
+                ->select('c2')
+                ->from(Category::class, 'c2')
+                ->join('c2.universes', 'u2')
+                ->where('u2 = :universe')
+                ->setParameter("universe", $universe)
+                ->getQuery()
+                ->getResult();
+
+            /** @var array<array-key, Expr> $expressions */
+            $expressions = [];
+
+            foreach ($categories as $parentCategory) {
+                $expressions[] = $queryBuilder->expr()->andX(
+                    sprintf("c.left >= :left_%d", $parentCategory->getId()),
+                    sprintf("c.right <= :right_%d", $parentCategory->getId())
+                );
+                $queryBuilder
+                    ->setParameter(sprintf("left_%d", $parentCategory->getId()), $parentCategory->getLeft())
+                    ->setParameter(sprintf("right_%d", $parentCategory->getId()), $parentCategory->getRight());
+            }
+
+            /** @phpstan-ignore-next-line */
+            $queryBuilder->andWhere($queryBuilder->expr()->orX(...$expressions));
+        }
+
+        if ($filter->brand !== null) {
+            $queryBuilder
+                ->andWhere("b = :brand")
+                ->setParameter("brand", $filter->brand);
+        }
+
+        if ($filter->keywords !== null) {
+            $queryBuilder
+                ->andWhere("CONCAT(p.name, ' ', p.description, ' ', b.name) LIKE :keywords")
+                ->setParameter("keywords", $filter->keywords);
+        }
     }
 }

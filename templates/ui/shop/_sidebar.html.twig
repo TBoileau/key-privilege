@@ -44,6 +44,9 @@
                     <li class="nav-item">
                         <a class="nav-link" data-bs-toggle="collapse" href="#universe-{{ u.id }}" role="button" aria-expanded="{{ not form.vars.submitted and universe is not null and universe == u ? "true" : "false" }}" aria-controls="universe-{{ u.id }}">{{ u.name }}</a>
                         <ul class="nav flex-column collapse {{ not form.vars.submitted and universe is not null and universe == u ? "show" }}" id="universe-{{ u.id }}" data-bs-parent="#universes">
+                            <li class="nav-item">
+                                <a href="{{ path("shop_index", {page: 1, universe: u.slug}) }}" class="nav-link {{ universe == u ? "active" }}">Tous les produits ({{ u.numberOfProducts }})</a>
+                            </li>
                             {% for c in u.categories %}
                                 {% if c.numberOfProducts > 0 %}
                                     <li class="nav-item">

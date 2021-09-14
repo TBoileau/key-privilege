@@ -64,6 +64,7 @@ class ShopController extends AbstractController
             $request->query->getInt("limit", 18),
             $request->query->get("sort", "new-products"),
             $category,
+            $universe,
             $filter
         );
 
