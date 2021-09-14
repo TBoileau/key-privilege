@@ -343,15 +343,15 @@ function loadProduits($file){
         fclose($resource);
     }
     $PDO->prepare("
-        UPDATE category AS c1
-        INNER JOIN (
-            SELECT c.id, IFNULL(p.nb, 0) as nb
-            FROM category AS c
-            LEFT JOIN category AS cc ON c.lft >= cc.lft AND c.rgt <= cc.rgt
-            LEFT JOIN (SELECT COUNT(id) as nb, category_id FROM product GROUP BY category_id) AS p ON (p.category_id = cc.id)
-            GROUP BY c.id
-        ) AS c2 ON (c1.id = c2.id)
-        SET c1.number_of_products = c2.nb
+    UPDATE category AS c1
+    INNER JOIN (
+        SELECT c.id, IFNULL(p.nb, 0) as nb
+        FROM category AS c
+        LEFT JOIN category AS cc ON c.lft >= cc.lft AND c.rgt <= cc.rgt
+        LEFT JOIN (SELECT COUNT(id) as nb, category_id FROM product WHERE active = 1 GROUP BY category_id) AS p ON (p.category_id = c.id)
+        GROUP BY c.id
+    ) AS c2 ON (c1.id = c2.id)
+    SET c1.number_of_products = c2.nb
     ")->execute([]);
 
     return ["ADD"=>$numberOfProductsAdded,"UPDATE"=>$numberOfProductsUpdated];
