@@ -127,7 +127,7 @@ abstract class User implements UserInterface, Stringable
     /**
      * @var Collection<array-key, Address>
      * @ORM\ManyToMany(targetEntity=Address::class)
-     * @ORM\JoinTable(name="member_delivery_addresses")
+     * @ORM\JoinTable(name="user_delivery_addresses")
      */
     private Collection $deliveryAddresses;
 
