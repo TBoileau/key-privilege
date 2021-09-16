@@ -14,7 +14,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Member[]    findAll()
  * @method Member[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  * @template T
- * @extends ServiceEntityRepository<T>
+ * @extends ServiceEntityRepository<Member>
  */
 class MemberRepository extends ServiceEntityRepository
 {

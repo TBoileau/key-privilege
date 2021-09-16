@@ -11,12 +11,11 @@ use App\Entity\Key\Transfer;
 use App\Entity\Key\Wallet;
 use App\Entity\User\Manager;
 use App\Entity\User\SalesPerson;
-use App\Entity\User\User;
 use App\Form\Key\PurchaseType;
 use App\Form\Key\TransferType;
+use App\Pdf\Generator;
 use App\Repository\Key\AccountRepository;
 use App\UseCase\TransferPointsInterface;
-use Couchbase\WildcardSearchQuery;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -140,12 +139,18 @@ class KeyController extends AbstractController
      * @Route("/acheter", name="key_purchase")
      * @IsGranted("ROLE_KEY_PURCHASE")
      */
-    public function purchase(Request $request, MailerInterface $mailer): Response
-    {
+    public function purchase(
+        Request $request,
+        MailerInterface $mailer,
+        Generator $generator,
+        string $publicDir
+    ): Response {
         /** @var Manager $manager */
         $manager = $this->getUser();
 
         $purchase = new Purchase();
+
+        $purchase->setManager($manager);
 
         if ($manager->getMembers()->count() === 1) {
             $purchase->setAccount($manager->getMember()->getAccount());
@@ -157,12 +162,18 @@ class KeyController extends AbstractController
             $purchase->prepare();
             $this->getDoctrine()->getManager()->persist($purchase);
             $this->getDoctrine()->getManager()->flush();
+            $filename = $generator->generate(
+                $purchase->getReference(),
+                'ui/key/pdf.html.twig',
+                ['purchase' => $purchase]
+            );
             $mailer->send(
                 (new TemplatedEmail())
                     ->from(new Address("contact@keyprivilege.fr", "Key Privilege"))
                     ->to(new Address("contact@keyprivilege.fr", "Key Privilege"))
                     ->htmlTemplate("emails/key_purchase.html.twig")
                     ->context(["purchase" => $purchase])
+                    ->attachFromPath(sprintf('%s/%s', $publicDir, $filename))
             );
             $this->addFlash(
                 "success",

@@ -7,6 +7,7 @@ namespace App\DataFixtures;
 use App\Entity\Company\Company;
 use App\Entity\Company\Member;
 use App\Entity\Key\Purchase;
+use App\Entity\User\Manager;
 use App\Entity\User\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -25,9 +26,13 @@ class KeyFixtures extends Fixture implements DependentFixtureInterface
         $members = $manager->getRepository(Member::class)->findAll();
 
         foreach ($members as $member) {
+            /** @var Manager $user */
+            $user = $member->getManagers()->first();
+
             $purchase = (new Purchase())
                 ->setMode(Purchase::MODE_BANK_WIRE)
                 ->setAccount($member->getAccount())
+                ->setManager($user)
                 ->setPoints(5000)
                 ->setState("accepted")
                 ->prepare();

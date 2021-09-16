@@ -75,6 +75,8 @@ class ShopController extends AbstractController
             "category" => $category,
             "universe" => $universe,
             "params" => [
+                "category" => $category->getId(),
+                "universe" => $universe->getId(),
                 "page" =>  $request->query->getInt("page", 1),
                 "limit" => $request->query->getInt("limit", 18),
                 "sort" => $request->query->get("sort", "new-products")

@@ -7,7 +7,13 @@ namespace App\Entity\Order;
 use App\Entity\Address;
 use App\Entity\Key\Transaction;
 use App\Entity\Shop\Product;
+use App\Entity\User\Collaborator;
+use App\Entity\User\Customer;
+use App\Entity\User\Employee;
+use App\Entity\User\Manager;
+use App\Entity\User\SalesPerson;
 use App\Entity\User\User;
+use Cassandra\Custom;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -181,6 +187,19 @@ class Order
 
     public function getReference(): string
     {
-        return sprintf("BCB%04d-%d", $this->id, $this->user->getId());
+        return sprintf("BCB%06d-%d", $this->id, $this->user->getId());
+    }
+
+    public function getCompanyName(): string
+    {
+        if ($this->user instanceof Customer) {
+            /** @var Customer $user */
+            $user = $this->user;
+            return $user->getClient()->getName();
+        }
+
+        /** @var SalesPerson|Manager|Collaborator $user */
+        $user = $this->user;
+        return $user->getMember()->getName();
     }
 }

@@ -10,6 +10,8 @@ use App\Entity\Shop\Product;
 use App\Entity\User\Customer;
 use App\Entity\User\Manager;
 use App\Entity\User\SalesPerson;
+use App\Pdf\Generator as PdfGenerator;
+use App\Pdf\OrderGenerator;
 use App\Zendesk\DataCollector\TicketCollector;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -21,6 +23,24 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class OrderTest extends WebTestCase
 {
+    public function testGeneratePdf(): void
+    {
+        $client = static::createClient();
+
+        /** @var EntityManagerInterface $entityManager */
+        $entityManager = $client->getContainer()->get("doctrine.orm.entity_manager");
+
+        /** @var Order $order */
+        $order = $entityManager->find(Order::class, 1);
+
+        /** @var PdfGenerator $generator */
+        $generator = $client->getContainer()->get(OrderGenerator::class);
+
+        $generator->generate('test', 'ui/order/pdf.html.twig', ['order' => $order]);
+
+        $this->assertFileExists(__DIR__ . '/../../../public/pdf/test.pdf');
+    }
+
     public function testAsSalesPersonIfListingOrdersIsSuccessful(): void
     {
         $client = static::createClient();
@@ -121,6 +141,8 @@ class OrderTest extends WebTestCase
         $client->clickLink("Détail");
 
         $this->assertResponseIsSuccessful();
+
+        $this->assertFileExists(sprintf(__DIR__ . '/../../../public/pdf/%s.pdf', $order->getReference()));
     }
 
     public function testAsCustomerIfPassingOrderIsSuccessful(): void

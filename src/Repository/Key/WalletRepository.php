@@ -12,7 +12,7 @@ use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @template T
- * @extends ServiceEntityRepository<T>
+ * @extends ServiceEntityRepository<Wallet>
  */
 class WalletRepository extends ServiceEntityRepository
 {
