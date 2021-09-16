@@ -69,6 +69,8 @@ class PurchaseTest extends WebTestCase
             "purchase[points]" => 1000,
             "purchase[mode]" => Purchase::MODE_CHECK,
             "purchase[internReference]" => "ref",
+            "purchase[billingAddress]" => $manager->getMember()->getBillingAddress()->getId(),
+            "purchase[deliveryAddress]" => $manager->getDeliveryAddress()->getId(),
             "purchase[account]" => 2
         ]);
 

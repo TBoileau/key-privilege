@@ -56,19 +56,6 @@ class MemberCrudController extends AbstractCrudController
             ->hideOnForm();
         yield AssociationField::new('organization', 'Groupement')
             ->setCrudController(OrganizationCrudController::class);
-        yield FormField::addPanel('Adresse de livraison');
-        yield TextField::new("deliveryAddress.firstName", "Prénom")->hideOnIndex()->onlyWhenCreating();
-        yield TextField::new("deliveryAddress.lastName", "Nom")->hideOnIndex()->onlyWhenCreating();
-        yield ChoiceField::new("deliveryAddress.professional", "Adresse professionnelle ?")
-            ->setChoices([true => 'Oui', false => 'Non'])
-            ->hideOnIndex()->onlyWhenCreating();
-        yield TextField::new("deliveryAddress.companyName", "Raison sociale")->hideOnIndex()->onlyWhenCreating();
-        yield TextField::new("deliveryAddress.streetAddress", "Adresse")->hideOnIndex()->onlyWhenCreating();
-        yield TextField::new("deliveryAddress.restAddress", "Complément d'adresse")->hideOnIndex()->onlyWhenCreating();
-        yield TextField::new("deliveryAddress.zipCode", "Code postal")->hideOnIndex()->onlyWhenCreating();
-        yield TextField::new("deliveryAddress.locality", "Ville")->hideOnIndex()->onlyWhenCreating();
-        yield EmailField::new("deliveryAddress.email", "Email")->hideOnIndex()->onlyWhenCreating();
-        yield TextField::new("deliveryAddress.phone", "Téléphone")->hideOnIndex()->onlyWhenCreating();
         yield FormField::addPanel('Adresse de facturation');
         yield TextField::new("billingAddress.firstName", "Prénom")->hideOnIndex()->onlyWhenCreating();
         yield TextField::new("billingAddress.lastName", "Nom")->hideOnIndex()->onlyWhenCreating();

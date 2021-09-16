@@ -64,10 +64,11 @@ class ShopController extends AbstractController
             $request->query->getInt("limit", 18),
             $request->query->get("sort", "new-products"),
             $category,
+            $universe,
             $filter
         );
 
-        $pages = ceil(count($products) / $request->query->getInt("limit", 9));
+        $pages = ceil(count($products) / $request->query->getInt("limit", 18));
 
         return $this->render("ui/shop/index.html.twig", [
             "universes" => $universeRepository->getUniverses(),
@@ -75,8 +76,8 @@ class ShopController extends AbstractController
             "category" => $category,
             "universe" => $universe,
             "params" => [
-                "category" => $category->getId(),
-                "universe" => $universe->getId(),
+                "category" => $category?->getSlug(),
+                "universe" => $universe?->getSlug(),
                 "page" =>  $request->query->getInt("page", 1),
                 "limit" => $request->query->getInt("limit", 18),
                 "sort" => $request->query->get("sort", "new-products")

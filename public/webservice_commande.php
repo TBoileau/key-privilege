@@ -18,15 +18,12 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+ini_set("display_errors",1);
 ini_set("memory_limit","512M");
+error_reporting(E_ALL);
 set_time_limit(0);
 date_default_timezone_set('Europe/Paris');
 
-
-require '../vendor/fergusean/nusoap/lib/nusoap.php';
 /** @var EntityManagerInterface $entityManager */
 $entityManager = require __DIR__ . "/../build/doctrine.php";
 
@@ -92,9 +89,6 @@ function pushCommande(array $request): array {
             }
         }
     }
-	echo '<pre>';
-    var_export($response);
-    echo '</pre>';die;
     return $response;
 }
 
@@ -312,139 +306,15 @@ function purchaseToArray(Purchase $purchase): array
 
 if($request->isMethod(Request::METHOD_GET) && $request->get("ACTION") === "getCommandes"){
     $action = $_GET["ACTION"] ?? $_POST["ACTION"];
+
     /** @var OrderRepository $orderRepository */
     $orderRepository = $entityManager->getRepository(Order::class);
-	/** @var SalesPersonRepository $salesPersonRepository */
-    $salesPersonRepository = $entityManager->getRepository(SalesPerson::class);
-	
-	var_dump("1");
 
     /** @var array<array-key, Order> $orders */
     $orders = $orderRepository->findBy(['state' => 'pending']);
-	var_dump("2");
+
     /** @var array<int, array<string, array<string, mixed>>> $response */
     $response = [];
-    foreach($orders as $k => $order) {
-        $response[$k]["LIGNES"] = [];
-        $response[$k]["USERS"] = [];
-
-        /** @var Line $line */
-        foreach ($order->getLines() as $line) {
-            $response[$k]["LIGNES"][] = [
-                "IDBDC_ELT" => $line->getId(),
-                "IDPRODUIT" => $line->getProduct()->getId(),
-                "PAUHT" => round($line->getPurchasePrice() / 100),
-                "PVUHT" => round($line->getSalePrice() / 100),
-                "VALEUR" => $line->getAmount(),
-                "PPGC" => round($line->getPurchasePrice() / 100),
-                "IDBDC" => $order->getId(),
-                "QTE" => $line->getQuantity(),
-                "REFERENCE" => $line->getProduct()->getReference(),
-                "DESIGN" => $line->getProduct()->getDescription(),
-                "MONTANT" => round(($line->getSalePrice() * $line->getQuantity()) / 100),
-                "IDTVA" => $line->getVat(),
-            ];
-        }
-var_dump("3");
-        $user = $order->getUser();
-
-        /** @var array<array-key, string> $emailsInCopy */
-        $emailsInCopy = [];
-
-        if ($user instanceof Customer) {
-			var_dump("3.1");
-            $company = $user->getClient();
-			var_dump($company->getId());
-			var_dump("3.2.1");
-			$salesPerson = $salesPersonRepository->findOneBy(["id" => $company->getSalesPerson()->getId()]);
-			var_dump($salesPerson->getId());
-			var_dump("3.2.2");
-            $emailsInCopy[] = $salesPerson->getEmail();
-			var_dump("3.3");
-            $emailsInCopy = array_merge(
-                $emailsInCopy,
-                $company->getMember()
-                    ->getManagers()
-                    ->filter(static fn (Manager $manager) => $manager->isInEmailCopy())
-                    ->map(static fn (Manager $manager) => $manager->getEmail())
-                    ->toArray()
-            );
-			var_dump("3.4");
-        } else {
-			var_dump("3.5");
-            /** @var Employee $user */
-            $company = $user->getMember();
-        }
-var_dump("4");
-
-        $addDetail = static fn (Address $address, int $property, mixed $value) => [
-            "IDCONTACT" => $address->getId(),
-            "IDPROPRIETE" => $property,
-            "VALEUR" => $value,
-            "IDVALEUR" => 0
-        ];
-		var_dump("5");
-
-        $addAddress = static fn (Address $address, string $type): array => [
-            "IDCONTACT" => $address->getId(),
-            "IDUSER" => $order->getUser()->getId(),
-            "IDTYPE" =>  match ($type) {
-                "delivery" => 3,
-                "billing" => 2,
-                "other" => 1
-            },
-            "VISIBLE" => 1,
-            "DETAILS" => [
-                $addDetail($address, 2, $address->getName()),
-                $addDetail($address, 3, $address->getFullName()),
-                $addDetail($address, 4, $address->getStreetAddress()),
-                $addDetail($address, 5, $address->getRestAddress() ?? ""),
-                $addDetail($address, 6, ""),
-                $addDetail($address, 7, $address->getZipCode()),
-                $addDetail($address, 8, $address->getLocality()),
-                $addDetail($address, 9, $address->getPhone()),
-                $addDetail($address, 10, $address->getPhone()),
-                $addDetail($address, 11, ""),
-                $addDetail($address, 12, 1),
-                $addDetail($address, 13, 1),
-                $addDetail($address, 14, 1),
-                $addDetail($address, 15, $address->getEmail()),
-                $addDetail($address, 16, ""),
-                $addDetail($address, 17, implode(";", array_unique($emailsInCopy))),
-                $addDetail($address, 18, ""),
-                $addDetail($address, 19, ""),
-            ]
-        ];
-		var_dump("6");
-
-        $response[$k]["USERS"][0] = [
-            "IDUSER" => $order->getUser()->getId(),
-            "NOM" => $order->getUser()->getLastName(),
-            "PRENOM" => $order->getUser()->getLastName(),
-            "IDSOC" => $company->getId(),
-            "IDPROFIL" => match($order->getUser()::class) {
-                Manager::class => 2,
-                SalesPerson::class => 3,
-                Collaborator::class => 5,
-                Customer::class => 4,
-            },
-            "ACTIF" => 1,
-            "EMAIL" => $order->getUser()->getEmail(),
-            "USE_EMAIL" => 1,
-            "SOCIETE" => [
-                "IDSOCIETE" => $company->getId(),
-                "LIBELLE" => $company->getName(),
-                "SIRET" => $company->getCompanyNumber(),
-                "TVA_INTRA" => $company->getVatNumber(),
-                "IDMODEPAIEMENT" => 6,
-                "IDECHEANCE" => 9,
-            ],
-            "CONTACTS" => [
-                $addAddress($order->getBillingAddress(), "billing"),
-                $addAddress($order->getBillingAddress(), "other"),
-                $addAddress($order->getDeliveryAddress(), "delivery"),
-            ]
-        ];
 
     $row = 0;
 
@@ -466,5 +336,5 @@ var_dump("4");
 
     (new JsonResponse($response, JsonResponse::HTTP_OK, ["Access-Control-Allow-Origin" => "*"]))->send();
 } else {
-    $server->service(file_get_contents('php://input'));
+    $server->service($HTTP_RAW_POST_DATA ?? '');
 }

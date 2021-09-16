@@ -57,19 +57,7 @@ class Member extends Company
     /**
      * @ORM\ManyToOne(targetEntity=Address::class, cascade={"persist"})
      */
-    private ?Address $deliveryAddress = null;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Address::class, cascade={"persist"})
-     */
     private ?Address $billingAddress = null;
-
-    /**
-     * @var Collection<array-key, Address>
-     * @ORM\ManyToMany(targetEntity=Address::class)
-     * @ORM\JoinTable(name="member_delivery_addresses")
-     */
-    private Collection $deliveryAddresses;
 
     /**
      * @var Collection<array-key, Address>
@@ -88,23 +76,11 @@ class Member extends Company
         $this->account = new Account();
         $this->account->setMember($this);
         $this->billingAddress = new Address();
-        $this->deliveryAddress = new Address();
         $this->clients = new ArrayCollection();
         $this->managers = new ArrayCollection();
         $this->collaborators = new ArrayCollection();
         $this->salesPersons = new ArrayCollection();
-        $this->deliveryAddresses = new ArrayCollection();
         $this->billingAddresses = new ArrayCollection();
-    }
-
-    public function getDeliveryAddress(): ?Address
-    {
-        return $this->deliveryAddress;
-    }
-
-    public function setDeliveryAddress(?Address $deliveryAddress): void
-    {
-        $this->deliveryAddress = $deliveryAddress;
     }
 
     public function getBillingAddress(): ?Address
@@ -163,14 +139,6 @@ class Member extends Company
     public function getAccount(): Account
     {
         return $this->account;
-    }
-
-    /**
-     * @return Collection<array-key, Address>
-     */
-    public function getDeliveryAddresses(): Collection
-    {
-        return $this->deliveryAddresses;
     }
 
     /**

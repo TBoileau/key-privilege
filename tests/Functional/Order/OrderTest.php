@@ -113,14 +113,16 @@ class OrderTest extends WebTestCase
             "user" => $manager
         ]);
 
-        $orignalBalance = $manager->getAccount()->getBalance();
+        $originalBalance = $manager->getAccount()->getBalance();
 
         $this->assertCount(1, $order->getLines());
         $this->assertEquals(2, $order->getLines()->first()->getQuantity());
 
         $client->clickLink("Panier");
 
-        $client->submitForm("Commander");
+        $client->submitForm("Commander", [
+            'order[deliveryAddress]' => $manager->getDeliveryAddress()->getId()
+        ]);
 
         $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
 
@@ -132,7 +134,7 @@ class OrderTest extends WebTestCase
 
         $this->assertEquals("pending", $order->getState());
         $this->assertEquals(
-            $orignalBalance - $order->getTotal(),
+            $originalBalance - $order->getTotal(),
             $order->getUser()->getAccount()->getBalance()
         );
 
@@ -209,14 +211,7 @@ class OrderTest extends WebTestCase
         $client->clickLink("Panier");
 
         $client->submitForm("Commander", [
-            "order[deliveryAddress][firstName]" => "John",
-            "order[deliveryAddress][lastName]" => "Doe",
-            "order[deliveryAddress][companyName]" => "Société",
-            "order[deliveryAddress][professional]" => 1,
-            "order[deliveryAddress][streetAddress]" => "1 rue de la mairie",
-            "order[deliveryAddress][restAddress]" => "Batiment A",
-            "order[deliveryAddress][zipCode]" => "75000",
-            "order[deliveryAddress][locality]" => "Paris"
+            'order[deliveryAddress]' => $customer->getDeliveryAddress()->getId()
         ]);
 
         $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);

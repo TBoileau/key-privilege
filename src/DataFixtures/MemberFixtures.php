@@ -26,6 +26,7 @@ class MemberFixtures extends Fixture implements DependentFixtureInterface
                 ->setName($faker->company)
                 ->setCompanyNumber("44306184100047");
             $member->getBillingAddress()
+                ->setProfessional(true)
                 ->setFirstName("John")
                 ->setLastName("Doe")
                 ->setCompanyName($member->getName())
@@ -34,16 +35,6 @@ class MemberFixtures extends Fixture implements DependentFixtureInterface
                 ->setEmail("email@email.com")
                 ->setPhone("0123456789")
                 ->setStreetAddress("1 rue de la mairie");
-            $member->getDeliveryAddress()
-                ->setFirstName("John")
-                ->setLastName("Doe")
-                ->setCompanyName($member->getName())
-                ->setLocality("Paris")
-                ->setZipCode("75000")
-                ->setEmail("email@email.com")
-                ->setPhone("0123456789")
-                ->setStreetAddress("1 rue de la mairie");
-            $member->getDeliveryAddresses()->add($member->getDeliveryAddress());
             $member->getBillingAddresses()->add($member->getBillingAddress());
             $manager->persist($member);
             $this->addReference(sprintf("member_%d", $i), $member);

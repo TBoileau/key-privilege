@@ -36,6 +36,7 @@ class AccessController extends AbstractController
     {
         /** @var SalesPerson|Manager $employee */
         $employee = $this->getUser();
+
         $form = $this->createForm(AccessType::class, $customer, ["employee" => $employee])->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -72,6 +73,19 @@ class AccessController extends AbstractController
 
         /** @var SalesPerson|Manager $employee */
         $employee = $this->getUser();
+
+        $customer->setDeliveryAddress(new \App\Entity\Address());
+        $customer->getDeliveryAddress()
+            ->setProfessional($customer->getDeliveryAddress()->isProfessional())
+            ->setCompanyName($customer->getDeliveryAddress()->getCompanyName())
+            ->setFirstName($customer->getDeliveryAddress()->getFirstName())
+            ->setLastName($customer->getDeliveryAddress()->getLastName())
+            ->setStreetAddress($customer->getDeliveryAddress()->getStreetAddress())
+            ->setRestAddress($customer->getDeliveryAddress()->getRestAddress())
+            ->setZipCode($customer->getDeliveryAddress()->getZipCode())
+            ->setEmail($customer->getDeliveryAddress()->getEmail())
+            ->setPhone($customer->getDeliveryAddress()->getPhone());
+
         $form = $this->createForm(AccessType::class, $customer, ["employee" => $employee])->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

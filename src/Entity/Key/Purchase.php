@@ -64,11 +64,6 @@ class Purchase extends Transaction
         $this->wallet = $wallet;
         $wallet->setPurchase($this);
 
-        if (($member = $this->account->getMember()) !== null) {
-            $this->billingAddress = $member->getBillingAddress();
-            $this->deliveryAddress = $member->getDeliveryAddress();
-        }
-
         return $this;
     }
 

@@ -8,6 +8,7 @@ use App\Entity\Company\Client;
 use App\Entity\User\Customer;
 use App\Entity\User\Manager;
 use App\Entity\User\SalesPerson;
+use App\Form\AddressType;
 use App\Repository\Company\ClientRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -16,6 +17,8 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AccessType extends AbstractType
@@ -60,6 +63,17 @@ class AccessType extends AbstractType
                 "query_builder" => fn (ClientRepository $repository) => $repository
                     ->createQueryBuilderClientsByEmployee($employee)
             ]);
+
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+            /** @var Customer $customer */
+            $customer = $event->getData();
+
+            if ($customer->getId() === null) {
+                $event->getForm()->add('deliveryAddress', AddressType::class, [
+                    "required" => true,
+                ]);
+            }
+        });
     }
 
     public function configureOptions(OptionsResolver $resolver): void

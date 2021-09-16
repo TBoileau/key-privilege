@@ -18,19 +18,26 @@ class NewAddressType extends AddressType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         parent::buildForm($builder, $options);
-        $builder
-            ->add("type", ChoiceType::class, [
+        if ($options['type'] === null) {
+            $builder->add("type", ChoiceType::class, [
                 'label' => "Type d'adresse",
                 "choices" => [
                     "Facturation" => "billing",
                     "Livraison" => "delivery"
                 ],
                 "mapped" => false
-            ])
-            ->add("default", CheckboxType::class, [
-                "label" => "Adresse par défaut ?",
-                "mapped" => false,
-                "required" => false,
             ]);
+        }
+        $builder->add("default", CheckboxType::class, [
+            "label" => "Adresse par défaut ?",
+            "mapped" => false,
+            "required" => false,
+        ]);
+    }
+
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        parent::configureOptions($resolver);
+        $resolver->setDefault('type', null);
     }
 }

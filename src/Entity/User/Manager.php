@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity\User;
 
+use App\Entity\Address;
 use App\Repository\User\UserRepository;
 use App\Entity\Company\Member;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -73,5 +74,17 @@ class Manager extends User
         }
 
         return $this;
+    }
+
+    /**
+     * @return Collection<array-key, Address>
+     */
+    public function getBillingAddresses(): Collection
+    {
+        return new ArrayCollection(
+            array_merge(
+                ...$this->members->map(fn (Member $member) => $member->getBillingAddresses()->toArray())->toArray()
+            )
+        );
     }
 }

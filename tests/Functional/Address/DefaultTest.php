@@ -35,9 +35,9 @@ class DefaultTest extends WebTestCase
             ->setPhone("0123456789")
             ->setStreetAddress("1 rue de la mairie");
 
-        $manager->getMember()->setDeliveryAddress($address);
+        $manager->setDeliveryAddress($address);
 
-        $manager->getMember()->getDeliveryAddresses()->add($address);
+        $manager->getDeliveryAddresses()->add($address);
 
         $entityManager->flush();
 
@@ -48,7 +48,7 @@ class DefaultTest extends WebTestCase
 
         $client->request(
             Request::METHOD_GET,
-            $urlGenerator->generate("address_default", ["id" => $manager->getMember()->getDeliveryAddress()->getId()])
+            $urlGenerator->generate("address_default", ["id" => $manager->getDeliveryAddress()->getId()])
         );
 
         $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);

@@ -68,7 +68,15 @@ class AddAccessTest extends WebTestCase
             "access[lastName]" => "Nom",
             "access[email]" => "new@email.com",
             "access[client]" => 16,
-            "access[manualDelivery]" => 1
+            "access[manualDelivery]" => 1,
+            "access[deliveryAddress][firstName]" => "John",
+            "access[deliveryAddress][lastName]" => "Doe",
+            "access[deliveryAddress][companyName]" => "Test",
+            "access[deliveryAddress][professional]" => 1,
+            "access[deliveryAddress][streetAddress]" => "1 rue de la mairie",
+            "access[deliveryAddress][restAddress]" => "Batiment A",
+            "access[deliveryAddress][zipCode]" => "75000",
+            "access[deliveryAddress][locality]" => "Paris"
         ]);
 
         $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
@@ -130,7 +138,15 @@ class AddAccessTest extends WebTestCase
                 "access[firstName]" => "",
                 "access[lastName]" => "Nom",
                 "access[email]" => "new@email.com",
-                "access[client]" => 16
+                "access[client]" => 16,
+                "access[deliveryAddress][firstName]" => "John",
+                "access[deliveryAddress][lastName]" => "Doe",
+                "access[deliveryAddress][companyName]" => "Test",
+                "access[deliveryAddress][professional]" => 1,
+                "access[deliveryAddress][streetAddress]" => "1 rue de la mairie",
+                "access[deliveryAddress][restAddress]" => "Batiment A",
+                "access[deliveryAddress][zipCode]" => "75000",
+                "access[deliveryAddress][locality]" => "Paris"
             ],
             "Cette valeur ne doit pas être vide."
         ];
@@ -140,7 +156,15 @@ class AddAccessTest extends WebTestCase
                 "access[firstName]" => "Prénom",
                 "access[lastName]" => "",
                 "access[email]" => "new@email.com",
-                "access[client]" => 16
+                "access[client]" => 16,
+                "access[deliveryAddress][firstName]" => "John",
+                "access[deliveryAddress][lastName]" => "Doe",
+                "access[deliveryAddress][companyName]" => "Test",
+                "access[deliveryAddress][professional]" => 1,
+                "access[deliveryAddress][streetAddress]" => "1 rue de la mairie",
+                "access[deliveryAddress][restAddress]" => "Batiment A",
+                "access[deliveryAddress][zipCode]" => "75000",
+                "access[deliveryAddress][locality]" => "Paris"
             ],
             "Cette valeur ne doit pas être vide."
         ];
@@ -150,7 +174,15 @@ class AddAccessTest extends WebTestCase
                 "access[firstName]" => "Prénom",
                 "access[lastName]" => "Nom",
                 "access[email]" => "",
-                "access[client]" => 16
+                "access[client]" => 16,
+                "access[deliveryAddress][firstName]" => "John",
+                "access[deliveryAddress][lastName]" => "Doe",
+                "access[deliveryAddress][companyName]" => "Test",
+                "access[deliveryAddress][professional]" => 1,
+                "access[deliveryAddress][streetAddress]" => "1 rue de la mairie",
+                "access[deliveryAddress][restAddress]" => "Batiment A",
+                "access[deliveryAddress][zipCode]" => "75000",
+                "access[deliveryAddress][locality]" => "Paris"
             ],
             "Cette valeur ne doit pas être vide."
         ];
@@ -160,7 +192,15 @@ class AddAccessTest extends WebTestCase
                 "access[firstName]" => "Prénom",
                 "access[lastName]" => "Nom",
                 "access[email]" => "fail",
-                "access[client]" => 16
+                "access[client]" => 16,
+                "access[deliveryAddress][firstName]" => "John",
+                "access[deliveryAddress][lastName]" => "Doe",
+                "access[deliveryAddress][companyName]" => "Test",
+                "access[deliveryAddress][professional]" => 1,
+                "access[deliveryAddress][streetAddress]" => "1 rue de la mairie",
+                "access[deliveryAddress][restAddress]" => "Batiment A",
+                "access[deliveryAddress][zipCode]" => "75000",
+                "access[deliveryAddress][locality]" => "Paris"
             ],
             "Cette valeur n'est pas une adresse email valide."
         ];

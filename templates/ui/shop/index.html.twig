@@ -15,6 +15,8 @@
                     <h1 class="text-white mb-0">
                         {% if category is not null %}
                             {{ category.name }}
+                        {% elseif category is null and universe is not null %}
+                            {{ universe.name }}
                         {% else %}
                             Tous les produits
                         {% endif %}
@@ -29,8 +31,6 @@
                             <li><a class="dropdown-item" href="{{ path("shop_index", params|merge({page: 1, limit: 18})) }}">18 produits par page</a></li>
                             <li><a class="dropdown-item" href="{{ path("shop_index", params|merge({page: 1, limit: 36})) }}">36 produits par page</a></li>
                             <li><a class="dropdown-item" href="{{ path("shop_index", params|merge({page: 1, limit: 72})) }}">72 produits par page</a></li>
-                            <li><a class="dropdown-item" href="{{ path("shop_index", params|merge({page: 1, limit: 98})) }}">98 produits par page</a></li>
-                            <li><a class="dropdown-item" href="{{ path("shop_index", params|merge({page: 1, limit: 196})) }}">196 produits par page</a></li>
                         </ul>
                     </div>
                     <div class="dropdown">
