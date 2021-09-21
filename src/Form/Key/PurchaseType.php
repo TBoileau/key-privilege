@@ -54,6 +54,7 @@ class PurchaseType extends AbstractType
                 $address->getLocality()
             ),
             "choices" => $manager->getDeliveryAddresses()
+                ->filter(fn (Address $address) => ! $address->isDeleted())
         ]);
 
         $builder->add("billingAddress", EntityType::class, [
@@ -67,6 +68,7 @@ class PurchaseType extends AbstractType
                 $address->getLocality()
             ),
             "choices" => $manager->getBillingAddresses()
+                ->filter(fn (Address $address) => ! $address->isDeleted())
         ]);
 
         if ($manager->getMembers()->count() > 1) {
