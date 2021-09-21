@@ -24,15 +24,15 @@
                                 <div class="card-body">
                                     {{ form_errors(form) }}
                                     <p class="mb-3">
-                                        {{ app.user.member.billingAddress.firstName }} {{ app.user.member.billingAddress.lastName }}<br/>
-                                        {% if app.user.member.billingAddress.companyName is not null %}
-                                            {{ app.user.member.billingAddress.companyName }}<br/>
+                                        {{ address.firstName }} {{ address.lastName }}<br/>
+                                        {% if address.companyName is not null %}
+                                            {{ address.companyName }}<br/>
                                         {% endif %}
-                                        {{ app.user.member.billingAddress.streetAddress }}
-                                        {% if app.user.member.billingAddress.restAddress is not null %}
-                                            <br/>{{ app.user.member.billingAddress.restAddress }}
+                                        {{ address.streetAddress }}
+                                        {% if address.restAddress is not null %}
+                                            <br/>{{ address.restAddress }}
                                         {% endif %}
-                                        <br/>{{ app.user.member.billingAddress.zipCode }} - {{ app.user.member.billingAddress.locality }}
+                                        <br/>{{ address.zipCode }} - {{ address.locality }}
                                     </p>
                                     {{ include("components/alert.html.twig", {
                                         state: "info",
