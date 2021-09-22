@@ -7,7 +7,6 @@ namespace App\Form\Order;
 use App\Entity\Address;
 use App\Entity\Order\Order;
 use App\Entity\User\Customer;
-use App\Form\AddressType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -40,6 +39,7 @@ class OrderType extends AbstractType
                         $address->getLocality()
                     ),
                     "choices" => $order->getUser()->getDeliveryAddresses()
+                        ->filter(fn (Address $address) => ! $address->isDeleted())
                 ]);
             }
         });

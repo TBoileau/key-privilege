@@ -90,6 +90,7 @@ class AddressController extends AbstractController
                 $types["delivery"]["default"]($user);
             }
 
+            $this->getDoctrine()->getManager()->persist($address);
             $this->getDoctrine()->getManager()->flush();
             $this->addFlash("success", "L'adresse a été ajoutée avec succès.");
 
