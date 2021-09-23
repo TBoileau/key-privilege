@@ -11,12 +11,18 @@ use App\Entity\User\Customer;
 use App\Entity\User\Employee;
 use App\Entity\User\Manager;
 use App\Entity\User\SalesPerson;
+use App\Kernel;
 use App\Repository\Key\PurchaseRepository;
 use App\Repository\Order\LineRepository;
 use App\Repository\Order\OrderRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\Mailer\Mailer;
+use Symfony\Component\Mime\Address as Addr;
+use Symfony\Component\Workflow\WorkflowInterface;
 
 ini_set("display_errors",1);
 ini_set("memory_limit","512M");
@@ -24,8 +30,13 @@ error_reporting(E_ALL);
 set_time_limit(0);
 date_default_timezone_set('Europe/Paris');
 
+require __DIR__ . "/../build/bootstrap.php";
+
+$kernel = new Kernel($_SERVER['APP_ENV'], (bool) $_SERVER['APP_DEBUG']);
+$kernel->boot();
+
 /** @var EntityManagerInterface $entityManager */
-$entityManager = require __DIR__ . "/../build/doctrine.php";
+$entityManager = $kernel->getContainer()->get('doctrine')->getManager();
 
 $server = new nusoap_server;
 $server->register('pushCommande');
@@ -35,57 +46,139 @@ $server->register('pushFacture');
  * @param array<array-key, array<string, mixed> $request
  * @return array<string, int>
  */
-function pushCommande(array $request): array {
+function pushCommande(array $request): array
+{
     global $entityManager;
 
-    /** @var OrderRepository $orderRepository */
-    $orderRepository = $entityManager->getRepository(Order::class);
-
-    /** @var LineRepository $lineRepository */
-    $lineRepository = $entityManager->getRepository(Line::class);
-
-    $response = ["CMD"=>0, "TRACKING" => 0, "EMAIL" => 0,"DOC" => []];
+    $response = ["CMD"=> 0, "TRACKING" => 0, "EMAIL" => 0,"DOC" => []];
 
     if (!empty($orders)) {
         foreach ($request as $requestOrder){
-            /** @var Order $order */
-            $order = $orderRepository->find((int) $requestOrder['IDCOMPTA']);
+            if ((int) $requestOrder['IDCOMPTA'] < 100000) {
+                /** @var OrderRepository $orderRepository */
+                $orderRepository = $entityManager->getRepository(Order::class);
 
-            if ($order === null) {
-                continue;
-            }
+                /** @var LineRepository $lineRepository */
+                $lineRepository = $entityManager->getRepository(Line::class);
 
-            /** @var array<array-key, Line> $orderLinesCanceled */
-            $linesCanceled = [];
+                /** @var Order $order */
+                $order = $orderRepository->find((int) $requestOrder['IDCOMPTA']);
 
-            foreach ($requestOrder['Tracking'] ?? [] as $tracking) {
-                if (in_array($tracking['IDSTATUTLIVR'], [2, 9])) {
-                    $linesCanceled[] = $lineRepository->find((int) $tracking['IDBDCELT_CLIENT']);
+                if ($order === null) {
+                    continue;
+                }
+
+                /** @var array<array-key, Line> $orderLinesCanceled */
+                $linesCanceled = [];
+
+                foreach ($requestOrder['Tracking'] ?? [] as $tracking) {
+                    if (in_array($tracking['IDSTATUTLIVR'], [2, 9])) {
+                        $linesCanceled[] = $lineRepository->find((int) $tracking['IDBDCELT_CLIENT']);
+                    }
+                }
+
+                foreach ($requestOrder['Expedition'] ?? [] as $delivery) {
+                    if ($delivery["LIVRE"]) {
+                        $order->setState("delivered");
+                    } else {
+                        $order->setState("on_delivery");
+                    }
+                }
+
+                if (count($linesCanceled) === $order->getLines()->count()) {
+                    $order->setState("canceled");
+                }
+
+                foreach ($linesCanceled as $line) {
+                    $wallet = new Wallet(
+                        $order->getUser()->getAccount(),
+                        new DateTimeImmutable("2 year first day of next month midnight")
+                    );
+
+                    $credit = new Credit($wallet, $line->getTotal());
+                    $credit->setOrder($order);
+                    $entityManager->persist($wallet);
+                    $entityManager->flush();
                 }
             }
+        }
+    }
 
-            foreach ($requestOrder['Expedition'] ?? [] as $delivery) {
-                if ($delivery["LIVRE"]) {
-                    $order->setState("delivered");
-                } else {
-                    $order->setState("on_delivery");
+    return $response;
+}
+
+/**
+ * @param array<string, mixed> $invoice
+ * @return array<string, int>
+ */
+function pushFacture(array $invoice): array
+{
+    global $kernel, $entityManager;
+
+    $response = ["FAC" => 0, "CREDIT" => 0, "ELT" => 0, "DEP" => 0, "EMAIL" => 0, "DOC" => 0];
+
+    $pdfDir = __DIR__ . '/pdf';
+    $pdfFilename = $invoice['NUM'].'.pdf';
+    if (is_file($pdfFilename)) {
+        if (copy($pdfFilename, sprintf('%s/%s', $pdfDir, $pdfFilename))) {
+            $response['DOC']++;
+            $response['FAC']++;
+            unlink($pdfFilename);
+        }
+    }
+
+    /** @var WorkflowInterface $stateMachine */
+    $stateMachine = $kernel->getContainer()->get('state_machine.purchase');
+
+    if (isset($invoice['Dependances'])) {
+        foreach ($invoice['Dependances'] as $dependency) {
+            if (intval($dependency['IDBDC']) > 100000) {
+                /** @var Purchase $purchase */
+                $purchase = $entityManager->find(Purchase::class, intval($dependency['IDBDC']) - 100000);
+                if (in_array(intval($invoice['IDFACTURE_STA']), [3,4])) {
+                    $stateMachine->apply($purchase, "accept");
+                    $entityManager->flush();
+                    $response['CREDIT']++;
+                } elseif (intval($invoice['IDFACTURE_STA']) === 5) {
+                    $stateMachine->apply($purchase, "cancel");
+                    $entityManager->flush();
                 }
             }
+        }
+    }
 
-            if (count($linesCanceled) === $order->getLines()->count()) {
-                $order->setState("canceled");
-            }
+    if (isset($invoice['Emails'])) {
+        foreach ($invoice['Emails'] as $emailData) {
+            try {
+                $email = (new TemplatedEmail())
+                    ->from(new Addr("logistique@keyprivilege.fr", "Key Privilege - Logistique"))
+                    ->to(
+                        ...array_map(
+                            static fn (string $email) => new Addr($email),
+                            explode(";", $emailData['EMAIL_DEST'])
+                        )
+                    )
+                    ->cc(
+                        ...array_map(
+                            static fn (string $email) => new Addr($email),
+                            explode(";", $emailData['EMAIL_CC'])
+                        )
+                    )
+                    ->bcc(
+                        ...array_map(
+                            static fn (string $email) => new Addr($email),
+                            explode(";", $emailData['EMAIL_BCC'])
+                        )
+                    )
+                    ->subject($emailData['OBJET'])
+                    ->htmlTemplate('emails/invoice.html.twig')
+                    ->context(['emssage' => nl2br($emailData['TEXTE'])]);
 
-            foreach ($linesCanceled as $line) {
-                $wallet = new Wallet(
-                    $order->getUser()->getAccount(),
-                    new DateTimeImmutable("2 year first day of next month midnight")
-                );
-
-                $credit = new Credit($wallet, $line->getTotal());
-                $credit->setOrder($order);
-                $entityManager->persist($wallet);
-                $entityManager->flush();
+                /** @var Mailer $mailer */
+                $mailer = $kernel->getContainer()->get('mailer.mailer');
+                $mailer->send($email);
+                $response['EMAIL']++;
+            } catch (TransportExceptionInterface) {
             }
         }
     }
