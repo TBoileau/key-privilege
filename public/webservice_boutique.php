@@ -340,6 +340,20 @@ function loadProduits($file){
             }
         }
 
+        $PDO->query("
+            DELETE FROM order_line AS l 
+            WHERE l.order_id IN (
+                SELECT id 
+                FROM `order` AS o 
+                WHERE o.state = 'cart'
+            ) 
+            AND l.product_id NOT IN (
+                SELECT id 
+                FROM product 
+                WHERE active = 1
+            )
+        ");
+
         fclose($resource);
     }
     $PDO->prepare("
