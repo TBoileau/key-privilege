@@ -84,6 +84,7 @@ class ProductRepository extends ServiceEntityRepository
             ->join("p.brand", "b")
             ->join("p.category", "c")
             ->leftJoin("c.lastProduct", "lp")
+            ->andWhere('p.active = true')
             ->andWhere("p.amount >= :min")
             ->setParameter("min", $filter->min)
             ->andWhere("p.amount <= :max")
