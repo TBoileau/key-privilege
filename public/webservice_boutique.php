@@ -7,7 +7,7 @@ set_time_limit(0);
 date_default_timezone_set('Europe/Paris');
 
 require __DIR__ . "/../vendor/autoload.php";
-
+require '../vendor/fergusean/nusoap/lib/nusoap.php';
 use Symfony\Component\Dotenv\Dotenv;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 
