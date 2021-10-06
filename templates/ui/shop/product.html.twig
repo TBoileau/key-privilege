@@ -30,7 +30,7 @@
                 <div class="section-body">
                     <div class="row">
                         <div class="col-12 col-md-5">
-                            <img src="{{ asset(product.image) }}" class="w-100" alt="{{ product.brand.name }} - {{ product.name }}">
+                            <img src="{{ asset('shop/products/'~ product.image)}}" class="w-100" alt="{{ product.brand.name }} - {{ product.name }}">
                         </div>
                         <div class="col-12 col-md-7">
                             <h2 class="fs-1">{{ product.name }}</h2>
