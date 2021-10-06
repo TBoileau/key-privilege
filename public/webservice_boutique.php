@@ -289,7 +289,7 @@ function loadProduits($file){
                         slug=?,
                         description = '',
                         image = '',
-                        puchase_price=?,
+                        purchase_price=?,
                         sale_price=?,
                         retail_price=?,
                         vat=?
@@ -318,7 +318,7 @@ function loadProduits($file){
                         reference = ?,
                         active=1,
                         amount = ?,
-                        puchase_price=?,
+                        purchase_price=?,
                         sale_price=?,
                         retail_price=?,
                         vat=?
@@ -329,11 +329,11 @@ function loadProduits($file){
                     $data[7],
                     $data[9],
                     $amount,
-                    $data[0],
                     $data[19],
                     $data[20],
                     $data[16],
                     $data[3],
+                    $data[0],
                 ]);
 
                 $numberOfProductsUpdated++;
