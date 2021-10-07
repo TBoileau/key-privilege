@@ -44,7 +44,12 @@
                                     {% for client in clients %}
                                         <tr>
                                             <td class="text-center">{{ client.name }}</td>
-                                            <td class="text-center">{{ client.salesPerson.fullName }}</td>
+                                            {% if client.salesPerson is not null%}
+                                                <td class="text-center">{{ client.salesPerson.fullName }}</td>
+                                            {% else %}
+                                            <td class="text-center"></td>
+                                            {% endif %}
+                                            
                                             {% if is_granted("ROLE_MANAGER") and app.user.members|length > 1 %}
                                                 <td class="text-center">{{ client.member.name }}</td>
                                             {% endif %}
