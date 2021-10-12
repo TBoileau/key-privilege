@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class TransferTest extends WebTestCase
+class GiveTest extends WebTestCase
 {
     public function testAsManagerIfTransferKeysIsSuccessful(): void
     {
@@ -41,14 +41,14 @@ class TransferTest extends WebTestCase
         /** @var UrlGeneratorInterface $urlGenerator */
         $urlGenerator = $client->getContainer()->get("router");
 
-        $client->request(Request::METHOD_GET, $urlGenerator->generate("key_transfer"));
+        $client->request(Request::METHOD_GET, $urlGenerator->generate("key_give"));
 
         $this->assertResponseIsSuccessful();
 
-        $client->submitForm("Transférer", [
-            "transfer[points]" => 1000,
-            "transfer[from]" => 1,
-            "transfer[to]" => 2
+        $client->submitForm("Donner", [
+            "give[points]" => 1000,
+            "give[from]" => 1,
+            "give[to]" => 2
         ]);
 
         $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
@@ -88,11 +88,11 @@ class TransferTest extends WebTestCase
         /** @var UrlGeneratorInterface $urlGenerator */
         $urlGenerator = $client->getContainer()->get("router");
 
-        $client->request(Request::METHOD_GET, $urlGenerator->generate("key_transfer"));
+        $client->request(Request::METHOD_GET, $urlGenerator->generate("key_give"));
 
         $this->assertResponseIsSuccessful();
 
-        $client->submitForm("Transférer", $formData);
+        $client->submitForm("Donner", $formData);
 
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
 
@@ -106,27 +106,27 @@ class TransferTest extends WebTestCase
     {
         yield [
             [
-                "transfer[points]" => 0,
-                "transfer[from]" => 1,
-                "transfer[to]" => 6
+                "give[points]" => 0,
+                "give[from]" => 1,
+                "give[to]" => 6
             ],
             "Cette valeur doit être supérieure à 0."
         ];
 
         yield [
             [
-                "transfer[points]" => 1000,
-                "transfer[from]" => 1,
-                "transfer[to]" => 1
+                "give[points]" => 1000,
+                "give[from]" => 1,
+                "give[to]" => 1
             ],
             "Vous ne pouvez pas transférer des clés entre un seul compte clés."
         ];
 
         yield [
             [
-                "transfer[points]" => 8000,
-                "transfer[from]" => 1,
-                "transfer[to]" => 6
+                "give[points]" => 8000,
+                "give[from]" => 1,
+                "give[to]" => 6
             ],
             "Le montant de clés ne peut pas être supérieur au solde du compte clés émetteur."
         ];

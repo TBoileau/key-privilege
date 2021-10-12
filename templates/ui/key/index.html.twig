@@ -69,7 +69,10 @@
                                         <a href="{{ path("key_purchase") }}" class="btn w-100 d-block btn-primary mb-3">Acheter des clés</a>
                                     {% endif %}
                                     {% if is_granted("ROLE_KEY_TRANSFER") %}
-                                        <a href="{{ path("key_transfer") }}" class="btn w-100 d-block btn-primary">Transférer des clés</a>
+                                        <a href="{{ path("key_give") }}" class="btn w-100 d-block btn-primary mb-3">Don de clés</a>
+                                    {% endif %}
+                                    {% if is_granted("ROLE_KEY_TRANSFER") %}
+                                        <a href="{{ path("key_return") }}" class="btn w-100 d-block btn-primary">Retrocession de clés</a>
                                     {% endif %}
                                 </div>
                             </div>
