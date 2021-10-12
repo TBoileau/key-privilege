@@ -62,7 +62,7 @@
             {% for product in products %}
                 <div class="col-12 col-sm-6 col-lg-4 col-xl-3 col-xxl-2 product">
                     <a href="{{ path("shop_product", {slug: product.slug}) }}" class="card h-100">
-                        <img src="{{ asset(product.image) }}" class="card-img-top" alt="{{ product.brand.name }} - {{ product.name }}">
+                        <img src="{{ asset('shop/products/' ~ product.image) }}" class="card-img-top" alt="{{ product.brand.name }} - {{ product.name }}">
                         <div class="card-body flex-grow-1">
                             <span class="fw-bold">{{ product.brand.name }} - {{ product.name }}</span>
                             <p class="text-muted">{{ product.description|u.truncate(100, "...", false) }}</p>
