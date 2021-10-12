@@ -80,7 +80,7 @@
                                                             <li><a class="dropdown-item" href="{{ path("client_access_reset", {id: customer.id}) }}">Renvoyer un mot de passe</a></li>
                                                         {% endif %}
                                                         {% if is_granted("log_as", customer) %}
-                                                            <li><a class="dropdown-item" href="{{ path("home", {_switch_user: customer.email}) }}">Voir son profil</a></li>
+                                                            <li><a class="dropdown-item" href="{{ path("home", {_switch_user: customer.username}) }}">Voir son profil</a></li>
                                                         {% endif %}
                                                     </ul>
                                                 </div>
