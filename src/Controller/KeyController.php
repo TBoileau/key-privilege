@@ -11,7 +11,9 @@ use App\Entity\Key\Transfer;
 use App\Entity\Key\Wallet;
 use App\Entity\User\Manager;
 use App\Entity\User\SalesPerson;
+use App\Form\Key\GiveType;
 use App\Form\Key\PurchaseType;
+use App\Form\Key\ReturnType;
 use App\Form\Key\TransferType;
 use App\Pdf\Generator;
 use App\Repository\Key\AccountRepository;
@@ -109,17 +111,17 @@ class KeyController extends AbstractController
     }
 
     /**
-     * @Route("/transferer", name="key_transfer")
+     * @Route("/don-de-cles", name="key_give")
      * @IsGranted("ROLE_KEY_TRANSFER")
      */
-    public function transfer(Request $request, TransferPointsInterface $transferPoints): Response
+    public function give(Request $request, TransferPointsInterface $transferPoints): Response
     {
         /** @var Manager $manager */
         $manager = $this->getUser();
 
         $transfer = new Transfer();
 
-        $form = $this->createForm(TransferType::class, $transfer, ["manager" => $manager])->handleRequest($request);
+        $form = $this->createForm(GiveType::class, $transfer, ["manager" => $manager])->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $transferPoints->execute($transfer);
@@ -127,12 +129,39 @@ class KeyController extends AbstractController
             $this->getDoctrine()->getManager()->flush();
             $this->addFlash(
                 "success",
-                "Le transfert de clés a été effectué avec succès."
+                "Le don de clés a été effectué avec succès."
             );
             return $this->redirectToRoute("key_index");
         }
 
-        return $this->render("ui/key/transfer.html.twig", ["form" => $form->createView()]);
+        return $this->render("ui/key/give.html.twig", ["form" => $form->createView()]);
+    }
+
+    /**
+     * @Route("/retrocession-de-cles", name="key_return")
+     * @IsGranted("ROLE_KEY_TRANSFER")
+     */
+    public function return(Request $request, TransferPointsInterface $transferPoints): Response
+    {
+        /** @var Manager $manager */
+        $manager = $this->getUser();
+
+        $transfer = new Transfer();
+
+        $form = $this->createForm(ReturnType::class, $transfer, ["manager" => $manager])->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $transferPoints->execute($transfer);
+            $this->getDoctrine()->getManager()->persist($transfer);
+            $this->getDoctrine()->getManager()->flush();
+            $this->addFlash(
+                "success",
+                "La rétrocession de clés a été effectuée avec succès."
+            );
+            return $this->redirectToRoute("key_index");
+        }
+
+        return $this->render("ui/key/return.html.twig", ["form" => $form->createView()]);
     }
 
     /**
