@@ -76,15 +76,15 @@ class AccessController extends AbstractController
 
         $customer->setDeliveryAddress(new \App\Entity\Address());
         $customer->getDeliveryAddress()
-            ->setProfessional($customer->getDeliveryAddress()->isProfessional())
-            ->setCompanyName($customer->getDeliveryAddress()->getCompanyName())
-            ->setFirstName($customer->getDeliveryAddress()->getFirstName())
-            ->setLastName($customer->getDeliveryAddress()->getLastName())
-            ->setStreetAddress($customer->getDeliveryAddress()->getStreetAddress())
-            ->setRestAddress($customer->getDeliveryAddress()->getRestAddress())
-            ->setZipCode($customer->getDeliveryAddress()->getZipCode())
-            ->setEmail($customer->getDeliveryAddress()->getEmail())
-            ->setPhone($customer->getDeliveryAddress()->getPhone());
+            ->setProfessional($employee->getDeliveryAddress()->isProfessional())
+            ->setCompanyName($employee->getDeliveryAddress()->getCompanyName())
+            ->setFirstName($employee->getDeliveryAddress()->getFirstName())
+            ->setLastName($employee->getDeliveryAddress()->getLastName())
+            ->setStreetAddress($employee->getDeliveryAddress()->getStreetAddress())
+            ->setRestAddress($employee->getDeliveryAddress()->getRestAddress())
+            ->setZipCode($employee->getDeliveryAddress()->getZipCode())
+            ->setEmail($employee->getDeliveryAddress()->getEmail())
+            ->setPhone($employee->getDeliveryAddress()->getPhone());
 
         $form = $this->createForm(AccessType::class, $customer, ["employee" => $employee])->handleRequest($request);
 
