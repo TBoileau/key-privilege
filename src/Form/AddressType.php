@@ -22,6 +22,9 @@ class AddressType extends AbstractType
                 "choices" => [
                     "Oui" => true,
                     "Non" => false,
+                ],
+                "attr" => [
+                    "class" => "address-professional",
                 ]
             ])
             ->add("firstName", TextType::class, [
@@ -35,7 +38,10 @@ class AddressType extends AbstractType
             ->add("companyName", TextType::class, [
                 'required' => false,
                 "label" => "Raison sociale :",
-                "empty_data" => ""
+                "empty_data" => "",
+                "row_attr" => [
+                    "class" => "address-company-name",
+                ]
             ])
             ->add("streetAddress", TextType::class, [
                 "label" => "Adresse :",

@@ -109,3 +109,21 @@ sidebarTogglers.map((toggler) => toggler.addEventListener('click', () => {
           .classList
           .contains('sidebar-open')));
 }));
+
+if (document.querySelector('.address-professional')) {
+  const addressProfessional = document.querySelector('.address-professional');
+  const addressCompanyName = document.querySelector('.address-company-name');
+  let companyName = addressCompanyName.querySelector('input').value;
+  const collapseCompanyName = () => {
+    if (parseInt(addressProfessional.value) === 0) {
+      companyName = addressCompanyName.querySelector('input').value;
+      addressCompanyName.classList.add('visually-hidden');
+      addressCompanyName.querySelector('input').value = '';
+    } else {
+      addressCompanyName.classList.remove('visually-hidden');
+      addressCompanyName.querySelector('input').value = companyName;
+    }
+  };
+  collapseCompanyName();
+  addressCompanyName.addEventListener('change', collapseCompanyName);
+}
