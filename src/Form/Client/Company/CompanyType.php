@@ -37,6 +37,10 @@ class CompanyType extends AbstractType
 
         $builder->get("address")->remove("email");
         $builder->get("address")->remove("phone");
+        $builder->get("address")->remove("firstName");
+        $builder->get("address")->remove("lastName");
+        $builder->get("address")->remove("professional");
+        $builder->get("address")->remove("companyName");
 
         /** @var Manager $employee */
         $employee = $options["employee"];

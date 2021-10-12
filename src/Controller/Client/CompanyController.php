@@ -96,6 +96,8 @@ class CompanyController extends AbstractController
         $form = $this->createForm(CompanyType::class, $client, ["employee" => $employee])->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $client->getAddress()->setProfessional(true);
+            $client->getAddress()->setCompanyName($client->getName());
             $this->getDoctrine()->getManager()->persist($client);
             $this->getDoctrine()->getManager()->flush();
             $this->addFlash(
