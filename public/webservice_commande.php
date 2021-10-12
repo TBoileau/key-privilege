@@ -24,12 +24,13 @@ use Symfony\Component\Mailer\Mailer;
 use Symfony\Component\Mime\Address as Addr;
 use Symfony\Component\Workflow\WorkflowInterface;
 
-ini_set("display_errors",1);
-ini_set("memory_limit","512M");
+ini_set("display_errors", 1);
+ini_set("memory_limit", "512M");
 error_reporting(E_ALL);
 set_time_limit(0);
 date_default_timezone_set('Europe/Paris');
 
+require '../vendor/fergusean/nusoap/lib/nusoap.php';
 require __DIR__ . "/../build/bootstrap.php";
 
 $kernel = new Kernel($_SERVER['APP_ENV'], (bool) $_SERVER['APP_DEBUG']);
@@ -50,10 +51,10 @@ function pushCommande(array $request): array
 {
     global $entityManager;
 
-    $response = ["CMD"=> 0, "TRACKING" => 0, "EMAIL" => 0,"DOC" => []];
+    $response = ["CMD" => 0, "TRACKING" => 0, "EMAIL" => 0, "DOC" => []];
 
     if (!empty($orders)) {
-        foreach ($request as $requestOrder){
+        foreach ($request as $requestOrder) {
             if ((int) $requestOrder['IDCOMPTA'] < 100000) {
                 /** @var OrderRepository $orderRepository */
                 $orderRepository = $entityManager->getRepository(Order::class);
@@ -118,7 +119,7 @@ function pushFacture(array $invoice): array
     $response = ["FAC" => 0, "CREDIT" => 0, "ELT" => 0, "DEP" => 0, "EMAIL" => 0, "DOC" => 0];
 
     $pdfDir = __DIR__ . '/pdf';
-    $pdfFilename = $invoice['NUM'].'.pdf';
+    $pdfFilename = $invoice['NUM'] . '.pdf';
     if (is_file($pdfFilename)) {
         if (copy($pdfFilename, sprintf('%s/%s', $pdfDir, $pdfFilename))) {
             $response['DOC']++;
@@ -135,7 +136,7 @@ function pushFacture(array $invoice): array
             if (intval($dependency['IDBDC']) > 100000) {
                 /** @var Purchase $purchase */
                 $purchase = $entityManager->find(Purchase::class, intval($dependency['IDBDC']) - 100000);
-                if (in_array(intval($invoice['IDFACTURE_STA']), [3,4])) {
+                if (in_array(intval($invoice['IDFACTURE_STA']), [3, 4])) {
                     $stateMachine->apply($purchase, "accept");
                     $entityManager->flush();
                     $response['CREDIT']++;
@@ -182,7 +183,6 @@ function pushFacture(array $invoice): array
             }
         }
     }
-
     return $response;
 }
 
@@ -190,26 +190,56 @@ $request = Request::createFromGlobals();
 
 function orderToArray(Order $order): array
 {
+    $valeur = 0;
+    $totalHT = 0;
+    $totalTTC = 0;
+    $totalTVA = 0;
+    foreach ($order->getLines() as $line) {
+        $valeur += $line->getAmount() * $line->getQuantity();
+        $totalHT += $line->getSalePrice();
+    }
+    $totalTTC = $totalHT * 1.196;
+    $totalTVA = $totalTTC - $totalHT;
+
     $response = [
+        "IDBDC" => strval($order->getId()),
+        "IDUSER" => strval($order->getUser()->getId()),
+        "NUM" => "BCB" . $order->getId() . "-" . $order->getUser()->getId(),
+        "DATE" => $order->getCreatedAt()->format('Y-m-d H:i:s'),
+        "NUMCLIENT" => "CL" . $order->getUser()->getId(),
+        "REFBDCCLI" => null,
+        "REFBDCSQAE" => "",
+        "IDCONTACT_FAC" => strval($order->getBillingAddress()->getId()),
+        "IDCONTACT_LIV" => strval($order->getDeliveryAddress()->getId()),
+        "IDCONTACT_AUT" => null,
+        "VALEUR," => strval($valeur),
+        "IDBDC_TYP" => "1",
+        "IDMODEPAIEMENT" => null,
+        "TOTALHT" => strval($totalHT),
+        "TOTALTTC" => strval($totalTTC),
+        "TOTALTVA" => strval($totalTVA),
+        "IDPROJET" => "178",
+        "DOCS" => 'pdf/' . sprintf("BCB%06d-%d",  $order->getId(), $order->getUser()->getId()) . '.pdf',
         'LIGNES' => [],
         'USERS' => []
     ];
 
+
     /** @var Line $line */
     foreach ($order->getLines() as $line) {
         $response["LIGNES"][] = [
-            "IDBDC_ELT" => $line->getId(),
-            "IDPRODUIT" => $line->getProduct()->getId(),
-            "PAUHT" => round($line->getPurchasePrice() / 100),
-            "PVUHT" => round($line->getSalePrice() / 100),
-            "VALEUR" => $line->getAmount(),
-            "PPGC" => round($line->getPurchasePrice() / 100),
-            "IDBDC" => $order->getId(),
-            "QTE" => $line->getQuantity(),
-            "REFERENCE" => $line->getProduct()->getReference(),
+            "IDBDC_ELT" => strval($line->getId()),
+            "IDPRODUIT" => strval($line->getProduct()->getId()),
+            "PAUHT" => strval($line->getPurchasePrice()),
+            "PVUHT" => strval($line->getSalePrice()),
+            "VALEUR" => strval($line->getAmount()),
+            "PPGC" => strval($line->getPurchasePrice()),
+            "IDBDC" => strval($order->getId()),
+            "QTE" => strval($line->getQuantity()),
+            "REFERENCE" => strval($line->getProduct()->getReference()),
             "DESIGN" => $line->getProduct()->getDescription(),
-            "MONTANT" => round(($line->getSalePrice() * $line->getQuantity()) / 100),
-            "IDTVA" => $line->getVat(),
+            "MONTANT" => strval($line->getSalePrice() * $line->getQuantity()),
+            "IDTVA" => strval($line->getVat()),
         ];
     }
 
@@ -235,21 +265,20 @@ function orderToArray(Order $order): array
         $company = $user->getMember();
     }
 
-
     $addDetail = static fn (Address $address, int $property, mixed $value) => [
-        "IDCONTACT" => $address->getId(),
+        "IDCONTACT" => strval($address->getId()),
         "IDPROPRIETE" => $property,
         "VALEUR" => $value,
         "IDVALEUR" => 0
     ];
 
     $addAddress = static fn (Address $address, string $type): array => [
-        "IDCONTACT" => $address->getId(),
-        "IDUSER" => $order->getUser()->getId(),
+        "IDCONTACT" => strval($address->getId()),
+        "IDUSER" => strval($order->getUser()->getId()),
         "IDTYPE" =>  match ($type) {
-            "delivery" => 3,
-            "billing" => 2,
-            "other" => 1
+            "delivery" => "3",
+            "billing" => "2",
+            "other" => "1"
         },
         "VISIBLE" => 1,
         "DETAILS" => [
@@ -275,31 +304,31 @@ function orderToArray(Order $order): array
     ];
 
     $response["USERS"][0] = [
-        "IDUSER" => $order->getUser()->getId(),
+        "IDUSER" => strval($order->getUser()->getId()),
         "NOM" => $order->getUser()->getLastName(),
-        "PRENOM" => $order->getUser()->getLastName(),
-        "IDSOC" => $company->getId(),
-        "IDPROFIL" => match($order->getUser()::class) {
-            Manager::class => 2,
-            SalesPerson::class => 3,
-            Collaborator::class => 5,
-            Customer::class => 4,
+        "PRENOM" => $order->getUser()->getFirstName(),
+        "IDSOC" => strval($company->getId()),
+        "IDPROFIL" => match ($order->getUser()::class) {
+            Manager::class => "2",
+            SalesPerson::class => "3",
+            Collaborator::class => "5",
+            Customer::class => "4",
         },
-        "ACTIF" => 1,
+        "ACTIF" => "1",
         "EMAIL" => $order->getUser()->getEmail(),
-        "USE_EMAIL" => 1,
+        "USE_EMAIL" => "1",
         "SOCIETE" => [
-            "IDSOCIETE" => $company->getId(),
+            "IDSOCIETE" => strval($company->getId()),
             "LIBELLE" => $company->getName(),
             "SIRET" => $company->getCompanyNumber(),
             "TVA_INTRA" => $company->getVatNumber(),
-            "IDMODEPAIEMENT" => 6,
-            "IDECHEANCE" => 9,
+            "IDMODEPAIEMENT" => "6",
+            "IDECHEANCE" => "9",
         ],
         "CONTACTS" => [
-            $addAddress($order->getBillingAddress(), "billing"),
-            $addAddress($order->getBillingAddress(), "other"),
-            $addAddress($order->getDeliveryAddress(), "delivery"),
+            $order->getDeliveryAddress() ? $addAddress($order->getDeliveryAddress(), "delivery") : $addAddress($company->getAddress(), "delivery"),
+            $order->getBillingAddress() ? $addAddress($order->getBillingAddress(), "other") : $addAddress($company->getAddress(), "other"),
+            $order->getBillingAddress() ? $addAddress($order->getBillingAddress(), "billing") : $addAddress($company->getAddress(), "billing"),
         ]
     ];
 
@@ -309,23 +338,40 @@ function orderToArray(Order $order): array
 function purchaseToArray(Purchase $purchase): array
 {
     $response = [
+        "IDBDC" => strval(100000 + $purchase->getId()),
+        "IDUSER" => strval($purchase->getManager()->getId()),
+        "NUM" => "BCB" . $purchase->getId() . "-" . $purchase->getManager()->getId(),
+        "DATE" => $purchase->getCreatedAt()->format('Y-m-d H:i:s'),
+        "NUMCLIENT" => "CL" . $purchase->getManager()->getId(),
+        "REFBDCCLI" => null,
+        "REFBDCSQAE" => "",
+        "IDCONTACT_FAC" => strval($purchase->getBillingAddress()->getId()),
+        "IDCONTACT_LIV" => strval($purchase->getDeliveryAddress()->getId()),
+        "IDCONTACT_AUT" => null,
+        "VALEUR," => strval($purchase->getPoints()),
+        "IDBDC_TYP" => "1",
+        "IDMODEPAIEMENT" => null,
+        "TOTALHT" => strval($purchase->getPoints()),
+        "TOTALTTC" => strval($purchase->getPoints() * 1.196),
+        "TOTALTVA" => strval(($purchase->getPoints() * 1.196) - $purchase->getPoints()),
+        "IDPROJET" => "178",
+        "DOCS" => 'pdf/' . sprintf("BCP%06d-%d",  $purchase->getId(), $purchase->getManager()->getId()) . '.pdf',
         'LIGNES' => [],
         'USERS' => []
     ];
-
     $response["LIGNES"][] = [
-        "IDBDC_ELT" => 100000 + $purchase->getId(),
-        "IDPRODUIT" => 23371,
-        "PAUHT" => 1,
-        "PVUHT" => 1,
-        "VALEUR" => 1,
-        "PPGC" => 1.2,
-        "IDBDC" => 100000 + $purchase->getId(),
-        "QTE" => $purchase->getPoints(),
+        "IDBDC_ELT" => strval(100000 + $purchase->getId()),
+        "IDPRODUIT" => strval(23371),
+        "PAUHT" => strval(1),
+        "PVUHT" => strval(1),
+        "VALEUR" => strval(1),
+        "PPGC" => strval(1.2),
+        "IDBDC" => strval(100000 + $purchase->getId()),
+        "QTE" => strval($purchase->getPoints()),
         "REFERENCE" => 'CLE1',
         "DESIGN" => 'Achat de clés dans le cadre du programe Key Privilege',
-        "MONTANT" => $purchase->getPoints(),
-        "IDTVA" => 1,
+        "MONTANT" => strval($purchase->getPoints()),
+        "IDTVA" => strval(1),
     ];
 
     /** @var Manager $user */
@@ -334,19 +380,19 @@ function purchaseToArray(Purchase $purchase): array
     $company = $user->getMember();
 
     $addDetail = static fn (Address $address, int $property, mixed $value) => [
-        "IDCONTACT" => $address->getId(),
+        "IDCONTACT" => strval($address->getId()),
         "IDPROPRIETE" => $property,
         "VALEUR" => $value,
         "IDVALEUR" => 0
     ];
 
     $addAddress = static fn (Address $address, string $type): array => [
-        "IDCONTACT" => $address->getId(),
-        "IDUSER" => $user->getId(),
+        "IDCONTACT" => strval($address->getId()),
+        "IDUSER" => strval($user->getId()),
         "IDTYPE" =>  match ($type) {
-            "delivery" => 3,
-            "billing" => 2,
-            "other" => 1
+            "delivery" => "3",
+            "billing" => "2",
+            "other" => "1"
         },
         "VISIBLE" => 1,
         "DETAILS" => [
@@ -372,21 +418,21 @@ function purchaseToArray(Purchase $purchase): array
     ];
 
     $response["USERS"][0] = [
-        "IDUSER" => $user->getId(),
+        "IDUSER" => strval($user->getId()),
         "NOM" => $user->getLastName(),
         "PRENOM" => $user->getLastName(),
-        "IDSOC" => $company->getId(),
-        "IDPROFIL" => 2,
-        "ACTIF" => 1,
+        "IDSOC" => strval($company->getId()),
+        "IDPROFIL" => "2",
+        "ACTIF" => "1",
         "EMAIL" => $user->getEmail(),
-        "USE_EMAIL" => 1,
+        "USE_EMAIL" => "1",
         "SOCIETE" => [
-            "IDSOCIETE" => $company->getId(),
+            "IDSOCIETE" => strval($company->getId()),
             "LIBELLE" => $company->getName(),
             "SIRET" => $company->getCompanyNumber(),
             "TVA_INTRA" => $company->getVatNumber(),
-            "IDMODEPAIEMENT" => 6,
-            "IDECHEANCE" => 9,
+            "IDMODEPAIEMENT" => "6",
+            "IDECHEANCE" => "9",
         ],
         "CONTACTS" => [
             $addAddress($purchase->getBillingAddress(), "billing"),
@@ -397,8 +443,9 @@ function purchaseToArray(Purchase $purchase): array
 
     return $response;
 }
+header('Access-Control-Allow-Origin: *');
 
-if($request->isMethod(Request::METHOD_GET) && $request->get("ACTION") === "getCommandes"){
+if ($request->isMethod(Request::METHOD_GET) && $request->get("ACTION") === "getCommandes") {
     $action = $_GET["ACTION"] ?? $_POST["ACTION"];
 
     /** @var OrderRepository $orderRepository */
@@ -412,7 +459,7 @@ if($request->isMethod(Request::METHOD_GET) && $request->get("ACTION") === "getCo
 
     $row = 0;
 
-    foreach($orders as $order) {
+    foreach ($orders as $order) {
         $response[$row] = orderToArray($order);
         $row++;
     }
@@ -423,12 +470,12 @@ if($request->isMethod(Request::METHOD_GET) && $request->get("ACTION") === "getCo
     /** @var array<array-key, Purchase> $purchases */
     $purchases = $purchaseRepository->findBy(['state' => 'pending']);
 
-    foreach($purchases as $purchase) {
+    foreach ($purchases as $purchase) {
         $response[$row] = purchaseToArray($purchase);
         $row++;
     }
-
-    (new JsonResponse($response, JsonResponse::HTTP_OK, ["Access-Control-Allow-Origin" => "*"]))->send();
+    echo json_encode($response);
+    //(new JsonResponse($response, JsonResponse::HTTP_OK, ["Access-Control-Allow-Origin" => "*"]))->send();
 } else {
     $server->service($HTTP_RAW_POST_DATA ?? '');
 }
