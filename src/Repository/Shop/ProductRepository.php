@@ -35,7 +35,9 @@ class ProductRepository extends ServiceEntityRepository
      */
     public function getLastProducts(User $user): array
     {
-        if (in_array(Employee::class, class_uses($user)) || $user->getAccount()->getBalance() === 0) {
+        /** @var array<array-key, class-string> $userTraits */
+        $userTraits = class_uses($user);
+        if (in_array(Employee::class, $userTraits) || $user->getAccount()->getBalance() === 0) {
             return $this->createQueryBuilder("p")
                 ->addSelect("b")
                 ->addSelect("c")
