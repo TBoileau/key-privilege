@@ -20,6 +20,7 @@
                                 <table class="table table-hover mb-0">
                                     <thead>
                                         <tr>
+                                            <th class="text-center">&nbsp;</th>
                                             <th class="text-center">Produit</th>
                                             <th class="text-center">Valeur</th>
                                             <th class="text-center">Quantité</th>
@@ -29,6 +30,12 @@
                                     <tbody>
                                     {% for line in order.lines %}
                                         <tr>
+                                            <td class="text-center">
+                                                <a href="{{ path("cart_delete", {id: line.id}) }}" class="btn btn-sm btn-outline-primary">
+                                                    <span class="fas fa-trash"></span>
+                                                    <span class="sr-only">Supprimer</span>
+                                                </a>
+                                            </td>
                                             <td class="text-center">{{ line.product.name }} - {{ line.product.brand.name }}</td>
                                             <td class="text-center">{{ line.amount }}</td>
                                             <td class="text-center">
@@ -101,6 +108,24 @@
                                                     {{ form_widget(form.deliveryAddress) }}
                                                     <div class="form-text">Cliquez <a href="{{ path('address_create', {type: 'delivery'}) }}">ici</a> si vous souhaitez ajouter une nouvelle adresse de livraison.</div>
                                                 </div>
+                                            </div>
+                                        </div>
+                                    {% else %}
+                                        <div class="row mb-3">
+                                            <div class="col-12">
+                                                <label class="fw-bold">Adresse de livraison :</label>
+                                                <br/>
+                                                {{ order.deliveryAddress.fullName }}
+                                                {% if order.deliveryAddress.professional %}
+                                                    <br/>
+                                                    {{ order.deliveryAddress.companyName }}
+                                                {% endif %}
+                                                <br/>
+                                                {{ order.deliveryAddress.streetAddress }}
+                                                {% if order.deliveryAddress.restAddress is not null and order.deliveryAddress.restAddress is not empty %}
+                                                    <br/>{{ order.deliveryAddress.restAddress }}
+                                                {% endif %}
+                                                <br/>{{ order.deliveryAddress.zipCode }} - {{ order.deliveryAddress.locality }}
                                             </div>
                                         </div>
                                     {% endif %}

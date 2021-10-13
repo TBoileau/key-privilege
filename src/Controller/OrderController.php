@@ -12,6 +12,7 @@ use App\Repository\Order\OrderRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -33,6 +34,14 @@ class OrderController extends AbstractController
         return $this->render("ui/order/index.html.twig", [
             "orders" => $orderRepository->findBy(["user" => $user], ["createdAt" => "desc"])
         ]);
+    }
+
+    /**
+     * @Route("/{id}/telecharger", name="order_download")
+     */
+    public function download(Order $order, string $publicDir): BinaryFileResponse
+    {
+        return $this->file(sprintf('%s/pdf/%s.pdf', $publicDir, $order->getReference()));
     }
 
     /**

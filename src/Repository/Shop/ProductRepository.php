@@ -6,6 +6,8 @@ use App\Entity\Shop\Category;
 use App\Entity\Shop\Filter;
 use App\Entity\Shop\Product;
 use App\Entity\Shop\Universe;
+use App\Entity\User\Employee;
+use App\Entity\User\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\Query\Expr\Join;
@@ -31,16 +33,45 @@ class ProductRepository extends ServiceEntityRepository
     /**
      * @return array<Product>
      */
-    public function getLastProducts(): array
+    public function getLastProducts(User $user): array
     {
-        return $this->createQueryBuilder("p")
+        /** @var array<array-key, class-string> $userTraits */
+        $userTraits = class_uses($user);
+        if (in_array(Employee::class, $userTraits) || $user->getAccount()->getBalance() === 0) {
+            return $this->createQueryBuilder("p")
+                ->addSelect("b")
+                ->addSelect("c")
+                ->join("p.brand", "b")
+                ->join("p.category", "c")
+                ->leftJoin("c.lastProduct", "lp")
+                ->setMaxResults(4)
+                ->orderBy("lp.id", "desc")
+                ->getQuery()
+                ->getResult();
+        }
+
+        $subQuery = $this->createQueryBuilder('p2')
+            ->select('MAX(p2.id)')
+            ->join('p2.category', 'c2')
+            ->where('p2.amount <= :balance')
+            ->groupBy('c2.id')
+            ->getQuery()
+            ->getDQL();
+
+        $queryBuilder = $this->createQueryBuilder("p")
             ->addSelect("b")
             ->addSelect("c")
             ->join("p.brand", "b")
             ->join("p.category", "c")
-            ->leftJoin("c.lastProduct", "lp")
-            ->setMaxResults(4)
-            ->orderBy("lp.id", "desc")
+            ->setParameter('balance', $user->getAccount()->getBalance())
+            ->orderBy('p.amount', 'desc')
+            ->setMaxResults(4);
+
+        $queryBuilder->where(
+            $queryBuilder->expr()->in('p.id', $subQuery)
+        );
+
+        return $queryBuilder
             ->getQuery()
             ->getResult();
     }

@@ -55,6 +55,16 @@ class CartController extends AbstractController
     }
 
     /**
+     * @Route("/{id}/supprimer", name="cart_delete")
+     */
+    public function delete(Line $line): RedirectResponse
+    {
+        $this->getDoctrine()->getManager()->remove($line);
+        $this->getDoctrine()->getManager()->flush();
+        return $this->redirectToRoute("cart_index");
+    }
+
+    /**
      * @param OrderRepository<Order> $orderRepository
      * @Route("/", name="cart_index")
      */

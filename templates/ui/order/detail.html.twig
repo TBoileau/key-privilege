@@ -37,6 +37,22 @@
                                         <strong>Total</strong>
                                         <span>{{ order.total }} clés</span>
                                     </div>
+                                    <div class="list-group-item d-flex flex-column">
+                                        <strong>Adresse de livraison</strong>
+                                        <p class="m-0">
+                                            {{ order.deliveryAddress.fullName }}
+                                            {% if order.deliveryAddress.professional %}
+                                                <br/>
+                                                {{ order.deliveryAddress.companyName }}
+                                            {% endif %}
+                                            <br/>
+                                            {{ order.deliveryAddress.streetAddress }}
+                                            {% if order.deliveryAddress.restAddress is not null and order.deliveryAddress.restAddress is not empty %}
+                                                <br/>{{ order.deliveryAddress.restAddress }}
+                                            {% endif %}
+                                            <br/>{{ order.deliveryAddress.zipCode }} - {{ order.deliveryAddress.locality }}
+                                        </p>
+                                    </div>
                                     <div class="list-group-item d-flex flex-column align-items-start">
                                         <strong>Statut</strong>
                                         {% if order.state == "cart" %}
@@ -55,6 +71,9 @@
                                     </div>
                                 </div>
                                 <div class="card-footer text-end p-0">
+                                    <a href="{{ path("order_download", {id: order.id}) }}" class="btn d-block btn-outline-primary rounded-0 border-0">
+                                        Télécharger le bon de commande
+                                    </a>
                                     <a href="{{ path("sav_trigger", {id: order.id}) }}" class="btn d-block btn-outline-danger rounded-0 border-0">
                                         Déclencher une demande de SAV
                                     </a>

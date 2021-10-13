@@ -134,7 +134,7 @@ class Address
 
     public function getCompanyName(): ?string
     {
-        return $this->companyName;
+        return u($this->companyName)->upper()->toString();
     }
 
     public function setCompanyName(?string $companyName): Address
@@ -145,7 +145,7 @@ class Address
 
     public function getStreetAddress(): string
     {
-        return $this->streetAddress;
+        return u($this->streetAddress)->upper()->toString();
     }
 
     public function setStreetAddress(string $streetAddress): self
@@ -156,7 +156,7 @@ class Address
 
     public function getRestAddress(): ?string
     {
-        return $this->restAddress;
+        return u($this->restAddress)->upper()->toString();
     }
 
     public function setRestAddress(?string $restAddress): self
@@ -167,7 +167,7 @@ class Address
 
     public function getZipCode(): string
     {
-        return $this->zipCode;
+        return u($this->zipCode)->upper()->toString();
     }
 
     public function setZipCode(string $zipCode): self
@@ -178,7 +178,7 @@ class Address
 
     public function getLocality(): string
     {
-        return $this->locality;
+        return u($this->locality)->upper()->toString();
     }
 
     public function setLocality(string $locality): self
