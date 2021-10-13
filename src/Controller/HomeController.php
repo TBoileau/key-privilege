@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\Shop\Product;
+use App\Entity\User\User;
 use App\Repository\Shop\ProductRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,8 +21,10 @@ class HomeController extends AbstractController
      */
     public function __invoke(ProductRepository $productRepository): Response
     {
+        /** @var User $user */
+        $user = $this->getUser();
         return $this->render("ui/home.html.twig", [
-            "products" => $productRepository->getLastProducts()
+            "products" => $productRepository->getLastProducts($user)
         ]);
     }
 }
