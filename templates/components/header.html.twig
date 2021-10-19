@@ -52,7 +52,7 @@
                                     Clients
                                 {% endif %}
                             </a>
-                            <ul class="dropdown-menu" aria-labelledby="dropdown-clients">
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-clients">
                                 {% if is_granted("ROLE_MANAGER") %}
                                     <li>
                                         <a class="dropdown-item" href="{{ path("member_access_create", {role: "collaborateur"}) }}">
@@ -110,7 +110,7 @@
                             <a class="nav-link dropdown-toggle" href="#" id="dropdown-shop" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Boutique
                             </a>
-                            <ul class="dropdown-menu" aria-labelledby="dropdown-shop">
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-shop">
                                 <li><a class="dropdown-item" href="{{ path("shop_index") }}">Boutique</a></li>
                                 <li><a class="dropdown-item" href="{{ path("cart_index") }}">Panier</a></li>
                                 <li><a class="dropdown-item" href="{{ path("order_index") }}">Commandes</a></li>
@@ -127,7 +127,7 @@
                             <a class="nav-link dropdown-toggle" href="#" id="dropdown-keys" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Compte clés
                             </a>
-                            <ul class="dropdown-menu" aria-labelledby="dropdown-keys">
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-keys">
                                 <li><a class="dropdown-item" href="{{ path("key_index") }}">Tableau de bord</a></li>
                                 <li><a class="dropdown-item" href="{{ path("key_purchase") }}">Acheter des clés</a></li>
                             </ul>

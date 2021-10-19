@@ -12,22 +12,27 @@
                 <div class="section-body">
                     <div class="card">
                         <h2 class="card-header">Liste des commandes</h2>
-                        <div class="card-body table-responsive p-0">
+                        <div class="card-body  p-0">
                             <table class="table table-hover mb-0" data-role="accessList">
                                 <thead>
                                 <tr>
+                                    <th class="text-center">&nbsp;</th>
                                     <th class="text-center">Référence</th>
                                     <th class="text-center">Date</th>
                                     <th class="text-center">Nombre de produits</th>
                                     <th class="text-center">Total (clés)</th>
                                     <th class="text-center">Statut</th>
-                                    <th class="text-center">&nbsp;</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 {% for order in orders %}
                                     {% if order.state != "cart" %}
                                         <tr>
+                                            <td class="text-center">
+                                                <a href="{{ path("sav_trigger", {id: order.id}) }}" class="btn btn-danger btn-sm">
+                                                    Demande de SAV
+                                                </a>
+                                            </td>
                                             <td class="text-center">{{ order.reference }}</td>
                                             <td class="text-center">{{ order.createdAt|date("d/m/Y H:i") }}</td>
                                             <td class="text-center">{{ order.numberOfProducts }}</td>
@@ -44,11 +49,6 @@
                                                 {% else %}
                                                     <span class="badge bg-danger">Incident de livraison</span>
                                                 {% endif %}
-                                            </td>
-                                            <td class="text-center">
-                                                <a href="{{ path("sav_trigger", {id: order.id}) }}" class="btn btn-danger btn-sm">
-                                                    Demande de SAV
-                                                </a>
                                             </td>
                                         </tr>
                                     {% endif %}

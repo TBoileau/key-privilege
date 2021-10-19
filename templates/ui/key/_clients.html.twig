@@ -2,27 +2,27 @@
     <div class="col-12">
         <div class="card h-100">
             <h2 class="card-header">Compte clés - Clients</h2>
-            <div class="card-body table-responsive p-0">
+            <div class="card-body  p-0">
                 <table class="table mb-0">
                     <thead>
                     <tr>
+                        <th class="text-center">Détail</th>
                         <th class="text-center">Client</th>
                         <th class="text-center">Utilisateur</th>
                         <th class="text-center">Solde</th>
-                        <th class="text-center">Détail</th>
                     </tr>
                     </thead>
                     <tbody>
                     {% for account in accounts|sort((a, b) => a.user.client.name <=> b.user.client.name) %}
                         <tr>
-                            <td class="text-center">{{ account.user.client.name }}</td>
-                            <td class="text-center">{{ account.user.fullName }}</td>
-                            <td class="text-center">{{ account.balance }} clés</td>
                             <td class="text-center">
                                 <a class="btn btn-primary btn-sm" data-bs-toggle="collapse" href="#account-{{ account.id }}" role="button" aria-expanded="false" aria-controls="account-{{ account.id }}">
                                     <span class="fas fa-eye"></span>
                                 </a>
                             </td>
+                            <td class="text-center">{{ account.user.client.name }}</td>
+                            <td class="text-center">{{ account.user.fullName }}</td>
+                            <td class="text-center">{{ account.balance }} clés</td>
                         </tr>
                         <tr class="collapse" id="account-{{ account.id }}">
                             <td colspan="4" class="p-0">

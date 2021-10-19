@@ -28,36 +28,27 @@
                     {{ form_end(form) }}
                     <div class="card">
                         <h2 class="card-header">Liste des sociétés</h2>
-                        <div class="card-body table-responsive p-0">
+                        <div class="card-body  p-0">
                             <table class="table table-hover mb-0" data-role="accessList">
                                 <thead>
                                     <tr>
+                                        <th class="text-center">Actions</th>
                                         <th class="text-center">Raison sociale</th>
                                         <th class="text-center">Commercial</th>
                                         {% if is_granted("ROLE_MANAGER") and app.user.members|length > 1 %}
                                             <th class="text-center">Adhérent</th>
                                         {% endif %}
-                                        <th class="text-center">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {% for client in clients %}
                                         <tr>
-                                            <td class="text-center">{{ client.name }}</td>
-                                            {% if client.salesPerson is not null%}
-                                                <td class="text-center">{{ client.salesPerson.fullName }}</td>
-                                            {% else %}
-                                                <td class="text-center"></td>
-                                            {% endif %}
-                                            {% if is_granted("ROLE_MANAGER") and app.user.members|length > 1 %}
-                                                <td class="text-center">{{ client.member.name }}</td>
-                                            {% endif %}
                                             <td class="text-center">
                                                 <div class="dropdown">
                                                     <button class="btn btn-sm btn-primary dropdown-toggle" type="button" id="dropdown-{{ client.id }}" data-bs-toggle="dropdown" aria-expanded="false">
                                                         <span class="fas fa-cogs"></span>
                                                     </button>
-                                                    <ul class="dropdown-menu" aria-labelledby="dropdown-{{ client.id }}">
+                                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-{{ client.id }}">
                                                         {% if is_granted("update", client) %}
                                                             <li><a class="dropdown-item" href="{{ path("client_company_update", {id: client.id}) }}">Modifier</a></li>
                                                         {% endif %}
@@ -67,6 +58,15 @@
                                                     </ul>
                                                 </div>
                                             </td>
+                                            <td class="text-center">{{ client.name }}</td>
+                                            {% if client.salesPerson is not null%}
+                                                <td class="text-center">{{ client.salesPerson.fullName }}</td>
+                                            {% else %}
+                                                <td class="text-center"></td>
+                                            {% endif %}
+                                            {% if is_granted("ROLE_MANAGER") and app.user.members|length > 1 %}
+                                                <td class="text-center">{{ client.member.name }}</td>
+                                            {% endif %}
                                         </tr>
                                     {% else %}
                                         <tr>
