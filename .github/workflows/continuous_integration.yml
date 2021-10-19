@@ -24,7 +24,9 @@ jobs:
       - name: Inject slug/short variables
         uses: rlespinasse/github-slug-action@v3.x
       - name: Install wkthtmltopdf
-        run:  sudo apt-get install wkhtmltopdf
+        run:  |
+          sudo apt-get update
+          sudo apt-get install wkhtmltopdf
       - name: Setup PHP, with composer and extensions
         uses: shivammathur/setup-php@v2
         with:
