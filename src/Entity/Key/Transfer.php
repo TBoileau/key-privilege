@@ -61,6 +61,11 @@ class Transfer
      */
     private Account $to;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private ?string $comment = null;
+
     public function __construct()
     {
         $this->transactions = new ArrayCollection();
@@ -116,6 +121,17 @@ class Transfer
     public function getTransactions(): Collection
     {
         return $this->transactions;
+    }
+
+    public function getComment(): ?string
+    {
+        return $this->comment;
+    }
+
+    public function setComment(?string $comment): Transfer
+    {
+        $this->comment = $comment;
+        return $this;
     }
 
     /**
