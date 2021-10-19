@@ -124,7 +124,7 @@ function loadCategories($file) {
         $PDO->query("TRUNCATE TABLE category");
 
         while (($data = fgetcsv($resource, 0, ";")) !== FALSE) {
-            $PDO->prepare("INSERT INTO category SET id = ?, name = ?, lft = ?, rgt = ?, lvl = ?, root_id = 1, slug = ?")->execute([
+            $PDO->prepare("INSERT INTO category SET id = ?, name = ?, lft = ?, rgt = ?, lvl = ?, slug = ?")->execute([
                 $data[0],
                 $data[1],
                 $data[2],

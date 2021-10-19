@@ -136,6 +136,7 @@ abstract class User implements UserInterface, Stringable
         $this->rulesAgreements = new ArrayCollection();
         $this->registeredAt = new DateTimeImmutable();
         $this->account = new Account();
+        $this->account->setUser($this);
         $this->deliveryAddresses = new ArrayCollection();
     }
 

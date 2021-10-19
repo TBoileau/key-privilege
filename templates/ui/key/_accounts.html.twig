@@ -1,31 +1,57 @@
 <div class="row mt-4">
     <div class="col-12">
-        <div class="card h-100">
-            <h2 class="card-header">Compte clés - Clients</h2>
-            <div class="card-body  p-0">
+        <div class="card mb-4">
+            <h2 class="card-header">Filtrer les comptes clés</h2>
+            <div class="card-body">
+                <form action="{{ path('key_index', app.request.query.all|merge({page: 1})) }}" method="get" class="d-flex align-items-end">
+                    <div class="flex-grow-1 form-group">
+                        <label for="filter" class="form-label">Recherche</label>
+                        <input type="text" id="filter" name="filter" placeholder="Recherche" class="form-control" value="{{ app.request.query.get('filter', '') }}">
+                    </div>
+                    <button type="submit" class="btn btn-primary ms-3">Filtrer</button>
+                </form>
+            </div>
+        </div>
+        <div class="card">
+            <h2 class="card-header">Comptes clés</h2>
+            <div class="card-body p-0">
                 <table class="table mb-0">
                     <thead>
                     <tr>
                         <th class="text-center">Détail</th>
-                        <th class="text-center">Client</th>
-                        <th class="text-center">Utilisateur</th>
+                        {{ include('components/column.html.twig', {route: 'key_index', field: 'a.createdAt', 'label': 'Date de création'}) }}
+                        {{ include('components/column.html.twig', {route: 'key_index', field: 'a.type', 'label': 'Type de compte'}) }}
+                        {{ include('components/column.html.twig', {route: 'key_index', field: 'a.companyName', 'label': 'Société'}) }}
+                        {{ include('components/column.html.twig', {route: 'key_index', field: 'a.ownerName', 'label': 'Propriétaire'}) }}
                         <th class="text-center">Solde</th>
                     </tr>
                     </thead>
                     <tbody>
-                    {% for account in accounts|sort((a, b) => a.user.client.name <=> b.user.client.name) %}
+                    {% for account in accounts %}
                         <tr>
                             <td class="text-center">
                                 <a class="btn btn-primary btn-sm" data-bs-toggle="collapse" href="#account-{{ account.id }}" role="button" aria-expanded="false" aria-controls="account-{{ account.id }}">
                                     <span class="fas fa-eye"></span>
                                 </a>
                             </td>
-                            <td class="text-center">{{ account.user.client.name }}</td>
-                            <td class="text-center">{{ account.user.fullName }}</td>
+                            <td class="text-center">
+                                {{ account.createdAt|date('d/m/Y H:i') }}
+                            </td>
+                            <td class="text-center">
+                                {{ account.type }}
+                            </td>
+                            <td class="text-center">
+                                {{ account.companyName }}
+                            </td>
+                            <td class="text-center">
+                                {% if account.ownerName is not null %}
+                                    {{ account.ownerName }}
+                                {% endif %}
+                            </td>
                             <td class="text-center">{{ account.balance }} clés</td>
                         </tr>
                         <tr class="collapse" id="account-{{ account.id }}">
-                            <td colspan="4" class="p-0">
+                            <td colspan="6" class="p-0">
                                 <table class="table table-hover mb-0" data-role="accessList">
                                     <thead>
                                     <tr>
@@ -58,6 +84,16 @@
                     </tbody>
                 </table>
             </div>
+            {% if pages > 1 %}
+                <div class="card-footer p-0">
+                    {{ include("components/pagination.html.twig", {
+                        class: "my-0",
+                        route: "key_index",
+                        current_page: app.request.get("page", 1),
+                        pages: pages
+                    }) }}
+                </div>
+            {% endif %}
         </div>
     </div>
 </div>

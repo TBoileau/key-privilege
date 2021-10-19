@@ -12,6 +12,7 @@ use App\Entity\User\Manager;
 use App\Entity\User\SalesPerson;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -25,17 +26,8 @@ class AccountRepository extends ServiceEntityRepository
         parent::__construct($registry, Account::class);
     }
 
-    /**
-     * @return array<int, Account>
-     */
-    public function getClientsAccountByEmployee(SalesPerson | Manager $employee): array
+    private function getAccountsBySalesPerson(SalesPerson $salesPerson): QueryBuilder
     {
-        $members = [$employee->getMember()->getId()];
-
-        if ($employee instanceof Manager) {
-            $members = $employee->getMembers()->map(fn (Member $member) => $member->getId())->toArray();
-        }
-
         $customerAccountsQueryBuilder = $this->_em->createQueryBuilder()
             ->select("account1.id")
             ->from(Customer::class, "customer")
@@ -49,12 +41,50 @@ class AccountRepository extends ServiceEntityRepository
             ->addSelect("w")
             ->join("a.user", "u")
             ->leftJoin("a.wallets", "w")
-            ->setParameter("members", $members);
+            ->setParameter("members", [$salesPerson->getMember()->getId()]);
 
         return $queryBuilder
-            ->andWhere($queryBuilder->expr()->in("a.id", $customerAccountsQueryBuilder))
-            ->getQuery()
-            ->getResult();
+            ->andWhere($queryBuilder->expr()->in("a.id", $customerAccountsQueryBuilder));
+    }
+
+    /**
+     * @return Paginator<Account>
+     */
+    public function getAccountByEmployee(
+        SalesPerson | Manager $employee,
+        int $page,
+        int $length,
+        string $field,
+        string $direction,
+        ?string $filter,
+    ): Paginator {
+        if ($employee instanceof SalesPerson) {
+            /** @var SalesPerson $salesPerson */
+            $salesPerson = $employee;
+            $queryBuilder = $this->getAccountsBySalesPerson($salesPerson);
+        } else {
+            /** @var Manager $manager */
+            $manager = $employee;
+            $queryBuilder = $this->createQueryBuilderAccountByManagerForTransfer($manager);
+        }
+
+        if ($filter !== null) {
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->orX(
+                    $queryBuilder->expr()->like('a.ownerName', ':filter'),
+                    $queryBuilder->expr()->like('a.type', ':filter'),
+                    $queryBuilder->expr()->like('a.companyName', ':filter'),
+                )
+            )->setParameter('filter', '%' . $filter . '%');
+        }
+
+        return new Paginator(
+            $queryBuilder
+                ->orderBy($field, $direction)
+                ->setFirstResult(($page - 1) * $length)
+                ->setMaxResults($length),
+            true
+        );
     }
 
     public function createQueryBuilderAccountByManagerForTransfer(Manager $manager): QueryBuilder

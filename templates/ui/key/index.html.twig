@@ -79,7 +79,7 @@
                         {% endif %}
                     </div>
                     {% if is_granted("ROLE_MANAGER") or is_granted("ROLE_SALES_PERSON") %}
-                        {{ render(path('key_clients')) }}
+                        {{ include('ui/key/_accounts.html.twig') }}
                     {% endif %}
                 </div>
             </section>

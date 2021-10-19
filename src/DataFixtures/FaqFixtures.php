@@ -16,7 +16,7 @@ class FaqFixtures extends Fixture
         $faker = Factory::create("fr_FR");
 
         for ($i = 1; $i <= 10; $i++) {
-            $manager->persist((new Question())->setName($faker->sentence)->setAnswer($faker->sentence));
+            $manager->persist((new Question())->setName($faker->sentence())->setAnswer($faker->sentence()));
         }
 
         $manager->flush();

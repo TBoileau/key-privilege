@@ -38,11 +38,27 @@ use Symfony\Component\Uid\Uuid;
 class KeyController extends AbstractController
 {
     /**
+     * @param AccountRepository<Account> $accountRepository
      * @Route("/", name="key_index")
      */
-    public function index(): Response
+    public function index(AccountRepository $accountRepository, Request $request): Response
     {
-        return $this->render("ui/key/index.html.twig");
+        /** @var SalesPerson|Manager $user */
+        $user = $this->getUser();
+
+        $accounts = $accountRepository->getAccountByEmployee(
+            $user,
+            $request->query->getInt("page", 1),
+            10,
+            $request->query->get("field", 'a.createdAt'),
+            $request->query->get("direction", 'desc'),
+            $request->query->get("filter", null),
+        );
+
+        return $this->render("ui/key/index.html.twig", [
+            "accounts" => $accounts,
+            "pages" => ceil(count($accounts) / 10),
+        ]);
     }
 
     /**
@@ -223,21 +239,5 @@ class KeyController extends AbstractController
         }
 
         return $this->render("ui/key/purchase.html.twig", ["form" => $form->createView()]);
-    }
-
-
-    /**
-     * @param AccountRepository<Account> $accountRepository
-     * @Route("/clients", name="key_clients")
-     * @Security("is_granted('ROLE_SALES_PERSON') or is_granted('ROLE_MANAGER')")
-     */
-    public function clients(AccountRepository $accountRepository): Response
-    {
-        /** @var SalesPerson|Manager $user */
-        $user = $this->getUser();
-
-        return $this->render("ui/key/_clients.html.twig", [
-            "accounts" => $accountRepository->getClientsAccountByEmployee($user)
-        ]);
     }
 }
