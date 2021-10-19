@@ -17,6 +17,7 @@ use App\Form\Key\ReturnType;
 use App\Form\Key\TransferType;
 use App\Pdf\Generator;
 use App\Repository\Key\AccountRepository;
+use App\Repository\Key\TransactionRepository;
 use App\UseCase\TransferPointsInterface;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -46,18 +47,58 @@ class KeyController extends AbstractController
         /** @var SalesPerson|Manager $user */
         $user = $this->getUser();
 
-        $accounts = $accountRepository->getAccountByEmployee(
+        if ($request->query->get("field") === null) {
+            $request->query->set("field", 'a.createdAt');
+        }
+
+        if ($request->query->get("direction") === null) {
+            $request->query->set("direction", 'desc');
+        }
+
+        $accounts = $accountRepository->getAccountsByEmployee(
             $user,
             $request->query->getInt("page", 1),
             10,
-            $request->query->get("field", 'a.createdAt'),
-            $request->query->get("direction", 'desc'),
-            $request->query->get("filter", null),
+            $request->query->get("field"),
+            $request->query->get("direction"),
+            $request->query->get("filter"),
         );
 
         return $this->render("ui/key/index.html.twig", [
             "accounts" => $accounts,
             "pages" => ceil(count($accounts) / 10),
+        ]);
+    }
+
+    /**
+     * @param TransactionRepository<Transaction> $transactionRepository
+     * @Route("/transactions", name="key_transactions")
+     */
+    public function transactions(TransactionRepository $transactionRepository, Request $request): Response
+    {
+        /** @var SalesPerson|Manager $user */
+        $user = $this->getUser();
+
+        if ($request->query->get("field") === null) {
+            $request->query->set("field", 't.createdAt');
+        }
+
+        if ($request->query->get("direction") === null) {
+            $request->query->set("direction", 'desc');
+        }
+
+        $transactions = $transactionRepository->getTransactionsByEmployee(
+            $user,
+            $request->query->getInt("page", 1),
+            10,
+            $request->query->get("field"),
+            $request->query->get("direction"),
+            $request->query->get("filter"),
+        );
+
+        return $this->render("ui/key/transactions.html.twig", [
+            "transactions" => $transactions,
+            "pages" => ceil(count($transactions) / 10),
         ]);
     }
 
