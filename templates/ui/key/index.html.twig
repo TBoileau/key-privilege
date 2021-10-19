@@ -66,13 +66,13 @@
                             <div class="col-12 col-sm-6 col-lg-4 mb-4 mb-lg-0">
                                 <div class="h-100 d-flex flex-column align-items-center justify-content-around">
                                     {% if is_granted("ROLE_KEY_PURCHASE") %}
-                                        <a href="{{ path("key_purchase") }}" class="btn w-100 d-block btn-primary mb-3">Acheter des clés</a>
+                                        <a href="{{ path("key_purchase") }}" class="btn w-100 d-block btn-primary mb-3 text-uppercase">Acheter des clés</a>
                                     {% endif %}
                                     {% if is_granted("ROLE_KEY_TRANSFER") %}
-                                        <a href="{{ path("key_give") }}" class="btn w-100 d-block btn-primary mb-3">Don de clés</a>
+                                        <a href="{{ path("key_give") }}" class="btn w-100 d-block btn-primary mb-3 text-uppercase">Don de clés</a>
                                     {% endif %}
                                     {% if is_granted("ROLE_KEY_TRANSFER") %}
-                                        <a href="{{ path("key_return") }}" class="btn w-100 d-block btn-primary">Retrocession de clés</a>
+                                        <a href="{{ path("key_return") }}" class="btn w-100 d-block btn-primary text-uppercase">Rétrocession de clés</a>
                                     {% endif %}
                                 </div>
                             </div>
