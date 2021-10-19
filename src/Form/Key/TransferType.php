@@ -15,6 +15,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\ChoiceList\View\ChoiceGroupView;
 use Symfony\Component\Form\ChoiceList\View\ChoiceView;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
@@ -97,6 +98,10 @@ abstract class TransferType extends AbstractType
         ];
 
         $builder
+            ->add('comment', TextareaType::class, [
+                'required' => false,
+                'label' => 'Commentaire :',
+            ])
             ->add("from", EntityType::class, $accountOptions + $this->getFromOptions($manager) + [
                 "label" => "Depuis le compte clés :",
                 "class" => Account::class,

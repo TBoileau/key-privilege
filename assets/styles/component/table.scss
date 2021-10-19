@@ -1,5 +1,39 @@
 .card {
   .table {
+    > thead {
+      > tr {
+        > th {
+          > a[data-direction] {
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+
+          > a[data-direction=sort]::after {
+            content: '\f0dc';
+            font-family: "Font Awesome 5 Free", serif;
+            font-weight: bold;
+            margin-left: 1rem;
+          }
+
+          > a[data-direction=desc]::after {
+            content: '\f0dd';
+            font-family: "Font Awesome 5 Free", serif;
+            font-weight: bold;
+            margin-left: 1rem;
+          }
+
+          > a[data-direction=asc]::after {
+            content: '\f0de';
+            font-family: "Font Awesome 5 Free", serif;
+            font-weight: bold;
+            margin-left: 1rem;
+          }
+        }
+      }
+    }
+
     > tbody {
       td {
         vertical-align: middle;

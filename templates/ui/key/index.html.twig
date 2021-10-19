@@ -16,13 +16,13 @@
                     <div class="row justify-content-center align-items-stretch">
                         <div class="col-12 col-sm-6 col-lg-4 mb-4 mb-lg-0">
                            <div class="card h-100">
-                               <h2 class="card-header">Compte clés personnel</h2>
+                               <h2 class="card-header">Vos clés personnelles</h2>
                                <div class="card-body text-center flex-grow-1 d-flex align-items-center justify-content-center">
-                                   <span class="fs-1">Solde : {{ app.user.account.balance }} clés</span>
+                                   <p class="fs-1 m-0">Solde<br/>{{ app.user.account.balance }} clés</p>
                                </div>
                                <div class="card-footer text-end p-0">
                                    <a href="{{ path("key_history", {id: app.user.account.id}) }}" class="btn d-block btn-outline-primary rounded-0 border-0">
-                                       <span class="fas fa-list me-2"></span>Historique
+                                       Historique
                                    </a>
                                </div>
                            </div>
@@ -30,9 +30,9 @@
                         {% if is_granted("ROLE_MANAGER") and app.user.members|length == 1 %}
                             <div class="col-12 col-sm-6 col-lg-4 mb-4 mb-lg-0">
                                 <div class="card h-100">
-                                    <h2 class="card-header">Compte clés adhérent</h2>
+                                    <h2 class="card-header">Vos clés adhérent</h2>
                                     <div class="card-body text-center flex-grow-1 d-flex align-items-center justify-content-center">
-                                        <span class="fs-1">Solde : {{ app.user.member.account.balance }} clés</span>
+                                        <p class="fs-1 m-0">Solde<br/>{{ app.user.member.account.balance }} clés</p>
                                     </div>
                                     <div class="card-footer text-end p-0">
                                         <a href="{{ path("key_history", {id: app.user.member.account.id}) }}" class="btn d-block btn-outline-primary rounded-0 border-0">
@@ -66,20 +66,121 @@
                             <div class="col-12 col-sm-6 col-lg-4 mb-4 mb-lg-0">
                                 <div class="h-100 d-flex flex-column align-items-center justify-content-around">
                                     {% if is_granted("ROLE_KEY_PURCHASE") %}
-                                        <a href="{{ path("key_purchase") }}" class="btn w-100 d-block btn-primary mb-3">Acheter des clés</a>
+                                        <a href="{{ path("key_purchase") }}" class="btn w-100 d-block btn-primary mb-3 text-uppercase">Acheter des clés</a>
                                     {% endif %}
                                     {% if is_granted("ROLE_KEY_TRANSFER") %}
-                                        <a href="{{ path("key_give") }}" class="btn w-100 d-block btn-primary mb-3">Don de clés</a>
+                                        <a href="{{ path("key_give") }}" class="btn w-100 d-block btn-primary mb-3 text-uppercase">Don de clés</a>
                                     {% endif %}
                                     {% if is_granted("ROLE_KEY_TRANSFER") %}
-                                        <a href="{{ path("key_return") }}" class="btn w-100 d-block btn-primary">Retrocession de clés</a>
+                                        <a href="{{ path("key_return") }}" class="btn w-100 d-block btn-primary mb-3 text-uppercase">Rétrocession de clés</a>
+                                    {% endif %}
+                                    {% if is_granted("ROLE_MANAGER") or is_granted("ROLE_SALES_PERSON") %}
+                                        <a href="{{ path("key_transactions") }}" class="btn w-100 d-block btn-primary text-uppercase">Transactions</a>
                                     {% endif %}
                                 </div>
                             </div>
                         {% endif %}
                     </div>
                     {% if is_granted("ROLE_MANAGER") or is_granted("ROLE_SALES_PERSON") %}
-                        {{ render(path('key_clients')) }}
+                        <div class="row mt-4">
+                            <div class="col-12">
+                                <div class="card mb-4">
+                                    <h2 class="card-header">Filtrer les comptes clés</h2>
+                                    <div class="card-body">
+                                        <form action="{{ path('key_index', app.request.query.all|merge({page: 1})) }}" method="get" class="d-flex align-items-end">
+                                            <div class="flex-grow-1 form-group">
+                                                <label for="filter" class="form-label">Recherche</label>
+                                                <input type="text" id="filter" name="filter" placeholder="Recherche" class="form-control" value="{{ app.request.query.get('filter', '') }}">
+                                            </div>
+                                            <button type="submit" class="btn btn-primary ms-3">Filtrer</button>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <h2 class="card-header">Comptes clés</h2>
+                                    <div class="card-body p-0">
+                                        <table class="table mb-0">
+                                            <thead>
+                                            <tr>
+                                                <th class="text-center">Détail</th>
+                                                {{ include('components/column.html.twig', {route: 'key_index', field: 'a.createdAt', 'label': 'Date de création'}) }}
+                                                {{ include('components/column.html.twig', {route: 'key_index', field: 'a.type', 'label': 'Type de compte'}) }}
+                                                {{ include('components/column.html.twig', {route: 'key_index', field: 'a.companyName', 'label': 'Société'}) }}
+                                                {{ include('components/column.html.twig', {route: 'key_index', field: 'a.ownerName', 'label': 'Propriétaire'}) }}
+                                                <th class="text-center">Solde</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {% for account in accounts %}
+                                                <tr>
+                                                    <td class="text-center">
+                                                        <a class="btn btn-primary btn-sm" data-bs-toggle="collapse" href="#account-{{ account.id }}" role="button" aria-expanded="false" aria-controls="account-{{ account.id }}">
+                                                            <span class="fas fa-eye"></span>
+                                                        </a>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        {{ account.createdAt|date('d/m/Y H:i') }}
+                                                    </td>
+                                                    <td class="text-center">
+                                                        {{ account.type }}
+                                                    </td>
+                                                    <td class="text-center">
+                                                        {{ account.companyName }}
+                                                    </td>
+                                                    <td class="text-center">
+                                                        {% if account.ownerName is not null %}
+                                                            {{ account.ownerName }}
+                                                        {% endif %}
+                                                    </td>
+                                                    <td class="text-center">{{ account.balance }} clés</td>
+                                                </tr>
+                                                <tr class="collapse" id="account-{{ account.id }}">
+                                                    <td colspan="6" class="p-0">
+                                                        <table class="table table-hover mb-0" data-role="accessList">
+                                                            <thead>
+                                                            <tr>
+                                                                <th class="text-center">Date d'acquisition</th>
+                                                                <th class="text-center">Date d'expiration</th>
+                                                                <th class="text-center">Clés restantes</th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            {% for wallet in account.remainingWallets|sort((a, b) => b.expiredAt < a.expiredAt) %}
+                                                                <tr>
+                                                                    <td class="text-center">{{ wallet.createdAt|date("d/m/Y") }}</td>
+                                                                    <td class="text-center">{{ wallet.expiredAt|date("d/m/Y") }}</td>
+                                                                    <td class="text-center">{{ wallet.balance }} clés</td>
+                                                                </tr>
+                                                            {% else %}
+                                                                <tr>
+                                                                    <td class="text-center" colspan="3">Aucun résultat</td>
+                                                                </tr>
+                                                            {% endfor %}
+                                                            </tbody>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                            {% else %}
+                                                <tr>
+                                                    <td class="text-center" colspan="4">Aucun résultat</td>
+                                                </tr>
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    {% if pages > 1 %}
+                                        <div class="card-footer p-0">
+                                            {{ include("components/pagination.html.twig", {
+                                                class: "my-0",
+                                                route: "key_index",
+                                                current_page: app.request.get("page", 1),
+                                                pages: pages
+                                            }) }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
                     {% endif %}
                 </div>
             </section>

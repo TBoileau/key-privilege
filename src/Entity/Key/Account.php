@@ -5,6 +5,10 @@ declare(strict_types=1);
 namespace App\Entity\Key;
 
 use App\Entity\Company\Member;
+use App\Entity\User\Collaborator;
+use App\Entity\User\Customer;
+use App\Entity\User\Manager;
+use App\Entity\User\SalesPerson;
 use App\Entity\User\User;
 use App\Repository\Key\AccountRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -21,6 +25,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * @ORM\Entity(repositoryClass=AccountRepository::class)
  * @UniqueEntity("reference")
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=true)
+ * @ORM\HasLifecycleCallbacks()
  */
 class Account implements Stringable
 {
@@ -58,12 +63,27 @@ class Account implements Stringable
     /**
      * @ORM\OneToOne(targetEntity=User::class, mappedBy="account")
      */
-    private ?User $user;
+    private ?User $user = null;
 
     /**
      * @ORM\OneToOne(targetEntity=Member::class, mappedBy="account")
      */
     private ?Member $member = null;
+
+    /**
+     * @ORM\Column(name="type_name")
+     */
+    private string $type;
+
+    /**
+     * @ORM\Column
+     */
+    private string $companyName;
+
+    /**
+     * @ORM\Column(nullable=true)
+     */
+    private ?string $ownerName = null;
 
     public function __construct()
     {
@@ -128,6 +148,16 @@ class Account implements Stringable
         return $this->user;
     }
 
+    /**
+     * @param User|null $user
+     * @return Account
+     */
+    public function setUser(?User $user): Account
+    {
+        $this->user = $user;
+        return $this;
+    }
+
     public function getMember(): ?Member
     {
         return $this->member;
@@ -146,9 +176,54 @@ class Account implements Stringable
         return sprintf("Société : %s", $this->member->getName());
     }
 
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
+    public function getCompanyName(): string
+    {
+        return $this->companyName;
+    }
+
+    public function getOwnerName(): ?string
+    {
+        return $this->ownerName;
+    }
+
     public function setMember(?Member $member): Account
     {
         $this->member = $member;
         return $this;
+    }
+
+    /**
+     * @ORM\PrePersist()
+     */
+    public function prepare(): void
+    {
+        if ($this->user !== null) {
+            $this->type = match ($this->user::class) {
+                Manager::class => 'Administrateur',
+                SalesPerson::class => 'Commercial',
+                Customer::class => 'Client',
+                default => 'Collaborateur',
+            };
+            $this->ownerName = $this->user->getFullName();
+            if ($this->user instanceof Customer) {
+                /** @var Customer $customer */
+                $customer = $this->user;
+                $this->companyName = $customer->getClient()->getName();
+            } else {
+                /** @var Collaborator|SalesPerson|Manager $employee */
+                $employee = $this->user;
+                $this->companyName = $employee->getMember()->getName();
+            }
+            return;
+        }
+
+        $this->type = 'Adhérent';
+        $this->ownerName = null;
+        $this->companyName = $this->member->getName();
     }
 }

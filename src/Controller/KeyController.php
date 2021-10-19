@@ -17,6 +17,7 @@ use App\Form\Key\ReturnType;
 use App\Form\Key\TransferType;
 use App\Pdf\Generator;
 use App\Repository\Key\AccountRepository;
+use App\Repository\Key\TransactionRepository;
 use App\UseCase\TransferPointsInterface;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -38,11 +39,67 @@ use Symfony\Component\Uid\Uuid;
 class KeyController extends AbstractController
 {
     /**
+     * @param AccountRepository<Account> $accountRepository
      * @Route("/", name="key_index")
      */
-    public function index(): Response
+    public function index(AccountRepository $accountRepository, Request $request): Response
     {
-        return $this->render("ui/key/index.html.twig");
+        /** @var SalesPerson|Manager $user */
+        $user = $this->getUser();
+
+        if ($request->query->get("field") === null) {
+            $request->query->set("field", 'a.createdAt');
+        }
+
+        if ($request->query->get("direction") === null) {
+            $request->query->set("direction", 'desc');
+        }
+
+        $accounts = $accountRepository->getAccountsByEmployee(
+            $user,
+            $request->query->getInt("page", 1),
+            10,
+            $request->query->get("field"),
+            $request->query->get("direction"),
+            $request->query->get("filter"),
+        );
+
+        return $this->render("ui/key/index.html.twig", [
+            "accounts" => $accounts,
+            "pages" => ceil(count($accounts) / 10),
+        ]);
+    }
+
+    /**
+     * @param TransactionRepository<Transaction> $transactionRepository
+     * @Route("/transactions", name="key_transactions")
+     */
+    public function transactions(TransactionRepository $transactionRepository, Request $request): Response
+    {
+        /** @var SalesPerson|Manager $user */
+        $user = $this->getUser();
+
+        if ($request->query->get("field") === null) {
+            $request->query->set("field", 't.createdAt');
+        }
+
+        if ($request->query->get("direction") === null) {
+            $request->query->set("direction", 'desc');
+        }
+
+        $transactions = $transactionRepository->getTransactionsByEmployee(
+            $user,
+            $request->query->getInt("page", 1),
+            10,
+            $request->query->get("field"),
+            $request->query->get("direction"),
+            $request->query->get("filter"),
+        );
+
+        return $this->render("ui/key/transactions.html.twig", [
+            "transactions" => $transactions,
+            "pages" => ceil(count($transactions) / 10),
+        ]);
     }
 
     /**
@@ -223,21 +280,5 @@ class KeyController extends AbstractController
         }
 
         return $this->render("ui/key/purchase.html.twig", ["form" => $form->createView()]);
-    }
-
-
-    /**
-     * @param AccountRepository<Account> $accountRepository
-     * @Route("/clients", name="key_clients")
-     * @Security("is_granted('ROLE_SALES_PERSON') or is_granted('ROLE_MANAGER')")
-     */
-    public function clients(AccountRepository $accountRepository): Response
-    {
-        /** @var SalesPerson|Manager $user */
-        $user = $this->getUser();
-
-        return $this->render("ui/key/_clients.html.twig", [
-            "accounts" => $accountRepository->getClientsAccountByEmployee($user)
-        ]);
     }
 }

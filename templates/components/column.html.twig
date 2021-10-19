@@ -1,0 +1,7 @@
+<th class="text-center">
+    <a
+            href="{{ path(route, app.request.query.all|merge({page: 1, field: field, direction: app.request.query.get('field') == field ? (app.request.query.get('direction') == 'desc' ? "asc" : "desc") : "asc"})) }}"
+            data-direction="{{ app.request.query.get('field') == field ? app.request.query.get('direction') : "sort" }}">
+        {{ label }}
+    </a>
+</th>

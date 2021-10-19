@@ -56,12 +56,6 @@ class Category
     private int $level;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Category::class)
-     * @Gedmo\TreeRoot
-     */
-    private ?Category $root = null;
-
-    /**
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="children")
      * @Gedmo\TreeParent
      */
@@ -160,17 +154,6 @@ class Category
     public function setLevel(int $level): self
     {
         $this->level = $level;
-        return $this;
-    }
-
-    public function getRoot(): ?Category
-    {
-        return $this->root;
-    }
-
-    public function setRoot(?Category $root): self
-    {
-        $this->root = $root;
         return $this;
     }
 
