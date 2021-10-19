@@ -52,7 +52,30 @@
                                     Clients
                                 {% endif %}
                             </a>
-                            <ul class="dropdown-menu" aria-labelledby="dropdown-clients">
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-clients">
+                                {% if is_granted("ROLE_MANAGER") %}
+                                    <li>
+                                        <a class="dropdown-item" href="{{ path("member_access_create", {role: "collaborateur"}) }}">
+                                            Créer un accès<br class="d-none d-md-inline d-xl-none"/><span class="d-md-none d-xl-inline">&nbsp;</span>collaborateur
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ path("member_access_create", {role: "commercial"}) }}">
+                                            Créer un accès<br class="d-none d-md-inline d-xl-none"/><span class="d-md-none d-xl-inline">&nbsp;</span>commercial
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ path("member_access_create", {role: "administrateur"}) }}">
+                                            Créer un accès<br class="d-none d-md-block d-xl-none"/><span class="d-md-none d-xl-inline">&nbsp;</span>administrateur
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ path("member_access_list") }}">
+                                            Gestion des accès<br/>de mon entreprise
+                                        </a>
+                                    </li>
+                                    <li><hr class="dropdown-divider"></li>
+                                {% endif %}
                                 {% if is_granted("ROLE_CLIENT_COMPANY") %}
                                     <li><a class="dropdown-item" href="{{ path("client_company_create") }}">Créer une société cliente</a></li>
                                     <li>
@@ -79,29 +102,6 @@
                                     </li>
                                 {% endif %}
 
-                                {% if is_granted("ROLE_MANAGER") %}
-                                    <li><hr class="dropdown-divider"></li>
-                                    <li>
-                                        <a class="dropdown-item" href="{{ path("member_access_create", {role: "collaborateur"}) }}">
-                                            Créer un accès<br class="d-none d-md-inline d-xl-none"/><span class="d-md-none d-xl-inline">&nbsp;</span>collaborateur
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="{{ path("member_access_create", {role: "commercial"}) }}">
-                                            Créer un accès<br class="d-none d-md-inline d-xl-none"/><span class="d-md-none d-xl-inline">&nbsp;</span>commercial
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="{{ path("member_access_create", {role: "administrateur"}) }}">
-                                            Créer un accès<br class="d-none d-md-block d-xl-none"/><span class="d-md-none d-xl-inline">&nbsp;</span>administrateur
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="{{ path("member_access_list") }}">
-                                            Gestion des accès<br/>de mon entreprise
-                                        </a>
-                                    </li>
-                                {% endif %}
                             </ul>
                         </li>
                     {% endif %}
@@ -110,7 +110,7 @@
                             <a class="nav-link dropdown-toggle" href="#" id="dropdown-shop" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Boutique
                             </a>
-                            <ul class="dropdown-menu" aria-labelledby="dropdown-shop">
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-shop">
                                 <li><a class="dropdown-item" href="{{ path("shop_index") }}">Boutique</a></li>
                                 <li><a class="dropdown-item" href="{{ path("cart_index") }}">Panier</a></li>
                                 <li><a class="dropdown-item" href="{{ path("order_index") }}">Commandes</a></li>
@@ -127,7 +127,7 @@
                             <a class="nav-link dropdown-toggle" href="#" id="dropdown-keys" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Compte clés
                             </a>
-                            <ul class="dropdown-menu" aria-labelledby="dropdown-keys">
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-keys">
                                 <li><a class="dropdown-item" href="{{ path("key_index") }}">Tableau de bord</a></li>
                                 <li><a class="dropdown-item" href="{{ path("key_purchase") }}">Acheter des clés</a></li>
                             </ul>

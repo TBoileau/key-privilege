@@ -58,7 +58,7 @@ class PurchaseType extends AbstractType
         ]);
 
         $builder->add("billingAddress", EntityType::class, [
-            'label' => 'Adresse de livraison',
+            'label' => 'Adresse de facturation',
             "class" => Address::class,
             "choice_label" => fn (Address $address) => sprintf(
                 "%s - %s %s %s",

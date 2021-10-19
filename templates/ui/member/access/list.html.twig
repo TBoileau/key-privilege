@@ -17,7 +17,7 @@
 {#                        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdown-create" data-bs-toggle="dropdown" aria-expanded="false">#}
 {#                            Créer un nouvel accès#}
 {#                        </button>#}
-{#                        <ul class="dropdown-menu" aria-labelledby="dropdown-create">#}
+{#                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-create">#}
 {#                            <li><a href="{{ path("member_access_create", {role: "administrateur"}) }}" class="dropdown-item">Administrateur</a></li>#}
 {#                            <li><a href="{{ path("member_access_create", {role: "commercial"}) }}" class="dropdown-item">Commercial</a></li>#}
 {#                            <li><a href="{{ path("member_access_create", {role: "collaborateur"}) }}" class="dropdown-item">Collaborateur</a></li>#}
@@ -36,10 +36,11 @@
                     {{ form_end(form) }}
                     <div class="card">
                         <h2 class="card-header">Liste des accès</h2>
-                        <div class="card-body table-responsive p-0">
+                        <div class="card-body  p-0">
                             <table class="table table-hover mb-0" data-role="accessList">
                                 <thead>
                                 <tr>
+                                    <th class="text-center">Actions</th>
                                     <th class="text-center">Prénom</th>
                                     <th class="text-center">Nom</th>
                                     <th class="text-center">Rôle</th>
@@ -48,34 +49,17 @@
                                     {% endif %}
                                     <th class="text-center">Date d'inscription</th>
                                     <th class="text-center">Dernière connexion</th>
-                                    <th class="text-center">Actions</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 {% for employee in employees %}
                                     <tr class="{{ employee.suspended ? "bg-warning" }}">
-                                        <td class="text-center">{{ employee.firstName }}</td>
-                                        <td class="text-center">{{ employee.lastName }}</td>
-                                        <td class="text-center">{{ employee.roleName }}</td>
-                                        {% if is_granted("ROLE_MANAGER") and app.user.members|length > 1 %}
-                                            <td class="text-center">
-                                                {% if employee.role == "ROLE_MANAGER" and employee.members|length > 1  %}
-                                                    {% for member in employee.members %}
-                                                        {{ member.name ~ (not loop.last ? ", ") }}
-                                                    {% endfor %}
-                                                {% else %}
-                                                    {{ employee.member.name }}
-                                                {% endif %}
-                                            </td>
-                                        {% endif %}
-                                        <td class="text-center">{{ employee.registeredAt|date("d/m/Y H:i") }}</td>
-                                        <td class="text-center">{{ employee.lastLogin|date("d/m/Y H:i") }}</td>
                                         <td class="text-center">
                                             <div class="dropdown">
                                                 <button class="btn btn-sm btn-primary dropdown-toggle" type="button" id="dropdown-{{ employee.id }}" data-bs-toggle="dropdown" aria-expanded="false">
                                                     <span class="fas fa-cogs"></span>
                                                 </button>
-                                                <ul class="dropdown-menu" aria-labelledby="dropdown-{{ employee.id }}">
+                                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-{{ employee.id }}">
                                                     {% if is_granted("suspend", employee) %}
                                                         <li><a class="dropdown-item" href="{{ path("member_access_suspend", {id: employee.id}) }}">Suspendre</a></li>
                                                     {% endif %}
@@ -94,6 +78,22 @@
                                                 </ul>
                                             </div>
                                         </td>
+                                        <td class="text-center">{{ employee.firstName }}</td>
+                                        <td class="text-center">{{ employee.lastName }}</td>
+                                        <td class="text-center">{{ employee.roleName }}</td>
+                                        {% if is_granted("ROLE_MANAGER") and app.user.members|length > 1 %}
+                                            <td class="text-center">
+                                                {% if employee.role == "ROLE_MANAGER" and employee.members|length > 1  %}
+                                                    {% for member in employee.members %}
+                                                        {{ member.name ~ (not loop.last ? ", ") }}
+                                                    {% endfor %}
+                                                {% else %}
+                                                    {{ employee.member.name }}
+                                                {% endif %}
+                                            </td>
+                                        {% endif %}
+                                        <td class="text-center">{{ employee.registeredAt|date("d/m/Y H:i") }}</td>
+                                        <td class="text-center">{{ employee.lastLogin|date("d/m/Y H:i") }}</td>
                                     </tr>
                                 {% else %}
                                     <tr>
