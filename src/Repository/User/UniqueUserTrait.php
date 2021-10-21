@@ -6,13 +6,13 @@ namespace App\Repository\User;
 
 use App\Entity\User\User;
 
-trait UniqueUsernameTrait
+trait UniqueUserTrait
 {
     /**
      * @param array<string, mixed> $criteria
      * @return array<User>
      */
-    public function findByUniqueUsername(array $criteria): array
+    public function findByUnique(array $criteria): array
     {
         return $this->_em->getRepository(User::class)->findBy($criteria);
     }
