@@ -4,6 +4,7 @@
         <table class="table table-hover mb-0" data-role="accessList">
             <thead>
             <tr>
+                <th class="text-center">Détail</th>
                 <th class="text-center">Référence</th>
                 <th class="text-center">Client</th>
                 <th class="text-center">Commanditaire</th>
@@ -11,13 +12,18 @@
                 <th class="text-center">Nombre de produits</th>
                 <th class="text-center">Total (clés)</th>
                 <th class="text-center">Statut</th>
-                <th class="text-center">Détail</th>
             </tr>
             </thead>
             <tbody>
             {% for order in orders %}
                 {% if order.state != "cart" %}
                     <tr>
+                        <td class="text-center">
+                            <a href="{{ path("order_detail", {id: order.id}) }}" class="btn btn-primary btn-sm">
+                                <span class="fas fa-eye"></span>
+                                <span class="sr-only">Détail</span>
+                            </a>
+                        </td>
                         <td class="text-center">{{ order.reference }}</td>
                         <td class="text-center">{{ order.user.client.name }}</td>
                         <td class="text-center">{{ order.user.fullName }}</td>
@@ -36,12 +42,6 @@
                             {% else %}
                                 <span class="badge bg-danger">Incident de livraison</span>
                             {% endif %}
-                        </td>
-                        <td class="text-center">
-                            <a href="{{ path("order_detail", {id: order.id}) }}" class="btn btn-primary btn-sm">
-                                <span class="fas fa-eye"></span>
-                                <span class="sr-only">Détail</span>
-                            </a>
                         </td>
                     </tr>
                 {% endif %}
