@@ -29,8 +29,13 @@ use function Symfony\Component\String\u;
  * @ORM\Table(name="`user`")
  * @UniqueEntity(
  *     "username",
- *     repositoryMethod="findByUniqueUsername",
+ *     repositoryMethod="findByUnique",
  *     message="Cet identifiant existe déjà."
+ * )
+ * @UniqueEntity(
+ *     "email",
+ *     repositoryMethod="findByUnique",
+ *     message="Cette adresse email existe déjà."
  * )
  * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=true)
  * @ORM\InheritanceType("SINGLE_TABLE")
@@ -60,7 +65,7 @@ abstract class User implements UserInterface, Stringable
     protected string $username;
 
     /**
-     * @ORM\Column(type="string", length=180)
+     * @ORM\Column(type="string", length=180, unique=true)
      * @Assert\NotBlank
      * @Assert\Email
      */

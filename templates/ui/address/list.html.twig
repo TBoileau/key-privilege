@@ -42,7 +42,7 @@
                                                                 <span class="fas fa-cogs"></span>
                                                             </button>
                                                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-{{ address.id }}">
-                                                                <li><a class="dropdown-item" href="{{ path("address_default", {id: address.id}) }}">Adresse par défaut</a></li>
+                                                                <li><a class="dropdown-item" href="{{ path("address_default", {id: address.id}) }}">Choisir comme adresse par défaut</a></li>
                                                                 <li><a class="dropdown-item" href="{{ path("address_delete", {id: address.id}) }}">Supprimer</a></li>
                                                             </ul>
                                                         </div>
@@ -60,7 +60,7 @@
                                                 </td>
                                                 <td class="text-center">
                                                     {{ address.streetAddress }}
-                                                    {% if address.restAddress is not null %}
+                                                    {% if address.restAddress is not null and address.restAddress is not empty %}
                                                         <br>{{ address.restAddress }}
                                                     {% endif %}
                                                     <br>{{ address.zipCode }} - {{ address.locality }}
@@ -105,7 +105,7 @@
                                         </td>
                                         <td class="text-center">
                                             {{ address.streetAddress }}
-                                            {% if address.restAddress is not null %}
+                                            {% if address.restAddress is not null and address.restAddress is not empty %}
                                                 <br>{{ address.restAddress }}
                                             {% endif %}
                                             <br>{{ address.zipCode }} - {{ address.locality }}

@@ -30,7 +30,6 @@ class CompanyType extends AbstractType
                 "label" => false
             ])
             ->add("companyNumber", TextType::class, [
-                "required" => false,
                 "label" => "N° de SIRET :",
                 "empty_data" => ""
             ]);
