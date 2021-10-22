@@ -129,29 +129,63 @@ if (document.querySelector('.address-professional')) {
 }
 
 if (document.querySelector('#access_client')) {
-    const processAddresses = () => {
-        if (document.querySelector('#access_manualDelivery_0').checked) {
-            const address = JSON.parse(document.querySelector('#access_client option:checked').dataset.address);
-            document.querySelector('#access_deliveryAddress_firstName').value = address.firstName;
-            document.querySelector('#access_deliveryAddress_lastName').value = address.lastName;
-            document.querySelector('#access_deliveryAddress_companyName').value = address.companyName;
-            document.querySelector('#access_deliveryAddress_professional').value = address.professional ? 1 : 0;
-            document.querySelector('#access_deliveryAddress_streetAddress').value = address.streetAddress;
-            document.querySelector('#access_deliveryAddress_restAddress').value = address.restAddress;
-            document.querySelector('#access_deliveryAddress_zipCode').value = address.zipCode;
-            document.querySelector('#access_deliveryAddress_locality').value = address.locality;
-            document.querySelector('#access_deliveryAddress_phone').value = address.phone;
-            document.querySelector('#access_deliveryAddress_email').value = address.email;
+  const processAddresses = () => {
+    if (document.querySelector('#access_manualDelivery_0').checked) {
+      const address = JSON.parse(document.querySelector('#access_client option:checked').dataset.address);
+      document.querySelector('#access_deliveryAddress_firstName').value = address.firstName;
+      document.querySelector('#access_deliveryAddress_lastName').value = address.lastName;
+      document.querySelector('#access_deliveryAddress_companyName').value = address.companyName;
+      document.querySelector('#access_deliveryAddress_professional').value = address.professional ? 1 : 0;
+      document.querySelector('#access_deliveryAddress_streetAddress').value = address.streetAddress;
+      document.querySelector('#access_deliveryAddress_restAddress').value = address.restAddress;
+      document.querySelector('#access_deliveryAddress_zipCode').value = address.zipCode;
+      document.querySelector('#access_deliveryAddress_locality').value = address.locality;
+      document.querySelector('#access_deliveryAddress_phone').value = address.phone;
+      document.querySelector('#access_deliveryAddress_email').value = address.email;
+    } else {
+      const address = JSON.parse(document.querySelector('#delivery-addresses').value);
+      document.querySelector('#access_deliveryAddress_firstName').value = address.firstName;
+      document.querySelector('#access_deliveryAddress_lastName').value = address.lastName;
+      document.querySelector('#access_deliveryAddress_companyName').value = address.companyName;
+      document.querySelector('#access_deliveryAddress_professional').value = address.professional ? 1 : 0;
+      document.querySelector('#access_deliveryAddress_streetAddress').value = address.streetAddress;
+      document.querySelector('#access_deliveryAddress_restAddress').value = address.restAddress;
+      document.querySelector('#access_deliveryAddress_zipCode').value = address.zipCode;
+      document.querySelector('#access_deliveryAddress_locality').value = address.locality;
+      document.querySelector('#access_deliveryAddress_phone').value = address.phone;
+      document.querySelector('#access_deliveryAddress_email').value = address.email;
+    }
+  };
+
+  processAddresses();
+
+  document
+      .querySelectorAll('#access_manualDelivery input')
+      .forEach((e) => e.addEventListener('change', processAddresses));
+
+  document
+      .querySelectorAll('#access_manualDelivery input')
+      .forEach((e) => e.addEventListener('change', (e) => {
+        if (parseInt(e.currentTarget.value)) {
+          document.querySelector('#delivery-addresses')
+              .closest('.row')
+              .classList.remove('show');
+          document.querySelector('#address')
+              .classList.add('show');
+        } else {
+          document.querySelector('#delivery-addresses')
+              .closest('.row')
+              .classList.add('show');
+          document.querySelector('#address')
+              .classList.remove('show');
         }
-    };
+      }));
 
-    processAddresses();
+  document
+      .querySelector('#access_client')
+      .addEventListener('change', processAddresses);
 
-    document
-        .querySelectorAll('#access_manualDelivery input')
-        .forEach((e) => e.addEventListener('change', processAddresses));
-
-    document
-        .querySelector('#access_client')
-        .addEventListener('change', processAddresses);
+  document
+      .querySelector('#delivery-addresses')
+      .addEventListener('change', processAddresses);
 }

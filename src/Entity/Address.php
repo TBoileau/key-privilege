@@ -220,6 +220,9 @@ class Address implements \JsonSerializable
         return $this;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function jsonSerialize(): array
     {
         return [
@@ -234,5 +237,16 @@ class Address implements \JsonSerializable
             'locality' => $this->locality,
             'zipCode' => $this->zipCode,
         ];
+    }
+
+    public function __toString(): string
+    {
+        return sprintf(
+            "%s - %s %s %s",
+            $this->getFullName(),
+            $this->getStreetAddress(),
+            $this->getZipCode(),
+            $this->getLocality()
+        );
     }
 }
