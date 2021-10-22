@@ -12,7 +12,7 @@ use function Symfony\Component\String\u;
 /**
  * @ORM\Entity
  */
-class Address
+class Address implements \JsonSerializable
 {
     /**
      * @ORM\Id
@@ -218,5 +218,35 @@ class Address
     {
         $this->deleted = $deleted;
         return $this;
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function jsonSerialize(): array
+    {
+        return [
+            'professional' => $this->isProfessional(),
+            'companyName' => $this->companyName,
+            'firstName' => $this->firstName,
+            'lastName' => $this->lastName,
+            'email' => $this->email,
+            'phone' => $this->phone,
+            'streetAddress' => $this->streetAddress,
+            'restAddress' => $this->restAddress,
+            'locality' => $this->locality,
+            'zipCode' => $this->zipCode,
+        ];
+    }
+
+    public function __toString(): string
+    {
+        return sprintf(
+            "%s - %s %s %s",
+            $this->getFullName(),
+            $this->getStreetAddress(),
+            $this->getZipCode(),
+            $this->getLocality()
+        );
     }
 }

@@ -35,7 +35,7 @@ class OrderType extends AbstractType
                         "%s - %s %s %s",
                         $address->getFullName(),
                         $address->getStreetAddress(),
-                        $address->getLocality(),
+                        $address->getZipCode(),
                         $address->getLocality()
                     ),
                     "choices" => $order->getUser()->getDeliveryAddresses()

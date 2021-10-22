@@ -110,7 +110,10 @@ class AccessController extends AbstractController
             return $this->redirectToRoute("client_access_list");
         }
 
-        return $this->render("ui/client/access/create.html.twig", ["form" => $form->createView()]);
+        return $this->render("ui/client/access/create.html.twig", [
+            "form" => $form->createView(),
+            "deliveryAddresses" => $employee->getDeliveryAddresses()
+        ]);
     }
 
     /**

@@ -25,46 +25,61 @@
         <div class="row my-3">
             <h2>Adresse de livraison</h2>
         </div>
-        <div class="row mb-3">
-            <div class="col-6">
-                {{ form_row(form.deliveryAddress.firstName) }}
+        {% if deliveryAddresses is defined %}
+            <div class="row collapse {{ form.manualDelivery.vars.data ? "" : "show" }}">
+                <div class="col-12">
+                    <div class="form-group">
+                        <select id="delivery-addresses" class="form-select form-control">
+                            {% for address in deliveryAddresses %}
+                                <option value="{{ address|json_encode }}">{{ address }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
             </div>
-            <div class="col-6">
-                {{ form_row(form.deliveryAddress.lastName) }}
+        {% endif %}
+        <div id="address" class="collapse {{ form.manualDelivery.vars.data ? "show" : "" }}">
+            <div class="row mb-3">
+                <div class="col-6">
+                    {{ form_row(form.deliveryAddress.firstName) }}
+                </div>
+                <div class="col-6">
+                    {{ form_row(form.deliveryAddress.lastName) }}
+                </div>
             </div>
-        </div>
-        <div class="row mb-3">
-            <div class="col-6">
-                {{ form_row(form.deliveryAddress.professional) }}
+            <div class="row mb-3">
+                <div class="col-6">
+                    {{ form_row(form.deliveryAddress.professional) }}
+                </div>
+                <div class="col-6">
+                    {{ form_row(form.deliveryAddress.companyName) }}
+                </div>
             </div>
-            <div class="col-6">
-                {{ form_row(form.deliveryAddress.companyName) }}
+            <div class="row mb-3">
+                <div class="col-12">
+                    {{ form_row(form.deliveryAddress.streetAddress) }}
+                </div>
             </div>
-        </div>
-        <div class="row mb-3">
-            <div class="col-12">
-                {{ form_row(form.deliveryAddress.streetAddress) }}
+            <div class="row mb-3">
+                <div class="col-12">
+                    {{ form_row(form.deliveryAddress.restAddress) }}
+                </div>
             </div>
-        </div>
-        <div class="row mb-3">
-            <div class="col-12">
-                {{ form_row(form.deliveryAddress.restAddress) }}
+            <div class="row mb-3">
+                <div class="col-12 col-md-6 mb-3 mb-md-0">
+                    {{ form_row(form.deliveryAddress.zipCode) }}
+                </div>
+                <div class="col-12 col-md-6">
+                    {{ form_row(form.deliveryAddress.locality) }}
+                </div>
             </div>
-        </div>
-        <div class="row mb-3">
-            <div class="col-12 col-md-6 mb-3 mb-md-0">
-                {{ form_row(form.deliveryAddress.zipCode) }}
-            </div>
-            <div class="col-12 col-md-6">
-                {{ form_row(form.deliveryAddress.locality) }}
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-12 col-md-6 mb-3 mb-md-0">
-                {{ form_row(form.deliveryAddress.phone) }}
-            </div>
-            <div class="col-12 col-md-6">
-                {{ form_row(form.deliveryAddress.email) }}
+            <div class="row">
+                <div class="col-12 col-md-6 mb-3 mb-md-0">
+                    {{ form_row(form.deliveryAddress.phone) }}
+                </div>
+                <div class="col-12 col-md-6">
+                    {{ form_row(form.deliveryAddress.email) }}
+                </div>
             </div>
         </div>
     {% endif %}
