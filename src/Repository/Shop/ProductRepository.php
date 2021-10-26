@@ -45,6 +45,7 @@ class ProductRepository extends ServiceEntityRepository
                 ->join("p.category", "c")
                 ->leftJoin("c.lastProduct", "lp")
                 ->setMaxResults(4)
+                ->where("p.active = true")
                 ->orderBy("lp.id", "desc")
                 ->getQuery()
                 ->getResult();
@@ -63,11 +64,12 @@ class ProductRepository extends ServiceEntityRepository
             ->addSelect("c")
             ->join("p.brand", "b")
             ->join("p.category", "c")
+            ->where("p.active = true")
             ->setParameter('balance', $user->getAccount()->getBalance())
             ->orderBy('p.amount', 'desc')
             ->setMaxResults(4);
 
-        $queryBuilder->where(
+        $queryBuilder->andWhere(
             $queryBuilder->expr()->in('p.id', $subQuery)
         );
 
