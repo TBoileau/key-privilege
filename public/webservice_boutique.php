@@ -1,18 +1,19 @@
 <?php
 
-ini_set("display_errors",1);
-ini_set("memory_limit","512M");
+ini_set("display_errors", 1);
+ini_set("memory_limit", "512M");
 error_reporting(E_ALL);
 set_time_limit(0);
 date_default_timezone_set('Europe/Paris');
 
 require __DIR__ . "/../vendor/autoload.php";
 require '../vendor/fergusean/nusoap/lib/nusoap.php';
+
 use Symfony\Component\Dotenv\Dotenv;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 
 $dotenv = new Dotenv();
-$dotenv->load(__DIR__.'/../.env.local');
+$dotenv->load(__DIR__ . '/../.env.local');
 
 header('Content-Type: text/html; charset=ISO-8859-1');
 
@@ -45,14 +46,15 @@ $PDO->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 $PDO->query("SET CHARACTER SET utf8;");
 $PDO->query("SET FOREIGN_KEY_CHECKS=0;");
 
-function loadImages() {
+function loadImages()
+{
     $images = array();
 
     if (!$folder_handle = opendir(sprintf("%s/../public/shop/products", __DIR__))) {
         return $images;
-    } else{
-        while(false !== ($filename = readdir($folder_handle))) {
-            if( strcmp($filename, ".")!=0 && strcmp($filename, "..")!=0 ) {
+    } else {
+        while (false !== ($filename = readdir($folder_handle))) {
+            if (strcmp($filename, ".") != 0 && strcmp($filename, "..") != 0) {
                 $images[] = $filename;
             }
         }
@@ -61,7 +63,8 @@ function loadImages() {
     return $images;
 }
 
-function loadFichiers($file) {
+function loadFichiers($file)
+{
     $zip = new ZipArchive();
 
     $zip->open(sprintf("%s/../public/shop/sync/%s/%s", __DIR__, date("d-m-Y"), $file));
@@ -75,7 +78,8 @@ function loadFichiers($file) {
     return $count;
 }
 
-function loadUnivers($file) {
+function loadUnivers($file)
+{
     $slugger = new AsciiSlugger();
 
     global $PDO;
@@ -94,9 +98,9 @@ function loadUnivers($file) {
             $statement = $PDO->prepare("SELECT COUNT(*) as numberOfUniverses FROM universe WHERE id = ?");
             $statement->execute([$data[0]]);
 
-            if(intval($statement->fetch(\PDO::FETCH_OBJ)->numberOfUniverses) === 0){
+            if (intval($statement->fetch(\PDO::FETCH_OBJ)->numberOfUniverses) === 0) {
                 $PDO->prepare("INSERT INTO universe SET id = ?, name = ?, slug = ?")->execute([$data[0], $data[3], $slugger->slug($data[3])->lower()->toString()]);
-            }else{
+            } else {
                 $PDO->prepare("UPDATE universe SET name = ?, slug = ? WHERE id = ?")->execute([$data[3], $slugger->slug($data[3])->lower()->toString(), $data[0]]);
             }
 
@@ -107,7 +111,8 @@ function loadUnivers($file) {
     return $numberOfUniversesProcessed;
 }
 
-function loadCategories($file) {
+function loadCategories($file)
+{
     $slugger = new AsciiSlugger();
     global $PDO;
     $numberOfCategoriesProcessed = 0;
@@ -141,7 +146,8 @@ function loadCategories($file) {
     return $numberOfCategoriesProcessed;
 }
 
-function loadMarques($file) {
+function loadMarques($file)
+{
     global $PDO;
     $numberOfBrandsProcessed = 0;
     $resource = fopen(
@@ -159,9 +165,9 @@ function loadMarques($file) {
             $statement = $PDO->prepare("SELECT COUNT(*) as numberOfBrands FROM brand WHERE id = ?");
             $statement->execute([$data[0]]);
 
-            if(intval($statement->fetch(\PDO::FETCH_OBJ)->numberOfBrands) === 0){
+            if (intval($statement->fetch(\PDO::FETCH_OBJ)->numberOfBrands) === 0) {
                 $PDO->prepare("INSERT INTO brand SET id = ?, name = ?")->execute([$data[0], $data[1]]);
-            }else{
+            } else {
                 $PDO->prepare("UPDATE brand SET name = ? WHERE id = ?")->execute([$data[1], $data[0]]);
             }
 
@@ -172,7 +178,8 @@ function loadMarques($file) {
     return $numberOfBrandsProcessed;
 }
 
-function loadUniversCat($file) {
+function loadUniversCat($file)
+{
     global $PDO;
     $numberOfUniversesProcessed = 0;
     $resource = fopen(
@@ -195,7 +202,8 @@ function loadUniversCat($file) {
     return $numberOfUniversesProcessed;
 }
 
-function loadDetailsProduits($file) {
+function loadDetailsProduits($file)
+{
     $slugger = new AsciiSlugger();
     $fields = [1 => "name", 2 => "description", 4 => "image"];
     global $PDO;
@@ -217,7 +225,7 @@ function loadDetailsProduits($file) {
     if ($resource !== FALSE) {
 
         while (($data = fgetcsv($resource, 0, ";")) !== FALSE) {
-            if(isset($fields[$data[1]])){
+            if (isset($fields[$data[1]])) {
                 $products[$data[0]][$fields[$data[1]]] = $data[2];
                 $numberOfDataUpdated++;
             }
@@ -226,7 +234,7 @@ function loadDetailsProduits($file) {
         fclose($resource);
     }
 
-    foreach($products as $id => $product){
+    foreach ($products as $id => $product) {
         $product["slug"] = sprintf("%s-%s", $id, $slugger->slug($product["name"])->lower()->toString());
         $product["id"] = $id;
         $PDO->prepare("UPDATE product SET name = :name, slug=:slug, description = :description, image = :image WHERE id=:id")->execute($product);
@@ -238,7 +246,8 @@ function loadDetailsProduits($file) {
         UPDATE category AS a 
         INNER JOIN (
             SELECT MAX(id) AS product, category_id 
-            FROM product 
+            FROM product
+            WHERE product.active = 1
             GROUP BY category_id
         ) AS b ON (b.category_id = a.id) 
         SET last_product_id = product
@@ -247,7 +256,8 @@ function loadDetailsProduits($file) {
     return $numberOfDataUpdated;
 }
 
-function loadProduits($file){
+function loadProduits($file)
+{
     global $PDO;
     $numberOfProductsAdded = 0;
     $numberOfProductsUpdated = 0;
@@ -271,9 +281,9 @@ function loadProduits($file){
 
             $amount = 0;
 
-            eval(sprintf("\$amount = %s;", str_replace("[CHAMP]",$data[16],$data[15])));
+            eval(sprintf("\$amount = %s;", str_replace("[CHAMP]", $data[16], $data[15])));
 
-            if(intval($statement->fetch(\PDO::FETCH_OBJ)->numberOfProducts) === 0){
+            if (intval($statement->fetch(\PDO::FETCH_OBJ)->numberOfProducts) === 0) {
 
                 $PDO->prepare("
 					INSERT INTO product
@@ -308,7 +318,7 @@ function loadProduits($file){
                 ]);
 
                 $numberOfProductsAdded++;
-            }else{
+            } else {
                 $PDO->prepare("
 					UPDATE product
 					SET 
@@ -356,6 +366,7 @@ function loadProduits($file){
 
         fclose($resource);
     }
+
     $PDO->prepare("
     UPDATE category AS c1
     INNER JOIN (
@@ -368,7 +379,57 @@ function loadProduits($file){
     SET c1.number_of_products = c2.nb
     ")->execute([]);
 
-    return ["ADD"=>$numberOfProductsAdded,"UPDATE"=>$numberOfProductsUpdated];
+    $lvl3 = $PDO->query("SELECT category.id FROM category WHERE category.lvl = 3");
+    $rows = $lvl3->fetchAll();
+    foreach ($rows as $cat) {
+        $PDO->prepare("
+        UPDATE category AS cat
+        SET cat.number_of_products = (SELECT COUNT(id) FROM product WHERE active = 1 AND product.category_id = ? GROUP BY category_id)
+        WHERE cat.id = ?
+        ")->execute([$cat["id"], $cat["id"]]);
+    }
+
+    $lvl2 = $PDO->query("SELECT category.id FROM category WHERE category.lvl = 2");
+    $rows = $lvl2->fetchAll();
+    foreach ($rows as $cat) {
+        $PDO->prepare("
+        UPDATE category AS cat
+        SET cat.number_of_products = 
+            (SELECT SUM(c.number_of_products) FROM category AS c WHERE c.parent_id = ?)
+            +
+            (SELECT cc.number_of_products FROM category AS cc WHERE cc.id = ?)
+        WHERE cat.id = ?
+        ")->execute([$cat["id"], $cat["id"], $cat["id"]]);
+    }
+
+    $lvl1 = $PDO->query("SELECT category.id FROM category WHERE category.lvl = 1");
+    $rows = $lvl1->fetchAll();
+    foreach ($rows as $cat) {
+        $PDO->prepare("
+        UPDATE category AS cat
+        SET cat.number_of_products = 
+            (SELECT SUM(c.number_of_products) FROM category AS c WHERE c.parent_id = ?)
+            +
+            (SELECT cc.number_of_products FROM category AS cc WHERE cc.id = ?)
+        WHERE cat.id = ?
+        ")->execute([$cat["id"], $cat["id"], $cat["id"]]);
+    }
+
+    $lvl0 = $PDO->query("SELECT category.id FROM category WHERE category.lvl = 0");
+    $rows = $lvl0->fetchAll();
+    foreach ($rows as $cat) {
+        $PDO->prepare("
+        UPDATE category AS cat
+        SET cat.number_of_products = 
+            (SELECT SUM(c.number_of_products) FROM category AS c WHERE c.parent_id = ?)
+            +
+            (SELECT cc.number_of_products FROM category AS cc WHERE cc.id = ?)
+        WHERE cat.id = ?
+        ")->execute([$cat["id"], $cat["id"], $cat["id"]]);
+    }
+
+
+    return ["ADD" => $numberOfProductsAdded, "UPDATE" => $numberOfProductsUpdated];
 }
 
 function loadProprietes($file)
