@@ -199,7 +199,7 @@ class ProductRepository extends ServiceEntityRepository
         if ($filter->keywords !== null) {
             $queryBuilder
                 ->andWhere("CONCAT(p.name, ' ', p.description, ' ', b.name) LIKE :keywords")
-                ->setParameter("keywords", $filter->keywords);
+                ->setParameter("keywords", "%" . $filter->keywords . "%");
         }
     }
 }
