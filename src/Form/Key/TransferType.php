@@ -10,21 +10,29 @@ use App\Entity\User\Collaborator;
 use App\Entity\User\Customer;
 use App\Entity\User\Manager;
 use App\Entity\User\SalesPerson;
-use App\Repository\Key\AccountRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\ChoiceList\View\ChoiceGroupView;
 use Symfony\Component\Form\ChoiceList\View\ChoiceView;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class TransferType extends AbstractType
+abstract class TransferType extends AbstractType
 {
+    /**
+     * @return array<string, mixed>
+     */
+    abstract protected function getFromOptions(Manager $manager): array;
+
+    /**
+     * @return array<string, mixed>
+     */
+    abstract protected function getToOptions(Manager $manager): array;
+
     public function finishView(FormView $view, FormInterface $form, array $options): void
     {
         /** @var ChoiceGroupView $choiceGroup */
@@ -42,8 +50,6 @@ class TransferType extends AbstractType
         $manager = $options["manager"];
 
         $accountOptions = [
-            "query_builder" => fn (AccountRepository $repository) => $repository
-                ->createQueryBuilderAccountByManagerForTransfer($manager),
             "choice_label" => function (Account $account) {
                 if ($account->getUser() === null) {
                     return sprintf(
@@ -92,13 +98,17 @@ class TransferType extends AbstractType
         ];
 
         $builder
-            ->add("from", EntityType::class, $accountOptions + [
-                "label" => "Depuis le compte clés :",
-                "class" => Account::class
+            ->add('comment', TextareaType::class, [
+                'required' => false,
+                'label' => 'Commentaire :',
             ])
-            ->add("to", EntityType::class, $accountOptions + [
+            ->add("from", EntityType::class, $accountOptions + $this->getFromOptions($manager) + [
+                "label" => "Depuis le compte clés :",
+                "class" => Account::class,
+            ])
+            ->add("to", EntityType::class, $accountOptions + $this->getToOptions($manager) + [
                 "label" => "Vers le compte clés :",
-                "class" => Account::class
+                "class" => Account::class,
             ])
             ->add("points", IntegerType::class, [
                 "label" => "Montant du transfert :"

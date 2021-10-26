@@ -121,7 +121,7 @@ class ShopFixtures extends Fixture
                 ->setBrand($this->brands[($i % count($this->brands)) + 1])
                 ->setReference(sprintf("REF_%d", $i))
                 ->setAmount(intval(ceil(rand(10, 2000) / 5) * 5))
-                ->setImage("shop/products/image.png")
+                ->setImage("image.png")
                 ->setPurchasePrice(rand(10, 2000))
                 ->setSalePrice(rand(10, 2000))
                 ->setRetailPrice(rand(10, 2000))

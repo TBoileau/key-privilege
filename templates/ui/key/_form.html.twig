@@ -1,0 +1,19 @@
+<div class="card-body">
+    {{ form_errors(form) }}
+    <div class="row mb-3">
+        <div class="col-12 col-md-6 mb-3 mb-md-0">
+            {{ form_row(form.from) }}
+        </div>
+        <div class="col-12 col-md-6">
+            {{ form_row(form.to) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 col-md-6">
+            {{ form_row(form.points) }}
+        </div>
+        <div class="col-12 col-md-6">
+            {{ form_row(form.comment) }}
+        </div>
+    </div>
+</div>

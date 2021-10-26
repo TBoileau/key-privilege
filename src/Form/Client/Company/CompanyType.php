@@ -30,13 +30,16 @@ class CompanyType extends AbstractType
                 "label" => false
             ])
             ->add("companyNumber", TextType::class, [
-                "required" => false,
                 "label" => "N° de SIRET :",
                 "empty_data" => ""
             ]);
 
         $builder->get("address")->remove("email");
         $builder->get("address")->remove("phone");
+        $builder->get("address")->remove("firstName");
+        $builder->get("address")->remove("lastName");
+        $builder->get("address")->remove("professional");
+        $builder->get("address")->remove("companyName");
 
         /** @var Manager $employee */
         $employee = $options["employee"];

@@ -12,7 +12,7 @@ use function Symfony\Component\String\u;
 /**
  * @ORM\Entity
  */
-class Address
+class Address implements \JsonSerializable
 {
     /**
      * @ORM\Id
@@ -134,7 +134,7 @@ class Address
 
     public function getCompanyName(): ?string
     {
-        return $this->companyName;
+        return u($this->companyName)->upper()->toString();
     }
 
     public function setCompanyName(?string $companyName): Address
@@ -145,7 +145,7 @@ class Address
 
     public function getStreetAddress(): string
     {
-        return $this->streetAddress;
+        return u($this->streetAddress)->upper()->toString();
     }
 
     public function setStreetAddress(string $streetAddress): self
@@ -156,7 +156,7 @@ class Address
 
     public function getRestAddress(): ?string
     {
-        return $this->restAddress;
+        return u($this->restAddress)->upper()->toString();
     }
 
     public function setRestAddress(?string $restAddress): self
@@ -167,7 +167,7 @@ class Address
 
     public function getZipCode(): string
     {
-        return $this->zipCode;
+        return u($this->zipCode)->upper()->toString();
     }
 
     public function setZipCode(string $zipCode): self
@@ -178,7 +178,7 @@ class Address
 
     public function getLocality(): string
     {
-        return $this->locality;
+        return u($this->locality)->upper()->toString();
     }
 
     public function setLocality(string $locality): self
@@ -218,5 +218,35 @@ class Address
     {
         $this->deleted = $deleted;
         return $this;
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function jsonSerialize(): array
+    {
+        return [
+            'professional' => $this->isProfessional(),
+            'companyName' => $this->companyName,
+            'firstName' => $this->firstName,
+            'lastName' => $this->lastName,
+            'email' => $this->email,
+            'phone' => $this->phone,
+            'streetAddress' => $this->streetAddress,
+            'restAddress' => $this->restAddress,
+            'locality' => $this->locality,
+            'zipCode' => $this->zipCode,
+        ];
+    }
+
+    public function __toString(): string
+    {
+        return sprintf(
+            "%s - %s %s %s",
+            $this->getFullName(),
+            $this->getStreetAddress(),
+            $this->getZipCode(),
+            $this->getLocality()
+        );
     }
 }

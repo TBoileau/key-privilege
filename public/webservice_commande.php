@@ -198,7 +198,7 @@ function orderToArray(Order $order): array
         $valeur += $line->getAmount() * $line->getQuantity();
         $totalHT += $line->getSalePrice();
     }
-    $totalTTC = $totalHT * 1.196;
+    $totalTTC = $totalHT * 1.2;
     $totalTVA = $totalTTC - $totalHT;
 
     $response = [
@@ -352,8 +352,8 @@ function purchaseToArray(Purchase $purchase): array
         "IDBDC_TYP" => "1",
         "IDMODEPAIEMENT" => null,
         "TOTALHT" => strval($purchase->getPoints()),
-        "TOTALTTC" => strval($purchase->getPoints() * 1.196),
-        "TOTALTVA" => strval(($purchase->getPoints() * 1.196) - $purchase->getPoints()),
+        "TOTALTTC" => strval($purchase->getPoints() * 1.2),
+        "TOTALTVA" => strval(($purchase->getPoints() * 1.2) - $purchase->getPoints()),
         "IDPROJET" => "178",
         "DOCS" => 'pdf/' . sprintf("BCP%06d-%d",  $purchase->getId(), $purchase->getManager()->getId()) . '.pdf',
         'LIGNES' => [],

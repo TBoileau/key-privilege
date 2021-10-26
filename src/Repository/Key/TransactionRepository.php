@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Repository\Key;
 
 use App\Entity\Company\Member;
-use App\Entity\Key\Account;
+use App\Entity\Key\Transaction;
 use App\Entity\User\Collaborator;
 use App\Entity\User\Customer;
 use App\Entity\User\Manager;
@@ -17,54 +17,34 @@ use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @template T
- * @extends ServiceEntityRepository<Account>
+ * @extends ServiceEntityRepository<Transaction>
  */
-class AccountRepository extends ServiceEntityRepository
+class TransactionRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Account::class);
-    }
-
-    private function createQueryBuilderAccountsBySalesPerson(SalesPerson $salesPerson): QueryBuilder
-    {
-        $customerAccountsQueryBuilder = $this->_em->createQueryBuilder()
-            ->select("account1.id")
-            ->from(Customer::class, "customer")
-            ->join("customer.account", "account1")
-            ->join("customer.client", "client")
-            ->where("client.member IN (:members)")
-            ->getDQL();
-
-        $queryBuilder = $this->createQueryBuilder("a")
-            ->addSelect("u")
-            ->addSelect("w")
-            ->join("a.user", "u")
-            ->leftJoin("a.wallets", "w")
-            ->setParameter("members", [$salesPerson->getMember()->getId()]);
-
-        return $queryBuilder->andWhere($queryBuilder->expr()->in("a.id", $customerAccountsQueryBuilder));
+        parent::__construct($registry, Transaction::class);
     }
 
     /**
-     * @return Paginator<Account>
+     * @return Paginator<Transaction>
      */
-    public function getAccountsByEmployee(
+    public function getTransactionsByEmployee(
         SalesPerson | Manager $employee,
         int $page,
         int $length,
         string $field,
         string $direction,
-        ?string $filter,
+        ?string $filter
     ): Paginator {
         if ($employee instanceof SalesPerson) {
             /** @var SalesPerson $salesPerson */
             $salesPerson = $employee;
-            $queryBuilder = $this->createQueryBuilderAccountsBySalesPerson($salesPerson);
+            $queryBuilder = $this->createQueryBuilderTransactionsBySalesPerson($salesPerson);
         } else {
             /** @var Manager $manager */
             $manager = $employee;
-            $queryBuilder = $this->createQueryBuilderAccountByManagerForTransfer($manager);
+            $queryBuilder = $this->createQueryBuilderTransactionsByManager($manager);
         }
 
         if ($filter !== null) {
@@ -86,7 +66,29 @@ class AccountRepository extends ServiceEntityRepository
         );
     }
 
-    public function createQueryBuilderAccountByManagerForTransfer(Manager $manager): QueryBuilder
+    private function createQueryBuilderTransactionsBySalesPerson(SalesPerson $salesPerson): QueryBuilder
+    {
+        $customerAccountsQueryBuilder = $this->_em->createQueryBuilder()
+            ->select("account1.id")
+            ->from(Customer::class, "customer")
+            ->join("customer.account", "account1")
+            ->join("customer.client", "client")
+            ->where("client.member IN (:members)")
+            ->getDQL();
+
+        $queryBuilder = $this->createQueryBuilder("t")
+            ->addSelect('a')
+            ->addSelect("u")
+            ->addSelect("w")
+            ->join('t.account', 'a')
+            ->join("a.user", "u")
+            ->leftJoin("a.wallets", "w")
+            ->setParameter("members", [$salesPerson->getMember()->getId()]);
+
+        return $queryBuilder->andWhere($queryBuilder->expr()->in("a.id", $customerAccountsQueryBuilder));
+    }
+
+    public function createQueryBuilderTransactionsByManager(Manager $manager): QueryBuilder
     {
         $customerAccountsQueryBuilder = $this->_em->createQueryBuilder()
             ->select("account1.id")
@@ -124,10 +126,12 @@ class AccountRepository extends ServiceEntityRepository
             ->where("m2 IN (:members)")
             ->getDQL();
 
-        $queryBuilder = $this->createQueryBuilder("a")
+        $queryBuilder = $this->createQueryBuilder('t')
+            ->addSelect("a")
             ->addSelect("u")
             ->addSelect("m")
             ->addSelect("w")
+            ->join('t.account', 'a')
             ->leftJoin("a.user", "u")
             ->leftJoin("a.member", "m")
             ->leftJoin("a.wallets", "w")
@@ -144,17 +148,5 @@ class AccountRepository extends ServiceEntityRepository
         );
 
         return $queryBuilder;
-    }
-
-    public function createQueryBuilderAccountByManagerForPurchase(Manager $manager): QueryBuilder
-    {
-        return $this->createQueryBuilder("a")
-            ->addSelect("m")
-            ->join("a.member", "m")
-            ->where("m IN (:members)")
-            ->setParameter(
-                "members",
-                $manager->getMembers()->map(fn (Member $member) => $member->getId())->toArray()
-            );
     }
 }

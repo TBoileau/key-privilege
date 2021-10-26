@@ -11,10 +11,13 @@ use App\Entity\Key\Transfer;
 use App\Entity\Key\Wallet;
 use App\Entity\User\Manager;
 use App\Entity\User\SalesPerson;
+use App\Form\Key\GiveType;
 use App\Form\Key\PurchaseType;
+use App\Form\Key\ReturnType;
 use App\Form\Key\TransferType;
 use App\Pdf\Generator;
 use App\Repository\Key\AccountRepository;
+use App\Repository\Key\TransactionRepository;
 use App\UseCase\TransferPointsInterface;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -36,11 +39,67 @@ use Symfony\Component\Uid\Uuid;
 class KeyController extends AbstractController
 {
     /**
+     * @param AccountRepository<Account> $accountRepository
      * @Route("/", name="key_index")
      */
-    public function index(): Response
+    public function index(AccountRepository $accountRepository, Request $request): Response
     {
-        return $this->render("ui/key/index.html.twig");
+        /** @var SalesPerson|Manager $user */
+        $user = $this->getUser();
+
+        if ($request->query->get("field") === null) {
+            $request->query->set("field", 'a.createdAt');
+        }
+
+        if ($request->query->get("direction") === null) {
+            $request->query->set("direction", 'desc');
+        }
+
+        $accounts = $accountRepository->getAccountsByEmployee(
+            $user,
+            $request->query->getInt("page", 1),
+            10,
+            $request->query->get("field"),
+            $request->query->get("direction"),
+            $request->query->get("filter"),
+        );
+
+        return $this->render("ui/key/index.html.twig", [
+            "accounts" => $accounts,
+            "pages" => ceil(count($accounts) / 10),
+        ]);
+    }
+
+    /**
+     * @param TransactionRepository<Transaction> $transactionRepository
+     * @Route("/transactions", name="key_transactions")
+     */
+    public function transactions(TransactionRepository $transactionRepository, Request $request): Response
+    {
+        /** @var SalesPerson|Manager $user */
+        $user = $this->getUser();
+
+        if ($request->query->get("field") === null) {
+            $request->query->set("field", 't.createdAt');
+        }
+
+        if ($request->query->get("direction") === null) {
+            $request->query->set("direction", 'desc');
+        }
+
+        $transactions = $transactionRepository->getTransactionsByEmployee(
+            $user,
+            $request->query->getInt("page", 1),
+            10,
+            $request->query->get("field"),
+            $request->query->get("direction"),
+            $request->query->get("filter"),
+        );
+
+        return $this->render("ui/key/transactions.html.twig", [
+            "transactions" => $transactions,
+            "pages" => ceil(count($transactions) / 10),
+        ]);
     }
 
     /**
@@ -109,17 +168,17 @@ class KeyController extends AbstractController
     }
 
     /**
-     * @Route("/transferer", name="key_transfer")
+     * @Route("/don-de-cles", name="key_give")
      * @IsGranted("ROLE_KEY_TRANSFER")
      */
-    public function transfer(Request $request, TransferPointsInterface $transferPoints): Response
+    public function give(Request $request, TransferPointsInterface $transferPoints): Response
     {
         /** @var Manager $manager */
         $manager = $this->getUser();
 
         $transfer = new Transfer();
 
-        $form = $this->createForm(TransferType::class, $transfer, ["manager" => $manager])->handleRequest($request);
+        $form = $this->createForm(GiveType::class, $transfer, ["manager" => $manager])->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $transferPoints->execute($transfer);
@@ -127,12 +186,39 @@ class KeyController extends AbstractController
             $this->getDoctrine()->getManager()->flush();
             $this->addFlash(
                 "success",
-                "Le transfert de clés a été effectué avec succès."
+                "Le don de clés a été effectué avec succès."
             );
             return $this->redirectToRoute("key_index");
         }
 
-        return $this->render("ui/key/transfer.html.twig", ["form" => $form->createView()]);
+        return $this->render("ui/key/give.html.twig", ["form" => $form->createView()]);
+    }
+
+    /**
+     * @Route("/retrocession-de-cles", name="key_return")
+     * @IsGranted("ROLE_KEY_TRANSFER")
+     */
+    public function return(Request $request, TransferPointsInterface $transferPoints): Response
+    {
+        /** @var Manager $manager */
+        $manager = $this->getUser();
+
+        $transfer = new Transfer();
+
+        $form = $this->createForm(ReturnType::class, $transfer, ["manager" => $manager])->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $transferPoints->execute($transfer);
+            $this->getDoctrine()->getManager()->persist($transfer);
+            $this->getDoctrine()->getManager()->flush();
+            $this->addFlash(
+                "success",
+                "La rétrocession de clés a été effectuée avec succès."
+            );
+            return $this->redirectToRoute("key_index");
+        }
+
+        return $this->render("ui/key/return.html.twig", ["form" => $form->createView()]);
     }
 
     /**
@@ -194,21 +280,5 @@ class KeyController extends AbstractController
         }
 
         return $this->render("ui/key/purchase.html.twig", ["form" => $form->createView()]);
-    }
-
-
-    /**
-     * @param AccountRepository<Account> $accountRepository
-     * @Route("/clients", name="key_clients")
-     * @Security("is_granted('ROLE_SALES_PERSON') or is_granted('ROLE_MANAGER')")
-     */
-    public function clients(AccountRepository $accountRepository): Response
-    {
-        /** @var SalesPerson|Manager $user */
-        $user = $this->getUser();
-
-        return $this->render("ui/key/_clients.html.twig", [
-            "accounts" => $accountRepository->getClientsAccountByEmployee($user)
-        ]);
     }
 }

@@ -20,7 +20,7 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class CustomerRepository extends ServiceEntityRepository
 {
-    use UniqueUsernameTrait;
+    use UniqueUserTrait;
 
     public function __construct(ManagerRegistry $registry)
     {

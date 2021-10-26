@@ -60,6 +60,7 @@ class AccessType extends AbstractType
                 "label" => "Raison sociale de votre client :",
                 "class" => Client::class,
                 "choice_label" => "name",
+                "choice_attr" => fn (Client $client): array => ['data-address' => json_encode($client->getAddress())],
                 "query_builder" => fn (ClientRepository $repository) => $repository
                     ->createQueryBuilderClientsByEmployee($employee)
             ]);

@@ -35,7 +35,7 @@ security:
             anonymous: true
             lazy: true
             provider: user_provider
-            switch_user: { role: ROLE_USER }
+            switch_user: { role: ROLE_MANAGER }
             user_checker: App\Security\UserChecker\UserChecker
             guard:
                 authenticators:

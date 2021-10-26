@@ -1,0 +1,113 @@
+{% extends "layouts/page.html.twig" %}
+
+{% block breadcrumb %}
+    {{ include("components/breadcrumb.html.twig", {items: [
+        {route: "key_index", label: "Compte clés"},
+        {route: "key_transactions", label: "Transactions"}
+    ]}) }}
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-12">
+            <section class="section">
+                <h1 class="section-header">
+                    <span class="icon icon-xl icon-key me-2"></span>
+                    Transactions
+                </h1>
+                <div class="section-body">
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <div class="card mb-4">
+                                <h2 class="card-header">Filtrer les transactions</h2>
+                                <div class="card-body">
+                                    <form action="{{ path('key_transactions', app.request.query.all|merge({page: 1})) }}" method="get" class="d-flex align-items-end">
+                                        <div class="flex-grow-1 form-group">
+                                            <label for="filter" class="form-label">Recherche</label>
+                                            <input type="text" id="filter" name="filter" placeholder="Recherche" class="form-control" value="{{ app.request.query.get('filter', '') }}">
+                                        </div>
+                                        <button type="submit" class="btn btn-primary ms-3">Filtrer</button>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <h2 class="card-header">Comptes clés</h2>
+                                <div class="card-body p-0">
+                                    <table class="table mb-0">
+                                        <thead>
+                                        <tr>
+                                            <th class="text-center">&nbsp;</th>
+                                            {{ include('components/column.html.twig', {route: 'key_transactions', field: 't.createdAt', label: 'Date'}) }}
+                                            {{ include('components/column.html.twig', {route: 'key_transactions', field: 'a.type', label: 'Type de compte'}) }}
+                                            {{ include('components/column.html.twig', {route: 'key_transactions', field: 'a.companyName', label: 'Société'}) }}
+                                            {{ include('components/column.html.twig', {route: 'key_transactions', field: 'a.ownerName', label: 'Propriétaire'}) }}
+                                            <th class="text-center">Opération</th>
+                                            {{ include('components/column.html.twig', {route: 'key_transactions', field: 't.points', label: 'Clés'}) }}
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for transaction in transactions %}
+                                            <tr>
+                                                <td class="text-center">
+                                                    {% if transaction.transfer is defined and transaction.transfer is not null and transaction.transfer.comment is not null %}
+                                                        <a href="#" class="btn btn-sm btn-light" data-bs-toggle="modal" data-bs-target="#transfer-{{ transaction.transfer.id }}">
+                                                            <span class="fas fa-comment"></span>
+                                                        </a>
+                                                        <div class="modal fade" id="transfer-{{ transaction.transfer.id }}" tabindex="-1" aria-hidden="true">
+                                                            <div class="modal-dialog">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title">Commentaire</h5>
+                                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <p class="m-0">{{ transaction.transfer.comment }}</p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    {% endif %}
+                                                </td>
+                                                <td class="text-center">
+                                                    {{ transaction.createdAt|date('d/m/Y H:i') }}
+                                                </td>
+                                                <td class="text-center">
+                                                    {{ transaction.account.type }}
+                                                </td>
+                                                <td class="text-center">
+                                                    {{ transaction.account.companyName }}
+                                                </td>
+                                                <td class="text-center">
+                                                    {% if transaction.account.ownerName is not null %}
+                                                        {{ transaction.account.ownerName }}
+                                                    {% endif %}
+                                                </td>
+                                                <td class="text-center">{{ transaction.type }}</td>
+                                                <td class="text-center">{{ transaction.points }} clés</td>
+                                            </tr>
+                                        {% else %}
+                                            <tr>
+                                                <td class="text-center" colspan="4">Aucun résultat</td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                {% if pages > 1 %}
+                                    <div class="card-footer p-0">
+                                        {{ include("components/pagination.html.twig", {
+                                            class: "my-0",
+                                            route: "key_index",
+                                            current_page: app.request.get("page", 1),
+                                            pages: pages
+                                        }) }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+{% endblock %}

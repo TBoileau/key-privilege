@@ -12,6 +12,8 @@ use App\Repository\Order\OrderRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -25,29 +27,48 @@ class OrderController extends AbstractController
      * @param OrderRepository<Order> $orderRepository
      * @Route("/", name="order_index")
      */
-    public function index(OrderRepository $orderRepository): Response
+    public function index(OrderRepository $orderRepository, Request $request): Response
     {
         /** @var User $user */
         $user = $this->getUser();
 
+        $clientOrders = [];
+
+        if ($this->isGranted('ROLE_SALES_PERSON') || $this->isGranted('ROLE_MANAGER')) {
+            if ($request->query->get("field") === null) {
+                $request->query->set("field", 'o.createdAt');
+            }
+
+            if ($request->query->get("direction") === null) {
+                $request->query->set("direction", 'desc');
+            }
+
+            /** @var SalesPerson|Manager $employee */
+            $employee = $user;
+
+            $clientOrders = $orderRepository->getOrdersByMemberEmployee(
+                $employee,
+                $request->query->getInt("page", 1),
+                10,
+                $request->query->get("field"),
+                $request->query->get("direction"),
+                $request->query->get("filter")
+            );
+        }
+
         return $this->render("ui/order/index.html.twig", [
-            "orders" => $orderRepository->findBy(["user" => $user], ["createdAt" => "desc"])
+            "orders" => $orderRepository->findBy(["user" => $user], ["createdAt" => "desc"]),
+            'clientOrders' => $clientOrders,
+            "pages" => ceil(count($clientOrders) / 10),
         ]);
     }
 
     /**
-     * @param OrderRepository<Order> $orderRepository
-     * @Route("/clients", name="order_clients")
-     * @Security("is_granted('ROLE_SALES_PERSON') or is_granted('ROLE_MANAGER')")
+     * @Route("/{id}/telecharger", name="order_download")
      */
-    public function clients(OrderRepository $orderRepository): Response
+    public function download(Order $order, string $publicDir): BinaryFileResponse
     {
-        /** @var SalesPerson|Manager $user */
-        $user = $this->getUser();
-
-        return $this->render("ui/order/_clients.html.twig", [
-            "orders" => $orderRepository->getOrdersByMemberEmployee($user)
-        ]);
+        return $this->file(sprintf('%s/pdf/%s.pdf', $publicDir, $order->getReference()));
     }
 
     /**

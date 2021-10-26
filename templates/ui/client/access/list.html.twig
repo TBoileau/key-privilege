@@ -30,10 +30,11 @@
                     {{ form_end(form) }}
                     <div class="card">
                         <h2 class="card-header">Liste des accès</h2>
-                        <div class="card-body table-responsive p-0">
+                        <div class="card-body  p-0">
                             <table class="table table-hover mb-0" data-role="accessList">
                                 <thead>
                                     <tr>
+                                        <th class="text-center">Actions</th>
                                         <th class="text-center">Prénom</th>
                                         <th class="text-center">Nom</th>
                                         <th class="text-center">Commercial</th>
@@ -43,27 +44,17 @@
                                         <th class="text-center">Client</th>
                                         <th class="text-center">Date d'inscription</th>
                                         <th class="text-center">Dernière connexion</th>
-                                        <th class="text-center">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {% for customer in customers %}
                                         <tr class="{{ customer.suspended ? "bg-warning" }}">
-                                            <td class="text-center">{{ customer.firstName }}</td>
-                                            <td class="text-center">{{ customer.lastName }}</td>
-                                            <td class="text-center">{{ customer.client.salesPerson.fullName }}</td>
-                                            {% if is_granted("ROLE_MANAGER") and app.user.members|length > 1 %}
-                                                <td class="text-center">{{ customer.client.member.name }}</td>
-                                            {% endif %}
-                                            <td class="text-center">{{ customer.client.name }}</td>
-                                            <td class="text-center">{{ customer.registeredAt|date("d/m/Y H:i") }}</td>
-                                            <td class="text-center">{{ customer.lastLogin|date("d/m/Y H:i") }}</td>
                                             <td class="text-center">
                                                 <div class="dropdown">
                                                     <button class="btn btn-sm btn-primary dropdown-toggle" type="button" id="dropdown-{{ customer.id }}" data-bs-toggle="dropdown" aria-expanded="false">
                                                         <span class="fas fa-cogs"></span>
                                                     </button>
-                                                    <ul class="dropdown-menu" aria-labelledby="dropdown-{{ customer.id }}">
+                                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-{{ customer.id }}">
                                                         {% if is_granted("suspend", customer) %}
                                                             <li><a class="dropdown-item" href="{{ path("client_access_suspend", {id: customer.id}) }}">Suspendre</a></li>
                                                         {% endif %}
@@ -80,11 +71,20 @@
                                                             <li><a class="dropdown-item" href="{{ path("client_access_reset", {id: customer.id}) }}">Renvoyer un mot de passe</a></li>
                                                         {% endif %}
                                                         {% if is_granted("log_as", customer) %}
-                                                            <li><a class="dropdown-item" href="{{ path("home", {_switch_user: customer.email}) }}">Voir son profil</a></li>
+                                                            <li><a class="dropdown-item" href="{{ path("home", {_switch_user: customer.username}) }}">Voir son profil</a></li>
                                                         {% endif %}
                                                     </ul>
                                                 </div>
                                             </td>
+                                            <td class="text-center">{{ customer.firstName }}</td>
+                                            <td class="text-center">{{ customer.lastName }}</td>
+                                            <td class="text-center">{{ customer.client.salesPerson.fullName }}</td>
+                                            {% if is_granted("ROLE_MANAGER") and app.user.members|length > 1 %}
+                                                <td class="text-center">{{ customer.client.member.name }}</td>
+                                            {% endif %}
+                                            <td class="text-center">{{ customer.client.name }}</td>
+                                            <td class="text-center">{{ customer.registeredAt|date("d/m/Y H:i") }}</td>
+                                            <td class="text-center">{{ customer.lastLogin|date("d/m/Y H:i") }}</td>
                                         </tr>
                                     {% else %}
                                         <tr>

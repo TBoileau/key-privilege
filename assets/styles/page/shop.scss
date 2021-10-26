@@ -147,6 +147,7 @@ body.shop {
 
     @include media-breakpoint-down(lg) {
       height: calc(100vh - 100px);
+      margin-top: 81.5px;
     }
 
     &::-webkit-scrollbar {
@@ -181,6 +182,14 @@ body.shop {
           text-decoration: none;
         }
       }
+    }
+  }
+
+  @include media-breakpoint-up(lg) {
+    grid-template-columns: 250px auto;
+
+    .sidebar-toggler {
+      display: none;
     }
   }
 

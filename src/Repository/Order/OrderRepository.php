@@ -8,6 +8,7 @@ use App\Entity\User\Customer;
 use App\Entity\User\Manager;
 use App\Entity\User\SalesPerson;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -26,11 +27,20 @@ class OrderRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return array<int, Order>
+     * @return Paginator<Order>
      */
-    public function getOrdersByMemberEmployee(SalesPerson | Manager $employee): array
-    {
+    public function getOrdersByMemberEmployee(
+        SalesPerson | Manager $employee,
+        int $page,
+        int $length,
+        string $field,
+        string $direction,
+        ?string $filter,
+    ): Paginator {
         $queryBuilder = $this->createQueryBuilder("o")
+            ->addSelect('u')
+            ->addSelect('l')
+            ->join('o.lines', 'l')
             ->join("o.user", "u")
             ->orderBy("o.createdAt", 'desc');
 
@@ -58,9 +68,18 @@ class OrderRepository extends ServiceEntityRepository
                 ->getDQL();
         }
 
-        return $queryBuilder
-            ->andWhere($queryBuilder->expr()->in("u.id", $subQuery))
-            ->getQuery()
-            ->getResult();
+        if ($filter !== null) {
+            $queryBuilder
+                ->andWhere($queryBuilder->expr()->like('CONCAT(u.firstName, u.lastName)', ':filter'))
+                ->setParameter('filter', '%' . $filter . '%');
+        }
+
+        return new Paginator(
+            $queryBuilder
+                ->andWhere($queryBuilder->expr()->in("u.id", $subQuery))
+                ->orderBy($field, $direction)
+                ->setFirstResult(($page - 1) * $length)
+                ->setMaxResults($length)
+        );
     }
 }
