@@ -72,8 +72,8 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="card-footer text-end p-0 d-flex">
-                            <a href="{{ path("address_create", {type: 'delivery'}) }}" class="btn btn-primary">Créer une nouvelle adresse de livraison</a>
+                        <div class="card-footer text-end p-0 w-50 btn-group d-flex">
+                            <a href="{{ path("address_create", {type: 'delivery'}) }}" class="btn btn-block btn-primary">Créer une nouvelle adresse de livraison</a>
                         </div>
                     </div>
                     {% if is_granted('ROLE_MANAGER') %}
@@ -133,8 +133,8 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="card-footer text-end p-0 d-flex">
-                                <a href="{{ path("address_create", {type: 'billing'}) }}" class="btn btn-primary">Créer une nouvelle adresse de facturation</a>
+                            <div class="card-footer text-end p-0 w-50 btn-group d-flex">
+                                <a href="{{ path("address_create", {type: 'billing'}) }}" class="btn btn-block btn-primary">Créer une nouvelle adresse de facturation</a>
                             </div>
                         </div>
                     {% endif %}
