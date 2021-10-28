@@ -157,14 +157,6 @@
                                         {% endfor %}
                                     </ul>
                                 {% endif %}
-
-                                <div class="card-footer text-end p-0 d-flex">
-                                    {% if is_granted("ROLE_ADDRESS") %}
-                                        <a href="{{ path("address_list") }}" class="btn d-block btn-outline-primary rounded-0 border-0 w-100 d-flex align-items-center justify-content-center">
-                                            Mes adresses
-                                        </a>
-                                    {% endif %}
-                                </div>
                             </div>
                         </div>
                         <div class="col-12 col-lg-4">
