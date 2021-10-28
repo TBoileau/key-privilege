@@ -18,7 +18,7 @@ class AddressType extends AbstractType
     {
         $builder
             ->add("professional", ChoiceType::class, [
-                "label" => "Adresse professionelle ?",
+                "label" => "Adresse professionnelle ?",
                 "choices" => [
                     "Oui" => true,
                     "Non" => false,
