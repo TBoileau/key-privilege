@@ -52,9 +52,17 @@ body.shop {
       background: transparent;
     }
 
+    form {
+      display: flex !important;
+    }
+
     > nav {
       .nav {
         > .nav-item {
+          &:first-child {
+            display: list-item !important;
+          }
+
           > .nav-link {
             border-bottom: $list-group-border-width solid $list-group-border-color;
             display: flex;

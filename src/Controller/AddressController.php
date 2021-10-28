@@ -107,11 +107,15 @@ class AddressController extends AbstractController
      */
     public function default(Address $address): RedirectResponse
     {
-        /** @var Manager $user */
+        /** @var User $user */
         $user = $this->getUser();
-        if ($user->getMember()->getBillingAddresses()->contains($address)) {
-            $user->getMember()->setBillingAddress($address);
+
+        if ($user instanceof Manager) {
+            if ($user->getMember()->getBillingAddresses()->contains($address)) {
+                $user->getMember()->setBillingAddress($address);
+            }
         }
+
         if ($user->getDeliveryAddresses()->contains($address)) {
             $user->setDeliveryAddress($address);
         }
