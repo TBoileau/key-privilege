@@ -244,13 +244,13 @@ function loadDetailsProduits($file)
 
     $PDO->query("
         UPDATE category AS a 
-        INNER JOIN (
+        LEFT JOIN (
             SELECT MAX(id) AS product, category_id 
             FROM product
             WHERE product.active = 1
             GROUP BY category_id
         ) AS b ON (b.category_id = a.id) 
-        SET last_product_id = product
+        SET a.last_product_id = b.product
     ");
 
     return $numberOfDataUpdated;
