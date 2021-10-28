@@ -7,8 +7,13 @@
                 Bonjour&nbsp;<span>{{ app.user.fullName }}</span>
             </div>
             <div class="identity-balance">
-                Vos clés :&nbsp;<span class="fw-bolder">{{ app.user.account.balance }}</span> <span class="icon icon-key text-danger icon-sm ms-2"></span>
+                Vos clés personnelles :&nbsp;<span class="fw-bolder">{{ app.user.account.balance }}</span> <span class="icon icon-key text-danger icon-sm ms-2"></span>
             </div>
+            {% if is_granted("ROLE_MANAGER") and app.user.members|length == 1 %}
+            <div class="identity-balance">
+                Vos clés adhérent :&nbsp;<span class="fw-bolder">{{ app.user.member.account.balance }}</span> <span class="icon icon-key text-danger icon-sm ms-2"></span>
+            </div>
+            {% endif %}
             {% if not is_granted('IS_IMPERSONATOR') %}
                 <a href="{{ path("security_logout") }}" class="identity-logout">
                     Se déconnecter <span class="icon icon-logout icon-sm ms-2"></span>
