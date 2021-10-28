@@ -113,6 +113,7 @@ sidebarTogglers.map((toggler) => toggler.addEventListener('click', () => {
 if (document.querySelector('.address-professional')) {
   const addressProfessional = document.querySelector('.address-professional');
   const addressCompanyName = document.querySelector('.address-company-name');
+
   let companyName = addressCompanyName.querySelector('input').value;
   const collapseCompanyName = () => {
     if (parseInt(addressProfessional.value) === 0) {
@@ -125,7 +126,7 @@ if (document.querySelector('.address-professional')) {
     }
   };
   collapseCompanyName();
-  addressCompanyName.addEventListener('change', collapseCompanyName);
+  addressProfessional.addEventListener('change', collapseCompanyName);
 }
 
 if (document.querySelector('#access_client')) {
