@@ -39,6 +39,7 @@ class ProductRepository extends ServiceEntityRepository
         $userTraits = class_uses($user);
         if (in_array(Employee::class, $userTraits) || $user->getAccount()->getBalance() === 0) {
             return $this->createQueryBuilder("p")
+                ->addSelect("RAND() as HIDDEN rand")
                 ->addSelect("b")
                 ->addSelect("c")
                 ->join("p.brand", "b")
@@ -46,7 +47,7 @@ class ProductRepository extends ServiceEntityRepository
                 ->leftJoin("c.lastProduct", "lp")
                 ->setMaxResults(4)
                 ->where("p.active = true")
-                ->orderBy("lp.id", "desc")
+                ->orderBy("rand", "desc")
                 ->getQuery()
                 ->getResult();
         }
