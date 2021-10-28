@@ -47,22 +47,27 @@ class KeyController extends AbstractController
         /** @var SalesPerson|Manager $user */
         $user = $this->getUser();
 
-        if ($request->query->get("field") === null) {
-            $request->query->set("field", 'a.createdAt');
+        $accounts = [];
+
+        if ($this->isGranted('ROLE_MANAGER') || $this->isGranted('ROLE_SALES_PERSON')) {
+            if ($request->query->get("field") === null) {
+                $request->query->set("field", 'a.createdAt');
+            }
+
+            if ($request->query->get("direction") === null) {
+                $request->query->set("direction", 'desc');
+            }
+
+            $accounts = $accountRepository->getAccountsByEmployee(
+                $user,
+                $request->query->getInt("page", 1),
+                10,
+                $request->query->get("field"),
+                $request->query->get("direction"),
+                $request->query->get("filter"),
+            );
         }
 
-        if ($request->query->get("direction") === null) {
-            $request->query->set("direction", 'desc');
-        }
-
-        $accounts = $accountRepository->getAccountsByEmployee(
-            $user,
-            $request->query->getInt("page", 1),
-            10,
-            $request->query->get("field"),
-            $request->query->get("direction"),
-            $request->query->get("filter"),
-        );
 
         return $this->render("ui/key/index.html.twig", [
             "accounts" => $accounts,
