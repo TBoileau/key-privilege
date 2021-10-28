@@ -54,11 +54,11 @@
                                                     <a href="{{ path("shop_index", {page: 1, category: c.slug, universe: u.slug}) }}" class="nav-link {{ category == c ? "active" }}">Tous les produits</a>
                                                 </li>
                                                 {% for child in c.children %}
-                                                    {# {% if child.numberOfProducts > 0 %} #}
+                                                    {% if child.lastProduct %}
                                                         <li class="nav-item">
                                                             <a href="{{ path("shop_index", {page: 1, category: child.slug, universe: u.slug}) }}" class="nav-link {{ category == child ? "active" }}">{{ child.name }}</a>
                                                         </li>
-                                                    {# {% endif %} #}
+                                                    {% endif %}
                                                 {% endfor %}
                                             </ul>
                                         {% else %}
