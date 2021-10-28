@@ -15,7 +15,6 @@
                     <span class="icon icon-xl icon-access me-2"></span>
                     Gestion des adresses
                 </h1>
-                <a href="{{ path("address_create") }}" class="btn btn-primary">Créer une nouvelle adresse</a>
                 <div class="section-body">
                     {% if is_granted('ROLE_MANAGER') %}
                         <div class="card mb-5">
@@ -74,6 +73,9 @@
                                     </tbody>
                                 </table>
                             </div>
+                            <div class="card-footer text-end p-0 d-flex">
+                                <a href="{{ path("address_create", {type: 'billing'}) }}" class="btn btn-primary">Créer une nouvelle adresse de facturation</a>
+                            </div>
                         </div>
                     {% endif %}
                     <div class="card">
@@ -82,17 +84,30 @@
                             <table class="table table-hover mb-0" data-role="accessList">
                                 <thead>
                                 <tr>
+                                    <th class="text-center">Actions</th>
                                     <th class="text-center">Contact</th>
                                     <th class="text-center">Email</th>
                                     <th class="text-center">Téléphone</th>
                                     <th class="text-center">Adresse professionnelle ?</th>
                                     <th class="text-center">Adresse</th>
-                                    <th class="text-center">Actions</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 {% for address in app.user.deliveryAddresses|filter(a => not a.deleted) %}
                                     <tr class="{{ address == app.user.deliveryAddress ? "bg-success" }}">
+                                        <td class="text-center">
+                                            {% if address != app.user.deliveryAddress %}
+                                                <div class="dropdown">
+                                                    <button class="btn btn-sm btn-primary dropdown-toggle" type="button" id="dropdown-{{ address.id }}" data-bs-toggle="dropdown" aria-expanded="false">
+                                                        <span class="fas fa-cogs"></span>
+                                                    </button>
+                                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-{{ address.id }}">
+                                                        <li><a class="dropdown-item" href="{{ path("address_default", {id: address.id}) }}">Adresse par défaut</a></li>
+                                                        <li><a class="dropdown-item" href="{{ path("address_delete", {id: address.id}) }}">Supprimer</a></li>
+                                                    </ul>
+                                                </div>
+                                            {% endif %}
+                                        </td>
                                         <td class="text-center">{{ address.fullName }}</td>
                                         <td class="text-center">{{ address.email }}</td>
                                         <td class="text-center">{{ address.phone }}</td>
@@ -110,19 +125,6 @@
                                             {% endif %}
                                             <br>{{ address.zipCode }} - {{ address.locality }}
                                         </td>
-                                        <td class="text-center">
-                                            {% if address != app.user.deliveryAddress %}
-                                                <div class="dropdown">
-                                                    <button class="btn btn-sm btn-primary dropdown-toggle" type="button" id="dropdown-{{ address.id }}" data-bs-toggle="dropdown" aria-expanded="false">
-                                                        <span class="fas fa-cogs"></span>
-                                                    </button>
-                                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-{{ address.id }}">
-                                                        <li><a class="dropdown-item" href="{{ path("address_default", {id: address.id}) }}">Adresse par défaut</a></li>
-                                                        <li><a class="dropdown-item" href="{{ path("address_delete", {id: address.id}) }}">Supprimer</a></li>
-                                                    </ul>
-                                                </div>
-                                            {% endif %}
-                                        </td>
                                     </tr>
                                 {% else %}
                                     <tr>
@@ -131,6 +133,9 @@
                                 {% endfor %}
                                 </tbody>
                             </table>
+                        </div>
+                        <div class="card-footer text-end p-0 d-flex">
+                            <a href="{{ path("address_create", {type: 'delivery'}) }}" class="btn btn-primary">Créer une nouvelle adresse de livraison</a>
                         </div>
                     </div>
                 </div>

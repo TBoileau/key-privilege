@@ -69,7 +69,7 @@ class AddressController extends AbstractController
                 'collection' => static fn (User $user) => $user->getDeliveryAddresses()->add($address),
             ]
         ];
-
+        
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->has('type')) {
                 /** @var string $type */
@@ -81,13 +81,17 @@ class AddressController extends AbstractController
                 $manager = $user;
 
                 $types[$type]["collection"]($manager);
-
                 if ($default) {
                     $types[$type]["default"]($manager);
                 }
             } else {
-                $types["delivery"]["collection"]($user);
-                $types["delivery"]["default"]($user);
+                $type = $request->query->get('type', null);
+                $default = $form->get("default")->getData();
+                
+                $types[$type]["collection"]($user);
+                if ($default) {
+                    $types[$type]["default"]($user);
+                }
             }
 
             $this->getDoctrine()->getManager()->persist($address);

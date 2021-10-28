@@ -133,8 +133,16 @@
                             </ul>
                         </li>
                     {% endif %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ path("account_index") }}">Mon compte</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="dropdown-account" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Mon compte
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-account">
+                            <li><a class="dropdown-item" href="{{ path("account_index") }}">Tableau de bord</a></li>
+                            {% if is_granted("ROLE_ADDRESS") %}
+                            <li><a class="dropdown-item" href="{{ path("address_list") }}">Mes adresses</a></li>
+                            {% endif %}
+                        </ul>
                     </li>
                     {% if not is_granted('IS_IMPERSONATOR') %}
                         <li class="nav-item d-lg-none">
