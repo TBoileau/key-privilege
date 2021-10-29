@@ -65,17 +65,22 @@ function loadImages()
 
 function loadFichiers($file)
 {
+    $c = 0;
     $zip = new ZipArchive();
+    if (true === $zip->open('../public/shop/sync_products/'.date('d-m-Y').'/'.$file)) {
+        chmod('../public/shop/products', 0777);
+        for ($i = 0; $i < $zip->numFiles; ++$i) {
+            $filename = $zip->getNameIndex($i);
+            $fileinfo = pathinfo($filename);
+            if (copy('zip://../public/shop/sync_products/'.date('d-m-Y').'/'.$file.'#'.$filename, '../public/shop/products/'.$fileinfo['basename'])) {
+                ++$c;
+            }
+        }
 
-    $zip->open(sprintf("%s/../public/shop/sync/%s/%s", __DIR__, date("d-m-Y"), $file));
+        $zip->close();
+    }
 
-    $count = $zip->count();
-
-    $zip->extractTo(sprintf("%s/../public/shop/products", __DIR__));
-
-    $zip->close();
-
-    return $count;
+    return $c;
 }
 
 function loadUnivers($file)
