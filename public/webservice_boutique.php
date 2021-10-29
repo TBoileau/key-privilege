@@ -67,12 +67,12 @@ function loadFichiers($file)
 {
     $c = 0;
     $zip = new ZipArchive();
-    if (true === $zip->open('../public/shop/sync_products/'.date('d-m-Y').'/'.$file)) {
+    if (true === $zip->open('../public/shop/sync_products/' . date('d-m-Y') . '/' . $file)) {
         chmod('../public/shop/products', 0777);
         for ($i = 0; $i < $zip->numFiles; ++$i) {
             $filename = $zip->getNameIndex($i);
             $fileinfo = pathinfo($filename);
-            if (copy('zip://../public/shop/sync_products/'.date('d-m-Y').'/'.$file.'#'.$filename, '../public/shop/products/'.$fileinfo['basename'])) {
+            if (copy('zip://../public/shop/sync_products/' . date('d-m-Y') . '/' . $file . '#' . $filename, '../public/shop/products/' . $fileinfo['basename'])) {
                 ++$c;
             }
         }
@@ -257,6 +257,33 @@ function loadDetailsProduits($file)
         ) AS b ON (b.category_id = a.id) 
         SET a.last_product_id = b.product
     ");
+
+    $PDO->query("UPDATE (SELECT  MAX(b.last_product_id) maxid, a.id
+                FROM category AS a
+                INNER JOIN category b ON b.parent_id = a.id
+                WHERE b.last_product_id IS NOT NULL
+                AND a.last_product_id IS NULL
+                AND b.lvl = 3
+                GROUP BY a.id) c INNER JOIN category as d ON d.id = c.id
+                SET d.last_product_id = c.maxid");
+
+    $PDO->query("UPDATE (SELECT  MAX(b.last_product_id) maxid, a.id
+                FROM category AS a
+                INNER JOIN category b ON b.parent_id = a.id
+                WHERE b.last_product_id IS NOT NULL
+                AND a.last_product_id IS NULL
+                AND b.lvl = 2
+                GROUP BY a.id) c INNER JOIN category as d ON d.id = c.id
+                SET d.last_product_id = c.maxid");
+
+    $PDO->query("UPDATE (SELECT  MAX(b.last_product_id) maxid, a.id
+                FROM category AS a
+                INNER JOIN category b ON b.parent_id = a.id
+                WHERE b.last_product_id IS NOT NULL
+                AND a.last_product_id IS NULL
+                AND b.lvl = 1
+                GROUP BY a.id) c INNER JOIN category as d ON d.id = c.id
+                SET d.last_product_id = c.maxid");
 
     return $numberOfDataUpdated;
 }
