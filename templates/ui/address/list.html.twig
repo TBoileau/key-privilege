@@ -34,17 +34,18 @@
                                 {% for address in app.user.deliveryAddresses|filter(a => not a.deleted) %}
                                     <tr class="{{ address == app.user.deliveryAddress ? "bg-success" }}">
                                         <td class="text-center">
-                                            {% if address != app.user.deliveryAddress %}
-                                                <div class="dropdown">
-                                                    <button class="btn btn-sm btn-primary dropdown-toggle" type="button" id="dropdown-{{ address.id }}" data-bs-toggle="dropdown" aria-expanded="false">
-                                                        <span class="fas fa-cogs"></span>
-                                                    </button>
-                                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-{{ address.id }}">
+                                            <div class="dropdown">
+                                                <button class="btn btn-sm btn-primary dropdown-toggle" type="button" id="dropdown-{{ address.id }}" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <span class="fas fa-cogs"></span>
+                                                </button>
+                                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-{{ address.id }}">
+                                                    <li><a class="dropdown-item" href="{{ path("address_update", {id: address.id}) }}">Modifier</a></li>
+                                                    {% if address != app.user.deliveryAddress %}
                                                         <li><a class="dropdown-item" href="{{ path("address_default", {id: address.id}) }}">Adresse par défaut</a></li>
                                                         <li><a class="dropdown-item" href="{{ path("address_delete", {id: address.id}) }}">Supprimer</a></li>
-                                                    </ul>
-                                                </div>
-                                            {% endif %}
+                                                    {% endif %}
+                                                </ul>
+                                            </div>
                                         </td>
                                         <td class="text-center">{{ address.fullName }}</td>
                                         <td class="text-center">{{ address.email }}</td>
@@ -95,17 +96,18 @@
                                         {% for address in app.user.member.billingAddresses|filter(a => not a.deleted) %}
                                             <tr class="{{ address == app.user.member.billingAddress ? "bg-success" }}">
                                                 <td class="text-center">
-                                                    {% if address != app.user.member.billingAddress %}
                                                         <div class="dropdown">
                                                             <button class="btn btn-sm btn-primary dropdown-toggle" type="button" id="dropdown-{{ address.id }}" data-bs-toggle="dropdown" aria-expanded="false">
                                                                 <span class="fas fa-cogs"></span>
                                                             </button>
                                                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-{{ address.id }}">
+                                                                <li><a class="dropdown-item" href="{{ path("address_update", {id: address.id}) }}">Modifier</a></li>
+                                                                {% if address != app.user.member.billingAddress %}
                                                                 <li><a class="dropdown-item" href="{{ path("address_default", {id: address.id}) }}">Choisir comme adresse par défaut</a></li>
                                                                 <li><a class="dropdown-item" href="{{ path("address_delete", {id: address.id}) }}">Supprimer</a></li>
+                                                                {% endif %}
                                                             </ul>
                                                         </div>
-                                                    {% endif %}
                                                 </td>
                                                 <td class="text-center">{{ address.fullName }}</td>
                                                 <td class="text-center">{{ address.email }}</td>
@@ -138,7 +140,6 @@
                             </div>
                         </div>
                     {% endif %}
-                    
                 </div>
             </section>
         </div>
