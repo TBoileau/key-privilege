@@ -42,7 +42,7 @@
                         <a class="nav-link" data-bs-toggle="collapse" href="#universe-{{ u.id }}" role="button" aria-expanded="{{ not form.vars.submitted and universe is not null and universe == u ? "true" : "false" }}" aria-controls="universe-{{ u.id }}">{{ u.name }}</a>
                         <ul class="nav flex-column collapse {{ not form.vars.submitted and universe is not null and universe == u ? "show" }}" id="universe-{{ u.id }}" >
                             <li class="nav-item">
-                                <a href="{{ path("shop_index", {page: 1, universe: u.slug}) }}" class="nav-link {{ universe == u ? "active" }}">Tous les produits</a>
+                                <a href="{{ path("shop_index", params|merge({page: 1, universe: u.slug})) }}" class="nav-link {{ universe == u ? "active" }}">Tous les produits</a>
                             </li>
                             {% for c in u.categories %}
                                 {# {% if c.numberOfProducts > 0 %} #}
@@ -51,18 +51,18 @@
                                             <a class="nav-link" data-bs-toggle="collapse" href="#category-{{ c.id }}" role="button" aria-expanded="{{ (not form.vars.submitted and category is not null and category.parent == c and universe is not null and universe == u) or c == category ? "true" : "false" }}" aria-controls="category-{{ c.id }}">{{ c.name }}</a>
                                             <ul class="nav flex-column collapse {{ (not form.vars.submitted and category is not null and category.parent == c and universe is not null and universe == u) or c == category ? "show" }}" id="category-{{ c.id }}" data-bs-parent="#universe-{{ u.id }}">
                                                 <li class="nav-item">
-                                                    <a href="{{ path("shop_index", {page: 1, category: c.slug, universe: u.slug}) }}" class="nav-link {{ category == c ? "active" }}">Tous les produits</a>
+                                                    <a href="{{ path("shop_index", params|merge({page: 1, category: c.slug, universe: u.slug})) }}" class="nav-link {{ category == c ? "active" }}">Tous les produits</a>
                                                 </li>
                                                 {% for child in c.children %}
                                                     {% if child.lastProduct %}
                                                         <li class="nav-item">
-                                                            <a href="{{ path("shop_index", {page: 1, category: child.slug, universe: u.slug}) }}" class="nav-link {{ category == child ? "active" }}">{{ child.name }}</a>
+                                                            <a href="{{ path("shop_index", params|merge({page: 1, category: child.slug, universe: u.slug})) }}" class="nav-link {{ category == child ? "active" }}">{{ child.name }}</a>
                                                         </li>
                                                     {% endif %}
                                                 {% endfor %}
                                             </ul>
                                         {% else %}
-                                            <a href="{{ path("shop_index", {page: 1, category: c.slug, universe: u.slug}) }}" class="nav-link {{ category == c ? "active" }}">{{ c.name }}</a>
+                                            <a href="{{ path("shop_index", params|merge({page: 1, category: c.slug, universe: u.slug})) }}" class="nav-link {{ category == c ? "active" }}">{{ c.name }}</a>
                                         {% endif %}
                                     </li>
                                 {# {% endif %} #}

@@ -1,160 +1,189 @@
 <header>
-    <div class="container d-none d-lg-flex">
-        <img src="{{ asset("build/images/logo_aa_blanc_horizontal.svg") }}" alt="Alternative Autoparts" class="logo-aa">
-        <img src="{{ asset("build/images/logo_key_privilege.svg") }}" alt="Key Privilege" class="logo-kp">
-        <div class="identity">
-            <div class="identity-name">
-                Bonjour&nbsp;<span>{{ app.user.fullName }}</span>
-            </div>
-            <div class="identity-balance">
-                Vos clés :&nbsp;<span class="fw-bolder">{{ app.user.account.balance }}</span> <span class="icon icon-key text-danger icon-sm ms-2"></span>
-            </div>
-            {% if not is_granted('IS_IMPERSONATOR') %}
-                <a href="{{ path("security_logout") }}" class="identity-logout">
-                    Se déconnecter <span class="icon icon-logout icon-sm ms-2"></span>
-                </a>
-            {% else %}
-                <a href="{{ impersonation_exit_path(path('home')) }}" class="identity-logout">
-                    Retour à mon accès <span class="icon icon-logout icon-sm ms-2"></span>
-                </a>
-            {% endif %}
-        </div>
-    </div>
-    <nav class="navbar navbar-expand-lg navbar-light">
-        <div class="container">
-            <button class="navbar-toggler border-0 text-light" type="button" data-bs-toggle="collapse" data-bs-target="#header-navbar" aria-controls="header-navbar" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="fas fa-bars fa-lg"></span>
-            </button>
-            <div class="navbar-brand d-lg-none">
-                <img src="{{ asset("build/images/logo_key_privilege.svg") }}" alt="Key Privilege" class="logo-kp">
-                <img src="{{ asset("build/images/logo_aa_blanc_horizontal.svg") }}" alt="Alternative Autoparts" class="logo-aa">
-            </div>
-            <div class="collapse navbar-collapse" id="header-navbar">
-                <ul class="navbar-nav mb-2 mb-lg-0">
-                    <li class="nav-item d-block d-lg-none text-center py-4 mb-4 border-bottom">
-                        Bonjour<br/>{{ app.user.fullName }}
-                    </li>
-                    <li class="nav-item d-flex flex-column flex-wrap d-lg-none text-center justify-content-center mb-4">
-                        <span class="d-block text-center h4 w-100">Vos clés :</span>
-                        <div class="text-center">
-                            <span class="fw-bolder h3">{{ app.user.account.balance }}</span> <span class="icon icon-key icon-lg ms-1 text-light"></span>
-                        </div>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="{{ path("home") }}">Accueil</a>
-                    </li>
-                    {% if is_granted("ROLE_CLIENT_ACCESS") or is_granted("ROLE_CLIENT_COMPANY") %}
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="dropdown-clients" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                {% if is_granted('ROLE_MANAGER') %}
-                                    Gestion des accès
-                                {% else %}
-                                    Clients
-                                {% endif %}
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-clients">
-                                {% if is_granted("ROLE_MANAGER") %}
-                                    <li>
-                                        <a class="dropdown-item" href="{{ path("member_access_create", {role: "collaborateur"}) }}">
-                                            Créer un accès<br class="d-none d-md-inline d-xl-none"/><span class="d-md-none d-xl-inline">&nbsp;</span>collaborateur
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="{{ path("member_access_create", {role: "commercial"}) }}">
-                                            Créer un accès<br class="d-none d-md-inline d-xl-none"/><span class="d-md-none d-xl-inline">&nbsp;</span>commercial
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="{{ path("member_access_create", {role: "administrateur"}) }}">
-                                            Créer un accès<br class="d-none d-md-block d-xl-none"/><span class="d-md-none d-xl-inline">&nbsp;</span>administrateur
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="{{ path("member_access_list") }}">
-                                            Gestion des accès<br/>de mon entreprise
-                                        </a>
-                                    </li>
-                                    <li><hr class="dropdown-divider"></li>
-                                {% endif %}
-                                {% if is_granted("ROLE_CLIENT_COMPANY") %}
-                                    <li><a class="dropdown-item" href="{{ path("client_company_create") }}">Créer une société cliente</a></li>
-                                    <li>
-                                        <a class="dropdown-item" href="{{ path("client_company_list") }}">
-                                            Gestion des<br class="d-none d-md-inline d-xxl-none"/><span class="d-md-none d-xxl-inline">&nbsp;</span>informations sociétés
-                                        </a>
-                                    </li>
-                                {% endif %}
-                                {% if is_granted("ROLE_CLIENT_ACCESS") and is_granted("ROLE_CLIENT_COMPANY") %}
-                                    <li><hr class="dropdown-divider"></li>
-                                {% endif %}
-                                {% if is_granted("ROLE_CLIENT_ACCESS") %}
-                                    {% if is_granted("ROLE_CLIENT_ACCESS_CREATE") %}
-                                        <li>
-                                            <a class="dropdown-item" href="{{ path("client_access_create") }}">
-                                                Créer un accès<br class="d-none d-md-inline d-xxl-none"/><span class="d-md-none d-xxl-inline">&nbsp;</span>utilisateur client
-                                            </a>
-                                        </li>
-                                    {% endif %}
-                                    <li>
-                                        <a class="dropdown-item" href="{{ path("client_access_list") }}">
-                                            Gestion des<br class="d-none d-md-inline d-xl-none"/><span class="d-md-none d-xl-inline">&nbsp;</span>accès client
-                                        </a>
-                                    </li>
-                                {% endif %}
+	<div class="container d-none d-lg-flex">
+		<img src="{{ asset("build/images/logo_aa_blanc_horizontal.svg") }}" alt="Alternative Autoparts" class="logo-aa">
+		<img src="{{ asset("build/images/logo_key_privilege.svg") }}" alt="Key Privilege" class="logo-kp">
+		<div class="identity">
+			<div class="identity-name">
+				Bonjour&nbsp;<span>{{ app.user.fullName }}</span>
+			</div>
+			<div class="identity-balance">
+				Vos clés personnelles :&nbsp;<span class="fw-bolder">{{ app.user.account.balance }}</span>
+				<span class="icon icon-key text-danger icon-sm ms-2"></span>
+			</div>
+			{% if is_granted("ROLE_MANAGER") and app.user.members|length == 1 %}
+				<div class="identity-balance">
+					Vos clés adhérent :&nbsp;<span class="fw-bolder">{{ app.user.member.account.balance }}</span>
+					<span class="icon icon-key text-danger icon-sm ms-2"></span>
+				</div>
+			{% endif %}
+			{% if not is_granted('IS_IMPERSONATOR') %}
+				<a href="{{ path("security_logout") }}" class="identity-logout">
+					Se déconnecter
+					<span class="icon icon-logout icon-sm ms-2"></span>
+				</a>
+			{% else %}
+				<a href="{{ impersonation_exit_path(path('home')) }}" class="identity-logout">
+					Retour à mon accès
+					<span class="icon icon-logout icon-sm ms-2"></span>
+				</a>
+			{% endif %}
+		</div>
+	</div>
+	<nav class="navbar navbar-expand-lg navbar-light">
+		<div class="container">
+			<button class="navbar-toggler border-0 text-light" type="button" data-bs-toggle="collapse" data-bs-target="#header-navbar" aria-controls="header-navbar" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="fas fa-bars fa-lg"></span>
+			</button>
+			<div class="navbar-brand d-lg-none">
+				<img src="{{ asset("build/images/logo_key_privilege.svg") }}" alt="Key Privilege" class="logo-kp">
+				<img src="{{ asset("build/images/logo_aa_blanc_horizontal.svg") }}" alt="Alternative Autoparts" class="logo-aa">
+			</div>
+			<div class="collapse navbar-collapse" id="header-navbar">
+				<ul class="navbar-nav mb-2 mb-lg-0">
+					<li class="nav-item d-block d-lg-none text-center py-4 mb-4 border-bottom">
+						Bonjour<br/>{{ app.user.fullName }}
+					</li>
+					<li class="nav-item d-flex flex-column flex-wrap d-lg-none text-center justify-content-center mb-4">
+						<span class="d-block text-center h4 w-100">Vos clés :</span>
+						<div class="text-center">
+							<span class="fw-bolder h3">{{ app.user.account.balance }}</span>
+							<span class="icon icon-key icon-lg ms-1 text-light"></span>
+						</div>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" aria-current="page" href="{{ path("home") }}">Accueil</a>
+					</li>
+					{% if is_granted("ROLE_CLIENT_ACCESS") or is_granted("ROLE_CLIENT_COMPANY") %}
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" id="dropdown-clients" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+								{% if is_granted('ROLE_MANAGER') %}
+									Gestion des accès
+								{% else %}
+									Clients
+								{% endif %}
+							</a>
+							<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-clients">
+								{% if is_granted("ROLE_MANAGER") %}
+									<li>
+										<a class="dropdown-item" href="{{ path("member_access_create", {role: "administrateur"}) }}">
+											Créer un accès<br class="d-none d-md-block d-xl-none"/><span class="d-md-none d-xl-inline">&nbsp;</span>administrateur
+										</a>
+									</li>
 
-                            </ul>
-                        </li>
-                    {% endif %}
-                    {% if is_granted("ROLE_SHOP") %}
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="dropdown-shop" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Boutique
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-shop">
-                                <li><a class="dropdown-item" href="{{ path("shop_index") }}">Boutique</a></li>
-                                <li><a class="dropdown-item" href="{{ path("cart_index") }}">Panier</a></li>
-                                <li><a class="dropdown-item" href="{{ path("order_index") }}">Commandes</a></li>
-                                <li><a class="dropdown-item" href="{{ path("sav_index") }}">Service après-vente</a></li>
-                            </ul>
-                        </li>
-                    {% endif %}
-                    {% if not is_granted("ROLE_KEY_PURCHASE") %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ path("key_index") }}">Compte clés</a>
-                        </li>
-                    {% else %}
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="dropdown-keys" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Compte clés
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-keys">
-                                <li><a class="dropdown-item" href="{{ path("key_index") }}">Tableau de bord</a></li>
-                                <li><a class="dropdown-item" href="{{ path("key_purchase") }}">Acheter des clés</a></li>
-                            </ul>
-                        </li>
-                    {% endif %}
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="dropdown-account" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Mon compte
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-account">
-                            <li><a class="dropdown-item" href="{{ path("account_index") }}">Tableau de bord</a></li>
-                            {% if is_granted("ROLE_ADDRESS") %}
-                            <li><a class="dropdown-item" href="{{ path("address_list") }}">Mes adresses</a></li>
-                            {% endif %}
-                        </ul>
-                    </li>
-                    {% if not is_granted('IS_IMPERSONATOR') %}
-                        <li class="nav-item d-lg-none">
-                            <a class="nav-link" href="{{ path("security_logout") }}">Se déconnecter</a>
-                        </li>
-                    {% else %}
-                        <li class="nav-item">
-                            <a href="{{ impersonation_exit_path(path('home')) }}" class="nav-link active">Retour à mon accès</a>
-                        </li>
-                    {% endif %}
-                </ul>
-            </div>
-        </div>
-    </nav>
+									<li>
+										<a class="dropdown-item" href="{{ path("member_access_create", {role: "commercial"}) }}">
+											Créer un accès<br class="d-none d-md-inline d-xl-none"/><span class="d-md-none d-xl-inline">&nbsp;</span>commercial
+										</a>
+									</li>
+									<li>
+										<a class="dropdown-item" href="{{ path("member_access_create", {role: "collaborateur"}) }}">
+											Créer un accès<br class="d-none d-md-inline d-xl-none"/><span class="d-md-none d-xl-inline">&nbsp;</span>collaborateur
+										</a>
+									</li>
+									<li>
+										<a class="dropdown-item" href="{{ path("member_access_list") }}">
+											Gestion des accès<br/>de mon entreprise
+										</a>
+									</li>
+									<li><hr class="dropdown-divider"></li>
+								{% endif %}
+								{% if is_granted("ROLE_CLIENT_COMPANY") %}
+									<li>
+										<a class="dropdown-item" href="{{ path("client_company_create") }}">Créer une société cliente</a>
+									</li>
+									<li>
+										<a class="dropdown-item" href="{{ path("client_company_list") }}">
+											Gestion des<br class="d-none d-md-inline d-xxl-none"/><span class="d-md-none d-xxl-inline">&nbsp;</span>informations sociétés
+										</a>
+									</li>
+								{% endif %}
+								{% if is_granted("ROLE_CLIENT_ACCESS") and is_granted("ROLE_CLIENT_COMPANY") %}
+									<li><hr class="dropdown-divider"></li>
+								{% endif %}
+								{% if is_granted("ROLE_CLIENT_ACCESS") %}
+									{% if is_granted("ROLE_CLIENT_ACCESS_CREATE") %}
+										<li>
+											<a class="dropdown-item" href="{{ path("client_access_create") }}">
+												Créer un accès<br class="d-none d-md-inline d-xxl-none"/><span class="d-md-none d-xxl-inline">&nbsp;</span>utilisateur client
+											</a>
+										</li>
+									{% endif %}
+									<li>
+										<a class="dropdown-item" href="{{ path("client_access_list") }}">
+											Gestion des<br class="d-none d-md-inline d-xl-none"/><span class="d-md-none d-xl-inline">&nbsp;</span>accès client
+										</a>
+									</li>
+								{% endif %}
+
+							</ul>
+						</li>
+					{% endif %}
+					{% if is_granted("ROLE_SHOP") %}
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" id="dropdown-shop" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+								Boutique
+							</a>
+							<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-shop">
+								<li>
+									<a class="dropdown-item" href="{{ path("shop_index") }}">Boutique</a>
+								</li>
+								<li>
+									<a class="dropdown-item" href="{{ path("cart_index") }}">Panier</a>
+								</li>
+								<li>
+									<a class="dropdown-item" href="{{ path("order_index") }}">Commandes</a>
+								</li>
+								<li>
+									<a class="dropdown-item" href="{{ path("sav_index") }}">Service après-vente</a>
+								</li>
+							</ul>
+						</li>
+					{% endif %}
+					{% if not is_granted("ROLE_KEY_PURCHASE") %}
+						<li class="nav-item">
+							<a class="nav-link" href="{{ path("key_index") }}">Compte clés</a>
+						</li>
+					{% else %}
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" id="dropdown-keys" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+								Compte clés
+							</a>
+							<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-keys">
+								<li>
+									<a class="dropdown-item" href="{{ path("key_index") }}">Tableau de bord</a>
+								</li>
+								<li>
+									<a class="dropdown-item" href="{{ path("key_purchase") }}">Acheter des clés</a>
+								</li>
+							</ul>
+						</li>
+					{% endif %}
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" href="#" id="dropdown-account" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+							Mon compte
+						</a>
+						<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-account">
+							<li>
+								<a class="dropdown-item" href="{{ path("account_index") }}">Tableau de bord</a>
+							</li>
+							{% if is_granted("ROLE_ADDRESS") %}
+								<li>
+									<a class="dropdown-item" href="{{ path("address_list") }}">Mes adresses</a>
+								</li>
+							{% endif %}
+						</ul>
+					</li>
+					{% if not is_granted('IS_IMPERSONATOR') %}
+						<li class="nav-item d-lg-none">
+							<a class="nav-link" href="{{ path("security_logout") }}">Se déconnecter</a>
+						</li>
+					{% else %}
+						<li class="nav-item">
+							<a href="{{ impersonation_exit_path(path('home')) }}" class="nav-link active">Retour à mon accès</a>
+						</li>
+					{% endif %}
+				</ul>
+			</div>
+		</div>
+	</nav>
 </header>

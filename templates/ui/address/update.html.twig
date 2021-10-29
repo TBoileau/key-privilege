@@ -4,7 +4,7 @@
     {{ include("components/breadcrumb.html.twig", {items: [
         {route: "account_index", label: "Mon compte"},
         {route: "address_list", label: "Mes adresses"},
-        {route: "address_create", label: "Nouvelle adresse"}
+        {route: "address_update", routeParams: {id: form.vars.data.id}, label: "Modifier une adresse"}
     ]}) }}
 {% endblock %}
 
@@ -14,7 +14,7 @@
             <section class="section">
                 <h1 class="section-header">
                     <span class="icon icon-xl icon-access me-2"></span>
-                    Créer une nouvelle adresse
+                    Modifier une adresse
                 </h1>
                 <div class="section-body">
                     <div class="row justify-content-center">
@@ -27,7 +27,7 @@
                                             Retour
                                         </a>
                                         <button type="submit" class="btn d-block flex-grow-1 btn-outline-success rounded-0 border-0">
-                                            Créer
+                                            Modifier
                                         </button>
                                     </div>
                                 </div>

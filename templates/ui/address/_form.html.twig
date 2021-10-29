@@ -1,15 +1,17 @@
 <div class="card-body">
     {{ form_errors(form) }}
-    <div class="row mb-3 align-items-center">
-        {% if form.type is defined %}
+    {% if form.type is defined and form.default is defined %}
+        <div class="row mb-3 align-items-center">
+            {% if form.type is defined %}
+                <div class="col-6">
+                    {{ form_row(form.type) }}
+                </div>
+            {% endif %}
             <div class="col-6">
-                {{ form_row(form.type) }}
+                {{ form_row(form.default) }}
             </div>
-        {% endif %}
-        <div class="col-6">
-            {{ form_row(form.default) }}
         </div>
-    </div>
+    {% endif %}
     <div class="row mb-3">
         <div class="col-6">
             {{ form_row(form.firstName) }}
