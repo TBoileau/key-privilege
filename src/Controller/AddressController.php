@@ -71,28 +71,27 @@ class AddressController extends AbstractController
                 'collection' => static fn (User $user) => $user->getDeliveryAddresses()->add($address),
             ]
         ];
-        
+
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var Manager $manager */
+            $manager = $user;
+
             if ($form->has('type')) {
                 /** @var string $type */
                 $type = $form->get("type")->getData();
                 /** @var boolean $default */
                 $default = $form->get("default")->getData();
-
-                /** @var Manager $manager */
-                $manager = $user;
-
                 $types[$type]["collection"]($manager);
                 if ($default) {
                     $types[$type]["default"]($manager);
                 }
             } else {
-                $type = $request->query->get('type', null);
+                $type = $request->query->get('type', "delivery");
                 $default = $form->get("default")->getData();
-                
-                $types[$type]["collection"]($user);
+
+                $types[$type]["collection"]($manager);
                 if ($default) {
-                    $types[$type]["default"]($user);
+                    $types[$type]["default"]($manager);
                 }
             }
 
@@ -104,6 +103,67 @@ class AddressController extends AbstractController
         }
 
         return $this->render('ui/address/create.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/{id}/modifier", name="address_update")
+     */
+    public function update(Address $originalAddress, Request $request): Response
+    {
+        $address = clone $originalAddress;
+
+        /** @var SalesPerson|Collaborator|Manager|Customer $user */
+        $user = $this->getUser();
+
+        $type = "delivery";
+
+        if ($user->getDeliveryAddress() === $originalAddress) {
+            $user->setDeliveryAddress($address);
+        }
+
+        if ($user instanceof Manager) {
+            if ($user->getMember()->getBillingAddress() === $originalAddress) {
+                $user->getMember()->setBillingAddress($address);
+            }
+
+            if ($user->getMember()->getBillingAddresses()->contains($originalAddress)) {
+                $type = "billing";
+            }
+        }
+
+
+        $form = $this->createForm(AddressType::class, $address)->handleRequest($request);
+
+        $types = [
+            "billing" => [
+                'collection' => static fn (Manager $manager) => $manager
+                    ->getMember()
+                    ->getBillingAddresses()
+                    ->add($address),
+            ],
+            "delivery" => [
+                'collection' => static fn (User $user) => $user->getDeliveryAddresses()->add($address),
+            ]
+        ];
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $originalAddress->setDeleted(true);
+
+            /** @var Manager $manager */
+            $manager = $user;
+
+            $types[$type]["collection"]($manager);
+
+            $this->getDoctrine()->getManager()->persist($address);
+            $this->getDoctrine()->getManager()->flush();
+            $this->addFlash("success", "L'adresse a été modifiée avec succès.");
+
+            return $this->redirectToRoute("address_list");
+        }
+
+        return $this->render('ui/address/update.html.twig', [
             'form' => $form->createView()
         ]);
     }

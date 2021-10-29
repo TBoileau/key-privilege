@@ -3,7 +3,6 @@
         "@fortawesome/fontawesome-free": "^5.15.3",
         "@popperjs/core": "^2.9.1",
         "@symfony/stimulus-bridge": "^2.0.2",
-        "@symfony/stimulus-testing": "^1.1.0",
         "bootstrap": "^5.0.0-beta2",
         "nouislider": "^14.6.4",
         "stimulus": "^2.0.0"
