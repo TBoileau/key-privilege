@@ -75,13 +75,16 @@ class ShopController extends AbstractController
             "products" => $products,
             "category" => $category,
             "universe" => $universe,
-            "params" => [
-                "category" => $category?->getSlug(),
-                "universe" => $universe?->getSlug(),
-                "page" =>  $request->query->getInt("page", 1),
-                "limit" => $request->query->getInt("limit", 18),
-                "sort" => $request->query->get("sort", "new-products")
-            ],
+            "params" => array_merge(
+                $request->query->all(),
+                [
+                    "category" => $category?->getSlug(),
+                    "universe" => $universe?->getSlug(),
+                    "page" =>  $request->query->getInt("page", 1),
+                    "limit" => $request->query->getInt("limit", 18),
+                    "sort" => $request->query->get("sort", "new-products")
+                ]
+            ),
             "form" => $form->createView(),
             "min" => $min,
             "max" => $max,
