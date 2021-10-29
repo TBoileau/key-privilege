@@ -253,6 +253,34 @@ function loadDetailsProduits($file)
         SET a.last_product_id = b.product
     ");
 
+    $PDO->query("UPDATE (SELECT  MAX(b.last_product_id) maxid, a.id
+    FROM category AS a
+    INNER JOIN category b ON b.parent_id = a.id
+    WHERE b.last_product_id IS NOT NULL
+    AND a.last_product_id IS NULL
+    AND b.lvl = 3
+    GROUP BY a.id) c INNER JOIN category as d ON d.id = c.id
+    SET d.last_product_id = c.maxid");
+
+$PDO->query("UPDATE (SELECT  MAX(b.last_product_id) maxid, a.id
+    FROM category AS a
+    INNER JOIN category b ON b.parent_id = a.id
+    WHERE b.last_product_id IS NOT NULL
+    AND a.last_product_id IS NULL
+    AND b.lvl = 2
+    GROUP BY a.id) c INNER JOIN category as d ON d.id = c.id
+    SET d.last_product_id = c.maxid");
+
+$PDO->query("UPDATE (SELECT  MAX(b.last_product_id) maxid, a.id
+    FROM category AS a
+    INNER JOIN category b ON b.parent_id = a.id
+    WHERE b.last_product_id IS NOT NULL
+    AND a.last_product_id IS NULL
+    AND b.lvl = 1
+    GROUP BY a.id) c INNER JOIN category as d ON d.id = c.id
+    SET d.last_product_id = c.maxid");
+
+
     return $numberOfDataUpdated;
 }
 
