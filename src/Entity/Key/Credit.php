@@ -25,7 +25,7 @@ class Credit extends Transaction
         $this->wallet->addTransaction($this);
     }
 
-    public function getTransfer(): Transfer
+    public function getTransfer(): ?Transfer
     {
         return $this->transfer;
     }
