@@ -190,3 +190,10 @@ if (document.querySelector('#access_client')) {
       .querySelector('#delivery-addresses')
       .addEventListener('change', processAddresses);
 }
+
+document.querySelectorAll('.btn-input-reset').forEach((btn) => {
+  btn.addEventListener('click', () => {
+    document.getElementById(btn.dataset.target).value = '';
+    btn.closest('form').submit();
+  });
+});
