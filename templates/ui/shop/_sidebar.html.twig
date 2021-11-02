@@ -15,7 +15,13 @@
                     <input type="hidden" name="page" value="1">
                     <div class="nav-item">
                         <div class="nav-link pb-3">
-                            {{ form_row(form.keywords) }}
+                            <div class="form-group">
+
+                                <div class="input-group mb-3">
+                                    {{ form_widget(form.keywords) }}
+                                    <button class="btn btn-outline-secondary btn-input-reset" data-target="{{ form.keywords.vars.id }}" type="button"><span class="fas fa-times"></span></button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="nav-item">

@@ -40,7 +40,7 @@ class AddressController extends AbstractController
     public function create(Request $request): Response
     {
         $address = new Address();
-       
+
         /** @var SalesPerson|Collaborator|Manager|Customer $user */
         $user = $this->getUser();
         $address->setEmail($user->getDeliveryAddress()->getEmail());
