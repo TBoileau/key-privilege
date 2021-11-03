@@ -1,53 +1,60 @@
 {% extends "layouts/page.html.twig" %}
 
 {% block breadcrumb %}
-    {{ include("components/breadcrumb.html.twig", {items: [
+	{{ include("components/breadcrumb.html.twig", {items: [
         {route: "shop_index", label: "Boutique"},
         {route: "shop_product", routeParams: {slug: product.slug}, label: "Fiche produit"}
     ]}) }}
 {% endblock %}
 
 {% block content %}
-    {% if cart is defined and cart %}
-        <div class="modal modal-onload" tabindex="-1">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-body">
-                        <div class="alert alert-info text-center mb-0">Produit ajouté au panier avec succès.</div>
-                    </div>
-                    <div class="modal-footer">
-                        <a href="{{ path("shop_index") }}" class="btn btn-secondary" data-bs-dismiss="modal">Continuer ma commande</a>
-                        <a href="{{ path("cart_index") }}" class="btn btn-primary">Voir mon panier</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    {% endif %}
-    <div class="row">
-        <div class="col-12">
-            <section class="section">
-                <h1 class="section-header">Ficher produit</h1>
-                <div class="section-body">
-                    <div class="row">
-                        <div class="col-12 col-md-5">
-                            <img src="{{ asset('shop/products/' ~ product.image) }}" class="w-100" alt="{{ product.brand.name }} - {{ product.name }}">
-                        </div>
-                        <div class="col-12 col-md-7">
-                            <h2 class="fs-1">{{ product.name }}</h2>
-                            <span class="fs-5 text-muted mb-4 d-block">{{ product.category.name }} - {{ product.brand.name }}</span>
-                            <p class="mb-4">{{ product.description }}</p>
-                            <div class="d-flex flex-column flex-md-row justify-content-md-between align-items-md-center">
-                                <div class="bg-danger rounded py-2 px-3 fs-4 mb-3 mb-md-0 d-flex align-items-center text-white">
-                                    {{ product.amount }} <span class="ms-1 icon icon-lg icon-key"></span>
-                                </div>
-                                <a href="{{ path("cart_add", {slug: product.slug}) }}" class="btn btn-danger btn-lg">
-                                    <span class="fas fa-cart-arrow-down"></span> Ajouter au panier
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div>
-    </div>
+	{% if cart is defined and cart %}
+		<div class="modal modal-onload" tabindex="-1">
+			<div class="modal-dialog modal-dialog-centered">
+				<div class="modal-content">
+					<div class="modal-body">
+						<div class="alert alert-info text-center mb-0">Produit ajouté au panier avec succès.</div>
+					</div>
+					<div class="modal-footer">
+						<a href="{{ path("shop_index") }}" class="btn btn-secondary" data-bs-dismiss="modal">Continuer ma commande</a>
+						<a href="{{ path("cart_index") }}" class="btn btn-primary">Voir mon panier</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	{% endif %}
+	<div class="row">
+		<div class="col-12">
+			<section class="section">
+				<h1 class="section-header">Ficher produit</h1>
+				<div class="section-body">
+					<div class="row">
+						<div class="col-12 col-md-5">
+							<img src="{{ asset('shop/products/' ~ product.image) }}" class="w-100" alt="{{ product.brand.name }} - {{ product.name }}">
+						</div>
+						<div class="col-12 col-md-7">
+							<h2 class="fs-1">{{ product.name }}</h2>
+							<div class="d-flex flex-column flex-md-row justify-content-md-between align-items-md-center">
+								<span class="fs-5 text-muted mb-4 d-block">{{ product.category.name }}
+									-
+									{{ product.brand.name }}</span>
+								<span class="fs-5 text-muted mb-4 d-block">Réf: {{ product.reference }}</span>
+							</div>
+							<p class="mb-4">{{ product.description }}</p>
+							<div class="d-flex flex-column flex-md-row justify-content-md-between align-items-md-center">
+								<div class="bg-danger rounded py-2 px-3 fs-4 mb-3 mb-md-0 d-flex align-items-center text-white">
+									{{ product.amount }}
+									<span class="ms-1 icon icon-lg icon-key"></span>
+								</div>
+								<a href="{{ path("cart_add", {slug: product.slug}) }}" class="btn btn-danger btn-lg">
+									<span class="fas fa-cart-arrow-down"></span>
+									Ajouter au panier
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+		</div>
+	</div>
 {% endblock %}
